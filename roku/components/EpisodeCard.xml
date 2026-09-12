@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="EpisodeCard" extends="Group">
+ <interface>
+  <field id="itemContent" type="node" onChange="render"/>
+  <field id="focusPercent" type="float" onChange="renderFocus"/>
+  <field id="gridHasFocus" type="boolean" onChange="renderFocus"/>
+ </interface>
+ <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/EpisodeCard.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/ImagePolicy.brs"/>
+ <children>
+  <Poster width="256" height="144" uri="pkg:/images/ui-corner-mask.png" blendColor="#242628FF"/>
+  <Group id="placeholder">
+   <Poster translation="[112,35]" width="32" height="32" uri="pkg:/images/viptv-mark.png" opacity="0.35"/>
+   <Label translation="[12,84]" width="232" height="28" text="Preview unavailable" horizAlign="center" font="font:SmallSystemFont" color="#A6A8AA"/>
+  </Group>
+  <MaskGroup id="artworkClip" maskUri="pkg:/images/ui-corner-mask.png" maskSize="[256,144]">
+  <Poster id="thumbnail" width="256" height="144" loadWidth="512" loadHeight="288" loadDisplayMode="scaleToZoom"/>
+  </MaskGroup>
+  <Group id="watchedBadge" translation="[160,10]" visible="false">
+   <Poster width="86" height="26" uri="pkg:/images/ui-round-fill.9.png" blendColor="#F5F5F5FF"/>
+   <Label width="86" height="26" text="WATCHED" horizAlign="center" vertAlign="center" color="#101112"><Font role="font" size="14"/></Label>
+  </Group>
+  <Rectangle id="progress" translation="[8,134]" width="0" height="4" color="#F5F5F5" visible="false"/>
+  <!-- Keep the complete focus ring above the alpha-clipped artwork. -->
+  <Poster id="surface" width="256" height="144" uri="pkg:/images/ui-card-focus.png" blendColor="#F5F5F5FF" visible="false"/>
+  <Label id="number" translation="[0,158]" width="256" height="28" font="font:SmallSystemFont" color="#A6A8AA"/>
+  <ScrollingLabel id="title" translation="[0,190]" maxWidth="256" font="font:SmallBoldSystemFont" color="#F5F5F5" repeatCount="0" scrollSpeed="48"/>
+  <Label id="summary" translation="[0,226]" width="256" height="94" wrap="true" numLines="4" font="font:SmallSystemFont" color="#A6A8AA"/>
+ </children>
+</component>

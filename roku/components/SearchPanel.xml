@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="SearchPanel" extends="Group">
+ <interface>
+  <field id="query" type="string" alwaysNotify="true"/>
+  <field id="results" type="node" onChange="updateResults"/>
+  <field id="selected" type="intarray" alwaysNotify="true"/>
+  <field id="status" type="string" alias="statusLabel.text"/>
+  <field id="position" type="intarray" alias="resultsList.rowItemFocused"/>
+  <function name="open"/><function name="focusField"/><function name="focusResults"/>
+ </interface>
+ <script type="text/brightscript" uri="pkg:/source/KeyboardInput.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/SearchPanel.brs"/>
+ <children>
+  <Rectangle translation="[88,130]" width="1192" height="590" color="#101112"/>
+  <Label id="queryLabel" translation="[100,164]" width="304" height="44" font="font:MediumSystemFont" color="#F5F5F5"/>
+  <MiniKeyboard id="keys" translation="[96,216]" scale="[0.82,0.82]" showTextEditBox="false" keyColor="#F5F5F5" focusedKeyColor="#F5F5F5" focusBitmapUri="pkg:/images/ui-round-outline.9.png"/>
+  <Label translation="[100,572]" width="304" height="64" wrap="true" text="Type here or use the Roku app. Play/Pause opens results." font="font:SmallSystemFont" color="#A6A8AA"/>
+  <Group translation="[456,164]" clippingRect="[0,0,740,484]">
+   <RowList id="resultsList" itemComponentName="HomeCard" itemSize="[740,236]" rowItemSize="[[256,200]]" rowItemSpacing="[[20,0]]" itemSpacing="[0,8]" numRows="2" showRowLabel="[true]" showRowCounter="[false]" rowLabelOffset="[[0,8]]" rowLabelFont="font:MediumBoldSystemFont" rowLabelColor="#F5F5F5" drawFocusFeedback="false" rowFocusAnimationStyle="floatingFocus" vertFocusAnimationStyle="fixedFocus"/>
+  </Group>
+  <Label id="statusLabel" translation="[456,660]" width="740" height="36" font="font:SmallSystemFont" color="#A6A8AA"/>
+ </children>
+</component>

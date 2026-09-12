@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="NavIcon" extends="Group">
+ <interface>
+  <field id="itemContent" type="node" onChange="contentChanged"/>
+  <field id="focusPercent" type="float" onChange="render"/>
+  <field id="listHasFocus" type="boolean" onChange="render"/>
+ </interface>
+ <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/NavIcon.brs"/>
+ <children>
+  <Poster id="surface" width="212" height="60" uri="pkg:/images/ui-round-fill.9.png" blendColor="#F5F5F5FF" visible="false"/>
+  <Poster id="icon" translation="[15,15]" width="30" height="30" loadWidth="64" loadHeight="64"/>
+  <Poster id="avatarFallback" translation="[8,8]" width="44" height="44" uri="pkg:/images/ui-round-fill.9.png" blendColor="#303234FF" visible="false"/>
+  <Label id="initial" translation="[8,8]" width="44" height="44" horizAlign="center" vertAlign="center" font="font:SmallBoldSystemFont" color="#F5F5F5" visible="false"/>
+  <Poster id="avatar" translation="[8,8]" width="44" height="44" loadWidth="88" loadHeight="88" loadDisplayMode="scaleToFit" visible="false"/>
+ </children>
+</component>

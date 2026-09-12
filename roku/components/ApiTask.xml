@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="ApiTask" extends="Task">
+  <interface>
+    <field id="request" type="assocarray" />
+    <field id="result" type="assocarray" alwaysNotify="true" />
+    <field id="cancel" type="boolean" value="false" />
+  </interface>
+  <script type="text/brightscript" uri="pkg:/source/Util.brs" />
+  <script type="text/brightscript" uri="pkg:/source/AccountPolicy.brs" />
+  <script type="text/brightscript" uri="pkg:/components/ApiTask.brs" />
+</component>

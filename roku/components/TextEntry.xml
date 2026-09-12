@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="TextEntry" extends="Group">
+ <interface><field id="secret" type="boolean" value="false"/><field id="heading" type="string"/><field id="value" type="string"/><field id="limit" type="integer" value="256"/><field id="result" type="assocarray" alwaysNotify="true"/><function name="open"/><function name="clear"/></interface>
+ <script type="text/brightscript" uri="pkg:/source/KeyboardInput.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/TextEntry.brs"/>
+ <children>
+  <Rectangle width="1280" height="720" color="#101112"/>
+  <Poster translation="[96,44]" width="42" height="36" uri="pkg:/images/viptv-mark.png"/>
+  <Label id="title" translation="[180,112]" width="860" height="64" font="font:LargeBoldSystemFont"/>
+  <Label translation="[180,182]" width="860" height="40" text="Use your remote or the keyboard in the Roku app." color="#A6A8AA" font="font:SmallSystemFont"/>
+  <Label id="valueLabel" translation="[180,242]" width="860" height="44" font="font:MediumSystemFont" color="#F5F5F5"/>
+  <Keyboard id="keys" showTextEditBox="false" translation="[180,300]" keyColor="#F5F5F5" focusedKeyColor="#F5F5F5" focusBitmapUri="pkg:/images/ui-round-outline.9.png"/>
+  <MarkupGrid id="actions" translation="[180,608]" itemComponentName="ActionRow" itemSize="[240,56]" itemSpacing="[16,0]" numColumns="2" numRows="1" drawFocusFeedback="false"/>
+ </children>
+</component>

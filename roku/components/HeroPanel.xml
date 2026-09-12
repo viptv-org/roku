@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="HeroPanel" extends="Group">
+ <interface>
+  <field id="artState" type="string" value="none"/>
+  <field id="model" type="assocarray" onChange="render"/>
+  <field id="compact" type="boolean" value="false" onChange="render"/>
+ </interface>
+ <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/HeroPanel.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/ImagePolicy.brs"/>
+ <children>
+  <Rectangle id="base" width="1280" height="720" color="#101112"/>
+  <Poster id="backdropInstant" width="1280" height="720" loadWidth="256" loadHeight="144" loadDisplayMode="scaleToZoom" visible="false"/>
+  <Poster id="backdrop" width="1280" height="720" loadWidth="1280" loadHeight="720" loadDisplayMode="scaleToZoom" visible="false"/>
+  <Poster id="gradientLeft" width="1280" height="720" uri="pkg:/images/ui-hero-left.png"/>
+  <Poster id="gradientBottom" width="1280" height="720" uri="pkg:/images/ui-hero-bottom.png"/>
+  <Poster id="portrait" translation="[938,102]" width="252" height="378" loadWidth="280" loadHeight="420" loadDisplayMode="scaleToFit" visible="false"/>
+  <Label id="eyebrow" translation="[100,128]" width="560" height="26" font="font:SmallBoldSystemFont" color="#C5C6C7"/>
+  <ScrollingLabel id="title" translation="[100,166]" maxWidth="600" font="font:LargeBoldSystemFont" color="#F5F5F5" repeatCount="-1" scrollSpeed="48"/>
+  <Label id="summary" translation="[100,228]" width="548" height="80" numLines="3" wrap="true" font="font:SmallSystemFont" color="#D5D6D7"/>
+  <ScrollingLabel id="facts" translation="[100,322]" maxWidth="650" font="font:SmallSystemFont" color="#B6B8BA" repeatCount="-1" scrollSpeed="42"/>
+ </children>
+</component>

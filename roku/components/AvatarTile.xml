@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="AvatarTile" extends="Group">
+ <interface><field id="itemContent" type="node" onChange="render"/><field id="focusPercent" type="float" onChange="focus"/><field id="gridHasFocus" type="boolean" onChange="focus"/></interface>
+ <script type="text/brightscript" uri="pkg:/components/AvatarTile.brs"/>
+ <children><Poster id="frame" width="128" height="128" uri="pkg:/images/ui-round-fill.9.png" blendColor="#292B2E"/><Poster id="image" translation="[8,8]" width="112" height="112" loadWidth="112" loadHeight="112"/><Poster id="outline" width="128" height="128" uri="pkg:/images/ui-round-outline.9.png" visible="false"/></children>
+</component>

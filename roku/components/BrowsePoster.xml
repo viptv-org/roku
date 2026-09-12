@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="BrowsePoster" extends="Group">
+ <interface>
+  <field id="itemContent" type="node" onChange="contentChanged"/>
+  <field id="focusPercent" type="float" onChange="focusChanged"/>
+  <field id="listHasFocus" type="boolean" onChange="focusChanged"/>
+ </interface>
+ <script type="text/brightscript" uri="pkg:/components/BrowsePoster.brs"/>
+ <children>
+  <!-- Surface: 256x192 tile, 256x144 artwork — same geometry as HomeCard -->
+  <Rectangle id="surface" translation="[0,0]" width="256" height="192" color="#202224"/>
+  <!-- Artwork with rounded corner mask -->
+  <MaskGroup id="artworkMask" maskUri="pkg:/images/ui-corner-mask.png" maskSize="[256,144]" translation="[0,0]">
+   <Poster id="poster" translation="[0,0]" width="256" height="144" loadWidth="512" loadHeight="288" loadDisplayMode="scaleToFit"/>
+  </MaskGroup>
+  <!-- Fallback -->
+  <Label id="fallback" translation="[0,0]" width="256" height="144" numLines="4" wrap="true" horizAlign="center" vertAlign="center" font="font:SmallBoldSystemFont" color="#6B6E73" visible="false"/>
+  <!-- Title: ScrollingLabel, 20px minimum -->
+  <ScrollingLabel id="title" translation="[4,148]" maxWidth="248" height="22" horizAlign="left" font="font:SmallBoldSystemFont" color="#A0A4A8" repeatCount="0"/>
+  <!-- Focus frame — same as HomeCard -->
+  <Poster id="focusFrame" translation="[-3,-3]" width="262" height="198" uri="pkg:/images/ui-frame-home.png" visible="false"/>
+ </children>
+</component>

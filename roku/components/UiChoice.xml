@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="UiChoice" extends="Group">
+ <interface>
+  <field id="model" type="assocarray" onChange="render"/>
+  <field id="selection" type="assocarray" alwaysNotify="true"/>
+  <field id="dismissed" type="boolean" alwaysNotify="true"/>
+ </interface>
+ <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/UiChoice.brs"/>
+ <children>
+  <Rectangle width="1280" height="720" color="#080909DC"/>
+  <Poster id="surface" translation="[200,60]" width="880" height="600" uri="pkg:/images/ui-round-fill.9.png" blendColor="#191B1DFF"/>
+  <Label id="title" translation="[244,98]" width="792" height="54" font="font:LargeBoldSystemFont" color="#F5F5F5"/>
+  <MarkupList id="choices" translation="[244,178]" itemComponentName="ActionRow" itemSize="[792,52]" itemSpacing="[0,10]" numRows="7" vertFocusAnimationStyle="floatingFocus" drawFocusFeedback="false"/>
+ </children>
+</component>

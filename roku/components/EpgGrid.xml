@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="EpgGrid" extends="Group">
+ <interface>
+  <field id="active" type="boolean" value="true" onChange="epgRender"/>
+  <field id="data" type="assocarray" onChange="epgData"/>
+  <field id="categories" type="array" onChange="epgCategories"/>
+  <field id="guide" type="assocarray" alwaysNotify="true" onChange="epgGuide"/>
+  <field id="needed" type="array" alwaysNotify="true"/>
+  <field id="route" type="assocarray" alwaysNotify="true"/>
+  <field id="watch" type="assocarray" alwaysNotify="true"/>
+  <field id="query" type="string" onChange="epgSearchChanged"/>
+  <field id="searchRequested" type="boolean" alwaysNotify="true"/>
+  <field id="leave" type="boolean" alwaysNotify="true"/>
+  <function name="chooseFilter"/><function name="open"/><function name="resume"/>
+ </interface>
+ <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/EpgPolicy.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/EpgGrid.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/ImagePolicy.brs"/>
+ <children>
+  <Rectangle translation="[88,0]" width="1192" height="720" color="#101112"/>
+  <Label translation="[112,34]" width="220" text="Live TV" font="font:MediumBoldSystemFont" color="#FFFFFF"/>
+  <Label id="clock" translation="[112,91]" width="190" color="#FFFFFF" font="font:SmallBoldSystemFont"/>
+  <Label id="day" visible="false"/>
+  <Label id="selection" translation="[432,635]" width="804" height="38" font="font:MediumBoldSystemFont"/>
+  <Group id="ticks"/>
+  <Rectangle translation="[112,149]" width="1124" height="1" color="#303234"/>
+  <Group id="filters"/>
+  <Group id="rows"/>
+  <Rectangle id="nowLine" translation="[432,150]" width="2" height="470" color="#FFFFFF80"/>
+  <Label id="empty" translation="[450,292]" width="770" height="130" wrap="true" font="font:MediumSystemFont"/>
+  <Label id="position" translation="[300,639]" width="124" font="font:SmallSystemFont" color="#A6A8AA"/>
+  <Label translation="[112,682]" width="1124" text="OK  Watch / Details     *  Details     Replay  Now     Back  Sidebar" font="font:SmallSystemFont" color="#A6A8AA"/>
+  <Group id="details" visible="false">
+   <Rectangle width="1280" height="720" color="#000000" opacity="0.78"/>
+   <Rectangle translation="[224,195]" width="1012" height="360" color="#242628"/>
+   <Label id="detailHeading" translation="[254,219]" width="952" height="64" font="font:MediumBoldSystemFont" wrap="true"/>
+   <Label id="detailBody" translation="[254,297]" width="952" height="174" font="font:SmallSystemFont" wrap="true" numLines="6"/>
+   <Label translation="[254,499]" width="952" text="OK  Watch this channel live     Back  Return to guide" color="#FFFFFF" font="font:SmallBoldSystemFont"/>
+  </Group>
+  <Timer id="guideBatch" duration="0.18" repeat="false"/>
+  <Timer id="guideReveal" duration="0.8" repeat="false"/>
+  <Timer id="refresh" duration="30" repeat="true"/>
+ </children>
+</component>

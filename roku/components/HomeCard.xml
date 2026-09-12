@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="HomeCard" extends="Group">
+ <interface>
+  <field id="itemContent" type="node" onChange="contentChanged"/>
+  <field id="focusPercent" type="float" onChange="focusChanged"/>
+  <field id="rowFocusPercent" type="float" value="1" onChange="focusChanged"/>
+  <field id="rowListHasFocus" type="boolean" onChange="focusChanged"/>
+  <field id="gridHasFocus" type="boolean" onChange="focusChanged"/>
+ </interface>
+ <script type="text/brightscript" uri="pkg:/components/HomeCard.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/ImagePolicy.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
+ <children>
+  <Poster id="surface" width="256" height="144" uri="pkg:/images/ui-round-fill.9.png" blendColor="#202224FF"/>
+  <Poster id="poster" width="256" height="144" loadWidth="256" loadHeight="144" loadDisplayMode="scaleToZoom"/>
+  <Poster id="artworkMask" width="256" height="144" uri="pkg:/images/ui-card-corners.png"/>
+  <Poster id="outline" width="256" height="144" uri="pkg:/images/ui-card-focus.png" opacity="0.35"/>
+  <Label id="fallback" translation="[16,16]" width="224" height="112" numLines="3" wrap="true" horizAlign="center" vertAlign="center" font="font:SmallBoldSystemFont" color="#A6A8AA" visible="false"/>
+  <Poster id="progressTrack" translation="[8,134]" width="240" height="6" uri="pkg:/images/ui-progress-pill.9.png" blendColor="#4A4C4EFF" visible="false"/>
+  <Poster id="progressFill" translation="[8,134]" width="0" height="6" uri="pkg:/images/ui-progress-pill.9.png" blendColor="#F5F5F5FF" visible="false"/>
+  <ScrollingLabel id="title" translation="[0,152]" maxWidth="256" font="font:SmallBoldSystemFont" color="#F5F5F5" repeatCount="0" scrollSpeed="48"/>
+  <ScrollingLabel id="subtitle" translation="[0,178]" maxWidth="256" font="font:SmallSystemFont" color="#A6A8AA" repeatCount="0" scrollSpeed="42"/>
+  <Poster id="focusFrame" translation="[0,0]" width="256" height="144" uri="pkg:/images/ui-card-focus.png" visible="false"/>
+ </children>
+</component>

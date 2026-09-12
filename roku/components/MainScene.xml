@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="MainScene" extends="Scene">
+ <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/BrowsePolicy.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/PresentationPolicy.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/JellyfinCaptionPolicy.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/AccountPolicy.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/AccountScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/PresentationScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/AddonScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/SearchScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/EpgScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/MainScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/ContinuationPolicy.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/ContinuationScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/LibraryScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/StartupScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/ImagePolicy.brs"/>
+ <children>
+  <Rectangle width="1280" height="720" color="#101112"/>
+  <Group id="detailAtmosphere" visible="false">
+   <Poster id="detailBackdrop" width="1280" height="620" loadWidth="960" loadHeight="540" loadDisplayMode="scaleToZoom"/>
+   <Rectangle width="1280" height="620" color="#101112" opacity="0.52"/>
+   <Poster width="1280" height="620" uri="pkg:/images/ui-hero-left.png"/>
+   <Poster width="1280" height="620" uri="pkg:/images/ui-hero-bottom.png"/>
+  </Group>
+  <Group id="homePanel" visible="false">
+   <HeroPanel id="homeHeroPanel"/>
+   <HoldGrid id="homeActions" translation="[100,375]" itemComponentName="ActionRow" itemSize="[144,50]" itemSpacing="[12,0]" numColumns="2" numRows="1" drawFocusFeedback="false" visible="false"/>
+   <Label id="homeTitle" visible="false"/><Label id="homeSummary" visible="false"/>
+   <Group id="homeShelves" translation="[92,466]" clippingRect="[0,0,1188,254]">
+    <HoldRowList id="homeRows" skipFocusAnimations="true" translation="[8,8]" itemComponentName="HomeCard" itemSize="[1180,242]" rowItemSize="[[256,200]]" rowItemSpacing="[[24,0]]" itemSpacing="[0,12]" numRows="2" showRowLabel="[true]" showRowCounter="[false]" rowLabelOffset="[[0,12]]" rowLabelFont="font:MediumBoldSystemFont" rowLabelColor="#F5F5F5" rowFocusAnimationStyle="floatingFocus" vertFocusAnimationStyle="fixedFocus" drawFocusFeedback="false"/>
+   </Group>
+   <Button id="homeRetry" translation="[1030,64]" minWidth="160" maxWidth="184" text="Try again" visible="false"/>
+  </Group>
+  <Poster id="gatewayBrand" translation="[96,44]" width="42" height="36" uri="pkg:/images/viptv-mark.png" visible="false"/>
+  <Label id="identity" translation="[930,34]" width="284" height="32" horizAlign="right" font="font:SmallSystemFont" color="#A6A8AA"/>
+  <Label id="heading" translation="[100,54]" width="1096" height="64" font="font:LargeBoldSystemFont" color="#F5F5F5"/>
+  <ScrollingLabel id="pageCaption" translation="[100,126]" maxWidth="1096" font="font:SmallSystemFont" color="#A6A8AA" repeatCount="-1" scrollSpeed="48"/>
+  <!-- Status is an observer input, never developer text at a screen edge. -->
+  <Label id="status" visible="false"/><Label id="footer" visible="false"/>
+  <MarkupGrid id="discoverFilters" translation="[100,178]" itemComponentName="FilterChip" itemSize="[256,48]" itemSpacing="[24,0]" numColumns="4" numRows="1" drawFocusFeedback="false" visible="false"/>
+  <MarkupList id="list" translation="[100,184]" itemSize="[536,56]" numRows="7" itemSpacing="[0,12]" itemComponentName="ActionRow" vertFocusAnimationStyle="floatingFocus" drawFocusFeedback="false" visible="false"/>
+  <HoldGrid id="posterGrid" translation="[100,248]" itemComponentName="HomeCard" itemSize="[256,192]" itemSpacing="[24,28]" numColumns="4" numRows="2" drawFocusFeedback="false" vertFocusAnimationStyle="floatingFocus" visible="false"/>
+  <HoldGrid id="detailActions" translation="[100,436]" itemComponentName="ActionRow" itemSize="[192,56]" itemSpacing="[16,0]" numColumns="4" numRows="1" drawFocusFeedback="false" visible="false"/>
+  <MarkupGrid id="seasonList" translation="[112,188]" itemComponentName="FilterChip" itemSize="[256,48]" itemSpacing="[24,0]" numColumns="3" numRows="1" drawFocusFeedback="false" vertFocusAnimationStyle="floatingFocus" visible="false"/>
+  <Label id="seasonHeading" translation="[100,282]" text="SEASONS" font="font:SmallSystemFont" color="#A6A8AA" visible="false"/>
+  <Label id="episodesHeading" translation="[976,198]" width="220" horizAlign="right" font="font:SmallSystemFont" color="#A6A8AA" visible="false"/>
+  <MarkupGrid id="episodeList" translation="[112,262]" itemComponentName="EpisodeCard" itemSize="[256,330]" itemSpacing="[24,28]" numColumns="4" numRows="2" itemClippingRect="[0,0,1096,330]" drawFocusFeedback="false" vertFocusAnimationStyle="fixedFocus" visible="false"/>
+  <MarkupGrid id="liveTabs" translation="[100,142]" itemComponentName="FilterChip" itemSize="[256,48]" itemSpacing="[24,0]" numColumns="4" numRows="1" drawFocusFeedback="false" visible="false"/>
+  <MarkupList id="channelList" translation="[100,234]" itemComponentName="ChannelRow" itemSize="[588,74]" itemSpacing="[0,10]" numRows="5" drawFocusFeedback="false" vertFocusAnimationStyle="floatingFocus" visible="false"/>
+  <Label id="liveListHeading" translation="[100,204]" width="588" text="CHANNELS" color="#A6A8AA" font="font:SmallSystemFont" visible="false"/>
+  <MarkupGrid id="sourceFilters" translation="[100,166]" itemComponentName="FilterChip" itemSize="[256,48]" numColumns="1" numRows="1" drawFocusFeedback="false" visible="false"/>
+  <Label id="detailCredits" translation="[380,520]" width="804" height="104" wrap="true" numLines="3" font="font:SmallSystemFont" color="#A6A8AA" visible="false"/>
+  <MarkupList id="sourceList" translation="[100,234]" itemComponentName="SourceCard" itemSize="[1096,216]" itemSpacing="[0,16]" numRows="2" vertFocusAnimationStyle="floatingFocus" drawFocusFeedback="false" visible="false"/>
+  <ScrollingLabel id="sourceContext" translation="[100,119]" maxWidth="1096" font="font:MediumSystemFont" color="#F5F5F5" repeatCount="-1" scrollSpeed="48" visible="false"/>
+  <Label id="sourceState" translation="[384,178]" width="480" height="30" font="font:SmallSystemFont" color="#A6A8AA" visible="false"/>
+  <Label id="sourceHelp" translation="[804,178]" width="350" height="30" horizAlign="right" text="*  Full source details" font="font:SmallSystemFont" color="#A6A8AA" visible="false"/>
+  <BusySpinner id="sourceSpinner" translation="[1172,174]" spinInterval="1.1" control="stop" visible="false"/>
+  <ScrollableText id="sourceText" visible="false"/><Rectangle id="detailPanel" visible="false"/>
+  <Poster id="art" translation="[954,110]" width="236" height="354" loadWidth="280" loadHeight="420" loadDisplayMode="scaleToFit" visible="false"/>
+  <ScrollingLabel id="detailTitle" translation="[778,252]" maxWidth="424" font="font:MediumBoldSystemFont" color="#F5F5F5" repeatCount="-1" scrollSpeed="48" visible="false"/>
+  <Label id="detailInfo" translation="[778,312]" width="424" height="70" wrap="true" font="font:SmallSystemFont" color="#A6A8AA" visible="false"/>
+  <Label id="description" translation="[778,402]" width="424" height="208" numLines="7" wrap="true" font="font:SmallSystemFont" color="#C5C6C7" visible="false"/>
+  <Group id="heroPrefetch" translation="[-4000,-4000]">
+   <Poster id="heroPf0" width="8" height="8" loadDisplayMode="scaleToZoom" visible="false"/>
+   <Poster id="heroPf1" width="8" height="8" loadDisplayMode="scaleToZoom" visible="false"/>
+   <Poster id="heroPf2" width="8" height="8" loadDisplayMode="scaleToZoom" visible="false"/>
+   <Poster id="heroPf3" width="8" height="8" loadDisplayMode="scaleToZoom" visible="false"/>
+  </Group>
+  <Group id="pairPanel" visible="false">
+   <Label id="pairInstruction" translation="[96,260]" width="640" height="84" wrap="true" numLines="2" text="Scan the QR code with your phone." font="font:MediumSystemFont" color="#A6A8AA"/>
+   <Label id="pairAddress" translation="[96,364]" width="640" height="72" wrap="true" numLines="2" font="font:SmallSystemFont" color="#A6A8AA"/>
+   <Label id="pairCode" translation="[96,450]" width="640" height="60" font="font:LargeBoldSystemFont" color="#F5F5F5"/>
+   <Poster id="pairQrSurface" translation="[886,184]" width="298" height="298" uri="pkg:/images/ui-round-fill.9.png"/>
+   <Poster id="pairQr" translation="[910,208]" width="250" height="250" loadWidth="250" loadHeight="250" loadDisplayMode="scaleToFit" visible="false"/>
+  </Group>
+  <MarkupGrid id="profileGrid" translation="[127,252]" itemComponentName="ProfileCard" itemSize="[178,210]" itemSpacing="[34,28]" numColumns="5" numRows="1" drawFocusFeedback="false" visible="false"/>
+  <MarkupGrid id="profileActions" translation="[392,530]" itemComponentName="ActionRow" itemSize="[240,56]" itemSpacing="[16,0]" numColumns="2" numRows="1" drawFocusFeedback="false" visible="false"/>
+  <MarkupGrid id="profilePages" translation="[452,612]" itemComponentName="ActionRow" itemSize="[180,40]" itemSpacing="[16,0]" numColumns="2" numRows="1" drawFocusFeedback="false" visible="false"/>
+  <Label id="profilePageLabel" translation="[860,615]" width="160" height="36" font="font:SmallSystemFont" color="#A6A8AA" visible="false"/>
+
+  <Group id="appChrome" visible="false">
+   <Rectangle id="railShade" translation="[88,0]" width="1192" height="720" color="#101112B0" visible="false"/>
+   <Rectangle id="railSurface" width="88" height="720" color="#101112"/>
+   <Poster translation="[32,29]" width="36" height="31" uri="pkg:/images/viptv-mark.png"/>
+   <MarkupList id="sidebar" translation="[21,108]" itemSize="[60,60]" numRows="7" itemSpacing="[0,14]" itemComponentName="NavIcon" vertFocusAnimationStyle="floatingFocus" drawFocusFeedback="false"/>
+  </Group>
+  <Group id="emptyState" visible="false">
+   <Label id="emptyTitle" translation="[250,304]" width="780" height="62" horizAlign="center" font="font:LargeBoldSystemFont" color="#F5F5F5"/>
+   <Label id="emptyMessage" translation="[250,360]" width="780" height="0" numLines="0" maxLines="3" wrap="true" horizAlign="center" font="font:MediumSystemFont" color="#A6A8AA"/>
+  </Group>
+  <EpgGrid id="epgGrid" visible="false"/>
+  <Rectangle id="playerBackdrop" width="1280" height="720" color="#080909" visible="false"/>
+  <Video id="video" width="1280" height="720" visible="false" enableUI="false"/>
+  <Group id="playerHint" visible="false"/><PlayerOverlay id="playerOverlay" visible="false"/>
+  <Group id="busyPanel" visible="false">
+   <Rectangle id="busyShade" width="1280" height="720" color="#101112C8"/>
+   <BusySpinner id="busySpinner" translation="[610,330]" spinInterval="1.1" control="stop"/>
+   <Label id="busyMessage" translation="[280,414]" width="720" height="40" horizAlign="center" text="Loading" font="font:SmallSystemFont" color="#F5F5F5"/>
+  </Group>
+  <Group id="noticePanel" translation="[320,42]" visible="false">
+   <Poster width="640" height="100" uri="pkg:/images/ui-round-fill.9.png" blendColor="#292B2EFF"/>
+   <Label id="noticeText" translation="[28,18]" width="584" height="70" wrap="true" numLines="2" font="font:SmallSystemFont" color="#F5F5F5"/>
+  </Group>
+  <UiChoice id="choicePanel" visible="false"/>
+  <Group id="fullTextPanel" visible="false">
+   <Rectangle width="1280" height="720" color="#101112F8"/>
+   <Label id="fullTextTitle" translation="[100,72]" width="1050" height="60" text="Source details" font="font:LargeBoldSystemFont" color="#F5F5F5"/>
+   <ScrollableText id="fullTextBody" translation="[100,158]" width="1060" height="460" font="font:MediumSystemFont" color="#F5F5F5"/>
+   <Label translation="[100,650]" width="1000" height="32" text="Back to close" font="font:SmallSystemFont" color="#A6A8AA"/>
+  </Group>
+  <SearchPanel id="searchPanel" visible="false"/>
+  <Timer id="searchDelay" duration="0.65" repeat="false"/>
+  <ProfileEditor id="profileEditor" visible="false"/>
+  <TextEntry id="textEntry" visible="false"/>
+  <Group id="authLoading" visible="true">
+   <Rectangle width="1280" height="720" color="#101112"/>
+   <Poster width="1280" height="720" loadSync="true" uri="pkg:/images/splash-hd.jpg"/>
+   <Label id="startupText" translation="[160,630]" width="960" height="36" text="Starting VIPTV…" horizAlign="center" vertAlign="center" font="font:SmallSystemFont" color="#B6B8BA"/>
+   <BusySpinner id="authLoadingSpinner" translation="[610,476]" spinInterval="1.1" control="stop"/>
+  </Group>
+  <Timer id="startupReadyTimer" duration="0.15" repeat="true"/>
+  <Timer id="pairQrTimer" duration="6" repeat="false"/>
+  <Timer id="detailLayoutTimer" duration="0.05" repeat="false"/>
+  <Timer id="artworkTimer" duration="0.15" repeat="false"/>
+  <Timer id="heroArtTimer" duration="0.35" repeat="false"/>
+  <Timer id="noticeTimer" duration="5" repeat="false"/>
+  <Timer id="authTimer" duration="5" repeat="false"/>
+  <Timer id="playerTick" duration="0.5" repeat="true"/>
+  <Timer id="budgetTimer" duration="180" repeat="false"/>
+  <Timer id="listFocusTimer" duration="0.15" repeat="false"/>
+  <Timer id="homeFocusTimer" duration="0.15" repeat="false"/>
+  <Timer id="hintTimer" duration="7" repeat="false"/>
+  <Timer id="dispatch" duration="0.2" repeat="true"/>
+  <Timer id="poll" duration="1.5" repeat="false"/>
+  <Timer id="startup" duration="25" repeat="false"/>
+  <Timer id="seekTimer" duration="35" repeat="false"/>
+  <Timer id="heartbeat" duration="15" repeat="true"/>
+ </children>
+</component>

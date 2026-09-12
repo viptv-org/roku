@@ -1,0 +1,8 @@
+<component name="HoldRowList" extends="RowList">
+ <interface>
+  <field id="activation" type="assocarray" alwaysNotify="true"/>
+  <field id="navigation" type="string" alwaysNotify="true"/>
+ </interface>
+ <script type="text/brightscript" uri="pkg:/components/HoldSelect.brs"/>
+ <children><Timer id="holdTimer" duration="0.7" repeat="false"/></children>
+</component>

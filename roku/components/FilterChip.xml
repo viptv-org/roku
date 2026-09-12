@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="FilterChip" extends="Group">
+ <interface>
+  <field id="itemContent" type="node" onChange="render"/>
+  <field id="focusPercent" type="float" onChange="render"/>
+  <field id="gridHasFocus" type="boolean" onChange="render"/>
+ </interface>
+ <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/FilterChip.brs"/>
+ <children>
+  <Poster id="surface" width="256" height="48" uri="pkg:/images/ui-round-fill.9.png" blendColor="#202224FF"/>
+  <ScrollingLabel id="label" translation="[18,11]" maxWidth="192" font="font:SmallBoldSystemFont" color="#A6A8AA" repeatCount="0" scrollSpeed="48"/>
+  <Poster id="chevron" translation="[222,15]" width="18" height="18" uri="pkg:/images/ui-nav-chevron.png" visible="false"/>
+ </children>
+</component>

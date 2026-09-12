@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="SourceCard" extends="Group">
+ <interface>
+  <field id="itemContent" type="node" onChange="contentChanged"/>
+  <field id="focusPercent" type="float" onChange="focusChanged"/>
+  <field id="listHasFocus" type="boolean" onChange="focusChanged"/>
+ </interface>
+ <script type="text/brightscript" uri="pkg:/components/SourceCard.brs"/>
+ <children>
+  <Poster id="surface" width="1096" height="216" uri="pkg:/images/ui-round-fill.9.png" blendColor="#202224FF"/>
+  <Label id="provider" translation="[20,10]" width="1056" height="30" font="font:SmallBoldSystemFont"/>
+  <Label id="description" translation="[20,46]" width="1056" height="142" numLines="6" wrap="true" font="font:SmallSystemFont" color="#A6A8AA"/>
+  <Label id="badges" translation="[20,190]" width="1056" height="22" font="font:SmallBoldSystemFont" color="#C5C6C7"/>
+ </children>
+</component>

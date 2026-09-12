@@ -1,0 +1,10 @@
+title=VIPTV
+major_version=1
+minor_version=9
+build_version=9
+ui_resolutions=hd
+splash_color=#101112
+splash_screen_hd=pkg:/images/splash-hd.jpg
+splash_min_time=1200
+mm_icon_focus_hd=pkg:/images/channel-poster-hd.jpg
+mm_icon_side_hd=pkg:/images/channel-poster-hd.jpg

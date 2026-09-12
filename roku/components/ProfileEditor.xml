@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="ProfileEditor" extends="Group">
+ <interface><field id="draft" type="assocarray"/><field id="action" type="string" alwaysNotify="true"/><field id="message" type="string" alias="error.text"/><field id="saving" type="boolean" value="false"/><function name="open"/><function name="refresh"/></interface>
+ <script type="text/brightscript" uri="pkg:/components/ProfileEditor.brs"/>
+ <children>
+  <Rectangle width="1280" height="720" color="#101112"/>
+  <Poster translation="[96,44]" width="42" height="36" uri="pkg:/images/viptv-mark.png"/>
+  <Group id="form">
+   <Label id="title" translation="[256,148]" width="850" height="64" text="Add a profile" font="font:LargeBoldSystemFont"/>
+   <Label translation="[256,222]" width="850" height="40" text="A space for their favorites, shows, and discoveries." font="font:MediumSystemFont" color="#A6A8AA"/>
+   <MarkupGrid id="avatar" translation="[256,302]" itemComponentName="AvatarTile" itemSize="[176,176]" numColumns="1" numRows="1" drawFocusFeedback="false" vertFocusAnimationStyle="floatingFocus" skipFocusAnimations="true"/>
+   <Label translation="[256,486]" width="176" height="32" text="Change avatar" horizAlign="center" font="font:SmallSystemFont" color="#A6A8AA"/>
+   <Label translation="[464,292]" width="600" height="36" text="PROFILE NAME" font="font:SmallSystemFont" color="#A6A8AA"/>
+   <MarkupList id="name" translation="[464,338]" itemComponentName="ActionRow" itemSize="[560,64]" numRows="1" drawFocusFeedback="false" vertFocusAnimationStyle="floatingFocus" skipFocusAnimations="true"/>
+   <Label translation="[464,420]" width="560" height="54" wrap="true" text="Select to type with your remote or the Roku app." font="font:SmallSystemFont" color="#A6A8AA"/>
+   <Label id="error" translation="[464,484]" width="560" height="60" wrap="true" font="font:SmallSystemFont" color="#F5F5F5"/>
+   <MarkupGrid id="actions" translation="[256,574]" itemComponentName="ActionRow" itemSize="[240,56]" itemSpacing="[16,0]" numColumns="2" numRows="1" drawFocusFeedback="false" vertFocusAnimationStyle="floatingFocus" skipFocusAnimations="true"/>
+  </Group>
+  <Group id="picker" visible="false">
+   <Label translation="[96,112]" width="1050" height="62" text="Find your favorite" font="font:LargeBoldSystemFont"/>
+   <Label id="pickerHint" translation="[96,178]" width="1050" height="36" text="576 avatars. Pick a world, then pick your character." font="font:MediumSystemFont" color="#A6A8AA"/>
+   <Group translation="[96,238]" clippingRect="[0,0,216,408]"><MarkupList id="categories" translation="[0,0]" itemComponentName="ActionRow" itemSize="[216,44]" itemSpacing="[0,8]" numRows="8" drawFocusFeedback="false" vertFocusAnimationStyle="floatingFocus" skipFocusAnimations="true"/></Group>
+   <MarkupGrid id="avatars" translation="[360,238]" itemComponentName="AvatarTile" itemSize="[128,128]" itemSpacing="[12,12]" numColumns="6" numRows="3" drawFocusFeedback="false" vertFocusAnimationStyle="floatingFocus" skipFocusAnimations="true"/>
+   <MarkupGrid id="pages" translation="[360,662]" itemComponentName="ActionRow" itemSize="[180,40]" itemSpacing="[12,0]" numColumns="2" numRows="1" drawFocusFeedback="false" vertFocusAnimationStyle="floatingFocus" skipFocusAnimations="true"/>
+   <Label id="pickedName" translation="[360,664]" width="440" height="36" font="font:SmallSystemFont" color="#F5F5F5"/>
+   <Label id="page" translation="[812,664]" width="372" height="36" horizAlign="right" font="font:SmallSystemFont" color="#A6A8AA"/>
+  </Group>
+ </children>
+</component>

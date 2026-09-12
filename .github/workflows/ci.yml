@@ -1,0 +1,86 @@
+name: Roku CI and delivery
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: roku-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  roku:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate account, branding, playback and focus contracts
+        run: |
+          python3 scripts/verify-migration.py
+          python3 roku/tests/account_only_contract.py
+          python3 roku/tests/branding_contract.py
+          python3 roku/tests/playback_static.py
+          python3 roku/tests/focus_contract.py
+          python3 roku/tests/scenegraph_ux_contract.py
+          python3 roku/tests/sgnode_identity_contract.py
+      - name: Test guide navigation and episode continuation handlers
+        run: |
+          npm install --prefix /tmp/viptv-roku-tests --no-audit --no-fund brs-node@2.5.3
+          export VIPTV_BRS_CLI=/tmp/viptv-roku-tests/node_modules/.bin/brs-cli
+          python3 roku/tests/guide_boundary_runtime.py
+          python3 roku/tests/continuation_runtime.py
+          python3 roku/tests/next_episode_runtime.py
+          python3 roku/tests/next_transition_runtime.py
+          python3 roku/tests/startup_ready_runtime.py
+          python3 roku/tests/resume_controls_runtime.py
+          python3 roku/tests/explicit_resume_runtime.py
+          python3 roku/tests/seek_latency_runtime.py
+          python3 roku/tests/seek_rollback_runtime.py
+          python3 roku/tests/home_return_runtime.py
+          python3 roku/tests/direct_runtime.py
+          python3 roku/tests/movie_detail_runtime.py
+          python3 roku/tests/profile_preferences_runtime.py
+          python3 roku/tests/profile_management_runtime.py
+          python3 roku/tests/parent_pin_runtime.py
+          python3 roku/tests/library_runtime.py
+          python3 roku/tests/episode_library_runtime.py
+          python3 roku/tests/episode_image_runtime.py
+          python3 roku/tests/episode_mask_runtime.py
+          "$VIPTV_BRS_CLI" roku/tests/audio-score.brs roku/source/Util.brs roku/source/PresentationPolicy.brs
+          "$VIPTV_BRS_CLI" roku/tests/direct-policy.brs roku/source/Util.brs roku/source/PresentationPolicy.brs
+          "$VIPTV_BRS_CLI" roku/tests/player-overlay.brs roku/components/PlayerOverlay.brs roku/source/Util.brs
+          "$VIPTV_BRS_CLI" roku/tests/image-policy.brs roku/source/ImagePolicy.brs roku/source/Util.brs
+          "$VIPTV_BRS_CLI" roku/tests/continuation-policy.brs roku/source/ContinuationPolicy.brs roku/source/Util.brs roku/source/PresentationPolicy.brs
+      - name: Validate and stage the BrighterScript runtime
+        working-directory: roku
+        run: >-
+          npx --yes brighterscript@0.73.1 --project bsconfig.json
+          --copy-to-staging
+          --staging-folder-path "$RUNNER_TEMP/viptv-roku-staging"
+          --retain-staging-folder
+      - name: Build deterministic runtime ZIP
+        run: python3 scripts/package.py --input "$RUNNER_TEMP/viptv-roku-staging"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: roku-package
+          path: artifacts/*
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: roku
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: roku-package
+          path: artifacts
+      - name: Publish validated channel package
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh release create "$GITHUB_REF_NAME" artifacts/* --verify-tag --generate-notes

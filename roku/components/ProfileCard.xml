@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="ProfileCard" extends="Group">
+ <interface>
+  <field id="itemContent" type="node" onChange="render"/>
+  <field id="focusPercent" type="float" onChange="renderFocus"/>
+  <field id="gridHasFocus" type="boolean" onChange="renderFocus"/>
+ </interface>
+ <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/AccountPolicy.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/ProfileCard.brs"/>
+ <children>
+  <Poster id="avatarFallback" translation="[9,9]" width="160" height="160" uri="pkg:/images/ui-round-fill.9.png" blendColor="#202224FF"/>
+  <Label id="initial" translation="[9,9]" width="160" height="160" horizAlign="center" vertAlign="center" font="font:LargeBoldSystemFont" color="#F5F5F5"/>
+  <Poster id="avatar" translation="[9,9]" width="160" height="160" loadWidth="256" loadHeight="256" loadDisplayMode="scaleToFit"/>
+  <Poster translation="[9,9]" width="160" height="160" uri="pkg:/images/ui-profile-corners.png"/>
+  <Poster id="focusFrame" width="178" height="178" uri="pkg:/images/ui-profile-focus.png" opacity="0"/>
+  <ScrollingLabel id="name" translation="[0,181]" width="178" maxWidth="178" horizAlign="center" font="font:SmallSystemFont" color="#A6A8AA" repeatCount="0" scrollSpeed="42"/>
+ </children>
+</component>
