@@ -61,7 +61,6 @@ end function
 
 sub continuationBegin(automatic as boolean)
     if m.playItem = invalid or m.playItem.type <> "series" or m.playbackLive = true then return
-    m.continuationAutomatic = automatic
     m.continuationPreference = StableSourcePreference(m.playItem)
     m.continuationWaiting = true
     current = CopyRouteData(m.playItem)
@@ -124,14 +123,6 @@ sub continuationOffer()
 
 end sub
 
-sub continuationDialogSelected(event as object)
-    if event.getData() = 0
-        continuationPlay()
-    else
-        m.top.dialog.close = true
-        m.top.dialog = invalid
-    end if
-end sub
 sub continuationPlay()
     if m.top.dialog <> invalid
         m.top.dialog.close = true

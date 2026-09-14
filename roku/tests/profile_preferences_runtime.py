@@ -37,7 +37,7 @@ end sub
 sub request(method,path,body,tag)
  m.savedPath=path:m.savedBody=body
 end sub
-function ApiIsObject(value)
+function AccountIsObject(value)
  return GetInterface(value,"ifAssociativeArray")<>invalid
 end function
 '''

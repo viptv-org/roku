@@ -995,10 +995,6 @@ function uiHomeKey(key as string) as boolean
     return false
 end function
 
-sub uiQueueHeroArt(item as object)
-    uiQueueCardArtwork()
-end sub
-
 sub uiLoadHeroArt()
     if m.mode <> "home" or m.uiHeroOwner <> invalid then return
     item = homeCurrent()
@@ -1215,7 +1211,7 @@ end sub
 sub uiSourceFilterChip()
     name = "All providers"
     for each source in Bounded(m.streams,320)
-        if Txt(m.sourceFilter) <> "" and SourceProviderKey(source) = m.sourceFilter then name = SourceProviderName(source)
+        if Txt(m.sourceFilter) <> "" and SourceGroup(source) = m.sourceFilter then name = SourceProviderName(source)
     end for
     if m.sourceFilters.content = invalid
         root = CreateObject("roSGNode","ContentNode")
@@ -1232,7 +1228,7 @@ sub uiSourceFilterSelected()
     choices = [{name:"All providers",value:""}]
     seen = {}
     for each source in Bounded(m.streams,320)
-        key = SourceProviderKey(source)
+        key = SourceGroup(source)
         if not seen.doesExist(key)
             seen[key] = true
             choices.push({name:SourceProviderName(source),value:key})
@@ -1244,7 +1240,7 @@ end sub
 sub uiUpdateSources(values as object, reset = false as boolean)
     filtered = []
     for each source in Bounded(values,320)
-        if Txt(m.sourceFilter) = "" or SourceProviderKey(source) = m.sourceFilter
+        if Txt(m.sourceFilter) = "" or SourceGroup(source) = m.sourceFilter
             item = {}
             item.append(source)
             if item.sourceEpoch = invalid then item.sourceEpoch = m.sourcesAt

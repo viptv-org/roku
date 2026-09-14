@@ -191,10 +191,6 @@ function PresentationLandscapeUrl(uri as string) as string
     return uri
 end function
 
-function SourceProviderKey(item as object) as string
-    return Txt(item.source,Txt(item.addon_id,"unknown"))
-end function
-
 function SourceProviderName(item as object) as string
     name = Txt(item.source_name,Txt(item.addon_name))
     if name = "" then name = OriginalSourceName(item)

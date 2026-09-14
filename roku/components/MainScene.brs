@@ -61,7 +61,6 @@ sub init()
     m.views = []
     m.budgetTimer = m.top.findNode("budgetTimer")
     m.budgetTimer.observeField("fire","prepExpired")
-    m.attemptClock = CreateObject("roTimespan")
     initHome()
     initLiveUX()
     initAccount()
@@ -979,11 +978,8 @@ sub handleResponse(event as object)
             showSettings()
         end if
     else if tag = "profiles"
-        m.chooseProfile = false
         accountUseProfiles(Bounded(data,99))
     else if tag = "newprofile"
-        m.createdProfileId = Txt(data.id)
-        m.chooseProfile = true
         request("GET", "/api/profiles", invalid, "profiles")
     else if tag = "discovercatalogs"
         discoverUseCatalogs(data)
@@ -1116,7 +1112,6 @@ sub handleResponse(event as object)
         m.cursor = 0
         m.pollCount = 0
         m.streams = []
-        m.streamIds = {}
         m.discoveryDone = false
         pollStreams()
     else if tag = "streampoll"
@@ -1290,10 +1285,8 @@ sub findStreams(item as object, manual = true as boolean, preferredSource = inva
     end if
     m.manualSources = manual or preferredSource = invalid
     m.sourceHintCache = {}
-    m.autoReady = false
     m.playItem = {}
     m.playItem.append(item)
-    m.sourceError = ""
     m.streams = []
     m.discoveryDone = false
     m.position = 0
@@ -1339,8 +1332,6 @@ sub beginPlayback(force as boolean)
         m.prepSpent += m.refreshClock.totalMilliseconds()
         m.refreshClock = invalid
     end if
-    if m.userRestart = true and m.hasPlayed = true then startUserRecovery()
-    m.userRestart = false
     issued = m.activeSourceAt
     if issued = invalid then issued = m.sourcesAt
     if m.playItem.type <> "live" and SourceIdsExpired(issued,CreateObject("roDateTime").asSeconds())
@@ -1954,7 +1945,6 @@ sub finishSeekSuccess()
     m.subtitleTracks = Bounded(data.subtitle_tracks,32)
     m.subtitlesSupported = data.subtitles_supported = true
     m.selectedSubtitle = data.selected_subtitle
-    m.selectedAudio = data.selected_audio
     m.nativeCaptionName = ""
     m.seeking = false
     m.seekPhase = ""
@@ -2751,45 +2741,21 @@ end sub
 
 sub resetAttempts()
     m.refreshingSources = false
-    m.refreshOnFailureUsed = false
     m.refreshClock = invalid
     m.activeSourceAt = invalid
     m.attempted = {}
     m.retiredSources = {}
     m.hasPlayed = false
-    m.userRestart = false
     m.prepSpent = 0
     m.codecRetryUsed = false
     m.directRetryUsed = false
     m.liveRetunes = 0
 end sub
 
-sub startUserRecovery()
-    ' Explicit user intent starts a new bounded chain, not an automated retry loop.
-    retired = {}
-    current = Txt(m.playItem.stream_id)
-    if m.attempted <> invalid
-        for each id in m.attempted
-            if id <> current then retired[id] = true
-        end for
-    end if
-    if m.retiredSources <> invalid
-        for each id in m.retiredSources
-            if retired.count() < 6 and id <> current then retired[id] = true
-        end for
-    end if
-    m.retiredSources = retired
-    m.attempted = {}
-    if current <> "" then m.attempted[current] = true
-    m.prepSpent = 0
-    m.refreshOnFailureUsed = false
-end sub
-
 sub refreshSourceIds(newEpoch = true as boolean)
     if m.refreshingSources = true then return
     cancelBrowse()
     m.refreshingSources = true
-    m.refreshOnFailureUsed = true
     retired = {}
     if m.attempted <> invalid then retired.append(m.attempted)
     if m.retiredSources <> invalid
@@ -2817,7 +2783,6 @@ sub refreshSourceIds(newEpoch = true as boolean)
     m.discoveryDone = false
     m.manualSources = true
     m.resumeSourcePreference = invalid
-    m.autoReady = false
     m.pausedVOD = false
     m.playItem.position = m.position
     m.playItem.duration = m.duration
@@ -2854,13 +2819,6 @@ function AppendDistinctSources(existing as object, incoming as object, limit as 
     return output
 end function
 
-function sourceCap() as integer
-    if m.config.capabilities <> invalid
-        if m.config.capabilities.max_height = 720 then return 720
-    end if
-    return 1080
-end function
-
 sub tryResumeSource()
     if m.mode <> "resuming" or m.manualSources = true or m.pendingPlayback = true or m.playing = true then return
     if m.resumeSourcePreference = invalid then return
@@ -2886,7 +2844,6 @@ sub tryResumeSource()
     if m.discoveryDone
         m.resumeSourcePreference = invalid
         m.manualSources = true
-        m.sourceError = "No matching source is available. Choose another source."
         uiBusy(false)
         rows("Choose a source",m.streams,"streams","")
         uiSourceHeader()
@@ -2973,9 +2930,7 @@ function restoreSourceView(saved as object) as boolean
     end for
     m.playItem.position = m.position
     m.playItem.duration = m.duration
-    m.streamIds = {}
     m.manualSources = true
-    m.autoReady = false
     m.refreshingSources = false
     m.pausedVOD = false
     return true
@@ -3104,7 +3059,6 @@ sub acceptPlayback(data as object,origin as object)
         m.subtitleTracks = Bounded(data.subtitle_tracks,32)
         m.subtitlesSupported = data.subtitles_supported = true
         m.selectedSubtitle = data.selected_subtitle
-        m.selectedAudio = data.selected_audio
         for each track in m.audioTracks
             if track.selected = true
                 language = StablePreferenceText(track.language,16)
@@ -3311,7 +3265,6 @@ sub cancelAutomaticResume()
     m.resumeSourcePreference = invalid
     m.automaticContinuation = false
     m.continuationSourcePreference = invalid
-    m.sourceError = "Choose a source."
     m.status.text = ""
     uiBusy(false)
     if m.streams.count() > 0

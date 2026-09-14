@@ -105,7 +105,6 @@ sub accountReset()
     if m.identity <> invalid then m.identity.text = ""
     m.pendingProfile = invalid
     m.profileDraft = invalid
-    m.searchFocusPending = false
     m.authBusy = false
     retained = []
     for each entry in m.queue

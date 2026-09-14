@@ -400,10 +400,6 @@ function ApiOrigin(value as string) as string
     return origin
 end function
 
-function ApiIsObject(value as dynamic) as boolean
-    return GetInterface(value, "ifAssociativeArray") <> invalid
-end function
-
 function ApiIsArray(value as dynamic) as boolean
     return GetInterface(value, "ifArray") <> invalid
 end function
@@ -419,7 +415,7 @@ function ApiItem(value as object) as object
     for each key in ["id", "channel_id", "stream_id", "addon_id", "epg_channel_id", "name", "title", "type", "source", "addon_name", "category", "format", "mode", "status", "version", "language", "quality", "codec", "language_status", "audio_language_status", "video_mode", "audio_mode", "display_time", "display_date", "section", "network"]
         if value.DoesExist(key) then output[key] = Left(Txt(value[key]), 512)
     end for
-    if ApiIsObject(value.now) then output.now = {title:Left(Txt(value.now.title),512),start:value.now.start,end:value.now.end}
+    if AccountIsObject(value.now) then output.now = {title:Left(Txt(value.now.title),512),start:value.now.start,end:value.now.end}
     output.append(MatchingContext(value))
     for each key in ["source_addon_id","source_name","source_fingerprint","source_binge_group","source_release_group","source_quality","source_audio","audio_language","queue_status","queue_title_id"]
         if value.DoesExist(key) then output[key] = Left(Txt(value[key]),256)
@@ -465,7 +461,7 @@ function ApiItem(value as object) as object
     if ApiIsArray(value.extra)
         output.extra = []
         for each extra in Bounded(value.extra,32)
-            if ApiIsObject(extra)
+            if AccountIsObject(extra)
                 field = {name:left(Txt(extra.name),64),required:extra.is_required = true or extra.required = true,default:Txt(extra.default),options:[]}
                 for each option in Bounded(extra.options,256)
                     if GetInterface(option,"ifString") <> invalid then field.options.push(left(option,256))
@@ -495,7 +491,7 @@ function ApiItems(values as object, limit as integer) as object
     output = []
     for each value in values
         if output.Count() >= limit then exit for
-        if ApiIsObject(value) then output.Push(ApiItem(value))
+        if AccountIsObject(value) then output.Push(ApiItem(value))
     end for
     return output
 end function
@@ -511,7 +507,7 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
     if left(route,10) = "/api/auth/" or left(route,12) = "/api/device/" then return AccountWire(route,data)
     if route = "/api/profiles" and method = "GET"
         values = data
-        if ApiIsObject(data)
+        if AccountIsObject(data)
             if not ApiIsArray(data.profiles) then return failure
             values = data.profiles
         end if
@@ -520,7 +516,7 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
     end if
     if right(route,12) = "/preferences" then return ProfilePreferencesWire(data)
     if instr(1,route,"/continue/") > 0
-        if not ApiIsObject(data) then return failure
+        if not AccountIsObject(data) then return failure
         if right(route,5) = "/page"
             if not ApiIsArray(data.items) or not ApiIsNumber(data.offset) then return failure
             output = {items:ApiItems(data.items,100),offset:data.offset,total:data.total,next_offset:invalid}
@@ -528,7 +524,7 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
             return {ok:true,data:output}
         else if right(route,5) = "/next"
             output = {status:Txt(data.status)}
-            if ApiIsObject(data.item) then output.item = ApiItem(data.item)
+            if AccountIsObject(data.item) then output.item = ApiItem(data.item)
             return {ok:true,data:output}
         else if right(route,9) = "/settings"
             if GetInterface(data.autoplay,"ifBoolean") = invalid then return failure
@@ -536,14 +532,14 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
         end if
     end if
     if right(route,15) = "/favorites/page" or right(route,14) = "/progress/page"
-        if not ApiIsObject(data) then return failure
+        if not AccountIsObject(data) then return failure
         if not ApiIsArray(data.items) or not ApiIsNumber(data.offset) then return failure
         output = {items:ApiItems(data.items,100),offset:data.offset,total:data.total,next_offset:invalid}
         if ApiIsNumber(data.next_offset) then output.next_offset = data.next_offset
         return {ok:true,data:output}
     end if
     if right(route,17) = "/favorites/toggle"
-        if not ApiIsObject(data) then return failure
+        if not AccountIsObject(data) then return failure
         if GetInterface(data.saved,"ifBoolean") = invalid then return failure
         return {ok:true,data:{saved:data.saved}}
     end if
@@ -564,7 +560,7 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
         if method = "DELETE" then return { ok: true, data: {} }
         return failure
     end if
-    if not ApiIsObject(data) then return failure
+    if not AccountIsObject(data) then return failure
     output = ApiItem(data)
     if route = "/api/discover"
         if not ApiIsArray(data.metas) then return failure
@@ -589,7 +585,7 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
         programs = []
         for each program in data.programs
             if programs.Count() >= 100 then exit for
-            if ApiIsObject(program)
+            if AccountIsObject(program)
                 if ApiIsNumber(program.start) and ApiIsNumber(program.end)
                     if program.start >= 0 and program.start <= 2147483647 and program.end >= program.start and program.end <= 2147483647 then programs.Push(ApiItem(program))
                 end if
@@ -598,7 +594,7 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
         output = { programs: programs, timezone: Left(Txt(data.timezone),64), timeline: [] }
         if ApiIsArray(data.timeline) then output.timeline = ApiItems(data.timeline,54)
     else if Left(route, 10) = "/api/meta/"
-        if not ApiIsObject(data.meta) then return failure
+        if not AccountIsObject(data.meta) then return failure
         meta = ApiItem(data.meta)
         if meta.id = "" or (meta.type <> "movie" and meta.type <> "series" and meta.type <> "live") then return failure
         meta.videos = []
@@ -615,7 +611,7 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
         events = []
         for each entry in data.events
             if events.Count() >= 100 then exit for
-            if ApiIsObject(entry)
+            if AccountIsObject(entry)
                 if not ApiIsNumber(entry.seq) or not ApiIsArray(entry.streams) then return failure
                 if entry.seq < 0 or entry.seq > 2147483647 then return failure
                 cleaned = ApiItem(entry)
@@ -645,8 +641,8 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
         output.subtitle_tracks = []
         if ApiIsArray(data.audio_tracks) then output.audio_tracks = ApiItems(data.audio_tracks,32)
         if ApiIsArray(data.subtitle_tracks) then output.subtitle_tracks = ApiItems(data.subtitle_tracks,32)
-        if ApiIsObject(data.selected_audio) then output.selected_audio = ApiItem(data.selected_audio)
-        if ApiIsObject(data.selected_subtitle) then output.selected_subtitle = ApiItem(data.selected_subtitle)
+        if AccountIsObject(data.selected_audio) then output.selected_audio = ApiItem(data.selected_audio)
+        if AccountIsObject(data.selected_subtitle) then output.selected_subtitle = ApiItem(data.selected_subtitle)
     else if route = "/api/profiles" and method = "POST"
         profile = AccountProfileRow(data)
         if profile = invalid or profile.name = "" then return failure
@@ -664,7 +660,7 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
             if reason = allowed then output.reason = reason
         end for
         if data.state = "playing"
-            if not ApiIsObject(data.playback) then return failure
+            if not AccountIsObject(data.playback) then return failure
             playback = SanitizeApiResponse("/api/playback","POST",data.playback)
             if not playback.ok then return failure
             if playback.data.generation <> data.generation then return failure
@@ -678,7 +674,7 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
 end function
 
 function ProfilePreferencesWire(data as dynamic) as object
-    if not ApiIsObject(data) then return {ok:false,data:invalid}
+    if not AccountIsObject(data) then return {ok:false,data:invalid}
     output = {}
     for each key in ["audio_language","subtitle_language","subtitle_size","subtitle_style","quality"]
         value = Txt(data[key])

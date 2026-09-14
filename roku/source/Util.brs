@@ -58,18 +58,6 @@ function StableResumePreference(item as object) as dynamic
     return preference
 end function
 
-function NativeSubtitleTrackId(tracks as dynamic) as string
-    fallback = ""
-    for each track in Bounded(tracks,32)
-        id = Txt(track.TrackName,Txt(track.id))
-        if id <> ""
-            if fallback = "" then fallback = id
-            if instr(1,lcase(id),"vtt") > 0 then return id
-        end if
-    end for
-    return fallback
-end function
-
 function PlayerTrackSelectable(track as object) as boolean
     if track.selectable <> invalid then return track.selectable = true
     return track.supported = true
@@ -536,6 +524,7 @@ function DistinctSourceLabels(values as object) as object
     return output
 end function
 
+' Canonical provider key: grouping and provider filtering share this one definition.
 function SourceGroup(item as object) as string
     return Txt(item.source,Txt(item.addon_id,"unknown"))
 end function

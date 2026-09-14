@@ -25,7 +25,6 @@ sub open(scope as string)
         m.cache = {}
         m.order = []
         m.labels = {}
-        m.zone = ""
         m.filtersData = [{id:"search",name:"Search Live TV"},{id:"all",name:"All US channels"},{id:"favorites",name:"My channels"},{id:"recent",name:"Recent"}]
     end if
     m.top.query = ""
@@ -98,7 +97,6 @@ sub epgGuide()
     if result.ok <> true and m.cache.doesExist(id) then programs = m.cache[id].programs
     m.cache[id] = {programs:programs,expires:CreateObject("roDateTime").asSeconds()+ttl,ok:result.ok}
     if Txt(result.timezone) <> ""
-        m.zone = result.timezone
         m.labels = {}
         for each tick in Bounded(result.timeline,54)
             if tick.start <> invalid then m.labels[tick.start.toStr()] = tick

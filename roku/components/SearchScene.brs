@@ -28,7 +28,6 @@ sub searchChanged()
     m.search = m.searchPanel.query.trim()
     m.searchDelay.control = "stop"
     m.searchPanel.results = CreateObject("roSGNode","ContentNode")
-    m.searchItems = []
     m.searchPanel.status = "Find your next favorite."
     if m.search <> ""
         m.searchPanel.status = "Searching…"
