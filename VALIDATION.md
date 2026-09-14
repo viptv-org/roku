@@ -1,6 +1,8 @@
 # Extraction validation
 
-Baseline: vynxc/viptv@7d6b4131a44d87b58edcf12709af5851da387176. All runtime source, SceneGraph XML, data, images, manifest and configuration bytes are unchanged. MIGRATION.json records one test-only fix: direct_runtime.py now includes the existing ContinuationPolicy.brs dependency needed by the current findStreams handler.
+Baseline: vynxc/viptv@7d6b4131a44d87b58edcf12709af5851da387176. The extraction changed no runtime source, SceneGraph XML, data, image, manifest or configuration byte; MIGRATION.json records one test-only fix made at extraction time: direct_runtime.py includes the existing ContinuationPolicy.brs dependency needed by the current findStreams handler. Every entry keeps its original `source` and `sha256`.
+
+Later dead-code cleanups diverge from those bytes, and MIGRATION.json records each divergence in place rather than dropping it. 11 entries are re-pinned against the extraction revision (the extraction-time direct_runtime.py fix plus 10 files changed by the cleanup in 14a702c), each keeping its original `sha256` and adding the current `extracted_sha256` with a `reason`. 1 entry is a recorded removal: `roku/tests/account-flow.brs`, an unreferenced and provably unpassable pre-overhaul harness. `python3 scripts/verify-migration.py` still hashes every non-removed entry and now also fails when a recorded removal reappears, when a removed entry carries a content hash, or when a re-pinned or removed entry has no reason, so the record cannot drift silently.
 
 Local checks passed: migration checksums; account, branding, playback, focus, scenegraph and node-identity static contracts; all 19 *_runtime.py harnesses (18 initially passed and the corrected direct harness then passed); BrighterScript 0.73.1 validation/staging; generated runtime ZIP layout with 749 entries including generated source/bslib.brs. CI also exercises the explicit BRS policy fixtures.
 

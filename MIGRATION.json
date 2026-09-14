@@ -27,7 +27,7 @@
       "destination": "roku/components/AccountScene.brs",
       "sha256": "0355e49291936914396ba1d02caeb002afa4105c4b45a56c0e12c81dc030ab17",
       "extracted_sha256": "d72f81b0c1bca34e1a7a5fca8983c5ae3a620acba2e27b29200765da1c214c20",
-      "divergence_reason": "Cleanup: removed the write-only m.searchFocusPending assignment."
+      "reason": "Cleanup: removed the write-only m.searchFocusPending assignment."
     },
     {
       "source": "roku/components/ActionRow.brs",
@@ -49,7 +49,7 @@
       "destination": "roku/components/ApiTask.brs",
       "sha256": "4e2eca9f8d0d16fc1402e769eeeae666a405eaa0bd526cc8c9e051cf45d28d64",
       "extracted_sha256": "994e5ce85ffd5fa8094c0161e38407e3431b2c59fb7fee50c9752c5d06e13636",
-      "divergence_reason": "Cleanup: removed duplicated helper ApiIsObject (identical to AccountPolicy.brs AccountIsObject, same component scope); 16 call sites now use AccountIsObject."
+      "reason": "Cleanup: removed duplicated helper ApiIsObject (identical to AccountPolicy.brs AccountIsObject, same component scope); 16 call sites now use AccountIsObject."
     },
     {
       "source": "roku/components/ApiTask.xml",
@@ -91,14 +91,14 @@
       "destination": "roku/components/ContinuationScene.brs",
       "sha256": "1026bd34038e8a0897f256fb93069b9ab464c600f91159af99964eb698baac28",
       "extracted_sha256": "06620fd3837f4435724172ca7d0685a46900d36876585314fe4a9471c302005c",
-      "divergence_reason": "Cleanup: removed unreferenced continuationDialogSelected() and the write-only m.continuationAutomatic."
+      "reason": "Cleanup: removed unreferenced continuationDialogSelected() and the write-only m.continuationAutomatic."
     },
     {
       "source": "roku/components/EpgGrid.brs",
       "destination": "roku/components/EpgGrid.brs",
       "sha256": "1a942f3bb3db967b9fe079d176bd20e3cabacb1b7c3c0e5f9ca6f88716895a42",
       "extracted_sha256": "ea98ea4d2085c999982dd061b32891f0746e6f01f0f458e338a12edf50afba73",
-      "divergence_reason": "Cleanup: removed both write-only m.zone assignments."
+      "reason": "Cleanup: removed both write-only m.zone assignments."
     },
     {
       "source": "roku/components/EpgGrid.xml",
@@ -175,7 +175,7 @@
       "destination": "roku/components/MainScene.brs",
       "sha256": "86b18096942ced4d58c9408fe81598e2b7f648dde69c90ead66d376734d3b1b8",
       "extracted_sha256": "f78fe30be29c2136694e25ab76d5f20eda8e076e90c5ab8db58a04b81f3d4010",
-      "divergence_reason": "Cleanup: removed unreferenced sourceCap() and startUserRecovery(), the provably unreachable m.userRestart guard, and 17 writes to 8 write-only m.* members (attemptClock, autoReady, chooseProfile, createdProfileId, refreshOnFailureUsed, selectedAudio, sourceError, streamIds)."
+      "reason": "Cleanup: removed unreferenced sourceCap() and startUserRecovery(), the provably unreachable m.userRestart guard, and 17 writes to 8 write-only m.* members (attemptClock, autoReady, chooseProfile, createdProfileId, refreshOnFailureUsed, selectedAudio, sourceError, streamIds)."
     },
     {
       "source": "roku/components/MainScene.xml",
@@ -207,7 +207,7 @@
       "destination": "roku/components/PresentationScene.brs",
       "sha256": "21e2793fd82e785b1baa933c7d7e62c9e072cc0f990d0a213ed53f0aef8dda32",
       "extracted_sha256": "062df9165f22d8595e16228750409fd96f187e9b0fdd0a79b8632906bda8f99b",
-      "divergence_reason": "Cleanup: removed unreferenced uiQueueHeroArt(); 3 provider-filter call sites now use SourceGroup."
+      "reason": "Cleanup: removed unreferenced uiQueueHeroArt(); 3 provider-filter call sites now use SourceGroup."
     },
     {
       "source": "roku/components/ProfileCard.brs",
@@ -244,7 +244,7 @@
       "destination": "roku/components/SearchScene.brs",
       "sha256": "7dd943ac418c54be97d1d5f2ea611d4d1e73390b4a90dde21c6403a3f87c45d5",
       "extracted_sha256": "c138b1a6aa6f33cac2afbc7b4b2e4adb072ebf7fdcbe8af6aea20efa34d501eb",
-      "divergence_reason": "Cleanup: removed the write-only m.searchItems assignment."
+      "reason": "Cleanup: removed the write-only m.searchItems assignment."
     },
     {
       "source": "roku/components/SourceCard.brs",
@@ -3766,14 +3766,14 @@
       "destination": "roku/source/PresentationPolicy.brs",
       "sha256": "fd2f4800cf57b02088852fe0c4147487ba5bd9dbb9cb5ac82052e8b805b296d2",
       "extracted_sha256": "660b916accba377cabdb5ade5381d9293f30c5b8ef58ad80c01d2a5dc6b62c2c",
-      "divergence_reason": "Cleanup: removed duplicated helper SourceProviderKey (byte-identical to Util.brs SourceGroup); callers now use SourceGroup."
+      "reason": "Cleanup: removed duplicated helper SourceProviderKey (byte-identical to Util.brs SourceGroup); callers now use SourceGroup."
     },
     {
       "source": "roku/source/Util.brs",
       "destination": "roku/source/Util.brs",
       "sha256": "35e9bf7a05399ae8a14d783b159b65436c1f2906b0ee56333c800f93b6169f0d",
       "extracted_sha256": "73b7754ea0e5f4c01c7d82a3f0baf578ddbf39eac47e3028d89d8f2a8e0850e6",
-      "divergence_reason": "Cleanup: removed unreferenced NativeSubtitleTrackId; SourceGroup annotated as the single canonical provider key."
+      "reason": "Cleanup: removed unreferenced NativeSubtitleTrackId; SourceGroup annotated as the single canonical provider key."
     },
     {
       "source": "roku/source/main.brs",
@@ -3783,7 +3783,10 @@
     {
       "source": "roku/tests/account-flow.brs",
       "destination": "roku/tests/account-flow.brs",
-      "sha256": "bce150ac82f318fcef86a1ae5274dc0d1d8393824690efb51d4c4b774fc8a95f"
+      "sha256": "bce150ac82f318fcef86a1ae5274dc0d1d8393824690efb51d4c4b774fc8a95f",
+      "extracted_sha256": null,
+      "removed": true,
+      "reason": "Removed by cleanup commit 14a702c: unreferenced, provably unpassable pre-overhaul harness (101 lines). It is referenced by no runner in this repository or any other, its line 41 asserts m.detailTitle.text = \"Scan to sign in\" and that literal exists nowhere else in the tree or in the extraction revision, and its fixture never defines the m.authLoading/m.authLoadingSpinner/m.pairQrTimer fields nor a pairQr.loadStatus that AccountScene.brs accountShowQr/accountQrLoaded now write and require, so its assertions cannot hold."
     },
     {
       "source": "roku/tests/account-policy.brs",
@@ -4081,7 +4084,7 @@
       "destination": "roku/tests/profile_preferences_runtime.py",
       "sha256": "de7a0ef4cc50e5e868b873ca708bdace8bccd6a2a0b714d406626471ee685786",
       "extracted_sha256": "9980ba5e605dde13b99efe77da144834044f06fc2aaeee250b918e809bdd2586",
-      "divergence_reason": "Cleanup: renamed this harness-only ApiIsObject stub to AccountIsObject to match the consolidated canonical helper."
+      "reason": "Cleanup: renamed this harness-only ApiIsObject stub to AccountIsObject to match the consolidated canonical helper."
     },
     {
       "source": "roku/tests/request-propagation.brs",
