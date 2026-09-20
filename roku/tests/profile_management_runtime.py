@@ -4,11 +4,11 @@ import os, subprocess, tempfile
 root=Path(__file__).resolve().parents[1]
 def routine(file,start,end='end sub'):
  text=(root/file).read_text(); a=text.index(start); return text[a:text.index(end,a)+len(end)]
-source='\n'.join(routine('components/AccountScene.brs',x,e) for x,e in [
+source='\n'.join([routine('components/AccountScene.brs','function accountResponse(','end function')]+[routine('components/AccountProfilesScene.brs',x,e) for x,e in [
  ('sub accountUseProfiles(', 'end sub'),('sub accountProfileAction(', 'end sub'),('sub accountManageProfiles()', 'end sub'),
  ('sub accountEditorAction()', 'end sub'),('sub accountFinishProfileSetup(', 'end sub'),
- ('function accountResponse(', 'end function'),('sub accountSubmitParentPin(', 'end sub'),
- ('sub accountDeleteConfirmed(', 'end sub')])+'\n'+(root/'source/Util.brs').read_text()+'\n'+(root/'source/AccountPolicy.brs').read_text()+'''
+ ('sub accountSubmitParentPin(', 'end sub'),
+ ('sub accountDeleteConfirmed(', 'end sub')]])+'\n'+(root/'source/Util.brs').read_text()+'\n'+(root/'source/AccountPolicy.brs').read_text()+'''
 sub Main()
  m.accountEpoch=8:m.config={last_profile_id:"1"}:m.profile="1":m.status={text:""}
  m.profileEditor={visible:true,saving:false,callFunc:noop}:m.pendingProfile=invalid
@@ -112,7 +112,7 @@ with tempfile.TemporaryDirectory() as directory:
  print(result.stdout,end='');print(result.stderr,end='')
  if result.returncode or 'PROFILE_EDITOR_RUNTIME_OK' not in result.stdout:raise SystemExit(1)
 
-layout='\n'.join(routine('components/AccountScene.brs',x,e) for x,e in [
+layout='\n'.join(routine('components/AccountProfilesScene.brs',x,e) for x,e in [
  ('sub accountShowProfileGrid(', 'end sub'),('sub accountRenderProfilePage()', 'end sub'),
  ('sub accountFillProfileButtons(', 'end sub'),('sub accountProfileButtonSelected()', 'end sub'),
  ('sub accountProfilePageSelected()', 'end sub'),('function accountProfileKey(', 'end function')])+'\n'+(root/'source/Util.brs').read_text()+'\n'+(root/'source/AccountPolicy.brs').read_text()+'''

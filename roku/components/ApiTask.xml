@@ -6,6 +6,8 @@
     <field id="cancel" type="boolean" value="false" />
   </interface>
   <script type="text/brightscript" uri="pkg:/source/Util.brs" />
+  <script type="text/brightscript" uri="pkg:/source/SourceLabels.brs" />
   <script type="text/brightscript" uri="pkg:/source/AccountPolicy.brs" />
   <script type="text/brightscript" uri="pkg:/components/ApiTask.brs" />
+  <script type="text/brightscript" uri="pkg:/components/ApiTaskSanitize.brs" />
 </component>

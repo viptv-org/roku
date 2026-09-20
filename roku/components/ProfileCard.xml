@@ -6,6 +6,7 @@
   <field id="gridHasFocus" type="boolean" onChange="renderFocus"/>
  </interface>
  <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/SourceLabels.brs"/>
  <script type="text/brightscript" uri="pkg:/source/AccountPolicy.brs"/>
  <script type="text/brightscript" uri="pkg:/components/ProfileCard.brs"/>
  <children>

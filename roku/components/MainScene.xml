@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <component name="MainScene" extends="Scene">
  <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/SourceLabels.brs"/>
  <script type="text/brightscript" uri="pkg:/source/BrowsePolicy.brs"/>
  <script type="text/brightscript" uri="pkg:/source/PresentationPolicy.brs"/>
  <script type="text/brightscript" uri="pkg:/source/JellyfinCaptionPolicy.brs"/>
  <script type="text/brightscript" uri="pkg:/source/AccountPolicy.brs"/>
  <script type="text/brightscript" uri="pkg:/components/AccountScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/AccountProfilesScene.brs"/>
  <script type="text/brightscript" uri="pkg:/components/PresentationScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/PresentationDetailsScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/PresentationHomeScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/PresentationArtworkScene.brs"/>
  <script type="text/brightscript" uri="pkg:/components/AddonScene.brs"/>
  <script type="text/brightscript" uri="pkg:/components/SearchScene.brs"/>
  <script type="text/brightscript" uri="pkg:/components/EpgScene.brs"/>
  <script type="text/brightscript" uri="pkg:/components/MainScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/NavigationScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/LiveScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/DiscoverScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/ResponseScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/PlaybackScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/SeekScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/HomeScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/HomeFeedScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/SourcesScene.brs"/>
+ <script type="text/brightscript" uri="pkg:/components/SessionScene.brs"/>
  <script type="text/brightscript" uri="pkg:/source/ContinuationPolicy.brs"/>
  <script type="text/brightscript" uri="pkg:/components/ContinuationScene.brs"/>
  <script type="text/brightscript" uri="pkg:/components/LibraryScene.brs"/>

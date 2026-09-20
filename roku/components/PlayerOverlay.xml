@@ -6,6 +6,7 @@
   <field id="opened" type="boolean" value="true" onChange="openedChanged"/>
  </interface>
  <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/SourceLabels.brs"/>
  <script type="text/brightscript" uri="pkg:/components/PlayerOverlay.brs"/>
  <children>
   <Poster id="bottomGradient" translation="[0,382]" width="1280" height="338" uri="pkg:/images/player-gradient-bottom.png"/>

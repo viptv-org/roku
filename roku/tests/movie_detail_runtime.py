@@ -5,7 +5,7 @@ import subprocess
 import tempfile
 
 root = Path(__file__).resolve().parents[1]
-source = (root / 'components/MainScene.brs').read_text()
+source = (root / 'components/ResponseScene.brs').read_text()
 start = source.index('sub showMetadata(')
 routine = source[start:source.index('end sub', start) + 7]
 fixture = '''

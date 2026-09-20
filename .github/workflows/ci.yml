@@ -54,7 +54,7 @@ jobs:
           "$VIPTV_BRS_CLI" roku/tests/direct-policy.brs roku/source/Util.brs roku/source/PresentationPolicy.brs
           "$VIPTV_BRS_CLI" roku/tests/player-overlay.brs roku/components/PlayerOverlay.brs roku/source/Util.brs
           "$VIPTV_BRS_CLI" roku/tests/image-policy.brs roku/source/ImagePolicy.brs roku/source/Util.brs
-          "$VIPTV_BRS_CLI" roku/tests/continuation-policy.brs roku/source/ContinuationPolicy.brs roku/source/Util.brs roku/source/PresentationPolicy.brs
+          "$VIPTV_BRS_CLI" roku/tests/continuation-policy.brs roku/source/ContinuationPolicy.brs roku/source/Util.brs roku/source/SourceLabels.brs roku/source/PresentationPolicy.brs
       - name: Validate and stage the BrighterScript runtime
         working-directory: roku
         run: >-

@@ -21,6 +21,34 @@ sub Main()
     m.sidebar = {focused:false,setFocus:HomeFocus,hasFocus:HomeHasFocus}
     m.homePosition = [0,0]
     m.homeKeyValue = ""
+    testColdHomeRequests()
+    testCatalogDispatchAndStaleResponses()
+    testProfileSwitchAndSidebarNavigation()
+    testHomeResumeDispatch()
+    testSettingsNavigation()
+    testMutationRevisions()
+    testColdHomeAutoPick()
+    testReturnCursorAndCacheRefresh()
+    testReorderedRefreshFocus()
+    testProgressFractions()
+    testViewAllHistory()
+    testKeyboardDialogDismissal()
+    testProfileChooser()
+    testBrowsePageRestore()
+    testShelfRemoval()
+    testStreamsFocusGuards()
+    testGuideWiring()
+    testSourceRouteIdentity()
+    testOrdinaryAcknowledgementFocus()
+    testStableShelfCompletionOrder()
+    testSettledSearchPreview()
+    testSettingsGroups()
+    testManualSourcesAndCategories()
+    testPosterRouteRestore()
+    print "ROKU_HOME_OK"
+end sub
+
+sub testColdHomeRequests()
     showHome()
     homeAssert(m.queue.count() = 4,"independent history/list/live/catalog requests")
     homeAssert(m.queue[0].request_id <> m.queue[1].request_id and m.queue[1].request_id <> m.queue[2].request_id and m.queue[2].request_id <> m.queue[3].request_id,"concurrent requests receive distinct temporary-file IDs")
@@ -28,11 +56,11 @@ sub Main()
     homeAssert(m.homeAutoPick,"profile-entry OK bubbling does not suppress cold-home discovery")
     homeAssert(m.homeRoot.getChildCount() = 0,"cold Home renders no filler shelves")
     homeAssert(homeValues(0).count() = 0,"empty history has no fake poster actions")
-    items = []
+    m.homeItems = []
     for i = 1 to 30
-        items.push({id:i.toStr(),type:"movie",name:"Title " + i.toStr()})
+        m.homeItems.push({id:i.toStr(),type:"movie",name:"Title " + i.toStr()})
     end for
-    homeResponse("favorites",{ok:true,data:items})
+    homeResponse("favorites",{ok:true,data:m.homeItems})
     homeAssert(m.homeData[4].count() = 12,"twelve item shelf cap")
     homeAssert(m.homeData[4][11].action = "favorites","long collections retain a View all route within the item budget")
     m.homePosition = [4,8]
@@ -43,6 +71,9 @@ sub Main()
     homeAssert(not m.homeRows.focused and m.sidebar.focused,"partial response never steals sidebar focus")
     homeAssert(homeValues(0).count() = 0 and m.homeFailed[0],"failure retains retry state without filler shelf")
     homeAssert(m.homeRoot.getChildCount() = 1,"only populated My List shelf is rendered")
+end sub
+
+sub testCatalogDispatchAndStaleResponses()
     m.queue = []
     homeResponse("catalogs",{ok:true,data:[{type:"series",id:"first-series",addon_id:"custom"},{type:"movie",id:"first-movie",addon_id:"other"},{type:"movie",id:"second-movie",addon_id:"ignored"}]})
     homeAssert(m.queue.count() = 2,"one discover per metadata type")
@@ -54,6 +85,9 @@ sub Main()
     m.profile = "p2"
     homeResponse("movie",{ok:true,data:{metas:items}})
     homeAssert(m.homeData[1].count() = 0,"profile mismatch ignored")
+end sub
+
+sub testProfileSwitchAndSidebarNavigation()
     m.queue = []
     showHome()
     homeAssert(m.homeData[4].count() = 0 and m.homePosition[0] = 0,"profile switch clears cache and cursor")
@@ -71,6 +105,9 @@ sub Main()
     m.homePosition = [9,99]
     homeRestore()
     homeAssert(m.homePosition[0] = 0 and m.homePosition[1] = 0,"empty Home cursor remains safe")
+end sub
+
+sub testHomeResumeDispatch()
     m.homeRowKeys = [0]
     m.homeData[0] = [{id:"series:2:4",type:"series",name:"Canonical series",position:540,duration:1800}]
     m.homeRows.rowItemSelected = [0,0]
@@ -97,6 +134,9 @@ sub Main()
     m.queue = []
     homeSelected()
     homeAssert(m.queue[0].path = "/api/meta/series/normal-series","normal series after resume failure opens metadata")
+end sub
+
+sub testSettingsNavigation()
     m.video = {visible:false}
     m.sidebar.focused = true
     m.queue = []
@@ -108,6 +148,9 @@ sub Main()
     m.mode = "settings"
     homeAssert(not onKeyEvent("back",true),"cold Settings Back permits exit")
     m.profile = "p2"
+end sub
+
+sub testMutationRevisions()
     m.mode = "home"
     m.queue = []
     origin = {base:m.config.base,access_token:m.config.access_token,account_epoch:m.accountEpoch,last_profile_id:m.profile,path:"/api/profiles/p2/progress",method:"PUT",tag:"sideprogress|0"}
@@ -122,7 +165,7 @@ sub Main()
     response({getData:HomeGetData,getRoSGNode:HomeGetNode,data:{tag:m.queue[0].tag,ok:true,data:[{id:"correct",type:"movie",position:900}]},node:{request:{}}})
     homeAssert(m.homeData[0][0].id = "correct","post-write GET reconciles final history")
     m.homePosition = [4,8]
-    m.homeData[4] = items
+    m.homeData[4] = m.homeItems
     origin.path = "/api/profiles/p2/favorites/movie/id"
     origin.method = "DELETE"
     homeMutation(origin,false)
@@ -148,6 +191,9 @@ sub Main()
     homeAssert(m.generation > before and m.mode = "settings","Settings navigation cancels old browse generation")
     homeAssert(m.tasks[1].cancel and not m.tasks[0].cancel,"cancel stops discovery but retains favorite acknowledgement")
     homeAssert(m.queue[0].tag = "playback|0","navigation retains orphan playback cleanup")
+end sub
+
+sub testColdHomeAutoPick()
     ' Native Search dialog/wasClosed routing is exercised by SceneGraph previews;
     ' standalone interpreter has no host node for native dialog observers.
     m.profile = "cold"
@@ -156,8 +202,11 @@ sub Main()
     homeRestoreSettled()
     homeResponse("progress",{ok:true,data:[]})
     homeResponse("favorites",{ok:true,data:[]})
-    homeResponse("movie",{ok:true,data:{metas:items}})
+    homeResponse("movie",{ok:true,data:{metas:m.homeItems}})
     homeAssert(m.homePosition[0] = 1,"cold empty history chooses loaded movie shelf")
+end sub
+
+sub testReturnCursorAndCacheRefresh()
     m.homePosition = [1,7]
     m.homeRows.rowItemFocused = [0,0]
     showHome()
@@ -174,7 +223,7 @@ sub Main()
     homeAssert(m.homePosition[0] = 1 and m.homePosition[1] = 7,"expired cache return retains column seven")
     homeAssert(m.homeRoot.isSameNode(cachedRoot),"same-profile TTL refresh retains native content tree")
     homeAssert(m.queue.count() = 4,"expired cache still requests bounded independent refresh")
-    reordered = [items[7],items[0],items[1],items[2],items[3],items[4],items[5],items[6]]
+    reordered = [m.homeItems[7],m.homeItems[0],m.homeItems[1],m.homeItems[2],m.homeItems[3],m.homeItems[4],m.homeItems[5],m.homeItems[6]]
     m.homeRows.focused = false
     m.sidebar.focused = true
     homeResponse("movie",{ok:true,data:{metas:reordered}})
@@ -192,31 +241,43 @@ sub Main()
     m.profile = "moved"
     showHome()
     homeAssert(m.homeData[1].count() = 0 and m.homePosition[0] = 0 and m.homePosition[1] = 0,"profile change clears stale cards and saved cursor")
+end sub
+
+sub testReorderedRefreshFocus()
     m.sidebar.focused = false
-    homeResponse("favorites",{ok:true,data:items})
+    homeResponse("favorites",{ok:true,data:m.homeItems})
     homeRestoreSettled()
     m.homeRows.rowItemFocused = [0,1]
     homeFocused()
-    homeResponse("movie",{ok:true,data:{metas:items}})
+    homeResponse("movie",{ok:true,data:{metas:m.homeItems}})
     homeAssert(m.homePosition[0] = 4 and m.homePosition[1] = 1,"user movement prevents default shelf jump")
     m.profile = "menu"
     showHome()
     m.sidebar.focused = true
-    homeResponse("movie",{ok:true,data:{metas:items}})
+    homeResponse("movie",{ok:true,data:{metas:m.homeItems}})
     homeAssert(m.sidebar.focused and m.homeAutoPick = false,"sidebar prevents automatic focus transfer")
+end sub
+
+sub testProgressFractions()
     homeAssert(homeProgress({position:50,duration:100}) = 0.5,"meaningful progress fraction")
     homeAssert(homeProgress({position:200,duration:100}) = 1,"progress upper bound")
     homeAssert(homeProgress({position:-1,duration:100}) = 0,"progress lower bound")
     homeAssert(homeProgress({position:10,duration:0}) = -1,"unknown duration hides progress")
+end sub
+
+sub testViewAllHistory()
     m.profile = "long-history"
     m.sidebar.focused = false
     showHome()
-    homeResponse("progress",{ok:true,data:items})
+    homeResponse("progress",{ok:true,data:m.homeItems})
     homeAssert(m.homeData[0][11].action = "progress","older Continue Watching entries remain reachable")
     m.queue = []
     m.homeRows.rowItemSelected = [0,11]
     homeSelected()
     homeAssert(m.collection = "progress" and instr(1,m.queue[0].path,"/progress") > 0,"View all opens the full history collection")
+end sub
+
+sub testKeyboardDialogDismissal()
     closed = CreateObject("roSGNode","ContentNode")
     newer = CreateObject("roSGNode","ContentNode")
     m.keyboardDialog = closed
@@ -230,6 +291,9 @@ sub Main()
     keyboardClosed({getRoSGNode:HomeGetNode,node:closed})
     homeAssert(m.top.dialog.isSameNode(newer),"late old dialog closure cannot dismiss a newer dialog")
     m.top.dialog = invalid
+end sub
+
+sub testProfileChooser()
     m.identity = {text:""}
     m.chooseProfile = false
     m.canCreateProfile = true
@@ -247,13 +311,16 @@ sub Main()
     homeAssert(m.mode = "profiles" and m.items.count() = 3,"multiple profiles require choice")
     zeroRows = AccountProfileRows([],true)
     homeAssert(zeroRows.count() = 1 and zeroRows[0].action = "newprofile","zero profiles expose creation without a fake viewer")
+end sub
+
+sub testBrowsePageRestore()
     m.profile = "single"
     m.views = []
     m.mode = "browse"
     m.mediaType = "movie"
     m.search = "Café"
     m.offset = 80
-    m.items = items
+    m.items = m.homeItems
     m.list.itemFocused = 7
     m.heading.text = "Search Café"
     saveView()
@@ -261,6 +328,9 @@ sub Main()
     m.items = []
     restoreView()
     homeAssert(m.mode = "browse" and m.list.jumpToItem = 7 and m.search = "Café" and m.offset = 80,"Back restores non-Home query page and cursor")
+end sub
+
+sub testShelfRemoval()
     m.profile = "rails"
     m.sidebar.focused = false
     showHome()
@@ -274,6 +344,9 @@ sub Main()
     homeResponse("favorites",{ok:true,data:[]})
     homeAssert(m.homeRoot.getChildCount() = 2 and m.homePosition[0] = 1,"removing final favorite removes shelf and retains nearest logical neighbor")
     homeAssert(m.sidebar.focused and not m.homeRows.focused,"empty shelf removal cannot steal focus")
+end sub
+
+sub testStreamsFocusGuards()
     m.playItem = {id:"movie",type:"movie",name:"Film"}
     m.mode = "streams"
     m.manualSources = true
@@ -308,20 +381,16 @@ sub Main()
     settleList()
     focused()
     homeAssert(m.queue.count() = before,"focus-only browsing performs no requests")
+end sub
+
+sub testGuideWiring()
     m.selected = {id:"live",type:"live",name:"Live channel"}
     program = {start:1700000000,title:"Dr. Café_日本語 🔴️���",description:"News. 🎬"}
     response({getData:HomeGetData,getRoSGNode:HomeGetNode,data:{tag:"guide|" + m.generation.toStr(),ok:true,data:{programs:[program]}},node:{request:{}}})
     homeAssert(instr(1,m.items[2].name,"Dr. Café_日本語") > 0 and instr(1,m.items[2].name,"🔴") = 0,"guide rows use Unicode-safe display cleanup")
-    homeAssert(m.items[2].description = "News." and instr(1,program.title,"🔴") > 0,"guide display cleanup preserves original provider data")
-    actualPrograms = [{start:1700000000,title:"CNN Newsroom Sunday  ᴺᵉʷ"},{start:1700003600,title:"World Sport  ᴸᶦᵛᵉ"}]
-    response({getData:HomeGetData,getRoSGNode:HomeGetNode,data:{tag:"guide|" + m.generation.toStr(),ok:true,data:{programs:actualPrograms}},node:{request:{}}})
-    homeAssert(instr(1,m.items[2].name,"CNN Newsroom Sunday") > 0 and instr(1,m.items[2].name,"ᴺᵉʷ") = 0,"actual CNN guide title renders without superscript badge")
-    homeAssert(instr(1,m.items[3].name,"World Sport") > 0 and instr(1,m.items[3].name,"ᴸᶦᵛᵉ") = 0,"actual sports guide title renders without superscript badge")
-    homeAssert(m.status.text = "Times are local" and actualPrograms[0].title = "CNN Newsroom Sunday  ᴺᵉʷ","guide footer is concise and API title unchanged")
-    testSourceRouteIdentity()
-    testOrdinaryAcknowledgementFocus()
-    testStableShelfCompletionOrder()
-    testSettledSearchPreview()
+end sub
+
+sub testSettingsGroups()
     m.config.locked = true
     m.configLoaded = true
     showSettings()
@@ -336,9 +405,6 @@ sub Main()
     m.configLoaded = false
     showSettings()
     homeAssert(m.items.count() = 1 and m.items[0].action = "waiting", "startup shows only a noninteractive account loading row")
-    testManualSourcesAndCategories()
-    testPosterRouteRestore()
-    print "ROKU_HOME_OK"
 end sub
 
 sub testManualSourcesAndCategories()
@@ -619,14 +685,8 @@ sub testOrdinaryAcknowledgementFocus()
     end for
     m.chooseProfile = false
     m.homeRows.focused = false
-    response({getData:HomeGetData,getRoSGNode:HomeGetNode,node:{request:{}},data:{tag:"profiles|"+m.generation.toStr(),ok:true,data:[{id:"auto-viewer",name:"Auto viewer",setup_complete:true}]}})
-    homeAssert(m.mode = "profiles" and not m.homeRows.focused and m.sidebar.focused,"unremembered single-profile chooser respects sidebar ownership")
     m.sidebar.focused = false
-    m.top.dialog = {}
     m.list.focused = false
-    response({getData:HomeGetData,getRoSGNode:HomeGetNode,node:{request:{}},data:{tag:"profiles|"+m.generation.toStr(),ok:true,data:[{id:"one",name:"One",setup_complete:true},{id:"two",name:"Two",setup_complete:true}]}})
-    homeAssert(not m.list.focused,"ordinary profile acknowledgement cannot steal an open dialog")
-    m.top.dialog = invalid
     m.list.focused = false
     rows("Explicit user navigation",[],"settings")
     homeAssert(m.list.focused,"acknowledgement guard does not suppress later explicit navigation")

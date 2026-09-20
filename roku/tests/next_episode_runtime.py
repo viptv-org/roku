@@ -7,7 +7,7 @@ def routine(file,name,kind='sub'):
     end='end '+kind
     return s[a:s.index(end,a)+len(end)]
 cases={
-'decision':routine('MainScene.brs','tryResumeSource')+'''
+'decision':routine('SourcesScene.brs','tryResumeSource')+'''
 sub Main()
  m.config={capabilities:{max_height:1080}}:m.sourcePreferences={}
  m.mode="resuming":m.manualSources=false:m.playing=false:m.pendingPlayback=false
@@ -40,7 +40,7 @@ end sub
 sub uiSourceHeader()
 end sub
 ''',
-'end':routine('MainScene.brs','updatePlayer')+'''
+'end':routine('PlaybackScene.brs','updatePlayer')+'''
 sub Main()
  m.playerOverlay={}:m.playItem={id:"e1",type:"series",season:1,episode:3,episodeTitle:"Pilot"}:m.playing=true:m.hasPlayed=true
  m.video={position:990,state:"playing"}:m.position=0:m.timelineOffset=0:m.duration=1000
@@ -87,7 +87,7 @@ sub uiOpenChoice(kind,title,choices)
 end sub
 '''
 }
-cases['resume']=routine('MainScene.brs','selectItem')+'''
+cases['resume']=routine('NavigationScene.brs','selectItem')+'''
 sub Main()
  m.mode="home"
  m.queueItem={id:"e2",type:"series",queue_status:"next",position:0,previous_episode:{id:"e1",type:"series",position:995,duration:1000,source_addon_id:"iptv:2",source_name:"Provider",source_fingerprint:"saved"}}
@@ -120,7 +120,7 @@ sub playSource(source)
  m.started=source.id
 end sub
 '''
-cases['hold']=routine('PresentationScene.brs','uiResumeAction')+'''
+cases['hold']=routine('PresentationArtworkScene.brs','uiResumeAction')+'''
 sub Main()
  m.homeActions={hasFocus:Focused,itemFocused:0}
  m.item={id:"e2",type:"series",season:1,episode:2,queue_status:"next"}

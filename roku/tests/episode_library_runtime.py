@@ -2,7 +2,7 @@
 from pathlib import Path
 import os,subprocess,tempfile
 root=Path(__file__).resolve().parents[1]
-source=(root/'components/MainScene.brs').read_text()
+source=(root/'components/ResponseScene.brs').read_text()+'\n'+(root/'components/HomeScene.brs').read_text()
 library=(root/'components/LibraryScene.brs').read_text()
 start=library.index('function libraryResponse(')
 response_handler=library[start:library.index('end function',start)+12]

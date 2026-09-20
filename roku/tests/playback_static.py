@@ -2,10 +2,23 @@
 """Static invariants complement BrightScript flow tests; no network/device access."""
 from pathlib import Path
 root = Path(__file__).resolve().parents[1]
-scene = (root / "components/MainScene.brs").read_text()
+# MainScene is split into sibling script files that merge into one component
+# scope; the static contracts read the merged scope.
+scene = "\n".join(
+    (root / "components" / f).read_text()
+    for f in [
+        "MainScene.brs", "NavigationScene.brs", "LiveScene.brs", "DiscoverScene.brs",
+        "ResponseScene.brs", "PlaybackScene.brs", "SeekScene.brs", "HomeScene.brs",
+        "HomeFeedScene.brs", "SourcesScene.brs", "SessionScene.brs",
+    ]
+)
 overlay = (root / "components/PlayerOverlay.brs").read_text()
-api = (root / "components/ApiTask.brs").read_text()
-util = (root / "source/Util.brs").read_text()
+api = "\n".join(
+    (root / "components" / f).read_text() for f in ["ApiTask.brs", "ApiTaskSanitize.brs"]
+)
+util = "\n".join(
+    (root / "source" / f).read_text() for f in ["Util.brs", "SourceLabels.brs"]
+)
 xml = (root / "components/MainScene.xml").read_text()
 for removed in (
     "sub autoSource()", "sub nextSource(", "offerUnknownSource", "confirmUnknownAudio",

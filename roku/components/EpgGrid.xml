@@ -14,6 +14,7 @@
   <function name="chooseFilter"/><function name="open"/><function name="resume"/>
  </interface>
  <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/SourceLabels.brs"/>
  <script type="text/brightscript" uri="pkg:/source/EpgPolicy.brs"/>
  <script type="text/brightscript" uri="pkg:/components/EpgGrid.brs"/>
  <script type="text/brightscript" uri="pkg:/source/ImagePolicy.brs"/>

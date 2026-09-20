@@ -15,7 +15,9 @@
     {
       "source": "roku/README.md",
       "destination": "roku/README.md",
-      "sha256": "d910b07caec23d4dfbe5b62162da43c21a0b1c2123205bf5cba91c634b84de17"
+      "sha256": "d910b07caec23d4dfbe5b62162da43c21a0b1c2123205bf5cba91c634b84de17",
+      "extracted_sha256": "56e9b3ce74eedc227967d3e3f7512baf776c7a7e7428133e78107ce5edc39e59",
+      "reason": "Split follow-up: Verification roku_test file lists now name the sibling script files and source/SourceLabels.brs."
     },
     {
       "source": "roku/bsconfig.json",
@@ -23,11 +25,17 @@
       "sha256": "483022be77240fdc9644889ebd030b75d63d97707bb5839d1322dc0714b45e51"
     },
     {
+      "source": "roku/components/AccountProfilesScene.brs",
+      "destination": "roku/components/AccountProfilesScene.brs",
+      "sha256": "860aed3610fdb2ddd63b7a416c7fdd8edcb299d5bf743bdc056d31d2edef8896",
+      "reason": "New file split from AccountScene.brs: profile grid, key handler, setup/editor, PIN, sign-out and delete handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+    },
+    {
       "source": "roku/components/AccountScene.brs",
       "destination": "roku/components/AccountScene.brs",
       "sha256": "0355e49291936914396ba1d02caeb002afa4105c4b45a56c0e12c81dc030ab17",
-      "extracted_sha256": "d72f81b0c1bca34e1a7a5fca8983c5ae3a620acba2e27b29200765da1c214c20",
-      "reason": "Cleanup: removed the write-only m.searchFocusPending assignment."
+      "extracted_sha256": "40d98a7bb6c0d9be1fe4ca1b04e1a69837fac9ee9a580b62ecf2b024ee7074fd",
+      "reason": "Cleanup 14a702c (write-only m.searchFocusPending) and split: pairing, credentials, QR reveal and accountResponse remain; profile grid, key handling, setup/editor, PIN, sign-out and delete handlers moved byte-identical into AccountProfilesScene.brs (merged MainScene component scope)."
     },
     {
       "source": "roku/components/ActionRow.brs",
@@ -37,7 +45,9 @@
     {
       "source": "roku/components/ActionRow.xml",
       "destination": "roku/components/ActionRow.xml",
-      "sha256": "74dcd5feffbdcc94de82a12c2c9e47376e2dab7dc763d4e60f1c205fe3618858"
+      "sha256": "74dcd5feffbdcc94de82a12c2c9e47376e2dab7dc763d4e60f1c205fe3618858",
+      "extracted_sha256": "8c26628f71c3c19e6a4ac4e9c4032cff2d9feec4bb276587a8972a004c47aa1e",
+      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
     },
     {
       "source": "roku/components/AddonScene.brs",
@@ -48,13 +58,21 @@
       "source": "roku/components/ApiTask.brs",
       "destination": "roku/components/ApiTask.brs",
       "sha256": "4e2eca9f8d0d16fc1402e769eeeae666a405eaa0bd526cc8c9e051cf45d28d64",
-      "extracted_sha256": "994e5ce85ffd5fa8094c0161e38407e3431b2c59fb7fee50c9752c5d06e13636",
-      "reason": "Cleanup: removed duplicated helper ApiIsObject (identical to AccountPolicy.brs AccountIsObject, same component scope); 16 call sites now use AccountIsObject."
+      "extracted_sha256": "8ca73ffadfab90607cdb15f086e3d18b4725377640cc5063dbc483004f160228",
+      "reason": "Cleanup 14a702c (ApiIsObject consolidation) and split: task runner, config lock/transport and HTTP request loop remain; ApiOrigin and the pure response-sanitization functions moved byte-identical into ApiTaskSanitize.brs (merged ApiTask component scope via ApiTask.xml)."
     },
     {
       "source": "roku/components/ApiTask.xml",
       "destination": "roku/components/ApiTask.xml",
-      "sha256": "515ea8f88a9dbf10356f68522238227d87b6b9a80ad32b2cdb6e31e0ce239c35"
+      "sha256": "515ea8f88a9dbf10356f68522238227d87b6b9a80ad32b2cdb6e31e0ce239c35",
+      "extracted_sha256": "f77645c49f86eaca921a58c2a539c20be0571324524ef46a3e06295fbe667276",
+      "reason": "Split: added script tags for ApiTaskSanitize.brs and pkg:/source/SourceLabels.brs beside the existing Util/AccountPolicy tags; merged Task component scope preserved."
+    },
+    {
+      "source": "roku/components/ApiTaskSanitize.brs",
+      "destination": "roku/components/ApiTaskSanitize.brs",
+      "sha256": "8798de2daef05dcdad6aa8f8279026366c41d520f8e4c8fcf59c00ead907513b",
+      "reason": "New file split from ApiTask.brs: ApiOrigin and the pure response-sanitization functions moved byte-identical into the merged ApiTask component scope (script tag in ApiTask.xml)."
     },
     {
       "source": "roku/components/AvatarTile.brs",
@@ -84,7 +102,9 @@
     {
       "source": "roku/components/ChannelRow.xml",
       "destination": "roku/components/ChannelRow.xml",
-      "sha256": "e7ed26306c02e3d5837e65c121686158f773f2bdde7706a2c48e6f1c338c5f8c"
+      "sha256": "e7ed26306c02e3d5837e65c121686158f773f2bdde7706a2c48e6f1c338c5f8c",
+      "extracted_sha256": "a7f754989e0a4bbf8df5816dcc0b675f1daa57cbbea3e661d372b2b6cfc7437d",
+      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
     },
     {
       "source": "roku/components/ContinuationScene.brs",
@@ -92,6 +112,12 @@
       "sha256": "1026bd34038e8a0897f256fb93069b9ab464c600f91159af99964eb698baac28",
       "extracted_sha256": "06620fd3837f4435724172ca7d0685a46900d36876585314fe4a9471c302005c",
       "reason": "Cleanup: removed unreferenced continuationDialogSelected() and the write-only m.continuationAutomatic."
+    },
+    {
+      "source": "roku/components/DiscoverScene.brs",
+      "destination": "roku/components/DiscoverScene.brs",
+      "sha256": "d389426f5f252714c53698bbb12bc148f40fbb9f20c2cc8ca9c3b91626e8140c",
+      "reason": "New file split from MainScene.brs: discover catalog/filter and browse handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
     },
     {
       "source": "roku/components/EpgGrid.brs",
@@ -103,7 +129,9 @@
     {
       "source": "roku/components/EpgGrid.xml",
       "destination": "roku/components/EpgGrid.xml",
-      "sha256": "72782188dbdb7913581205a071c90598d61ac6eaa35d415492bee05703e3ea24"
+      "sha256": "72782188dbdb7913581205a071c90598d61ac6eaa35d415492bee05703e3ea24",
+      "extracted_sha256": "f78b7061a357d7d94daf36960892750418ef746df26f1bae479ad31fd7d76571",
+      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
     },
     {
       "source": "roku/components/EpgScene.brs",
@@ -118,7 +146,9 @@
     {
       "source": "roku/components/EpisodeCard.xml",
       "destination": "roku/components/EpisodeCard.xml",
-      "sha256": "4ccffbb9cfa679b9885a5c488532a63e747333bad366c21bd6edbfb810c07c57"
+      "sha256": "4ccffbb9cfa679b9885a5c488532a63e747333bad366c21bd6edbfb810c07c57",
+      "extracted_sha256": "231e673e25f03e704fc2e071bfa6fe2bb61adfcb584d98d6c3b781f22e7318a9",
+      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
     },
     {
       "source": "roku/components/FilterChip.brs",
@@ -128,7 +158,9 @@
     {
       "source": "roku/components/FilterChip.xml",
       "destination": "roku/components/FilterChip.xml",
-      "sha256": "2693b4770fb44cf830247efc14174ebebea09896f546bb7d4dfddb4b604c05db"
+      "sha256": "2693b4770fb44cf830247efc14174ebebea09896f546bb7d4dfddb4b604c05db",
+      "extracted_sha256": "a4df71f4e70b228821f23e58d916fa23e66518c05c39d045f77884cbfe647bd4",
+      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
     },
     {
       "source": "roku/components/HeroPanel.brs",
@@ -138,7 +170,9 @@
     {
       "source": "roku/components/HeroPanel.xml",
       "destination": "roku/components/HeroPanel.xml",
-      "sha256": "ee72fe82f207f083a9c673a84a1a74027331f65f01cc969e8e91eee2599ef790"
+      "sha256": "ee72fe82f207f083a9c673a84a1a74027331f65f01cc969e8e91eee2599ef790",
+      "extracted_sha256": "7fde6de876e76b66740bcbb25fa051845716535d85fa849e7d846b44ed1e301e",
+      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
     },
     {
       "source": "roku/components/HoldGrid.xml",
@@ -163,7 +197,21 @@
     {
       "source": "roku/components/HomeCard.xml",
       "destination": "roku/components/HomeCard.xml",
-      "sha256": "e0d64773fb09a3b6b2fb820a724a43fc76d53773780a6b98aa4b0d9f21c68223"
+      "sha256": "e0d64773fb09a3b6b2fb820a724a43fc76d53773780a6b98aa4b0d9f21c68223",
+      "extracted_sha256": "fb5138dd0ae9aad62d89da584f5a7a8a77856498f442f2ffae22ce0dffeb151b",
+      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+    },
+    {
+      "source": "roku/components/HomeFeedScene.brs",
+      "destination": "roku/components/HomeFeedScene.brs",
+      "sha256": "d637da6fe6b503b790bee68ba35c939273d080e912071772f32029300d294c9a",
+      "reason": "New file split from MainScene.brs: home shelf responses, hero and remote-key handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+    },
+    {
+      "source": "roku/components/HomeScene.brs",
+      "destination": "roku/components/HomeScene.brs",
+      "sha256": "98eff40f139b55c320c4eb4901c04061833c7e6223cc1afe7eb93e91e4f0d166",
+      "reason": "New file split from MainScene.brs: home shelves, navigation chrome, episode progress and playback-preferences handlers moved byte-identically into the merged MainScene component scope (script tag in MainScene.xml)."
     },
     {
       "source": "roku/components/LibraryScene.brs",
@@ -171,16 +219,24 @@
       "sha256": "b3da744dd8a9b7b317c9249dac06dda48de88c1e5cfc3d1d44d5708f8ca9c92a"
     },
     {
+      "source": "roku/components/LiveScene.brs",
+      "destination": "roku/components/LiveScene.brs",
+      "sha256": "8dac25bfd390c145138c1250168b26c5dd9435aa4b5f7f7c144da77676d1226e",
+      "reason": "New file split from MainScene.brs: live UX, focused-channel guide and now/next handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+    },
+    {
       "source": "roku/components/MainScene.brs",
       "destination": "roku/components/MainScene.brs",
       "sha256": "86b18096942ced4d58c9408fe81598e2b7f648dde69c90ead66d376734d3b1b8",
-      "extracted_sha256": "f78fe30be29c2136694e25ab76d5f20eda8e076e90c5ab8db58a04b81f3d4010",
-      "reason": "Cleanup: removed unreferenced sourceCap() and startUserRecovery(), the provably unreachable m.userRestart guard, and 17 writes to 8 write-only m.* members (attemptClock, autoReady, chooseProfile, createdProfileId, refreshOnFailureUsed, selectedAudio, sourceError, streamIds)."
+      "extracted_sha256": "ec1c8d7d14310cf6a744413462685429741db4ea10d21039c5bb178ef3865da3",
+      "reason": "Cleanup 14a702c, the unrecorded 3570c37 Discover-browse alignment, and split: init, networking request/dispatch, settings/nav shims, keyboard handlers and onKeyEvent remain; all other handlers moved byte-identical into NavigationScene.brs, LiveScene.brs, DiscoverScene.brs, ResponseScene.brs, PlaybackScene.brs, SeekScene.brs, HomeScene.brs, HomeFeedScene.brs, SourcesScene.brs and SessionScene.brs (one merged MainScene component scope via MainScene.xml script tags)."
     },
     {
       "source": "roku/components/MainScene.xml",
       "destination": "roku/components/MainScene.xml",
-      "sha256": "683ee2541fb021de8402c8fc590ed211abc043d423c6f7cbc3a4b5b75626063c"
+      "sha256": "683ee2541fb021de8402c8fc590ed211abc043d423c6f7cbc3a4b5b75626063c",
+      "extracted_sha256": "cefd1416d55cfe9e1ad048dc908cd460e8a818714a3c4fc1250162567b62e185",
+      "reason": "Split: added script tags for the MainScene, Presentation and Account sibling files and pkg:/source/SourceLabels.brs; merged component scope and declaration order preserved."
     },
     {
       "source": "roku/components/NavIcon.brs",
@@ -190,7 +246,21 @@
     {
       "source": "roku/components/NavIcon.xml",
       "destination": "roku/components/NavIcon.xml",
-      "sha256": "5c8b1f3d36f18170c8050915db890a0e5977cb9e3514964eb1a4bce6f08b7049"
+      "sha256": "5c8b1f3d36f18170c8050915db890a0e5977cb9e3514964eb1a4bce6f08b7049",
+      "extracted_sha256": "7f6d24d2919571706b833b8c2c0a1493a104e62fc8809cf9947000d5401cbfe8",
+      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+    },
+    {
+      "source": "roku/components/NavigationScene.brs",
+      "destination": "roku/components/NavigationScene.brs",
+      "sha256": "11dd77e46308cf597fdd2b7dbcdcf8c99be17f640ad0ba48b153191d86bccc8c",
+      "reason": "New file split from MainScene.brs: selectItem and list/detail/favorite handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+    },
+    {
+      "source": "roku/components/PlaybackScene.brs",
+      "destination": "roku/components/PlaybackScene.brs",
+      "sha256": "2895f449c1c79ce16987253c68728b4e2baca7539ca6e10e47955947e7ee09b3",
+      "reason": "New file split from MainScene.brs: stream discovery, playback start, player state and track dialog handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
     },
     {
       "source": "roku/components/PlayerOverlay.brs",
@@ -200,14 +270,34 @@
     {
       "source": "roku/components/PlayerOverlay.xml",
       "destination": "roku/components/PlayerOverlay.xml",
-      "sha256": "eb62b131591468cfe845857a2c172989dd887612555bf4c53ea3cd05971ec3e9"
+      "sha256": "eb62b131591468cfe845857a2c172989dd887612555bf4c53ea3cd05971ec3e9",
+      "extracted_sha256": "29d78b11caa095424013148d765fbc2e632daabc597baa581d5d91cf3d534451",
+      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+    },
+    {
+      "source": "roku/components/PresentationArtworkScene.brs",
+      "destination": "roku/components/PresentationArtworkScene.brs",
+      "sha256": "f4d9ae9fe9239a1e967f152906115bdf69810611933fe0cf64b4e7b6448f671e",
+      "reason": "New file split from PresentationScene.brs: hero/card artwork and source list/filter UI moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+    },
+    {
+      "source": "roku/components/PresentationDetailsScene.brs",
+      "destination": "roku/components/PresentationDetailsScene.brs",
+      "sha256": "b946dbeeb415cd49b7fe9a2a0fab0849adbd2a8c6dfa241ab20e08191f65c9b9",
+      "reason": "New file split from PresentationScene.brs: detail, season and source-header renderers plus full-text/key handling moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+    },
+    {
+      "source": "roku/components/PresentationHomeScene.brs",
+      "destination": "roku/components/PresentationHomeScene.brs",
+      "sha256": "2bfb69990dfc3f24cd494e35c0c6ab440a5582dcf930e61bdd06019b17e67e76",
+      "reason": "New file split from PresentationScene.brs: discover filters, favorite acknowledgement and home action UI moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
     },
     {
       "source": "roku/components/PresentationScene.brs",
       "destination": "roku/components/PresentationScene.brs",
       "sha256": "21e2793fd82e785b1baa933c7d7e62c9e072cc0f990d0a213ed53f0aef8dda32",
-      "extracted_sha256": "062df9165f22d8595e16228750409fd96f187e9b0fdd0a79b8632906bda8f99b",
-      "reason": "Cleanup: removed unreferenced uiQueueHeroArt(); 3 provider-filter call sites now use SourceGroup."
+      "extracted_sha256": "59e0b3b93ce46a4776c7af3a3264fd9f54713948db820494261351496e673542",
+      "reason": "Cleanup 14a702c (removed uiQueueHeroArt) and split: chrome, row layout and choice-panel handlers remain; detail, discover-filter, home and artwork/source-list handlers moved byte-identical into PresentationDetailsScene.brs, PresentationHomeScene.brs and PresentationArtworkScene.brs (merged MainScene component scope)."
     },
     {
       "source": "roku/components/ProfileCard.brs",
@@ -217,7 +307,9 @@
     {
       "source": "roku/components/ProfileCard.xml",
       "destination": "roku/components/ProfileCard.xml",
-      "sha256": "1a85ec923168c6f166bd7fb021b57ba21eb781f622e8931aed7dad41c7ede9f4"
+      "sha256": "1a85ec923168c6f166bd7fb021b57ba21eb781f622e8931aed7dad41c7ede9f4",
+      "extracted_sha256": "20f87b1dd798bdfa3f77d5be6030ae44380028033f4e5a2549a8b62ad86b1c0c",
+      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
     },
     {
       "source": "roku/components/ProfileEditor.brs",
@@ -228,6 +320,12 @@
       "source": "roku/components/ProfileEditor.xml",
       "destination": "roku/components/ProfileEditor.xml",
       "sha256": "25b144add29909f4f2c7f6a69c3a5724d386d10caf5d32fac2cc8d0b23a6d74a"
+    },
+    {
+      "source": "roku/components/ResponseScene.brs",
+      "destination": "roku/components/ResponseScene.brs",
+      "sha256": "582c565e78ae88fd170b1c873e7253fb1906865b62dc647d5987ecac9e77f9f5",
+      "reason": "New file split from MainScene.brs: response dispatch, metadata and episode handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
     },
     {
       "source": "roku/components/SearchPanel.brs",
@@ -247,6 +345,18 @@
       "reason": "Cleanup: removed the write-only m.searchItems assignment."
     },
     {
+      "source": "roku/components/SeekScene.brs",
+      "destination": "roku/components/SeekScene.brs",
+      "sha256": "f0598482ad4cead37a554455f68f67ae05297a80eb8714575ce88f8b93dcd752",
+      "reason": "New file split from MainScene.brs: stop/pause and the atomic seek-replacement transaction moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+    },
+    {
+      "source": "roku/components/SessionScene.brs",
+      "destination": "roku/components/SessionScene.brs",
+      "sha256": "2245b7415d0385e882a9d49aa32c6b42fcca79b0f56b36776eab1727530332f2",
+      "reason": "New file split from MainScene.brs: playback session acceptance and managed-live recovery moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+    },
+    {
       "source": "roku/components/SourceCard.brs",
       "destination": "roku/components/SourceCard.brs",
       "sha256": "b8d09c20b83441efa319dd96f067c86eaf2b4d50a48f06aee934dabe9e7745fb"
@@ -255,6 +365,12 @@
       "source": "roku/components/SourceCard.xml",
       "destination": "roku/components/SourceCard.xml",
       "sha256": "f23fffbb1a71ffc0f552a15b359812a632f300b4c6746e94144b09c988f4e1b5"
+    },
+    {
+      "source": "roku/components/SourcesScene.brs",
+      "destination": "roku/components/SourcesScene.brs",
+      "sha256": "0524426eb7f1436536cddfa79ec3e10f424ccddfddfbb125fb69c144643aaf09",
+      "reason": "New file split from MainScene.brs: source discovery lifecycle, attempt state and view save/restore moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
     },
     {
       "source": "roku/components/StartupScene.brs",
@@ -279,7 +395,9 @@
     {
       "source": "roku/components/UiChoice.xml",
       "destination": "roku/components/UiChoice.xml",
-      "sha256": "8a075f9f786f46ef7371fefb225eff47a311ce8f50104083935a80c7d8c9d07d"
+      "sha256": "8a075f9f786f46ef7371fefb225eff47a311ce8f50104083935a80c7d8c9d07d",
+      "extracted_sha256": "ae0c1542163e7548bc0926935cb9ac63cbbaeef4415e29591ad04a3dcc6fb7d0",
+      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
     },
     {
       "source": "roku/data/BSLIB-LICENSE.txt",
@@ -3734,7 +3852,9 @@
     {
       "source": "roku/source/BrowsePolicy.brs",
       "destination": "roku/source/BrowsePolicy.brs",
-      "sha256": "0e9b2dfb078528931927d6f4db42710397f271bcfffede50949b305bb7cceb0f"
+      "sha256": "0e9b2dfb078528931927d6f4db42710397f271bcfffede50949b305bb7cceb0f",
+      "extracted_sha256": "819a021ad26871d7a5814dc39b3d65ebf3b16962fcd542074e015708f348cb75",
+      "reason": "Discover-browse alignment 3570c37, recorded post-hoc: canonical Stremio-style discover groups (DiscoverTypeGroup/DiscoverGroupLabel/DiscoverTypeMatches) replace the flat type-name map; unrelated to the file split."
     },
     {
       "source": "roku/source/ContinuationPolicy.brs",
@@ -3769,11 +3889,17 @@
       "reason": "Cleanup: removed duplicated helper SourceProviderKey (byte-identical to Util.brs SourceGroup); callers now use SourceGroup."
     },
     {
+      "source": "roku/source/SourceLabels.brs",
+      "destination": "roku/source/SourceLabels.brs",
+      "sha256": "fb62c8aace9feab0fc38066b1f08d6ee74d82369dd3135b8d510d1a9a5af9226",
+      "reason": "New file split from source/Util.brs: the m-free source-label cluster (SourceFullDetails, DistinctSourceLabels, SourceGroup, FairSources, SourceCardTitle, SourceAudioStatus, SourceReportedLanguages) moved byte-identical; compiled globally from source/ and tagged beside Util.brs in every component that includes Util.brs."
+    },
+    {
       "source": "roku/source/Util.brs",
       "destination": "roku/source/Util.brs",
       "sha256": "35e9bf7a05399ae8a14d783b159b65436c1f2906b0ee56333c800f93b6169f0d",
-      "extracted_sha256": "73b7754ea0e5f4c01c7d82a3f0baf578ddbf39eac47e3028d89d8f2a8e0850e6",
-      "reason": "Cleanup: removed unreferenced NativeSubtitleTrackId; SourceGroup annotated as the single canonical provider key."
+      "extracted_sha256": "0a9bb28ccf781fd79bcb58a8a103bc4346cc28e062c6ec2172e8fc9179e590f9",
+      "reason": "Split: the m-free source-label cluster (SourceFullDetails, DistinctSourceLabels, SourceGroup, FairSources, SourceCardTitle, SourceAudioStatus, SourceReportedLanguages) moved byte-identical into source/SourceLabels.brs; SourceScore, CleanSourceLabel and SourceDisplayLabel stay because they cache compiled patterns in m."
     },
     {
       "source": "roku/source/main.brs",
@@ -3796,7 +3922,9 @@
     {
       "source": "roku/tests/account_only_contract.py",
       "destination": "roku/tests/account_only_contract.py",
-      "sha256": "0dcaa9a557a0f3592989558b8a2e81a3ac1f1c204102c34cf4e1e70f9fa012ce"
+      "sha256": "0dcaa9a557a0f3592989558b8a2e81a3ac1f1c204102c34cf4e1e70f9fa012ce",
+      "extracted_sha256": "c88806a617d6d1890f9796b0c6ecc41aaecff5c9834b0ea5d42533b6345c6ff9",
+      "reason": "Split follow-up: scene/main/api/util now read the merged component scope: the split sibling files."
     },
     {
       "source": "roku/tests/audio-score.brs",
@@ -3811,7 +3939,9 @@
     {
       "source": "roku/tests/browse-policy.brs",
       "destination": "roku/tests/browse-policy.brs",
-      "sha256": "24d76d9308e7c0efb0c31d61c0183ff508246fb585c6b369fbbdbd2c62fc2c9e"
+      "sha256": "24d76d9308e7c0efb0c31d61c0183ff508246fb585c6b369fbbdbd2c62fc2c9e",
+      "extracted_sha256": "1e62d79a91ba145dea54e2ad91930b9734e028ab1c02f265493b93bc02f20eda",
+      "reason": "Discover-browse alignment 3570c37, recorded post-hoc: added group-matching coverage; unrelated to the file split."
     },
     {
       "source": "roku/tests/caption-policy.brs",
@@ -3826,7 +3956,9 @@
     {
       "source": "roku/tests/continuation_runtime.py",
       "destination": "roku/tests/continuation_runtime.py",
-      "sha256": "394a43339bb44fb2003cfc6e99b961aa6a2318ecb6cc2c40a19c1567ec31b0f7"
+      "sha256": "394a43339bb44fb2003cfc6e99b961aa6a2318ecb6cc2c40a19c1567ec31b0f7",
+      "extracted_sha256": "bd822f94b583db44a85590590745bbd8c36154ec4349a1e3542de5ffd597c0f4",
+      "reason": "Split follow-up: videoState extraction moved to components/PlaybackScene.brs."
     },
     {
       "source": "roku/tests/direct-policy.brs",
@@ -3837,7 +3969,8 @@
       "source": "roku/tests/direct_runtime.py",
       "destination": "roku/tests/direct_runtime.py",
       "sha256": "0ccf30f6b493b792435f182646262bc05f8d750cae8a317159bb5b90fcb38ff8",
-      "extracted_sha256": "7ba6b780fe8b69918579d020c98e645926fd1dd9f65a624dde6137111f58a2ea"
+      "extracted_sha256": "485be8a262e0ab6d38e585e0bffdc1e6f06c6a9e1ce55189362c64c531e001ae",
+      "reason": "Split follow-up: extractions moved to PlaybackScene.brs, SeekScene.brs and SessionScene.brs."
     },
     {
       "source": "roku/tests/epg_navigation.brs",
@@ -3867,7 +4000,9 @@
     {
       "source": "roku/tests/episode_library_runtime.py",
       "destination": "roku/tests/episode_library_runtime.py",
-      "sha256": "e080002b80a7459cd476bd1f5ce47bbc5cce7056650f8fbc603883bd9b951563"
+      "sha256": "e080002b80a7459cd476bd1f5ce47bbc5cce7056650f8fbc603883bd9b951563",
+      "extracted_sha256": "1a395ea91de186c233b1236590b71b594dc44d117b0bf8daf83d18dc518a6c23",
+      "reason": "Split follow-up: showEpisodes from ResponseScene.brs and applyEpisodeProgress from HomeScene.brs."
     },
     {
       "source": "roku/tests/episode_mask_runtime.py",
@@ -3877,7 +4012,9 @@
     {
       "source": "roku/tests/explicit_resume_runtime.py",
       "destination": "roku/tests/explicit_resume_runtime.py",
-      "sha256": "644eaabe542f6a042010560e0e1b9200b6f80bdf98211b3b9d7f25720aa1fdfc"
+      "sha256": "644eaabe542f6a042010560e0e1b9200b6f80bdf98211b3b9d7f25720aa1fdfc",
+      "extracted_sha256": "b7f51ad7b3c23fa7d66ed681b385a2b21affd3cef1824bbc3634c16ede8078d2",
+      "reason": "Split follow-up: extractions moved to NavigationScene.brs and SourcesScene.brs."
     },
     {
       "source": "roku/tests/fallback.brs",
@@ -3957,7 +4094,9 @@
     {
       "source": "roku/tests/focus_contract.py",
       "destination": "roku/tests/focus_contract.py",
-      "sha256": "e5e127d932cc85f2e60305eaf3ee7a637d72ee135707969ec92fb8bad2d49714"
+      "sha256": "e5e127d932cc85f2e60305eaf3ee7a637d72ee135707969ec92fb8bad2d49714",
+      "extracted_sha256": "8b2f1e040c270f4d79b554fc7b28c6443aa281d473a48d36743c89926db25a37",
+      "reason": "Split follow-up: route-handler slices now read the split sibling files."
     },
     {
       "source": "roku/tests/guide_boundary_runtime.py",
@@ -3967,7 +4106,9 @@
     {
       "source": "roku/tests/home.brs",
       "destination": "roku/tests/home.brs",
-      "sha256": "9b289f6bc705523ed0ef3c70eb53a1381e6ba8bd3b2a06ca3fcad76ce3e336a1"
+      "sha256": "9b289f6bc705523ed0ef3c70eb53a1381e6ba8bd3b2a06ca3fcad76ce3e336a1",
+      "extracted_sha256": "3e8e2c688ec711316b7b88985ddec6d7822281943d2ef4d60a0aacb2eb054c9f",
+      "reason": "Rework: decomposed Main() into named scenario subs in execution order (statement stream preserved; the shared items local became m.homeItems), removed the guide-suffix data asserts duplicated by tests/source-policy.brs (kept one handleResponse wiring assert) and removed the profile-chooser focus-guard scenario duplicated by Main."
     },
     {
       "source": "roku/tests/home_fixture.py",
@@ -3977,7 +4118,9 @@
     {
       "source": "roku/tests/home_return_runtime.py",
       "destination": "roku/tests/home_return_runtime.py",
-      "sha256": "233e5dfb486190bb99797dad12918788dd82a5ffd68a9f67bdf194e27d1a4c99"
+      "sha256": "233e5dfb486190bb99797dad12918788dd82a5ffd68a9f67bdf194e27d1a4c99",
+      "extracted_sha256": "4a5bc3292319240b5fb79cf7f1d4c7c0e8e274f677eb6bb014cd2c9903611330",
+      "reason": "Split follow-up: home handlers extracted from HomeScene.brs and HomeFeedScene.brs."
     },
     {
       "source": "roku/tests/image-policy.brs",
@@ -4027,12 +4170,16 @@
     {
       "source": "roku/tests/movie_detail_runtime.py",
       "destination": "roku/tests/movie_detail_runtime.py",
-      "sha256": "7bc1a87c88169be062ef351fd1119dce7a0a0df6e4741c999b25454c058a36d7"
+      "sha256": "7bc1a87c88169be062ef351fd1119dce7a0a0df6e4741c999b25454c058a36d7",
+      "extracted_sha256": "34666b57627b315b16cf37ad5e50d49f7bbf5d5c12bcad20279acde74c81df04",
+      "reason": "Split follow-up: showMetadata extraction moved to components/ResponseScene.brs."
     },
     {
       "source": "roku/tests/next_episode_runtime.py",
       "destination": "roku/tests/next_episode_runtime.py",
-      "sha256": "ea32323bf96ac6d26a74874f394aa1174491a1851fd71c89b2d3412fa1ad44da"
+      "sha256": "ea32323bf96ac6d26a74874f394aa1174491a1851fd71c89b2d3412fa1ad44da",
+      "extracted_sha256": "6f99df0ce545ab99683e85a14c1ae598d7c7a5f9b4cc138a860fb9b3aaefd517",
+      "reason": "Split follow-up: extractions moved to SourcesScene.brs, PlaybackScene.brs, NavigationScene.brs and PresentationArtworkScene.brs."
     },
     {
       "source": "roku/tests/next_transition_runtime.py",
@@ -4047,12 +4194,16 @@
     {
       "source": "roku/tests/parent_pin_runtime.py",
       "destination": "roku/tests/parent_pin_runtime.py",
-      "sha256": "c33a28ea0288280997930c4f8ae485658e123d6ceb9e88b7821ca83ae2be9f91"
+      "sha256": "c33a28ea0288280997930c4f8ae485658e123d6ceb9e88b7821ca83ae2be9f91",
+      "extracted_sha256": "d2d32cc1eff6c842d6b5dad9777736da17ec5d88fd188123c33655581c4b9e95",
+      "reason": "Split follow-up: accountSubmitParentPin and accountSignOut extractions moved to components/AccountProfilesScene.brs."
     },
     {
       "source": "roku/tests/playback_static.py",
       "destination": "roku/tests/playback_static.py",
-      "sha256": "79f62a2d61f19eeb8d4b08fbe3cfe9a1d6d2c27c9e53708ad4aca9cd7141c3f7"
+      "sha256": "79f62a2d61f19eeb8d4b08fbe3cfe9a1d6d2c27c9e53708ad4aca9cd7141c3f7",
+      "extracted_sha256": "52422e1d3dd5f7e7d951e22342493a1a6575a3fbca547df0722900fa4267eae8",
+      "reason": "Split follow-up: scene/api/util now read the merged component scope: the split sibling files."
     },
     {
       "source": "roku/tests/player-overlay.brs",
@@ -4077,14 +4228,16 @@
     {
       "source": "roku/tests/profile_management_runtime.py",
       "destination": "roku/tests/profile_management_runtime.py",
-      "sha256": "a3950dc5d052a70653a8b82d98e29799dc9a8caa24789f765a8459e47f2b616a"
+      "sha256": "a3950dc5d052a70653a8b82d98e29799dc9a8caa24789f765a8459e47f2b616a",
+      "extracted_sha256": "cb0bf6f7567be8406c1475dc512554dae5e19e245cf24d02032d516dad8fe556",
+      "reason": "Split follow-up: profile-management extractions moved to components/AccountProfilesScene.brs (accountResponse stays in AccountScene.brs)."
     },
     {
       "source": "roku/tests/profile_preferences_runtime.py",
       "destination": "roku/tests/profile_preferences_runtime.py",
       "sha256": "de7a0ef4cc50e5e868b873ca708bdace8bccd6a2a0b714d406626471ee685786",
-      "extracted_sha256": "9980ba5e605dde13b99efe77da144834044f06fc2aaeee250b918e809bdd2586",
-      "reason": "Cleanup: renamed this harness-only ApiIsObject stub to AccountIsObject to match the consolidated canonical helper."
+      "extracted_sha256": "9bbcd3f977b21c7533dcaba7b1cf481be922c0f408b4ba4dd0ad4a1474375afc",
+      "reason": "Split follow-up: showPlaybackPreferences from HomeScene.brs, selectItem from NavigationScene.brs, ProfilePreferencesWire from ApiTaskSanitize.brs."
     },
     {
       "source": "roku/tests/request-propagation.brs",
@@ -4094,12 +4247,16 @@
     {
       "source": "roku/tests/resume_controls_runtime.py",
       "destination": "roku/tests/resume_controls_runtime.py",
-      "sha256": "b42e4e85f58d4c8b8845cdc073198fd7e5aecf5dd053fb04e70e2a56173eda61"
+      "sha256": "b42e4e85f58d4c8b8845cdc073198fd7e5aecf5dd053fb04e70e2a56173eda61",
+      "extracted_sha256": "5dba9a35a0e89d8841fa0c64ff12571e70c162d0bf227d3eeab0b98c437441d2",
+      "reason": "Split follow-up: cancelAutomaticResume extraction moved to components/HomeScene.brs."
     },
     {
       "source": "roku/tests/scenegraph_ux_contract.py",
       "destination": "roku/tests/scenegraph_ux_contract.py",
-      "sha256": "ae8ab75f453ff30c0431316d869465669edb5d5810a00640c90c8b3e13e93f36"
+      "sha256": "ae8ab75f453ff30c0431316d869465669edb5d5810a00640c90c8b3e13e93f36",
+      "extracted_sha256": "42687609037fe651555c6efc429f73e20a984d6755ae4f88cbf6b17c9e86b2dc",
+      "reason": "Split follow-up: scene now reads the merged MainScene component scope: the split sibling files."
     },
     {
       "source": "roku/tests/schema.brs",
@@ -4109,12 +4266,16 @@
     {
       "source": "roku/tests/seek_latency_runtime.py",
       "destination": "roku/tests/seek_latency_runtime.py",
-      "sha256": "0dac2bacf453fedd2ce21e0cd214eb2cf20d9407a083faf8a89169167db9b694"
+      "sha256": "0dac2bacf453fedd2ce21e0cd214eb2cf20d9407a083faf8a89169167db9b694",
+      "extracted_sha256": "13d742ffecc8bc2af75038f5c0241136505252a5e8f4e4f933ab5dc2a8959262",
+      "reason": "Split follow-up: prepareSeekReplacement extraction moved to components/SeekScene.brs."
     },
     {
       "source": "roku/tests/seek_rollback_runtime.py",
       "destination": "roku/tests/seek_rollback_runtime.py",
-      "sha256": "097b5976ba7095873cd1b51e2b7e559fb5f287e91928248b8b8288067e937f48"
+      "sha256": "097b5976ba7095873cd1b51e2b7e559fb5f287e91928248b8b8288067e937f48",
+      "extracted_sha256": "0d39e55a82b551fd1fc63ce21c324df164ebc51acb607f73557c72a764d187b4",
+      "reason": "Split follow-up: seek-transaction extractions moved to components/SeekScene.brs."
     },
     {
       "source": "roku/tests/sgnode-identity.brs",
@@ -4124,7 +4285,9 @@
     {
       "source": "roku/tests/sgnode_identity_contract.py",
       "destination": "roku/tests/sgnode_identity_contract.py",
-      "sha256": "f7b1794bb14b5c135043350724ae22ec8fbc6bef7aa899fe30c634871912b4b9"
+      "sha256": "f7b1794bb14b5c135043350724ae22ec8fbc6bef7aa899fe30c634871912b4b9",
+      "extracted_sha256": "72001d81f03d72872d67df8726a4063713468db16ba8d4b7d01d58b548b00259",
+      "reason": "Split follow-up: videoNodeState assertion now reads components/PlaybackScene.brs."
     },
     {
       "source": "roku/tests/smoke.brs",
@@ -4144,7 +4307,9 @@
     {
       "source": "roku/tests/startup_ready_runtime.py",
       "destination": "roku/tests/startup_ready_runtime.py",
-      "sha256": "a228d66af0c75ee47212b775d213d284e8d46a942d91329f83e3beb66d0fa1c9"
+      "sha256": "a228d66af0c75ee47212b775d213d284e8d46a942d91329f83e3beb66d0fa1c9",
+      "extracted_sha256": "acd20bacd596fa2ea30ff7c1c92e971834ffa694479033a142e3d260ec56f261",
+      "reason": "Split follow-up: homeVisible extraction moved to components/HomeScene.brs."
     },
     {
       "source": "roku/tests/transport.brs",
@@ -4154,7 +4319,9 @@
     {
       "source": "roku/tests/ux_preview.brs",
       "destination": "roku/tests/ux_preview.brs",
-      "sha256": "bfe358b15bfce9e359c42d3f25e53614d9c44fdde69554fb9eddf36f6fe93916"
+      "sha256": "bfe358b15bfce9e359c42d3f25e53614d9c44fdde69554fb9eddf36f6fe93916",
+      "extracted_sha256": "bce144d415c0e2378147f345d5e86b6dd745812217a4c2cdbbe977532bf73ee4",
+      "reason": "Discover-browse alignment 3570c37, recorded post-hoc: updated the Discover heading expectation; unrelated to the file split."
     },
     {
       "source": "roku/tools/fetch_character_avatars.py",

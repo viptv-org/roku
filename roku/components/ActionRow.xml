@@ -7,6 +7,7 @@
   <field id="gridHasFocus" type="boolean" onChange="renderFocus"/>
  </interface>
  <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/SourceLabels.brs"/>
  <script type="text/brightscript" uri="pkg:/components/ActionRow.brs"/>
  <children>
   <Poster id="surface" width="536" height="56" uri="pkg:/images/ui-round-fill.9.png" blendColor="#202224FF"/>

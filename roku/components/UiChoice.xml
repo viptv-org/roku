@@ -6,6 +6,7 @@
   <field id="dismissed" type="boolean" alwaysNotify="true"/>
  </interface>
  <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/SourceLabels.brs"/>
  <script type="text/brightscript" uri="pkg:/components/UiChoice.brs"/>
  <children>
   <Rectangle width="1280" height="720" color="#080909DC"/>

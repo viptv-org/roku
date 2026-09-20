@@ -3,7 +3,16 @@ from pathlib import Path
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-scene = (ROOT / "components/MainScene.brs").read_text()
+# MainScene is split into sibling script files that merge into one component
+# scope; the contract reads the merged scope.
+scene = "\n".join(
+    (ROOT / "components" / f).read_text()
+    for f in [
+        "MainScene.brs", "NavigationScene.brs", "LiveScene.brs", "DiscoverScene.brs",
+        "ResponseScene.brs", "PlaybackScene.brs", "SeekScene.brs", "HomeScene.brs",
+        "HomeFeedScene.brs", "SourcesScene.brs", "SessionScene.brs",
+    ]
+)
 xml = (ROOT / "components/MainScene.xml").read_text()
 util = (ROOT / "source/Util.brs").read_text()
 

@@ -2,7 +2,7 @@
 from pathlib import Path
 import os, subprocess, tempfile
 root=Path(__file__).resolve().parents[1]
-source=(root/'components/MainScene.brs').read_text()
+source=(root/'components/MainScene.brs').read_text()+'\n'+(root/'components/HomeScene.brs').read_text()+'\n'+(root/'components/HomeFeedScene.brs').read_text()
 hold=(root/'components/HoldSelect.brs').read_text()
 start=hold.index('function onKeyEvent(')
 key_handler=hold[start:hold.index('end function',start)+12]

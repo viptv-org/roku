@@ -4,7 +4,7 @@ import os, subprocess, tempfile
 root=Path(__file__).resolve().parents[1]
 def routine(file,start):
  s=(root/file).read_text();a=s.index(start);return s[a:s.index('end sub',a)+7]
-production=(root/'components/StartupScene.brs').read_text()+'\n'+routine('components/MainScene.brs','sub homeVisible(')+'\n'+routine('components/AccountScene.brs','sub accountEndLoading()')
+production=(root/'components/StartupScene.brs').read_text()+'\n'+routine('components/HomeScene.brs','sub homeVisible(')+'\n'+routine('components/AccountScene.brs','sub accountEndLoading()')
 fixture='''
 sub Main()
  m.authLoading={visible:true} : m.authLoadingSpinner={} : m.startupText={}

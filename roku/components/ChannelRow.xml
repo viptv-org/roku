@@ -6,6 +6,7 @@
   <field id="listHasFocus" type="boolean" onChange="renderFocus"/>
  </interface>
  <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/SourceLabels.brs"/>
  <script type="text/brightscript" uri="pkg:/components/ChannelRow.brs"/>
  <script type="text/brightscript" uri="pkg:/source/ImagePolicy.brs"/>
  <children>

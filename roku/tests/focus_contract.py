@@ -42,7 +42,18 @@ class FocusContract(unittest.TestCase):
         self.assertNotIn(".setFocus(true)", batch)
 
     def test_live_entry_and_catalog_browse_routes(self):
-        source = (Path(__file__).resolve().parents[1] / "components/MainScene.brs").read_text()
+        base = Path(__file__).resolve().parents[1] / "components"
+        # MainScene is split into sibling files that merge into one component
+        # scope; route handlers now live in their owning files.
+        source = "\n".join(
+            (base / f).read_text()
+            for f in [
+                "MainScene.brs", "NavigationScene.brs", "LiveScene.brs",
+                "DiscoverScene.brs", "ResponseScene.brs", "PlaybackScene.brs",
+                "SeekScene.brs", "HomeScene.brs", "HomeFeedScene.brs",
+                "SourcesScene.brs", "SessionScene.brs",
+            ]
+        )
         live = source[source.index('else if action = "live"'):source.index('else if action = "livefilter"')]
         self.assertIn("openEpg()", live)
         browse = source[source.index("sub browse(kind"):source.index("function acknowledgementMayFocus")]

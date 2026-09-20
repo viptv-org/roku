@@ -4,7 +4,7 @@ import os,subprocess,tempfile
 root=Path(__file__).resolve().parents[1]
 def routine(file,start,end):
  text=(root/file).read_text();a=text.index(start);return text[a:text.index(end,a)+len(end)]
-source=routine('components/TextEntry.brs','sub updateValue()','end sub')+'\n'+routine('components/TextEntry.brs','sub finishEntry(','end sub')+'\n'+routine('components/AccountScene.brs','function accountResponse(','end function')+'\n'+routine('components/AccountScene.brs','sub accountSubmitParentPin(','end sub')+'\n'+routine('components/AccountScene.brs','sub accountSignOut(','end sub')+'\n'+(root/'source/Util.brs').read_text()+'''
+source=routine('components/TextEntry.brs','sub updateValue()','end sub')+'\n'+routine('components/TextEntry.brs','sub finishEntry(','end sub')+'\n'+routine('components/AccountScene.brs','function accountResponse(','end function')+'\n'+routine('components/AccountProfilesScene.brs','sub accountSubmitParentPin(','end sub')+'\n'+routine('components/AccountProfilesScene.brs','sub accountSignOut(','end sub')+'\n'+(root/'source/Util.brs').read_text()+'''
 sub Main()
  m.label={text:""}:m.keys={text:"1234"}
  m.top={secret:true,value:"1234",findNode:findLabel}

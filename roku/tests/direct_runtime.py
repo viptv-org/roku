@@ -2,7 +2,7 @@
 from pathlib import Path
 import os,subprocess,tempfile
 root=Path(__file__).resolve().parents[1]
-source=(root/'components/MainScene.brs').read_text()
+source=(root/'components/PlaybackScene.brs').read_text()+'\n'+(root/'components/SeekScene.brs').read_text()+'\n'+(root/'components/SessionScene.brs').read_text()
 def routine(name):
  a=source.index('sub '+name+'(');return source[a:source.index('end sub',a)+7]
 fixture='\n'.join(routine(n) for n in ['findStreams','retryPlayback','seekToPosition','playerCommand','acceptPlayback','choosePlayerTrack'])+'\n'+(root/'source/Util.brs').read_text()+'\n'+(root/'source/ContinuationPolicy.brs').read_text()+'''

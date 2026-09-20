@@ -2,12 +2,26 @@
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-scene = (ROOT / "components/AccountScene.brs").read_text()
-main = (ROOT / "components/MainScene.brs").read_text()
-api = (ROOT / "components/ApiTask.brs").read_text()
+# MainScene and AccountScene are split into sibling script files that merge
+# into the same component scope; the contracts read the merged scope.
+MAIN_SCENE_FILES = [
+    "MainScene.brs", "NavigationScene.brs", "LiveScene.brs", "DiscoverScene.brs",
+    "ResponseScene.brs", "PlaybackScene.brs", "SeekScene.brs", "HomeScene.brs",
+    "HomeFeedScene.brs", "SourcesScene.brs", "SessionScene.brs",
+]
+scene = "\n".join(
+    (ROOT / "components" / f).read_text()
+    for f in ["AccountScene.brs", "AccountProfilesScene.brs"]
+)
+main = "\n".join((ROOT / "components" / f).read_text() for f in MAIN_SCENE_FILES)
+api = "\n".join(
+    (ROOT / "components" / f).read_text() for f in ["ApiTask.brs", "ApiTaskSanitize.brs"]
+)
 policy = (ROOT / "source/AccountPolicy.brs").read_text()
 card = (ROOT / "components/ProfileCard.brs").read_text()
-util = (ROOT / "source/Util.brs").read_text()
+util = "\n".join(
+    (ROOT / "source" / f).read_text() for f in ["Util.brs", "SourceLabels.brs"]
+)
 xml = (ROOT / "components/MainScene.xml").read_text()
 
 assert "LegacyAdmin" not in scene + api + policy

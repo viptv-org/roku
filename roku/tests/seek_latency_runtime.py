@@ -2,7 +2,7 @@
 from pathlib import Path
 import os, subprocess, tempfile
 root=Path(__file__).resolve().parents[1]
-scene=(root/'components/MainScene.brs').read_text()
+scene=(root/'components/MainScene.brs').read_text()+'\n'+(root/'components/SeekScene.brs').read_text()
 def routine(name):
     start=scene.index('sub '+name+'(')
     return scene[start:scene.index('end sub',start)+7]

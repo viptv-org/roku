@@ -2,7 +2,7 @@
 from pathlib import Path
 import os, subprocess, tempfile
 root=Path(__file__).resolve().parents[1]
-s=(root/'components/MainScene.brs').read_text();a=s.index('sub cancelAutomaticResume()');production=s[a:s.index('end sub',a)+7]
+s=(root/'components/HomeScene.brs').read_text();a=s.index('sub cancelAutomaticResume()');production=s[a:s.index('end sub',a)+7]
 fixture='''
 sub Main()
  m.streams=[{id:"saved"}]:m.sourceList={setFocus:Focus}:m.status={}

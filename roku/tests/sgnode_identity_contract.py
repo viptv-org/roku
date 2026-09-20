@@ -55,6 +55,6 @@ for path, text in sources.items():
         line_offset += len(block.splitlines())
 
 assert not violations, "SceneGraph node identity must use isSameNode():\n" + "\n".join(violations)
-main = sources[ROOT / "components/MainScene.brs"]
+main = sources[ROOT / "components/PlaybackScene.brs"]
 assert "node.isSameNode(m.video)" in main
 print("ROKU_SGNODE_IDENTITY_CONTRACT_OK")

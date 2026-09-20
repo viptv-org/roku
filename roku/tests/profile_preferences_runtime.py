@@ -4,7 +4,7 @@ import os, subprocess, tempfile
 root=Path(__file__).resolve().parents[1]
 def routine(file,start,end):
     text=(root/file).read_text();a=text.index(start);return text[a:text.index(end,a)+len(end)]
-source=routine('components/MainScene.brs','sub showPlaybackPreferences','end sub')+'\n'+routine('components/MainScene.brs','sub selectItem(','end sub')+'\n'+routine('components/ApiTask.brs','function ProfilePreferencesWire','end function')+'\n'+(root/'source/JellyfinCaptionPolicy.brs').read_text()+'\n'+(root/'source/Util.brs').read_text()+'''
+source=routine('components/HomeScene.brs','sub showPlaybackPreferences','end sub')+'\n'+routine('components/NavigationScene.brs','sub selectItem(','end sub')+'\n'+routine('components/ApiTaskSanitize.brs','function ProfilePreferencesWire','end function')+'\n'+(root/'source/JellyfinCaptionPolicy.brs').read_text()+'\n'+(root/'source/Util.brs').read_text()+'''
 sub Main()
  m.profile="2":m.preferencesScope="2":m.config={base:"https://fixture.invalid"}
  prefs={audio_language:"en",subtitle_language:"en",subtitle_size:"large",subtitle_style:"opaque",quality:"720p",subtitles_enabled:true,autoplay:false}

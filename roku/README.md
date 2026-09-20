@@ -52,9 +52,9 @@ Representative DSH checks (each BrightScript test includes its source dependenci
 
 ```text
 roku_check(project="roku")
-roku_test(files=["roku/source/Util.brs","roku/tests/source-policy.brs"], expect_logs=["ROKU_SOURCE_POLICY_OK"])
+roku_test(files=["roku/source/Util.brs","roku/source/SourceLabels.brs","roku/tests/source-policy.brs"], expect_logs=["ROKU_SOURCE_POLICY_OK"])
 roku_test(files=["roku/source/Util.brs","roku/components/PlayerOverlay.brs","roku/tests/player-overlay.brs"], expect_logs=["ROKU_PLAYER_OVERLAY_OK"])
-roku_test(files=["roku/source/Util.brs","roku/source/BrowsePolicy.brs","roku/source/JellyfinCaptionPolicy.brs","roku/source/AccountPolicy.brs","roku/components/AccountScene.brs","roku/components/MainScene.brs","roku/tests/lifecycle.brs"], expect_logs=["ROKU_LIFECYCLE_OK"])
+roku_test(files=["roku/source/Util.brs","roku/source/BrowsePolicy.brs","roku/source/JellyfinCaptionPolicy.brs","roku/source/AccountPolicy.brs","roku/components/AccountScene.brs","roku/components/MainScene.brs","roku/components/NavigationScene.brs","roku/components/LiveScene.brs","roku/components/DiscoverScene.brs","roku/components/ResponseScene.brs","roku/components/PlaybackScene.brs","roku/components/SeekScene.brs","roku/components/HomeScene.brs","roku/components/HomeFeedScene.brs","roku/components/SourcesScene.brs","roku/components/SessionScene.brs","roku/components/SearchScene.brs","roku/tests/lifecycle.brs"], expect_logs=["ROKU_LIFECYCLE_OK"])
 python3 roku/tests/branding_contract.py
 python3 roku/tests/scenegraph_ux_contract.py
 ```

@@ -2,7 +2,7 @@
 from pathlib import Path
 import subprocess,os,tempfile
 root=Path(__file__).resolve().parents[1]
-s=(root/'components/MainScene.brs').read_text()
+s=(root/'components/SeekScene.brs').read_text()
 def routine(name):
  a=s.index('sub '+name+'(');return s[a:s.index('end sub',a)+7]
 code='\n'.join(routine(n) for n in ['seekToPosition','prepareSeekReplacement','beginPrimarySeekFallback','seekPrimaryVideoState','finishSeekSuccess','beginSeekRollback','finishSeekRollback','seekReplacementFailed'])+'''

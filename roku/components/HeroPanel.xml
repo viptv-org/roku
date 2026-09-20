@@ -6,6 +6,7 @@
   <field id="compact" type="boolean" value="false" onChange="render"/>
  </interface>
  <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/SourceLabels.brs"/>
  <script type="text/brightscript" uri="pkg:/components/HeroPanel.brs"/>
  <script type="text/brightscript" uri="pkg:/source/ImagePolicy.brs"/>
  <children>

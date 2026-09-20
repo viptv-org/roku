@@ -10,6 +10,7 @@
  <script type="text/brightscript" uri="pkg:/components/HomeCard.brs"/>
  <script type="text/brightscript" uri="pkg:/source/ImagePolicy.brs"/>
  <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/SourceLabels.brs"/>
  <children>
   <Poster id="surface" width="256" height="144" uri="pkg:/images/ui-round-fill.9.png" blendColor="#202224FF"/>
   <Poster id="poster" width="256" height="144" loadWidth="256" loadHeight="144" loadDisplayMode="scaleToZoom"/>

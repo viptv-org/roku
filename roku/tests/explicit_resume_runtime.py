@@ -3,7 +3,7 @@ from pathlib import Path
 import os, subprocess, tempfile
 
 root = Path(__file__).resolve().parents[1]
-source = (root / 'components/MainScene.brs').read_text()
+source = (root / 'components/NavigationScene.brs').read_text() + '\n' + (root / 'components/SourcesScene.brs').read_text()
 def routine(name):
     start = source.index('sub ' + name + '(')
     return source[start:source.index('end sub', start) + 7]

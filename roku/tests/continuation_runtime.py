@@ -4,7 +4,7 @@ import subprocess, tempfile, os
 root=Path(__file__).resolve().parents[1]
 def routine(file,start,end):
  text=(root/file).read_text();a=text.index(start);return text[a:text.index(end,a)+len(end)]
-tests=[('end',routine('components/MainScene.brs','sub videoState()','end sub'),'''
+tests=[('end',routine('components/PlaybackScene.brs','sub videoState()','end sub'),'''
 sub Main()
  m.video={state:"finished"} : m.playing=true : m.hasPlayed=true
  m.playItem={type:"series"} : m.duration=1000 : m.position=1000
