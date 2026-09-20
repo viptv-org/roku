@@ -25,8 +25,26 @@ function ProfileCollectionPath(profile as string, collection as string) as strin
 end function
 
 function DiscoverTypeName(kind as string) as string
-    names = {movie:"Movies",series:"Series",anime:"Anime", "anime.movie":"Anime movies", "anime.series":"Anime series",collection:"Collections"}
-    return Txt(names[kind],kind)
+    return DiscoverGroupLabel(DiscoverTypeGroup(Txt(kind)))
+end function
+
+' Canonical Stremio-style discover groups; addon namespaces fold into them.
+function DiscoverTypeGroup(kind as string) as string
+    if kind = "movie" then return "movie"
+    if kind = "series" then return "series"
+    if kind = "anime" or Left(kind,6) = "anime." then return "anime"
+    return "other"
+end function
+
+function DiscoverGroupLabel(group as string) as string
+    names = {movie:"Movies",series:"Series",anime:"Anime",other:"Other"}
+    return Txt(names[group],"Other")
+end function
+
+' Live TV owns its own screen; catalog grouping never folds it into Discover.
+function DiscoverTypeMatches(kind as string, group as string) as boolean
+    if Txt(kind) = "live" then return false
+    return DiscoverTypeGroup(Txt(kind)) = DiscoverTypeGroup(Txt(group))
 end function
 
 function DiscoverGenreLabel(catalog as object) as string

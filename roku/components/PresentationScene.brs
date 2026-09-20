@@ -818,12 +818,12 @@ sub uiDiscoverFilterSelected()
     if item.action = "dtype"
         values = []
         seen = {}
-        for each catalog in m.discoverCatalogs
-            kind = Txt(catalog.type)
-            if not seen.doesExist(kind)
-                seen[kind] = true
-                values.push({name:DiscoverTypeName(kind),value:kind})
-            end if
+        for each group in ["movie","series","anime","other"]
+            hasGroup = false
+            for each catalog in m.discoverCatalogs
+                if DiscoverTypeMatches(Txt(catalog.type),group) then hasGroup = true
+            end for
+            if hasGroup then values.push({name:DiscoverGroupLabel(group),value:group})
         end for
         uiOpenChoice("discoverType","Browse",values)
     else if item.action = "dcat"
@@ -831,11 +831,13 @@ sub uiDiscoverFilterSelected()
         selectedIndex = 0
         for i = 0 to m.discoverCatalogs.count()-1
             catalog = m.discoverCatalogs[i]
-            if Txt(catalog.type) = m.discoverType
+            if DiscoverTypeMatches(Txt(catalog.type),m.discoverType)
                 if m.catalog <> invalid
                     if Txt(catalog.id) = Txt(m.catalog.id) and Txt(catalog.addon_id) = Txt(m.catalog.addon_id) then selectedIndex = values.count()
                 end if
-                values.push({name:Txt(catalog.name,Txt(catalog.id))+"  ·  "+Txt(catalog.addon_name),catalogIndex:i})
+                label = Txt(catalog.name,Txt(catalog.id))
+                if Txt(catalog.addon_name) <> "" then label = Txt(catalog.addon_name) + "  ·  " + label
+                values.push({name:label,catalogIndex:i})
             end if
         end for
         uiOpenChoice("discoverCatalog","Catalogs",values,selectedIndex)

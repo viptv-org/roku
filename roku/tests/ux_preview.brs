@@ -89,7 +89,7 @@ sub uxFixtureChanged()
         uxCheck(instr(1,m.queue[m.queue.count()-1].path,"search=Naruto")>0,"catalog search stays in Discover")
         catalogResult = {ok:true,tag:"browse|" + m.generation.toStr(),data:{metas:[{id:"tt0409591",type:"series",name:"Naruto"}],has_more:false}}
         handleResponse({data:catalogResult,getData:uxResult,node:{request:{account_epoch:m.accountEpoch}},getRoSGNode:uxNode})
-        uxCheck(m.heading.text="Discover · Anime series" and m.items[0].name="Naruto","custom-type response renders without a missing type label")
+        uxCheck(m.heading.text="Discover · Anime" and m.items[0].name="Naruto","custom-type response renders without a missing type label")
         m.discoverType = "series"
         discoverChooseDefaultCatalog()
         uxCheck(DiscoverMissingOption(m.catalog,"","",m.discoverExtras)<>"","calendar requires its advertised input")

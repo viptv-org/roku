@@ -711,9 +711,16 @@ sub discoverUseCatalogs(data as dynamic)
     end for
     supported = false
     for each catalog in m.discoverCatalogs
-        if catalog.type = m.discoverType then supported = true
+        if DiscoverTypeMatches(Txt(catalog.type),m.discoverType) then supported = true
     end for
-    if not supported and m.discoverCatalogs.count() > 0 then m.discoverType = Txt(m.discoverCatalogs[0].type)
+    if not supported and m.discoverCatalogs.count() > 0
+        for each catalog in m.discoverCatalogs
+            if Txt(catalog.type) <> "live"
+                m.discoverType = Txt(catalog.type)
+                exit for
+            end if
+        end for
+    end if
     discoverChooseDefaultCatalog()
     discoverBuildFilters()
     browse(m.discoverType,0)
@@ -722,7 +729,7 @@ end sub
 sub discoverChooseDefaultCatalog()
     m.catalog = invalid
     for each catalog in m.discoverCatalogs
-        if Txt(catalog.type) = m.discoverType
+        if DiscoverTypeMatches(Txt(catalog.type),m.discoverType)
             if not UiCatalogRequired(catalog,"search")
                 m.catalog = catalog
                 exit for
@@ -731,7 +738,7 @@ sub discoverChooseDefaultCatalog()
     end for
     if m.catalog = invalid and m.discoverCatalogs.count() > 0
         for each catalog in m.discoverCatalogs
-            if Txt(catalog.type) = m.discoverType then m.catalog = catalog
+            if DiscoverTypeMatches(Txt(catalog.type),m.discoverType) then m.catalog = catalog
         end for
     end if
     uiRequiredGenre()
@@ -986,9 +993,9 @@ sub handleResponse(event as object)
     else if tag = "catalogs"
         values = []
         for each item in Bounded(data,100)
-            if item.type = m.mediaType then values.push(item)
+            if DiscoverTypeMatches(Txt(item.type),m.mediaType) then values.push(item)
         end for
-        rows("Explore " + m.mediaType,values,"catalogs","Catalogs from your configured metadata addons.")
+        rows("Explore " + DiscoverTypeName(Txt(m.mediaType)),values,"catalogs","Catalogs from your configured metadata addons.")
     else if tag = "livecategories"
         values = [{name:"All channels",action:"allchannels"},{name:"Search channels",action:"livesearch"}]
         for each category in Bounded(data.categories,80)
