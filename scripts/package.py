@@ -13,6 +13,15 @@ parser.add_argument(
     required=True,
     help="BrighterScript staging directory; raw source is not an installable runtime tree",
 )
+parser.add_argument(
+    "--public",
+    action="store_true",
+    help=(
+        "Public flavor: omit the origin lock (data/connection.json) so the "
+        "installed app keeps a user-configurable server origin. The default "
+        "flavor packages the staging tree verbatim, including any lock."
+    ),
+)
 args = parser.parse_args()
 
 root = Path(__file__).resolve().parents[1]
@@ -27,7 +36,11 @@ out.mkdir(exist_ok=True)
 files = [package_root / "manifest"]
 for name in ("source", "components", "images", "data"):
     files += [p for p in (package_root / name).rglob("*") if p.is_file()]
-target=out/'viptv-roku.zip'
+if args.public:
+    lock = package_root / "data" / "connection.json"
+    if lock.exists():
+        files = [p for p in files if p != lock]
+target = out / ("viptv-roku-public.zip" if args.public else "viptv-roku.zip")
 if target.exists(): raise SystemExit('Refusing to overwrite an existing package; use a clean build directory')
 with zipfile.ZipFile(target,'w',zipfile.ZIP_DEFLATED) as z:
     for p in sorted(files):

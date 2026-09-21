@@ -75,6 +75,8 @@ sub selectItem(item as object)
             uiOpenChoice("signout","Sign out of VIPTV?",[{name:"Keep watching",action:"cancel"},{name:"Sign out",action:"confirmSignout"}])
         else if action = "moreinfo"
             uiFullText("About " + Txt(m.selected.name),PresentationFullDetails(m.selected))
+        else if action = "server"
+            keyboard("server","Server address", Txt(m.config.base, "https://"))
         else if action = "serverstatus" or action = "about" or action = "waiting"
             return
         else if action = "pair"

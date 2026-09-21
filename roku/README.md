@@ -4,6 +4,8 @@ VIPTV is a native 1280×720 SceneGraph client using Roku `Video`, native keyboar
 
 The production package is origin-locked to `https://viptv.syek.tech` with an origin-only configuration. A fresh install starts device-code sign-in. The QR image is served by VIPTV itself and opens the website with the code prefilled; no pairing secret is sent to a third-party QR service. Rotating access/refresh credentials are written only after account approval.
 
+**Public flavor.** `python3 scripts/package.py --input <staging> --public` omits the packaged origin lock; the installed app then shows a **Server** row in Settings (also before the first sign-in). Entering a compatible backend origin validates the HTTPS-origin shape, invalidates every stored credential and the remembered profile for the previous origin, saves the new base, and restarts device pairing against it. The origin-locked production package never shows the server editor.
+
 ## Navigation and profiles
 
 The seven-entry left rail is **Profile, Home, Discover, Live TV, My List, Search, Settings**. The profile entry uses the selected profile’s server-approved DiceBear PNG with an initials fallback; it opens the existing account chooser. The remembered profile ID is revalidated against the signed-in account before automatic selection and is cleared on revocation/sign-out.

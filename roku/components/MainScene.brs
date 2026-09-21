@@ -214,18 +214,26 @@ sub showSettings()
         rows("Settings", [{displayName:"Loading account status…",action:"waiting"}], "settings", "Starting VIPTV…")
         return
     end if
-    origin = Txt(m.config.base,"https://viptv.syek.tech")
+    origin = Txt(m.config.base, "")
+    if origin = "" then origin = "Not set"
+    ' The origin-locked production package has no server editor; every other
+    ' build (including the public flavor) lets the household point the client
+    ' at any compatible backend.
+    server = {name:"Server",action:"server",description:origin}
     values = [
         {name:"Switch profile",action:"profiles",description:"Choose who's watching."},
         {name:"Playback preferences",action:"playbackpreferences",description:"Audio, subtitles and quality for this profile."},
-        {name:"Manage profiles",action:"manageprofiles",description:"Add, rename, choose avatars or delete profiles."},
-        {name:"About VIPTV",action:"about",description:"Version " + InstalledAppVersion() + chr(10) + origin},
-        {name:"Addons",action:"addons",description:"Manage addons shared by your account."},
-        {name:"Sign out",action:"signout",description:"Sign out of VIPTV on this TV."}
+        {name:"Manage profiles",action:"manageprofiles",description:"Add, rename, choose avatars or delete profiles."}
     ]
+    if m.config.locked <> true then values.push(server)
+    values.push({name:"About VIPTV",action:"about",description:"Version " + InstalledAppVersion() + chr(10) + origin})
+    values.push({name:"Addons",action:"addons",description:"Manage addons shared by your account."})
+    values.push({name:"Sign out",action:"signout",description:"Sign out of VIPTV on this TV."})
     if m.profile = ""
-        values = [{name:"Sign in",action:"pair"}]
-        rows("VIPTV",values,"settings","")
+        entryValues = []
+        if m.config.locked <> true then entryValues.push(server)
+        entryValues.push({name:"Sign in",action:"pair"})
+        rows("VIPTV",entryValues,"settings","")
     else
         rows("Settings",values,"settings","")
     end if
@@ -278,6 +286,29 @@ sub keyboardDone()
     if m.keyboardKind = "epgsearch"
         if result.accepted then m.epgGrid.query = result.text.trim()
         m.epgGrid.callFunc("resume")
+        return
+    end if
+    if m.keyboardKind = "server"
+        if result.accepted and result.text.Trim() <> ""
+            base = AccountOrigin(result.text.Trim())
+            if base = ""
+                m.status.text = "Enter an HTTP or HTTPS origin without a path, for example https://example.com"
+                showSettings()
+                return
+            end if
+            if base <> Txt(m.config.base)
+                ' A different server invalidates every stored credential, the
+                ' remembered profile, and any in-flight request against the old origin.
+                m.config.base = base
+                stopPlayback()
+                accountReset()
+                accountCancelCredentials()
+                request("CONFIG_SAVE","",m.config,"sideconfig")
+            end if
+            accountConnect()
+        else
+            showSettings()
+        end if
         return
     end if
     if m.keyboardKind = "discoverSearch" or m.keyboardKind = "discoverExtra"
