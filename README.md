@@ -7,3 +7,9 @@ The [design repository](https://github.com/viptv-org/design) is the product sour
 ## Build artifact
 
 The installable ZIP is a runtime package, created from a BrighterScript 0.73.1 staging tree so it contains generated `source/bslib.brs`. CI runs that staging step, then invokes `python3 scripts/package.py --input <staging-directory>`; the script deliberately rejects raw source as input. Keep the source repository and its notices available separately when distributing GPL-covered source.
+
+## License
+
+Copyright (C) 2026 viptv contributors.
+
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; version 2 of the License. See [LICENSE](LICENSE). Keep this source repository available alongside any distributed runtime package, as the package alone is not the corresponding source.
