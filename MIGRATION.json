@@ -16,8 +16,8 @@
       "source": "roku/README.md",
       "destination": "roku/README.md",
       "sha256": "d910b07caec23d4dfbe5b62162da43c21a0b1c2123205bf5cba91c634b84de17",
-      "extracted_sha256": "56e9b3ce74eedc227967d3e3f7512baf776c7a7e7428133e78107ce5edc39e59",
-      "reason": "Split follow-up: Verification roku_test file lists now name the sibling script files and source/SourceLabels.brs."
+      "extracted_sha256": "9369339accb4e3855f96faca4b9bc29e41c8d8a54acca7dfe5ba72ce0be70e60",
+      "reason": "Split follow-up plus the public build flavor: roku_test file lists name sibling script files, and the build documents the configurable server origin."
     },
     {
       "source": "roku/bsconfig.json",
@@ -228,8 +228,8 @@
       "source": "roku/components/MainScene.brs",
       "destination": "roku/components/MainScene.brs",
       "sha256": "86b18096942ced4d58c9408fe81598e2b7f648dde69c90ead66d376734d3b1b8",
-      "extracted_sha256": "ec1c8d7d14310cf6a744413462685429741db4ea10d21039c5bb178ef3865da3",
-      "reason": "Cleanup 14a702c, the unrecorded 3570c37 Discover-browse alignment, and split: init, networking request/dispatch, settings/nav shims, keyboard handlers and onKeyEvent remain; all other handlers moved byte-identical into NavigationScene.brs, LiveScene.brs, DiscoverScene.brs, ResponseScene.brs, PlaybackScene.brs, SeekScene.brs, HomeScene.brs, HomeFeedScene.brs, SourcesScene.brs and SessionScene.brs (one merged MainScene component scope via MainScene.xml script tags)."
+      "extracted_sha256": "617e611d9d19750e89912257b458d86c026a47c459df47d2cacccbf469692930",
+      "reason": "Public build flavor: the server origin becomes a packaging-time input, adding the Server settings row and origin validation."
     },
     {
       "source": "roku/components/MainScene.xml",
@@ -254,7 +254,8 @@
       "source": "roku/components/NavigationScene.brs",
       "destination": "roku/components/NavigationScene.brs",
       "sha256": "11dd77e46308cf597fdd2b7dbcdcf8c99be17f640ad0ba48b153191d86bccc8c",
-      "reason": "New file split from MainScene.brs: selectItem and list/detail/favorite handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "Public build flavor: the server origin becomes a packaging-time input, adding the Server settings row and origin validation.",
+      "extracted_sha256": "6fc7da6db82722628ec5f1898f7b89bf61917623572d3f97606830dc7082e2d3"
     },
     {
       "source": "roku/components/PlaybackScene.brs",
