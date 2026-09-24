@@ -88,5 +88,6 @@ function ViptvTokens() as object
         size_progress_phone: 4
         size_progress_desktop: 4
         size_progress_tv: 6
+        focus_tv_caption_shift: 8
     }
 end function
