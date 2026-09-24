@@ -67,6 +67,8 @@ function ViptvTokens() as object
         color_fill_grabber: "0x45454BFF"
         color_fill_icon_disc_tv: "0xFFFFFF14"
         color_fill_cue_glass: "0x161618F2"
+        color_fill_profile_letter: "0xC24E6BFF"
+        color_fill_overflow_disc: "0x00000099"
         color_scrim_sheet: "0x0000009E"
         color_scrim_dialog: "0x0000008C"
         color_scrim_tv_panel: "0x00000099"
@@ -84,6 +86,16 @@ function ViptvTokens() as object
         color_guide_airing_tv: "0xFFFFFF1C"
         color_guide_upcoming_tv: "0xFFFFFF0B"
         color_guide_empty_tv: "0xFFFFFF0D"
+        color_player_back_phone: "0xFFFFFF1A"
+        color_player_back_desktop: "0x00000059"
+        color_player_control_hover: "0xFFFFFF1F"
+        color_player_control_active: "0xFFFFFF29"
+        color_player_shade: "0x0B0B0CCC"
+        color_player_shade_mid_desktop: "0x0B0B0CB8"
+        color_player_shade_end_desktop: "0x0B0B0CF0"
+        color_player_shade_mid_tv: "0x0B0B0CD1"
+        color_player_shade_end_tv: "0x0B0B0CF2"
+        color_player_up_next: "0x161618F5"
         radius_xs: 4
         radius_sm: 8
         radius_field_titlebar: 9
@@ -99,6 +111,7 @@ function ViptvTokens() as object
         radius_xl_plus: 20
         radius_2xl_plus: 24
         radius_sheet_top: 30
+        radius_player_card_tv: 26
         layout_phone_gutter: 16
         layout_phone_top_inset: 58
         layout_phone_nav_height: 64
@@ -133,6 +146,7 @@ function ViptvTokens() as object
         size_button_pill: 44
         size_button_small: 40
         size_button_split_chevron: 44
+        size_button_row_nav: 36
         size_chip_phone: 44
         size_chip_desktop: 40
         size_chip_desktop_drawer: 36
@@ -144,6 +158,7 @@ function ViptvTokens() as object
         size_field_tv_entry: 96
         size_field_search_phone: 52
         size_field_search_titlebar_width: 460
+        size_field_search_page: 56
         size_field_radius_phone: 16
         size_field_radius_desktop: 12
         size_field_radius_tv: 20
@@ -256,6 +271,8 @@ function ViptvTokens() as object
         size_tile_phone_avatar_height: 96
         size_tile_phone_source_quality_width: 56
         size_tile_phone_source_quality_height: 44
+        size_tile_phone_episode_width: 128
+        size_tile_phone_episode_height: 72
         size_tile_desktop_poster_width: 172
         size_tile_desktop_poster_height: 258
         size_tile_web_poster_width: 164
@@ -306,6 +323,8 @@ function ViptvTokens() as object
         size_blur_glass: 20
         size_blur_notice: 16
         size_blur_badge: 12
+        size_blur_ambient: 90
+        size_blur_ambient_tv: 80
         size_timeline_height: 20
         size_timeline_knob: 14
         size_timeline_marker: 12
@@ -330,6 +349,31 @@ function ViptvTokens() as object
         size_guide_block_tv: 88
         size_guide_block_bar: 3
         size_guide_block_bar_tv: 5
+        size_player_control_phone: 52
+        size_player_play_phone: 64
+        size_player_tool_phone: 48
+        size_player_control_desktop: 44
+        size_player_play_desktop: 52
+        size_player_icon_skip_phone: 28
+        size_player_icon_skip_desktop: 26
+        size_player_volume_width: 96
+        size_player_volume_knob: 12
+        size_player_still_phone_width: 120
+        size_player_still_phone_height: 66
+        size_player_still_desktop_width: 136
+        size_player_still_desktop_height: 76
+        size_player_still_tv_width: 240
+        size_player_still_tv_height: 134
+        size_player_up_next_desktop: 380
+        size_player_up_next_tv: 620
+        size_player_shade_top_desktop: 180
+        size_player_shade_bottom_desktop: 300
+        size_player_shade_top_tv: 260
+        size_player_shade_bottom_tv: 700
+        size_player_notice_top_phone: 160
+        size_player_overlay_top_tv: 150
+        size_player_bottom_tv: 130
+        size_player_seek_room_tv: 52
         focus_tv_caption_shift: 8
         focus_tv_caption_shift_profile: 10
     }
