@@ -40,6 +40,7 @@ function ViptvTokens() as object
         color_line_link_hover: "0xFFFFFFCC"
         color_line_keycap_tv: "0xFFFFFF47"
         color_line_on_accent: "0x0000002E"
+        color_line_selected_tv: "0xFFFFFF80"
         color_fill_tv_unfocused: "0xFFFFFF1F"
         color_fill_tv_selected: "0xFFFFFF29"
         color_fill_glass: "0x202023F0"
@@ -61,13 +62,17 @@ function ViptvTokens() as object
         color_fill_popover_glass: "0x161618F7"
         color_fill_dot: "0x3A3A3FFF"
         color_fill_dot_over_art: "0xFFFFFF73"
+        color_fill_tv_switch_off: "0xFFFFFF33"
         color_scrim_sheet: "0x0000009E"
         color_scrim_dialog: "0x0000008C"
         color_scrim_tv_panel: "0x00000099"
         color_scrim_tv_menu: "0x0000008C"
         color_scrim_tv_fullscreen: "0x0B0B0CF0"
+        color_scrim_card_hover: "0x00000061"
+        color_scrim_card_pressed: "0x00000040"
         color_skeleton_ground: "0x17171AFF"
         color_skeleton_card: "0x1E1E21FF"
+        color_skeleton_shimmer: "0xFFFFFF0A"
         radius_xs: 4
         radius_sm: 8
         radius_field_titlebar: 9
@@ -89,11 +94,14 @@ function ViptvTokens() as object
         layout_phone_nav_bottom: 28
         layout_phone_min_target: 44
         layout_phone_bottom_clearance: 140
+        layout_phone_sheet_top: 150
+        layout_phone_sheet_bottom: 34
         layout_desktop_titlebar: 40
         layout_desktop_rail: 84
         layout_desktop_dialog_width: 460
         layout_desktop_drawer_width: 460
         layout_desktop_popup_width: 340
+        layout_desktop_popover_width: 260
         layout_tv_safe_x: 96
         layout_tv_safe_y: 54
         layout_tv_rail_collapsed: 144
@@ -263,6 +271,24 @@ function ViptvTokens() as object
         size_source_row_phone: 76
         size_source_row_desktop: 68
         size_source_row_tv: 104
+        size_divider_phone: 24
+        size_divider_desktop: 28
+        size_divider_tv: 32
+        size_border_focus: 1.5
+        size_border_strong: 2
+        size_border_tv_strong: 3
+        size_blur_glass: 20
+        size_blur_notice: 16
+        size_blur_badge: 12
+        size_timeline_height: 20
+        size_timeline_knob: 14
+        size_timeline_marker: 12
+        size_timeline_bubble: 26
+        size_timeline_tv_height: 32
+        size_timeline_tv_track_focus: 10
+        size_timeline_tv_knob: 32
+        size_timeline_tv_bubble: 56
         focus_tv_caption_shift: 8
+        focus_tv_caption_shift_profile: 10
     }
 end function
