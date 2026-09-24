@@ -63,6 +63,9 @@ function ViptvTokens() as object
         color_fill_dot: "0x3A3A3FFF"
         color_fill_dot_over_art: "0xFFFFFF73"
         color_fill_tv_switch_off: "0xFFFFFF33"
+        color_fill_glass_button: "0xFFFFFF2E"
+        color_fill_grabber: "0x45454BFF"
+        color_fill_icon_disc_tv: "0xFFFFFF14"
         color_scrim_sheet: "0x0000009E"
         color_scrim_dialog: "0x0000008C"
         color_scrim_tv_panel: "0x00000099"
@@ -70,6 +73,7 @@ function ViptvTokens() as object
         color_scrim_tv_fullscreen: "0x0B0B0CF0"
         color_scrim_card_hover: "0x00000061"
         color_scrim_card_pressed: "0x00000040"
+        color_scrim_card_actions: "0x000000D9"
         color_skeleton_ground: "0x17171AFF"
         color_skeleton_card: "0x1E1E21FF"
         color_skeleton_shimmer: "0xFFFFFF0A"
@@ -110,6 +114,10 @@ function ViptvTokens() as object
         layout_tv_row_gap: 36
         layout_tv_heading_to_row: 22
         layout_tv_art_to_caption: 16
+        layout_tv_panel_pad_top: 64
+        layout_tv_panel_pad_right: 96
+        layout_tv_panel_pad_bottom: 120
+        layout_tv_panel_pad_left: 64
         size_button_phone: 54
         size_button_phone_detail: 58
         size_button_desktop: 48
@@ -152,6 +160,14 @@ function ViptvTokens() as object
         size_icon_tv_round: 30
         size_icon_small: 16
         size_icon_alert: 15
+        size_icon_xs: 14
+        size_icon_2xs: 12
+        size_icon_large: 24
+        size_icon_tv_large: 36
+        size_icon_tv_small: 26
+        size_icon_tv_xs: 20
+        size_icon_alert_tv: 24
+        size_icon_banner_tv: 34
         size_switch_width: 52
         size_switch_height: 32
         size_switch_knob: 26
@@ -207,6 +223,7 @@ function ViptvTokens() as object
         size_caret_width: 2
         size_caret_height: 20
         size_caret_tv_width: 3
+        size_caret_tv_height: 34
         size_key_tv: 64
         size_key_tv_radius: 14
         size_key_tv_keypad: 80
@@ -268,6 +285,7 @@ function ViptvTokens() as object
         size_tile_play_disc: 44
         size_tile_hover_play_disc: 48
         size_tile_selected_ring: 3
+        size_tile_hover_action: 36
         size_source_row_phone: 76
         size_source_row_desktop: 68
         size_source_row_tv: 104
@@ -288,6 +306,18 @@ function ViptvTokens() as object
         size_timeline_tv_track_focus: 10
         size_timeline_tv_knob: 32
         size_timeline_tv_bubble: 56
+        size_badge_phone: 26
+        size_badge_desktop: 22
+        size_badge_tv: 32
+        size_badge_glass: 22
+        size_badge_featured: 28
+        size_badge_pill: 24
+        size_badge_tv_pill: 30
+        size_tag_default: 18
+        size_tag_tv: 26
+        size_radio_dot: 10
+        size_scrollbar_tv_width: 6
+        size_scrollbar_tv_thumb: 160
         focus_tv_caption_shift: 8
         focus_tv_caption_shift_profile: 10
     }
