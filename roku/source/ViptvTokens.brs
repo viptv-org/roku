@@ -11,10 +11,14 @@ function ViptvTokens() as object
         color_surface_2: "0x212124FF"
         color_surface_3: "0x2A2A2EFF"
         color_surface_4: "0x34343AFF"
+        color_surface_1_pressed: "0x1C1C1FFF"
+        color_surface_avatar: "0x0E0E10FF"
         color_text_primary: "0xF4F2EEFF"
         color_text_body: "0xDAD8D3FF"
         color_text_secondary: "0xB6B4AFFF"
         color_text_tertiary: "0x8F8D89FF"
+        color_text_on_light_secondary: "0x4A4945FF"
+        color_text_on_light_accent: "0x6B5A12FF"
         color_on_light: "0x111113FF"
         color_on_accent: "0x15130FFF"
         color_accent_default: "0xF5C542FF"
@@ -26,19 +30,44 @@ function ViptvTokens() as object
         color_status_danger: "0xFF7A6EFF"
         color_status_danger_tv: "0xFF8A7EFF"
         color_status_spinner_track: "0x45454BFF"
+        color_status_danger_on_light: "0xB42318FF"
+        color_status_spinner_on_accent: "0x00000040"
         color_line_hairline: "0xFFFFFF12"
         color_line_chip: "0xFFFFFF1A"
         color_line_outline: "0xFFFFFF24"
         color_line_strong: "0xFFFFFF38"
+        color_line_control: "0xFFFFFF4D"
+        color_line_link_hover: "0xFFFFFFCC"
+        color_line_keycap_tv: "0xFFFFFF47"
+        color_line_on_accent: "0x0000002E"
         color_fill_tv_unfocused: "0xFFFFFF1F"
         color_fill_tv_selected: "0xFFFFFF29"
         color_fill_glass: "0x202023F0"
         color_fill_badge_glass: "0x0000008C"
+        color_fill_white: "0xFFFFFFFF"
+        color_fill_light_pressed: "0xDDDBD6FF"
+        color_fill_wash: "0xFFFFFF0F"
+        color_fill_wash_pressed: "0xFFFFFF0A"
+        color_fill_tag: "0xFFFFFF1A"
+        color_fill_tv_field: "0xFFFFFF12"
+        color_fill_buffered: "0xFFFFFF66"
+        color_fill_scrollbar: "0xFFFFFF59"
+        color_fill_on_accent_hover: "0x00000014"
+        color_fill_on_light_badge: "0x0000001A"
+        color_fill_live_glass: "0x00000080"
+        color_fill_watching_badge: "0x000000A6"
+        color_fill_notice_glass: "0x161618E6"
+        color_fill_notice_glass_tv: "0x161618EB"
+        color_fill_popover_glass: "0x161618F7"
+        color_fill_dot: "0x3A3A3FFF"
+        color_fill_dot_over_art: "0xFFFFFF73"
         color_scrim_sheet: "0x0000009E"
         color_scrim_dialog: "0x0000008C"
         color_scrim_tv_panel: "0x00000099"
         color_scrim_tv_menu: "0x0000008C"
         color_scrim_tv_fullscreen: "0x0B0B0CF0"
+        color_skeleton_ground: "0x17171AFF"
+        color_skeleton_card: "0x1E1E21FF"
         radius_xs: 4
         radius_sm: 8
         radius_field_titlebar: 9
@@ -49,6 +78,11 @@ function ViptvTokens() as object
         radius_3xl: 22
         radius_sheet: 28
         radius_phone_frame: 44
+        radius_2xs: 6
+        radius_sm_plus: 10
+        radius_xl_plus: 20
+        radius_2xl_plus: 24
+        radius_sheet_top: 30
         layout_phone_gutter: 16
         layout_phone_top_inset: 58
         layout_phone_nav_height: 64
@@ -73,6 +107,9 @@ function ViptvTokens() as object
         size_button_desktop: 48
         size_button_tv: 72
         size_button_tv_small: 52
+        size_button_pill: 44
+        size_button_small: 40
+        size_button_split_chevron: 44
         size_chip_phone: 44
         size_chip_desktop: 40
         size_chip_desktop_drawer: 36
@@ -81,13 +118,151 @@ function ViptvTokens() as object
         size_field_desktop: 48
         size_field_desktop_titlebar: 30
         size_field_tv: 80
+        size_field_tv_entry: 96
+        size_field_search_phone: 52
+        size_field_search_titlebar_width: 460
         size_field_radius_phone: 16
         size_field_radius_desktop: 12
         size_field_radius_tv: 20
         size_row_tv: 80
+        size_row_settings: 60
+        size_row_choice_phone: 56
+        size_row_choice_desktop: 48
+        size_row_menu: 40
+        size_row_section_nav: 44
+        size_row_settings_icon: 34
+        size_row_settings_icon_radius: 11
         size_progress_phone: 4
         size_progress_desktop: 4
         size_progress_tv: 6
+        size_progress_small: 3
+        size_icon_phone: 20
+        size_icon_phone_round: 22
+        size_icon_desktop: 18
+        size_icon_desktop_round: 20
+        size_icon_tv: 28
+        size_icon_tv_round: 30
+        size_icon_small: 16
+        size_icon_alert: 15
+        size_switch_width: 52
+        size_switch_height: 32
+        size_switch_knob: 26
+        size_switch_tv_width: 72
+        size_switch_tv_height: 42
+        size_switch_tv_knob: 36
+        size_switch_inset: 3
+        size_radio: 20
+        size_spinner_default: 12
+        size_spinner_inline: 14
+        size_spinner_tv: 18
+        size_spinner_buffering: 48
+        size_spinner_tv_panel: 56
+        size_spinner_stroke: 2
+        size_spinner_stroke_tv: 3
+        size_spinner_stroke_tv_panel: 5
+        size_live_dot_default: 8
+        size_live_dot_tv: 12
+        size_live_dot_badge: 6
+        size_dot_default: 6
+        size_dot_active_width: 18
+        size_grabber_width: 40
+        size_grabber_height: 5
+        size_grabber_hit: 28
+        size_close_disc_default: 36
+        size_close_disc_small: 32
+        size_close_disc_titlebar: 20
+        size_toast_phone_bottom: 116
+        size_toast_desktop_bottom: 24
+        size_toast_tv_top: 54
+        size_toast_phone_max: 358
+        size_toast_desktop_max: 560
+        size_toast_height: 44
+        size_toast_notice_height: 40
+        size_toast_action_height: 32
+        size_toast_tv_height: 84
+        size_toast_tv_notice_height: 64
+        size_toast_tv_action_height: 60
+        size_keycap_height: 20
+        size_keycap_radius: 6
+        size_keycap_tv_height: 34
+        size_keycap_tv_min_width: 40
+        size_keycap_tv_radius: 10
+        size_keycap_tv_border: 2
+        size_pin_width: 44
+        size_pin_height: 52
+        size_pin_dot: 12
+        size_pin_caret: 22
+        size_pin_tv_width: 72
+        size_pin_tv_height: 80
+        size_pin_tv_dot: 18
+        size_pin_tv_caret: 36
+        size_caret_width: 2
+        size_caret_height: 20
+        size_caret_tv_width: 3
+        size_key_tv: 64
+        size_key_tv_radius: 14
+        size_key_tv_keypad: 80
+        size_key_tv_keyboard_width: 640
+        size_key_tv_keypad_width: 420
+        size_empty_icon_phone: 52
+        size_empty_icon_desktop: 60
+        size_empty_icon_tv: 88
+        size_banner_icon_default: 40
+        size_banner_icon_tv: 72
+        size_tile_phone_poster_width: 111
+        size_tile_phone_poster_height: 139
+        size_tile_phone_continue_width: 292
+        size_tile_phone_continue_height: 96
+        size_tile_phone_continue_thumb_width: 60
+        size_tile_phone_continue_thumb_height: 76
+        size_tile_phone_live_now_width: 200
+        size_tile_phone_channel_logo_width: 60
+        size_tile_phone_channel_logo_height: 60
+        size_tile_phone_profile_width: 112
+        size_tile_phone_profile_height: 112
+        size_tile_phone_avatar_width: 96
+        size_tile_phone_avatar_height: 96
+        size_tile_phone_source_quality_width: 56
+        size_tile_phone_source_quality_height: 44
+        size_tile_desktop_poster_width: 172
+        size_tile_desktop_poster_height: 258
+        size_tile_web_poster_width: 164
+        size_tile_web_poster_height: 246
+        size_tile_desktop_continue_width: 256
+        size_tile_desktop_continue_height: 128
+        size_tile_desktop_episode_width: 272
+        size_tile_desktop_episode_height: 150
+        size_tile_desktop_live_width: 220
+        size_tile_desktop_live_height: 124
+        size_tile_desktop_profile_width: 140
+        size_tile_desktop_profile_height: 140
+        size_tile_desktop_avatar_width: 120
+        size_tile_desktop_avatar_height: 120
+        size_tile_desktop_source_quality_width: 54
+        size_tile_desktop_source_quality_height: 40
+        size_tile_tv_still_width: 320
+        size_tile_tv_still_height: 180
+        size_tile_tv_grid_width: 360
+        size_tile_tv_grid_height: 202
+        size_tile_tv_episode_width: 360
+        size_tile_tv_episode_height: 200
+        size_tile_tv_profile_width: 220
+        size_tile_tv_profile_height: 220
+        size_tile_tv_avatar_width: 170
+        size_tile_tv_avatar_height: 170
+        size_tile_tv_source_quality_width: 92
+        size_tile_tv_source_quality_height: 56
+        size_tile_lock_badge: 30
+        size_tile_lock_badge_desktop: 32
+        size_tile_lock_badge_tv: 48
+        size_tile_check_badge: 24
+        size_tile_check_badge_tv: 34
+        size_tile_play_disc: 44
+        size_tile_hover_play_disc: 48
+        size_tile_selected_ring: 3
+        size_source_row_phone: 76
+        size_source_row_desktop: 68
+        size_source_row_tv: 104
         focus_tv_caption_shift: 8
     }
 end function
