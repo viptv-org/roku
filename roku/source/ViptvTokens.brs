@@ -66,6 +66,7 @@ function ViptvTokens() as object
         color_fill_glass_button: "0xFFFFFF2E"
         color_fill_grabber: "0x45454BFF"
         color_fill_icon_disc_tv: "0xFFFFFF14"
+        color_fill_cue_glass: "0x161618F2"
         color_scrim_sheet: "0x0000009E"
         color_scrim_dialog: "0x0000008C"
         color_scrim_tv_panel: "0x00000099"
@@ -77,6 +78,12 @@ function ViptvTokens() as object
         color_skeleton_ground: "0x17171AFF"
         color_skeleton_card: "0x1E1E21FF"
         color_skeleton_shimmer: "0xFFFFFF0A"
+        color_guide_airing: "0x26262AFF"
+        color_guide_empty: "0x1B1B1EFF"
+        color_guide_upcoming_text: "0xCFCDC8FF"
+        color_guide_airing_tv: "0xFFFFFF1C"
+        color_guide_upcoming_tv: "0xFFFFFF0B"
+        color_guide_empty_tv: "0xFFFFFF0D"
         radius_xs: 4
         radius_sm: 8
         radius_field_titlebar: 9
@@ -286,6 +293,7 @@ function ViptvTokens() as object
         size_tile_hover_play_disc: 48
         size_tile_selected_ring: 3
         size_tile_hover_action: 36
+        size_tile_pencil_cue: 56
         size_source_row_phone: 76
         size_source_row_desktop: 68
         size_source_row_tv: 104
@@ -318,6 +326,10 @@ function ViptvTokens() as object
         size_radio_dot: 10
         size_scrollbar_tv_width: 6
         size_scrollbar_tv_thumb: 160
+        size_guide_block_desktop: 54
+        size_guide_block_tv: 88
+        size_guide_block_bar: 3
+        size_guide_block_bar_tv: 5
         focus_tv_caption_shift: 8
         focus_tv_caption_shift_profile: 10
     }
