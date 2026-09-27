@@ -1,5 +1,10 @@
 # viptv roku
 
+Actions delivery: main pushes and manual builds produce sideloading artifacts
+(Android universal APK; desktop Windows/Linux installers; Roku ZIP; TV WGT/IPK).
+Other repositories have no Actions workflows. Local checks remain; previous
+CI/release-publication descriptions below are historical. No automatic deploys.
+
 Extracted from `vynxc/viptv@7d6b413`. `MIGRATION.json` records every original file and SHA-256; the original repository retains history. This repository owns the native Roku client.
 
 The [design repository](https://github.com/viptv-org/design) is the product source of truth. The native client adopts the current TV design under [ROK-044](design-contract/ROKU_DESIGN.md): bundled Onest/Bricolage fonts, Lucide controls, landscape Home/detail artwork, stable focus rings, the expanding rail and right-side panels. The 1920×1080 references map proportionally to Roku's 1280×720 logical canvas. Read [SPEC.md](SPEC.md), [AGENTS.md](AGENTS.md), and `DESIGN_REF` before implementation.
