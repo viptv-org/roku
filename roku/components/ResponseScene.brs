@@ -64,6 +64,10 @@ sub handleResponse(event as object)
         liveEpgResponse(tag,result,val(parts[1]))
         return
     end if
+    if left(tag,12) = "playertitle:"
+        playerTitleResponse(tag,result,origin)
+        return
+    end if
     if val(parts[1]) <> m.generation then return
     if left(tag,4) = "epg:"
         epgResponse(tag,result)

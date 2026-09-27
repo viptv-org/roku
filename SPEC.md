@@ -1,3 +1,15 @@
+# Current Roku TV contract — ROK-044
+
+VIPTV 1.11.3 adopts design `ac5ae2bad129753135aed01cb85e5a2b343f33f9` under
+[ROK-044](design-contract/ROKU_DESIGN.md). The hero and Continue Watching cards
+show the matched episode title; the bar follows measured hero context. Direct
+playback resolves the same title asynchronously when the card metadata has not
+arrived, with account/profile/episode ownership guards. Physical evidence and
+remaining limits are in [TV_AUDIT.md](TV_AUDIT.md) and [VALIDATION.md](VALIDATION.md).
+
+The ROK-042 extraction/adoption record below is historical. Its original device
+install and episode-grid restrictions were superseded by later owner requests.
+
 # Native Roku TV design adoption — ROK-042
 
 Owner request: update the Roku app to the new TV design (2026-09-27).

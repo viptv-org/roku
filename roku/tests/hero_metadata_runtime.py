@@ -18,6 +18,10 @@ sub Main()
  if projected.videos<>invalid then throw "retained unbounded episode payload"
  queue.episodeTitle=HeroEpisodeTitle(queue,projected)
  if queue.episodeTitle<>meta.videos[1].title then throw "metadata episode title lost before hero render"
+ if left(HomeCardContext(queue),9)<>"S2 E1 · T" then throw "card wastes its caption on verbose coordinates"
+ short={id:"episode-short",type:"series",series_id:"series-a",season:1,episode:8,episodeTitle:"Pie",position:422,duration:3240}
+ if HomeCardContext(short)<>"S1 E8 · Pie · 7:02" then throw "short card title/time not visible together"
+ if HomeCardContext({id:"film",type:"movie",position:41,duration:6000})<>"Resume at 0:41" then throw "movie card reserved episode words"
  if HeroContext(queue)<>"S2 E1 · The Old Country Bumpkin Takes on a New Position" then throw "hero context omitted episode title"
  queue.episodeTitle="":queue.episode_title="A supplied title"
  if HeroEpisodeTitle(queue,meta)<>"A supplied title" then throw "supplied title overridden"

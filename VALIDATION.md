@@ -1,3 +1,24 @@
+# ROK-044 visibility follow-up — 1.11.3 (2026-09-27)
+
+Design `ac5ae2bad129753135aed01cb85e5a2b343f33f9`. Following the episode-title
+repair, a second audit found verbose card subtitles hiding the title and a fast
+playback route that could reach the player before title metadata. Compact card
+copy and non-scrolling focus were inspected on the physical Roku; the fast
+metadata route is covered by ownership/cancellation runtime checks. The 1.11.3
+installer checksum and active-app version were confirmed independently. The latter
+race was not deliberately induced on the household TV. No source preference or
+playback route policy changed. See [TV_AUDIT.md](TV_AUDIT.md).
+
+Artifacts: `artifacts/rok044-1.11.3/viptv-roku.zip` and
+`artifacts/rok044-1.11.3/viptv-roku-public.zip`. SHA-256 respectively:
+
+```
+26a79fbfcb4388bbbfc8c07d7f18bcb31458ed25c0c0ccd03193f98f815c5413
+6d0a7048d02691cc84db6cde764d8d252791ea88ea1995f35f09566a2de7c42c
+```
+
+Older build records follow.
+
 # ROK-044 hero metadata correction — 1.11.1 (2026-09-27)
 
 Design `65e2b68bb5f9c8ce32bca27241e5c893a7126d82`. Corrects the missed episode

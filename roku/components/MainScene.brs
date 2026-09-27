@@ -56,6 +56,7 @@ sub init()
     m.nextTransitionSession = ""
     m.nextTransitionConnection = invalid
     m.playerReturnDetail = invalid
+    m.playerTitleOwner = invalid
     m.position = 0
     m.duration = 0
     m.cache = {}
@@ -193,7 +194,7 @@ sub cancelBrowse()
         cancellableStartup = false
         if entry.body <> invalid then cancellableStartup = Txt(entry.body.startup_id) <> ""
         if not cancellableStartup
-            if left(tag,5) = "auth:" or left(tag,4) = "side" or left(tag,7) = "cleanup" or left(tag,8) = "playback" or left(tag,12) = "seekplayback" or left(tag,9) = "favorited" or left(tag,16) = "librarycorrected" then retained.push(entry)
+            if left(tag,5) = "auth:" or left(tag,4) = "side" or left(tag,7) = "cleanup" or left(tag,8) = "playback" or left(tag,12) = "seekplayback" or left(tag,9) = "favorited" or left(tag,16) = "librarycorrected" or playerTitleOwnsTag(tag) then retained.push(entry)
         end if
     end for
     m.queue = retained
@@ -202,7 +203,7 @@ sub cancelBrowse()
         if task.request.body <> invalid
             if Txt(task.request.body.startup_id) <> "" then task.cancel = true
         end if
-        if left(tag,5) <> "auth:" and left(tag,4) <> "side" and left(tag,7) <> "cleanup" and left(tag,8) <> "playback" and left(tag,12) <> "seekplayback" and left(tag,9) <> "favorited" and left(tag,16) <> "librarycorrected" then task.cancel = true
+        if left(tag,5) <> "auth:" and left(tag,4) <> "side" and left(tag,7) <> "cleanup" and left(tag,8) <> "playback" and left(tag,12) <> "seekplayback" and left(tag,9) <> "favorited" and left(tag,16) <> "librarycorrected" and not playerTitleOwnsTag(tag) then task.cancel = true
     end for
 end sub
 

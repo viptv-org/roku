@@ -219,8 +219,8 @@
       "source": "roku/components/HomeCard.brs",
       "destination": "roku/components/HomeCard.brs",
       "sha256": "5373dda84e661fc0dd62f33e8bd49683918a807ce14acf4426d1a6612cba7285",
-      "extracted_sha256": "626f45bf18502e6df4a0b909b5ca8a94487ea68976f22a34dec8f3de119bedbb",
-      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset."
+      "extracted_sha256": "eaaf93cf35d06467abb51625ae3347a6161020d11ed83acf5c5bc62a9714a61a",
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership."
     },
     {
       "source": "roku/components/HomeCard.xml",
@@ -258,15 +258,15 @@
       "source": "roku/components/MainScene.brs",
       "destination": "roku/components/MainScene.brs",
       "sha256": "86b18096942ced4d58c9408fe81598e2b7f648dde69c90ead66d376734d3b1b8",
-      "extracted_sha256": "4011ca3a56d46154c0411b1b0f3f9f5ad1db3b421f370cbc1194a37a5d2cd8b5",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
+      "extracted_sha256": "0515512b8fee1d04249478b490688b7efe94b4e95d0985256e8b132c3af70805",
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership."
     },
     {
       "source": "roku/components/MainScene.xml",
       "destination": "roku/components/MainScene.xml",
       "sha256": "683ee2541fb021de8402c8fc590ed211abc043d423c6f7cbc3a4b5b75626063c",
-      "extracted_sha256": "a369823d6db99d6063b8b7e90a99af162564f3a80d5d204fff9f3a03b8fbd2a7",
-      "reason": "ROK-043 complete TV audit corrections and acceptance checks; design 3b6e434."
+      "extracted_sha256": "375e45a93db8927d51c9eb078ea8f56b9b63912f73dc65a49f1633896ff1e071",
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership."
     },
     {
       "source": "roku/components/NavIcon.brs",
@@ -293,8 +293,8 @@
       "source": "roku/components/PlaybackScene.brs",
       "destination": "roku/components/PlaybackScene.brs",
       "sha256": "2895f449c1c79ce16987253c68728b4e2baca7539ca6e10e47955947e7ee09b3",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434.",
-      "extracted_sha256": "e77fd50e967bea2a4495d190e7624fdf11dff785ee7f52893266d2e08133453a"
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership.",
+      "extracted_sha256": "cf9497bd4be333a3e53443dc0a52df779267d6e0905d558a38bf18f9eb9bbe62"
     },
     {
       "source": "roku/components/PlayerOverlay.brs",
@@ -314,8 +314,8 @@
       "source": "roku/components/PresentationArtworkScene.brs",
       "destination": "roku/components/PresentationArtworkScene.brs",
       "sha256": "f4d9ae9fe9239a1e967f152906115bdf69810611933fe0cf64b4e7b6448f671e",
-      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset.",
-      "extracted_sha256": "74e588ee6447fe900b62301833ea43146e5da3bc06096c6687116077bafeba5e"
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership.",
+      "extracted_sha256": "cf527c644d474e4e5e4a9f24b4a068b6ca3876e19d8b8247fe7d8f16f1b33b21"
     },
     {
       "source": "roku/components/PresentationDetailsScene.brs",
@@ -370,8 +370,8 @@
       "source": "roku/components/ResponseScene.brs",
       "destination": "roku/components/ResponseScene.brs",
       "sha256": "582c565e78ae88fd170b1c873e7253fb1906865b62dc647d5987ecac9e77f9f5",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434.",
-      "extracted_sha256": "cb7f6bf1d23bbdfd4bc27659f8d9e52a3ada82d3263889fcf2f21476ca34f236"
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership.",
+      "extracted_sha256": "d47f56ec56d34bc3b726e104b28998e830fa76d33c38c0945071c66afb7c63b8"
     },
     {
       "source": "roku/components/SearchPanel.brs",
@@ -398,7 +398,8 @@
       "source": "roku/components/SeekScene.brs",
       "destination": "roku/components/SeekScene.brs",
       "sha256": "f0598482ad4cead37a554455f68f67ae05297a80eb8714575ce88f8b93dcd752",
-      "reason": "New file split from MainScene.brs: stop/pause and the atomic seek-replacement transaction moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership.",
+      "extracted_sha256": "409adcd491c0a04778414fc19b11ecc369aca590596195e29cffeb9ac32f2a3d"
     },
     {
       "source": "roku/components/SessionScene.brs",
@@ -3903,8 +3904,8 @@
       "source": "roku/manifest",
       "destination": "roku/manifest",
       "sha256": "e3ec6e7a1150fbd14f500736f2b28550b8a7a4bf08832546fc29b208b22dee58",
-      "extracted_sha256": "198f60eb69f35bba6787e4ae78ae62f26eba12223ca9964c16468e1f3ae0afcc",
-      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset."
+      "extracted_sha256": "4c495ea4a07f0883aac6d84fffb693a8f261d5007ceaa5ea023aac50f671f87a",
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership."
     },
     {
       "source": "roku/source/AccountPolicy.brs",
@@ -3951,8 +3952,8 @@
       "source": "roku/source/PresentationPolicy.brs",
       "destination": "roku/source/PresentationPolicy.brs",
       "sha256": "fd2f4800cf57b02088852fe0c4147487ba5bd9dbb9cb5ac82052e8b805b296d2",
-      "extracted_sha256": "7becde6e6331ad765e8d1050a085e3f537e4474c25cd43c7ef23799e3177898a",
-      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset."
+      "extracted_sha256": "2b000595261cdbaa4d854ee7aae68e5be3c40c3ca78b4f2a229f1161871d3e26",
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership."
     },
     {
       "source": "roku/source/SourceLabels.brs",
@@ -4037,8 +4038,8 @@
       "source": "roku/tests/direct_runtime.py",
       "destination": "roku/tests/direct_runtime.py",
       "sha256": "0ccf30f6b493b792435f182646262bc05f8d750cae8a317159bb5b90fcb38ff8",
-      "extracted_sha256": "485be8a262e0ab6d38e585e0bffdc1e6f06c6a9e1ce55189362c64c531e001ae",
-      "reason": "Split follow-up: extractions moved to PlaybackScene.brs, SeekScene.brs and SessionScene.brs."
+      "extracted_sha256": "0d3604580a8d8e81d02c51c4884a50e049bb6b09ae4d4bde29f910618d7678fb",
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership."
     },
     {
       "source": "roku/tests/epg_navigation.brs",

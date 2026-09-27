@@ -4,6 +4,23 @@ Scope: every TV entry in the design screen index (46 states), shared components,
 copy, TV-034/038/040/041, and the owner's 2026-09-27 corrections. Design pin:
 `3b6e4340773b31f427f46b9ef7dd888936b381f0`. Application: 1.11.0.
 
+## Follow-up visibility checks — ROK-044
+
+A second pass found two more routes that could hide a title even after the hero
+fix. The Continue Watching card used verbose “Season / Episode / Resume at”
+copy, which consumed its caption width before the title. Cards now use compact
+`S2 E1 · title`, adding elapsed time only when a short name fits; focus no longer
+scrolls the caption. A physical Roku capture verifies short and long captions.
+
+Fast series playback could copy a queue item before Home card metadata arrived.
+A separate metadata read now runs beside source discovery without delaying
+playback and survives preparation only for its owning account/profile/episode.
+The real response and cancellation paths are covered by runtime checks, including
+a changed episode, changed profile, stale request tag, cache hit and visible player
+update. The visible card caption was checked on the physical Roku at 1.11.3.
+That deliberately fast, uncached playback race was not forced on the
+household TV and is recorded as runtime evidence.
+
 ## Correction to the earlier Home verdict — ROK-044
 
 The 1.11.0 captures still lacked the episode title. The previous Home verdict

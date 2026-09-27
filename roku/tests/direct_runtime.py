@@ -34,6 +34,8 @@ sub Main()
  if m.requests[m.requests.count()-1].body.managed_only<>true then throw "offset replacement could unexpectedly restart as direct at zero"
  print "DIRECT_RUNTIME_OK"
 end sub
+sub playerTitleBegin(item as object)
+end sub
 sub uiBusy(value)
 end sub
 sub ApplyProfileCaptionStyle(video,prefs)

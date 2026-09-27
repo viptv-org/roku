@@ -21,6 +21,7 @@
  <script type="text/brightscript" uri="pkg:/components/DiscoverScene.brs" />
  <script type="text/brightscript" uri="pkg:/components/ResponseScene.brs" />
  <script type="text/brightscript" uri="pkg:/components/PlaybackScene.brs" />
+ <script type="text/brightscript" uri="pkg:/components/PlayerTitleScene.brs" />
  <script type="text/brightscript" uri="pkg:/components/SeekScene.brs" />
  <script type="text/brightscript" uri="pkg:/components/HomeScene.brs" />
  <script type="text/brightscript" uri="pkg:/components/HomeFeedScene.brs" />

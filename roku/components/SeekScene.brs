@@ -1,4 +1,5 @@
 sub stopPlayback(restore = true as boolean)
+    m.playerTitleOwner = invalid
     saveProgress()
     ' Retire a still-pending next-episode transition before restoring the view.
     if m.nextPrepping = true or m.nextTransitionSession <> ""

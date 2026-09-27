@@ -409,7 +409,7 @@ sub uiHomeEpisodeMetadata(id as string, details as object)
                     for rowIndex = 0 to m.homeRowKeys.count()-1
                         if m.homeRowKeys[rowIndex] = 0
                             node = m.homeRoot.getChild(rowIndex).getChild(column)
-                            if node <> invalid then node.subtitle = PresentationContext(item)
+                            if node <> invalid then node.subtitle = HomeCardContext(item)
                         end if
                     end for
                 end if

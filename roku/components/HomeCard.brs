@@ -109,9 +109,11 @@ sub focusChanged()
     m.focusFrame.visible = active
     m.title.repeatCount = 0
     m.subtitle.repeatCount = 0
+    m.title.color = "#F4F2EE"
+    m.subtitle.color = "#B6B4AF"
     if active
-        m.title.repeatCount = -1
-        m.subtitle.repeatCount = -1
+        m.title.color = "#FFFFFF"
+        m.subtitle.color = "#DAD8D3"
     end if
 end sub
 

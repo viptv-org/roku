@@ -80,7 +80,7 @@ sub UiCardContent(node as object, item as object)
     if Txt(item.posterShape) = "landscape" then kind = "landscape"
     node.HDPosterUrl = art
     subtitle = PresentationFacts(item)
-    context = PresentationContext(item)
+    context = HomeCardContext(item)
     if context <> "" then subtitle = context
     node.addFields({uiSkeleton:item.uiSkeleton = true,metadataPath:path,metadataId:PresentationMetadataId(item),artworkKind:kind,mediaType:Txt(item.type),subtitle:subtitle,progressFraction:UiProgressFraction(item),badge:"",uiOwnerFocused:false})
     node.description = Txt(item.description,Txt(item.overview))
@@ -406,4 +406,19 @@ function HeroVideoTitle(video as object) as string
     name = Txt(video.title).trim()
     if name = "" then name = Txt(video.name).trim()
     return name
+end function
+
+function HomeCardContext(item as object) as string
+    if Txt(item.type) = "series"
+        result = HeroContext(item)
+        name = HeroEpisodeTitle(item)
+        status = Txt(item.queue_status)
+        if item.position <> invalid and item.position > 0 and len(name) <= 12 and status <> "next" and status <> "pending"
+            if result <> "" then result += " · "
+            result += PlayerTime(item.position)
+        end if
+        return result
+    end if
+    if Txt(item.type) = "movie" and item.position <> invalid and item.position > 0 then return "Resume at " + PlayerTime(item.position)
+    return ""
 end function

@@ -6,6 +6,7 @@ sub findStreams(item as object, manual = true as boolean, preferredSource = inva
         if m.mode <> "home" then m.playerReturnDetail = invalid
     end if
     saveView()
+    m.playerTitleOwner = invalid
     cancelBrowse()
     if Txt(m.sourcePreferencesProfile) <> m.profile or m.sourcePreferences = invalid
         m.sourcePreferencesProfile = m.profile
@@ -25,6 +26,7 @@ sub findStreams(item as object, manual = true as boolean, preferredSource = inva
     m.sourceHintCache = {}
     m.playItem = {}
     m.playItem.append(item)
+    playerTitleBegin(item)
     m.streams = []
     m.discoveryDone = false
     m.position = 0
