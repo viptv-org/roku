@@ -39,6 +39,6 @@ sub focusChanged()
     else
         m.title.color = "#A0A4A8"
         m.title.repeatCount = 0
-        m.surface.color = "#202224"
+        m.surface.color = "#212124"
     end if
 end sub

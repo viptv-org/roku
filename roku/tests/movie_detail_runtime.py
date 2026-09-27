@@ -13,12 +13,12 @@ sub Main()
  m.selected=invalid
  showMetadata({meta:{id:"fresh",type:"movie",name:"Fresh"}})
  if m.actions.count()<>3 then throw "fresh movie has duplicate source controls"
- if m.actions[0].name<>"Choose source" or m.actions[0].action<>"play" then throw "fresh primary behavior changed"
+ if m.actions[0].name<>"Play" or m.actions[0].action<>"play" then throw "fresh primary behavior changed"
  if m.actions[1].action<>"favorite" then throw "fresh movie actions out of order"
  m.selected=invalid
  showMetadata({meta:{id:"resume",type:"movie",name:"Resume",position:60}})
  if m.actions.count()<>4 then throw "resume lost explicit source choice"
- if m.actions[0].action<>"resume" or m.actions[0].name<>"Resume at 1:00" then throw "resume primary changed"
+ if m.actions[0].action<>"resume" or m.actions[0].name<>"Resume" then throw "resume primary changed"
  if m.actions[1].action<>"sources" or m.actions[1].name<>"Choose source" then throw "resume source override changed"
  print "MOVIE_DETAIL_ACTIONS_OK"
 end sub

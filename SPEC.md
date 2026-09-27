@@ -1,4 +1,20 @@
-# Roku behavior-preserving extraction
+# Native Roku TV design adoption — ROK-042
+
+Owner request: update the Roku app to the new TV design (2026-09-27).
+The immutable design pin is `e33bf664f8370aea72ef839fb6f81c9687eac9d9`;
+[ROK-042](design-contract/ROKU_DESIGN.md) records geometry, assets, native
+adaptations and acceptance. HD coordinates are 2/3 of the 1920×1080 TV frame.
+Native keyboard/PIN entry and the four-column paged episode grid retain their
+Roku interactions. Account/profile identity, saved source Resume, controlled
+Next, seek rollback and return focus keep their existing behavior.
+
+Acceptance: pinned asset verification; all existing static/runtime checks;
+new design geometry and rail input checks; BrighterScript compilation and
+runtime ZIPs containing fonts, Lucide assets and licenses; simulator inspection
+of matching screen states. Record physical Roku evidence separately. This
+source update does not authorize a device installation or Store submission.
+
+## Historical extraction
 
 Move all tracked roku/ files without runtime changes from vynxc/viptv@7d6b413. Keep its existing directory layout, connection origin, registry keys, manifest, packaged assets, SceneGraph components, BrightScript policies and tests. The original repository retains its full history. Design is authoritative for subsequent product changes.
 

@@ -1,41 +1,41 @@
 sub init()
     m.avatar = m.top.findNode("avatar")
-    m.avatar.observeField("loadStatus","avatarLoaded")
+    m.avatar.observeField("loadStatus","render")
 end sub
-
 sub contentChanged()
     render()
 end sub
-
 sub render()
     item = m.top.itemContent
     if item = invalid or m.avatar = invalid then return
     profile = item.isProfile = true
+    active = m.top.listHasFocus and m.top.focusPercent > 0.5
     icon = m.top.findNode("icon")
-    m.avatar.visible = profile and m.avatar.loadStatus = "ready"
-    m.top.findNode("avatarFallback").visible = profile and not m.avatar.visible
-    m.top.findNode("initial").visible = profile and not m.avatar.visible
     icon.visible = not profile
     name = item.title
     if profile
-        name = Txt(item.profileName)
-        if name = "" then name = "Profile"
+        name = Txt(item.profileName,"Profile")
         m.top.findNode("initial").text = ucase(left(name,1))
         uri = Txt(item.avatarUrl)
         if m.avatar.uri <> uri then m.avatar.uri = uri
     else
-        icons = {Home:"home",Discover:"discover","Live TV":"tv","My List":"list",Search:"search",Settings:"settings"}
-        key = icons[item.title]
-        if key = invalid then key = "home"
-        icon.uri = "pkg:/images/ui-nav-" + key + ".png"
+        icons = {Home:"home",Discover:"discover","Live TV":"live","My List":"list",Search:"search",Settings:"settings"}
+        key = Txt(icons[item.title],"home")
+        variant = "secondary"
+        if active then variant = "focus"
+        icon.uri = "pkg:/images/lucide/"+key+"-"+variant+".png"
     end if
-    active = m.top.listHasFocus and m.top.focusPercent > 0.5
+    ready = profile and m.avatar.loadStatus = "ready" and m.avatar.uri <> ""
+    m.avatar.visible = ready
+    m.top.findNode("avatarFallback").visible = profile and not ready
+    m.top.findNode("initial").visible = profile and not ready
     m.top.findNode("surface").visible = active
-    m.top.findNode("surface").width = 60
-    icon.blendColor = "#A6A8AAFF"
-    if active then icon.blendColor = "#101112FF"
-end sub
-
-sub avatarLoaded()
-    render()
+    width = 42
+    if m.top.expanded then width = 293
+    m.top.findNode("surface").width = width
+    label = m.top.findNode("label")
+    label.text = name
+    label.visible = m.top.expanded
+    label.color = "#F4F2EE"
+    if active then label.color = "#111113"
 end sub

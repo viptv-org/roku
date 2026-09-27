@@ -1,4 +1,46 @@
-# Extraction validation
+# Native TV design adoption — 2026-09-27
+
+Version 1.10.0 adopts design `e33bf664f8370aea72ef839fb6f81c9687eac9d9`
+under ROK-042. The HD scene uses the new palette, bundled Onest/Bricolage fonts,
+Lucide icon variants, rounded controls, fixed-size focus, native expanded rail,
+landscape Home/detail artwork, compact profile management, and right panels.
+Profile artwork uses validated persisted style/choice assets with remote/initial
+fallback. Fresh movie Play still opens source selection; Resume keeps its saved
+source semantics. The first Home shelf is clipped below its complete captions
+so the following heading cannot peek through before navigation.
+
+Passed locally: design input hash verification (173 files); migration inventory
+(848 original entries, 84 explicitly documented divergences, one historical
+removal); seven static contract scripts; all 20 Python-driven BrightScript
+runtime harnesses; five standalone policy/player BRS fixtures; BrighterScript
+0.73.1 compilation and staging; both deterministic runtime ZIP flavors with
+fonts, Lucide licenses and generated `source/bslib.brs` present.
+
+BrightScript simulator 2.5.3 rendered and was privately inspected at 1280×720:
+Home, detail, collapsed/expanded rail, profiles, profile form, sources, Settings,
+episode grid, live programme details, and player controls. Left entered the
+expanded rail with icon centres unchanged. Captures are temporary evidence and
+are not committed or packaged. Simulator rendering and mocked runtime tests do
+not qualify physical Roku focus animation, decoder behavior or font rasterization.
+
+Native adaptations are explicit in `design-contract/ROKU_DESIGN.md`: the native
+Keyboard/MiniKeyboard, four-column paged episode grid and decoded low-resolution
+ambient texture remain. This is not a claim of pixel equality with every TV
+reference. No physical device installation or Store publication was performed.
+
+Artifacts: `artifacts/rok042-20260927-final/viptv-roku.zip` and
+`viptv-roku-public.zip`. SHA-256 respectively:
+
+```
+b134544ebdad056ab7233ce4eb6176f1e9137c252ecac64bf3bfc99a9a1eaae6
+ea4dae9818516f322d9b4e46c98f42b68b1c4a4bb76543b943cb7fd4190a5abf
+```
+
+Reproduce the checked build using the commands in `.github/workflows/ci.yml`.
+For a new local artifact directory, pass `--output-dir` to `scripts/package.py`;
+the packager refuses existing archives and requires compiled staging plus fonts.
+
+## Historical extraction validation
 
 Baseline: vynxc/viptv@7d6b4131a44d87b58edcf12709af5851da387176. The extraction changed no runtime source, SceneGraph XML, data, image, manifest or configuration byte; MIGRATION.json records one test-only fix made at extraction time: direct_runtime.py includes the existing ContinuationPolicy.brs dependency needed by the current findStreams handler. Every entry keeps its original `source` and `sha256`.
 

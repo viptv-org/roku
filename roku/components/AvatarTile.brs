@@ -1,15 +1,16 @@
 sub render()
     if m.top.itemContent = invalid then return
-    size = 128
+    size = 112
     if m.top.itemContent.hasField("uiSize") then size = m.top.itemContent.uiSize
-    for each id in ["frame","outline"]
+    for each id in ["frame","outline","corners"]
         m.top.findNode(id).width = size
         m.top.findNode(id).height = size
     end for
-    m.top.findNode("image").width = size-16
-    m.top.findNode("image").height = size-16
-    m.top.findNode("image").loadWidth = size-16
-    m.top.findNode("image").loadHeight = size-16
+    m.top.findNode("image").translation = [0,0]
+    m.top.findNode("image").width = size
+    m.top.findNode("image").height = size
+    m.top.findNode("image").loadWidth = size
+    m.top.findNode("image").loadHeight = size
     m.top.findNode("image").loadDisplayMode = "scaleToFit"
     m.top.findNode("image").uri = m.top.itemContent.hdPosterUrl
     focus()

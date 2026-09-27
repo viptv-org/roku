@@ -16,38 +16,43 @@
       "source": "roku/README.md",
       "destination": "roku/README.md",
       "sha256": "d910b07caec23d4dfbe5b62162da43c21a0b1c2123205bf5cba91c634b84de17",
-      "extracted_sha256": "9369339accb4e3855f96faca4b9bc29e41c8d8a54acca7dfe5ba72ce0be70e60",
-      "reason": "Split follow-up plus the public build flavor: roku_test file lists name sibling script files, and the build documents the configurable server origin."
+      "extracted_sha256": "1bb303fe3a7b6a20d17caa81c23889d8176ae4d846a7d755fd4151b603ba9b7d",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/bsconfig.json",
       "destination": "roku/bsconfig.json",
-      "sha256": "483022be77240fdc9644889ebd030b75d63d97707bb5839d1322dc0714b45e51"
+      "sha256": "483022be77240fdc9644889ebd030b75d63d97707bb5839d1322dc0714b45e51",
+      "extracted_sha256": "5eac7d21d91e9638d999bfffd016c94a91e0c084153886941fa5ccdb04ad986a",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/AccountProfilesScene.brs",
       "destination": "roku/components/AccountProfilesScene.brs",
       "sha256": "860aed3610fdb2ddd63b7a416c7fdd8edcb299d5bf743bdc056d31d2edef8896",
-      "reason": "New file split from AccountScene.brs: profile grid, key handler, setup/editor, PIN, sign-out and delete handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained.",
+      "extracted_sha256": "90026c4d243616a0701cfdd4780e484c1795673fce3b66838c115d2462acec9b"
     },
     {
       "source": "roku/components/AccountScene.brs",
       "destination": "roku/components/AccountScene.brs",
       "sha256": "0355e49291936914396ba1d02caeb002afa4105c4b45a56c0e12c81dc030ab17",
-      "extracted_sha256": "40d98a7bb6c0d9be1fe4ca1b04e1a69837fac9ee9a580b62ecf2b024ee7074fd",
-      "reason": "Cleanup 14a702c (write-only m.searchFocusPending) and split: pairing, credentials, QR reveal and accountResponse remain; profile grid, key handling, setup/editor, PIN, sign-out and delete handlers moved byte-identical into AccountProfilesScene.brs (merged MainScene component scope)."
+      "extracted_sha256": "e69c9ee3e54f7de510ef06ebc2afcacfadc2babbc3d956822d6a6ab06153dd23",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/ActionRow.brs",
       "destination": "roku/components/ActionRow.brs",
-      "sha256": "290b36676f8b03935d596f758d93903d891be9dd71fa81298fe179f580af33dd"
+      "sha256": "290b36676f8b03935d596f758d93903d891be9dd71fa81298fe179f580af33dd",
+      "extracted_sha256": "8f6033054b6fcd1a8b437cbc25403ebc77ca8ebd7f42ccdebe763bf6e62c9767",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/ActionRow.xml",
       "destination": "roku/components/ActionRow.xml",
       "sha256": "74dcd5feffbdcc94de82a12c2c9e47376e2dab7dc763d4e60f1c205fe3618858",
-      "extracted_sha256": "8c26628f71c3c19e6a4ac4e9c4032cff2d9feec4bb276587a8972a004c47aa1e",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "e7bbe26fd52d46fc5f6903e6cf5b974143ebb263e39945c769acb271e399de94",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/AddonScene.brs",
@@ -65,8 +70,8 @@
       "source": "roku/components/ApiTask.xml",
       "destination": "roku/components/ApiTask.xml",
       "sha256": "515ea8f88a9dbf10356f68522238227d87b6b9a80ad32b2cdb6e31e0ce239c35",
-      "extracted_sha256": "f77645c49f86eaca921a58c2a539c20be0571324524ef46a3e06295fbe667276",
-      "reason": "Split: added script tags for ApiTaskSanitize.brs and pkg:/source/SourceLabels.brs beside the existing Util/AccountPolicy tags; merged Task component scope preserved."
+      "extracted_sha256": "41868c871578f865a37e53e27a22e8394cc46ba98779ade5437b8fab9142c2db",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/ApiTaskSanitize.brs",
@@ -77,34 +82,44 @@
     {
       "source": "roku/components/AvatarTile.brs",
       "destination": "roku/components/AvatarTile.brs",
-      "sha256": "3becb5572d1c6e63a0cdfe64b2ee01aa487563e320459ef834610c7ce16b9804"
+      "sha256": "3becb5572d1c6e63a0cdfe64b2ee01aa487563e320459ef834610c7ce16b9804",
+      "extracted_sha256": "76c331b0523a743ab700efd2f7dad62cbc04a400db821bf1db758611341194ae",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/AvatarTile.xml",
       "destination": "roku/components/AvatarTile.xml",
-      "sha256": "e19c71a645a033bb4ec2435b7125aec16f35120dd8dc5b2d71d0d66e28c385ee"
+      "sha256": "e19c71a645a033bb4ec2435b7125aec16f35120dd8dc5b2d71d0d66e28c385ee",
+      "extracted_sha256": "cb300c4a7228c3e09fe2b40a51ea5394ae18fbd0e8d2ecf1dcaae10efad8a731",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/BrowsePoster.brs",
       "destination": "roku/components/BrowsePoster.brs",
-      "sha256": "de503a3286d1ade50f875e007a4c312c77c0a4b2de1f8886ff80134f1d173f6a"
+      "sha256": "de503a3286d1ade50f875e007a4c312c77c0a4b2de1f8886ff80134f1d173f6a",
+      "extracted_sha256": "2f683ca3840b114decaed4466fe3e1168c9e82eeb116fcf4cb4620e72445b6db",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/BrowsePoster.xml",
       "destination": "roku/components/BrowsePoster.xml",
-      "sha256": "db5c57122d2123f96d733cf2fe016cb42c723a9b9410baedbcbb970a3bce6cc8"
+      "sha256": "db5c57122d2123f96d733cf2fe016cb42c723a9b9410baedbcbb970a3bce6cc8",
+      "extracted_sha256": "fba762647b7b156185c2ed755e055328700d9998b0c6c3b1a7918b2fd71b37d0",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/ChannelRow.brs",
       "destination": "roku/components/ChannelRow.brs",
-      "sha256": "7eeefa73395748984806b1d654465b4ae3a801bd40d7eb80cf91da9292b17eff"
+      "sha256": "7eeefa73395748984806b1d654465b4ae3a801bd40d7eb80cf91da9292b17eff",
+      "extracted_sha256": "daaf3eea5230dcc84e7e12d25c5f6471016c027808cfae7853f8c13b724918ae",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/ChannelRow.xml",
       "destination": "roku/components/ChannelRow.xml",
       "sha256": "e7ed26306c02e3d5837e65c121686158f773f2bdde7706a2c48e6f1c338c5f8c",
-      "extracted_sha256": "a7f754989e0a4bbf8df5816dcc0b675f1daa57cbbea3e661d372b2b6cfc7437d",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "8f565b1c1c175752a3abc567ce6a80fba507d5283fed775bebb828adb30bc775",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/ContinuationScene.brs",
@@ -123,15 +138,15 @@
       "source": "roku/components/EpgGrid.brs",
       "destination": "roku/components/EpgGrid.brs",
       "sha256": "1a942f3bb3db967b9fe079d176bd20e3cabacb1b7c3c0e5f9ca6f88716895a42",
-      "extracted_sha256": "ea98ea4d2085c999982dd061b32891f0746e6f01f0f458e338a12edf50afba73",
-      "reason": "Cleanup: removed both write-only m.zone assignments."
+      "extracted_sha256": "a65dcb1470852d207f26a0636ed46a3d9d1f562aa651ab57df3b6308bd3a9a94",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/EpgGrid.xml",
       "destination": "roku/components/EpgGrid.xml",
       "sha256": "72782188dbdb7913581205a071c90598d61ac6eaa35d415492bee05703e3ea24",
-      "extracted_sha256": "f78b7061a357d7d94daf36960892750418ef746df26f1bae479ad31fd7d76571",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "c785b481d7ab6718ba1edaab03e26ec4f7f21d5b27145b1534397fdb2ebef939",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/EpgScene.brs",
@@ -141,48 +156,58 @@
     {
       "source": "roku/components/EpisodeCard.brs",
       "destination": "roku/components/EpisodeCard.brs",
-      "sha256": "d35f1732b06008778b8f9c1289d8e9a19e8c1c6ad40c4bbc9d981e0ac8eabae4"
+      "sha256": "d35f1732b06008778b8f9c1289d8e9a19e8c1c6ad40c4bbc9d981e0ac8eabae4",
+      "extracted_sha256": "e5b30d8114c6696cba6688d0650bd4faeae4be38f2a49aa38bc7dd338b7014fa",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/EpisodeCard.xml",
       "destination": "roku/components/EpisodeCard.xml",
       "sha256": "4ccffbb9cfa679b9885a5c488532a63e747333bad366c21bd6edbfb810c07c57",
-      "extracted_sha256": "231e673e25f03e704fc2e071bfa6fe2bb61adfcb584d98d6c3b781f22e7318a9",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "1f903622d8158f476e1fb2650b691cd65c0a92e3bed65d085f655564198339d8",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/FilterChip.brs",
       "destination": "roku/components/FilterChip.brs",
-      "sha256": "b9881061cd1c82d35e38c6792f8752352fa642a7b0e02f2df8ec6ed31a75dcf0"
+      "sha256": "b9881061cd1c82d35e38c6792f8752352fa642a7b0e02f2df8ec6ed31a75dcf0",
+      "extracted_sha256": "3ebb6888d9ae1690daa5383cce9cc4ad7a99a32edbc839ce2961f79629c725a0",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/FilterChip.xml",
       "destination": "roku/components/FilterChip.xml",
       "sha256": "2693b4770fb44cf830247efc14174ebebea09896f546bb7d4dfddb4b604c05db",
-      "extracted_sha256": "a4df71f4e70b228821f23e58d916fa23e66518c05c39d045f77884cbfe647bd4",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "49c90494471208f98e6beb9cb5fc953f00c6dfaff840bc963ac050d954b1489b",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/HeroPanel.brs",
       "destination": "roku/components/HeroPanel.brs",
-      "sha256": "9bff2f788e73de7bfd7b8af2671884a5d093e20928c036a077790e89b878e137"
+      "sha256": "9bff2f788e73de7bfd7b8af2671884a5d093e20928c036a077790e89b878e137",
+      "extracted_sha256": "b5c5292cbd4ef838c61ae7cf9cf43710510bf077108388a5aac53218a8818ba8",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/HeroPanel.xml",
       "destination": "roku/components/HeroPanel.xml",
       "sha256": "ee72fe82f207f083a9c673a84a1a74027331f65f01cc969e8e91eee2599ef790",
-      "extracted_sha256": "7fde6de876e76b66740bcbb25fa051845716535d85fa849e7d846b44ed1e301e",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "d0f71390850016fca062cd3d32b277f6d615ac06e153c2d94015a77cd91af4f2",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/HoldGrid.xml",
       "destination": "roku/components/HoldGrid.xml",
-      "sha256": "7311d3a202b0dbfbe1db2660b967a58687d54cd402f67a259f7a8b5859699e8d"
+      "sha256": "7311d3a202b0dbfbe1db2660b967a58687d54cd402f67a259f7a8b5859699e8d",
+      "extracted_sha256": "2fec3dfc06fc057cb0f618a40b085dbe8d4363f932f5aa3a7a0aee77e590fec0",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/HoldRowList.xml",
       "destination": "roku/components/HoldRowList.xml",
-      "sha256": "a75086f2cb567a0e744b4926675813f98819d277b385a23a51675e2be8653353"
+      "sha256": "a75086f2cb567a0e744b4926675813f98819d277b385a23a51675e2be8653353",
+      "extracted_sha256": "6ff19fa91f12b574d64d59f7a501836620ae4c0bb9c348c5a6225c7a674b0911",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/HoldSelect.brs",
@@ -192,26 +217,30 @@
     {
       "source": "roku/components/HomeCard.brs",
       "destination": "roku/components/HomeCard.brs",
-      "sha256": "5373dda84e661fc0dd62f33e8bd49683918a807ce14acf4426d1a6612cba7285"
+      "sha256": "5373dda84e661fc0dd62f33e8bd49683918a807ce14acf4426d1a6612cba7285",
+      "extracted_sha256": "ec1fb3d679557214c8c6b98829d9e7eb6fc2d4951add2c9dac5f3ec3b7a8f49e",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/HomeCard.xml",
       "destination": "roku/components/HomeCard.xml",
       "sha256": "e0d64773fb09a3b6b2fb820a724a43fc76d53773780a6b98aa4b0d9f21c68223",
-      "extracted_sha256": "fb5138dd0ae9aad62d89da584f5a7a8a77856498f442f2ffae22ce0dffeb151b",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "5aea517cfd276fad827daf363f6b1834e37f727cc619c60c90d2d23c1ee21f1f",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/HomeFeedScene.brs",
       "destination": "roku/components/HomeFeedScene.brs",
       "sha256": "d637da6fe6b503b790bee68ba35c939273d080e912071772f32029300d294c9a",
-      "reason": "New file split from MainScene.brs: home shelf responses, hero and remote-key handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained.",
+      "extracted_sha256": "85eb906f550b3a43a1d132c6d2662f7d6b1a35b104ea0b596ca9dcc150958764"
     },
     {
       "source": "roku/components/HomeScene.brs",
       "destination": "roku/components/HomeScene.brs",
       "sha256": "98eff40f139b55c320c4eb4901c04061833c7e6223cc1afe7eb93e91e4f0d166",
-      "reason": "New file split from MainScene.brs: home shelves, navigation chrome, episode progress and playback-preferences handlers moved byte-identically into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained.",
+      "extracted_sha256": "09bbf5f9347970fa5919fecb50d77cdeb610c31350b04abf6bf82ba0c64e5c72"
     },
     {
       "source": "roku/components/LibraryScene.brs",
@@ -228,34 +257,36 @@
       "source": "roku/components/MainScene.brs",
       "destination": "roku/components/MainScene.brs",
       "sha256": "86b18096942ced4d58c9408fe81598e2b7f648dde69c90ead66d376734d3b1b8",
-      "extracted_sha256": "617e611d9d19750e89912257b458d86c026a47c459df47d2cacccbf469692930",
-      "reason": "Public build flavor: the server origin becomes a packaging-time input, adding the Server settings row and origin validation."
+      "extracted_sha256": "bc8c377229ea5887a57fb7e1ab248f0072485ceb5a132823bf7c9488f25f6bef",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/MainScene.xml",
       "destination": "roku/components/MainScene.xml",
       "sha256": "683ee2541fb021de8402c8fc590ed211abc043d423c6f7cbc3a4b5b75626063c",
-      "extracted_sha256": "cefd1416d55cfe9e1ad048dc908cd460e8a818714a3c4fc1250162567b62e185",
-      "reason": "Split: added script tags for the MainScene, Presentation and Account sibling files and pkg:/source/SourceLabels.brs; merged component scope and declaration order preserved."
+      "extracted_sha256": "f15871c1308d6d4791d6483f7c9d1843a20ed6bf2ed26174689d21c9abeb075b",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/NavIcon.brs",
       "destination": "roku/components/NavIcon.brs",
-      "sha256": "7cea2a3386c95d5afd060eee3789894a94f59c06b10d113d2c27e0611d9d875d"
+      "sha256": "7cea2a3386c95d5afd060eee3789894a94f59c06b10d113d2c27e0611d9d875d",
+      "extracted_sha256": "c3068f26e9284941d7e69dedd423f8e6ee97d3ef6631652177c6afded26da2ee",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/NavIcon.xml",
       "destination": "roku/components/NavIcon.xml",
       "sha256": "5c8b1f3d36f18170c8050915db890a0e5977cb9e3514964eb1a4bce6f08b7049",
-      "extracted_sha256": "7f6d24d2919571706b833b8c2c0a1493a104e62fc8809cf9947000d5401cbfe8",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "69fadf32ce7fb9b4ef10d505ac338104f65b4c4980640fd02ad76bd7584adc2e",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/NavigationScene.brs",
       "destination": "roku/components/NavigationScene.brs",
       "sha256": "11dd77e46308cf597fdd2b7dbcdcf8c99be17f640ad0ba48b153191d86bccc8c",
-      "reason": "Public build flavor: the server origin becomes a packaging-time input, adding the Server settings row and origin validation.",
-      "extracted_sha256": "6fc7da6db82722628ec5f1898f7b89bf61917623572d3f97606830dc7082e2d3"
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained.",
+      "extracted_sha256": "9f3f0a4ee9193ec54e2f07609ca5de5ee7c1048da6da523ae148e786e5c71954"
     },
     {
       "source": "roku/components/PlaybackScene.brs",
@@ -266,77 +297,93 @@
     {
       "source": "roku/components/PlayerOverlay.brs",
       "destination": "roku/components/PlayerOverlay.brs",
-      "sha256": "64efc6b5afe1443bcc4751a7f09a80a5b8f5ab28f6f0a6b1a25f612cf931899b"
+      "sha256": "64efc6b5afe1443bcc4751a7f09a80a5b8f5ab28f6f0a6b1a25f612cf931899b",
+      "extracted_sha256": "596679d1b0ac887f5ac243af850ba1538a28b6d70144eda0fb8a9afcdc9a3f4f",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/PlayerOverlay.xml",
       "destination": "roku/components/PlayerOverlay.xml",
       "sha256": "eb62b131591468cfe845857a2c172989dd887612555bf4c53ea3cd05971ec3e9",
-      "extracted_sha256": "29d78b11caa095424013148d765fbc2e632daabc597baa581d5d91cf3d534451",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "2e68ccd79076bd74e09ac632da34621fc41cc446fb934ffc60c98378fcf932d2",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/PresentationArtworkScene.brs",
       "destination": "roku/components/PresentationArtworkScene.brs",
       "sha256": "f4d9ae9fe9239a1e967f152906115bdf69810611933fe0cf64b4e7b6448f671e",
-      "reason": "New file split from PresentationScene.brs: hero/card artwork and source list/filter UI moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained.",
+      "extracted_sha256": "160be12048e6be0f5c1f083c64a1cdfead6be0a985a9659ac2f3115a4d6bc5ca"
     },
     {
       "source": "roku/components/PresentationDetailsScene.brs",
       "destination": "roku/components/PresentationDetailsScene.brs",
       "sha256": "b946dbeeb415cd49b7fe9a2a0fab0849adbd2a8c6dfa241ab20e08191f65c9b9",
-      "reason": "New file split from PresentationScene.brs: detail, season and source-header renderers plus full-text/key handling moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained.",
+      "extracted_sha256": "81aa78b8d470ae4518216f337504ddde8ed837382c7cbc91f8a73b939fbcdd3e"
     },
     {
       "source": "roku/components/PresentationHomeScene.brs",
       "destination": "roku/components/PresentationHomeScene.brs",
       "sha256": "2bfb69990dfc3f24cd494e35c0c6ab440a5582dcf930e61bdd06019b17e67e76",
-      "reason": "New file split from PresentationScene.brs: discover filters, favorite acknowledgement and home action UI moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained.",
+      "extracted_sha256": "0c15c4384f4c948f101df625f43c978add479d4d2ceb7b7dcfd37aaad2058db8"
     },
     {
       "source": "roku/components/PresentationScene.brs",
       "destination": "roku/components/PresentationScene.brs",
       "sha256": "21e2793fd82e785b1baa933c7d7e62c9e072cc0f990d0a213ed53f0aef8dda32",
-      "extracted_sha256": "59e0b3b93ce46a4776c7af3a3264fd9f54713948db820494261351496e673542",
-      "reason": "Cleanup 14a702c (removed uiQueueHeroArt) and split: chrome, row layout and choice-panel handlers remain; detail, discover-filter, home and artwork/source-list handlers moved byte-identical into PresentationDetailsScene.brs, PresentationHomeScene.brs and PresentationArtworkScene.brs (merged MainScene component scope)."
+      "extracted_sha256": "ed21d1bcdc88c16cc06d87281165bc19c551c3a17869670c18ad7840b013b718",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/ProfileCard.brs",
       "destination": "roku/components/ProfileCard.brs",
-      "sha256": "db427417dbe1bf328656127c52aa949ec3cd7b181b83292a77d4dffc92ef38e6"
+      "sha256": "db427417dbe1bf328656127c52aa949ec3cd7b181b83292a77d4dffc92ef38e6",
+      "extracted_sha256": "55e0be852439009acdf070971a4e117e716431458b4a1b5a85592f73064295c4",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/ProfileCard.xml",
       "destination": "roku/components/ProfileCard.xml",
       "sha256": "1a85ec923168c6f166bd7fb021b57ba21eb781f622e8931aed7dad41c7ede9f4",
-      "extracted_sha256": "20f87b1dd798bdfa3f77d5be6030ae44380028033f4e5a2549a8b62ad86b1c0c",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "567fafa965d4cd2696f7946775bfc308498a1dae32cd3f3eeeda201f2436e4f3",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/ProfileEditor.brs",
       "destination": "roku/components/ProfileEditor.brs",
-      "sha256": "234c91c7f246c18e11e2da98620c2f6e82ab897a1ba82b800249264c8c9e7924"
+      "sha256": "234c91c7f246c18e11e2da98620c2f6e82ab897a1ba82b800249264c8c9e7924",
+      "extracted_sha256": "7b653af40556484581e90476a0502cc5f373b114197d8470dfff6261829b55c9",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/ProfileEditor.xml",
       "destination": "roku/components/ProfileEditor.xml",
-      "sha256": "25b144add29909f4f2c7f6a69c3a5724d386d10caf5d32fac2cc8d0b23a6d74a"
+      "sha256": "25b144add29909f4f2c7f6a69c3a5724d386d10caf5d32fac2cc8d0b23a6d74a",
+      "extracted_sha256": "689b7a00c9cd860e1dd9099eac5429d6b93ef680fbe25ad6943d375feaf99b4f",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/ResponseScene.brs",
       "destination": "roku/components/ResponseScene.brs",
       "sha256": "582c565e78ae88fd170b1c873e7253fb1906865b62dc647d5987ecac9e77f9f5",
-      "reason": "New file split from MainScene.brs: response dispatch, metadata and episode handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained.",
+      "extracted_sha256": "608158dc6099f6c85e168820164e5e62f48fa0e8da516336da6edbfc6a0806d6"
     },
     {
       "source": "roku/components/SearchPanel.brs",
       "destination": "roku/components/SearchPanel.brs",
-      "sha256": "3a3e1e5c3037b3b083f5d46badb1a70c54d1abc59c5eb502138a7086b0967dc8"
+      "sha256": "3a3e1e5c3037b3b083f5d46badb1a70c54d1abc59c5eb502138a7086b0967dc8",
+      "extracted_sha256": "3f8dacea1d6ac05944e476851dcd4ad9ef374d6e8bf8e2f8ccbaf09c9a7146c9",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/SearchPanel.xml",
       "destination": "roku/components/SearchPanel.xml",
-      "sha256": "e7b3d24081ed20fa9b7ea5dbaf30a8b4587cd3460c458ac6429bd975d2785576"
+      "sha256": "e7b3d24081ed20fa9b7ea5dbaf30a8b4587cd3460c458ac6429bd975d2785576",
+      "extracted_sha256": "f915f9daec77735950ffb68bcd4620e9fdefe8175971122ac87b1dac1f4a8bb9",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/SearchScene.brs",
@@ -360,12 +407,16 @@
     {
       "source": "roku/components/SourceCard.brs",
       "destination": "roku/components/SourceCard.brs",
-      "sha256": "b8d09c20b83441efa319dd96f067c86eaf2b4d50a48f06aee934dabe9e7745fb"
+      "sha256": "b8d09c20b83441efa319dd96f067c86eaf2b4d50a48f06aee934dabe9e7745fb",
+      "extracted_sha256": "e9b10a8f771544ddbd0d1292c7c2614f0af8bfc80a75d98885edc9d0604118a9",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/SourceCard.xml",
       "destination": "roku/components/SourceCard.xml",
-      "sha256": "f23fffbb1a71ffc0f552a15b359812a632f300b4c6746e94144b09c988f4e1b5"
+      "sha256": "f23fffbb1a71ffc0f552a15b359812a632f300b4c6746e94144b09c988f4e1b5",
+      "extracted_sha256": "0dd0dd12f19d66fd993572e45bdb1755984a335cc695e29a9db35fd7674d0bcc",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/SourcesScene.brs",
@@ -386,19 +437,23 @@
     {
       "source": "roku/components/TextEntry.xml",
       "destination": "roku/components/TextEntry.xml",
-      "sha256": "85d2514bf172aa655ec28ff462963097dc10558a092fe74d4f4c8c92bbe4a942"
+      "sha256": "85d2514bf172aa655ec28ff462963097dc10558a092fe74d4f4c8c92bbe4a942",
+      "extracted_sha256": "92bd1142c683948810f570373efe8794f017bf10fbaf05d69ecd07eae2a40dba",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/UiChoice.brs",
       "destination": "roku/components/UiChoice.brs",
-      "sha256": "637bd94aac40af9c6b2b4e5f3500f5371a33018dc6345d0d725436897f887b87"
+      "sha256": "637bd94aac40af9c6b2b4e5f3500f5371a33018dc6345d0d725436897f887b87",
+      "extracted_sha256": "f8cfe882fd94b88ec5a04ba831cce91cee683abbaeb6cead4a85f798ec8f6a37",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/UiChoice.xml",
       "destination": "roku/components/UiChoice.xml",
       "sha256": "8a075f9f786f46ef7371fefb225eff47a311ce8f50104083935a80c7d8c9d07d",
-      "extracted_sha256": "ae0c1542163e7548bc0926935cb9ac63cbbaeef4415e29591ad04a3dcc6fb7d0",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "d7c282c78a86f19c18fbedd8ef4c994c630a559e014a644c440c045cb46202ed",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/data/BSLIB-LICENSE.txt",
@@ -3843,7 +3898,9 @@
     {
       "source": "roku/manifest",
       "destination": "roku/manifest",
-      "sha256": "e3ec6e7a1150fbd14f500736f2b28550b8a7a4bf08832546fc29b208b22dee58"
+      "sha256": "e3ec6e7a1150fbd14f500736f2b28550b8a7a4bf08832546fc29b208b22dee58",
+      "extracted_sha256": "e46ee98e1f37fdc88cad76a3ba4229908a21988560d6b1fcda04975a54774bdc",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/source/AccountPolicy.brs",
@@ -3935,7 +3992,9 @@
     {
       "source": "roku/tests/branding_contract.py",
       "destination": "roku/tests/branding_contract.py",
-      "sha256": "56f5dd474cf933f299238037251129543f3dda54c40fe75a80e1973523ad3eb7"
+      "sha256": "56f5dd474cf933f299238037251129543f3dda54c40fe75a80e1973523ad3eb7",
+      "extracted_sha256": "a70dc1d8c5aa7a2348b1dcc45d37f7696d545b7ddf862e622d02c4729dec201e",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/tests/browse-policy.brs",
@@ -3996,7 +4055,9 @@
     {
       "source": "roku/tests/episode_image_runtime.py",
       "destination": "roku/tests/episode_image_runtime.py",
-      "sha256": "01e259cf2366c0ba38e25da3a532bfbca95dbacdcb57e876b6de81f169f65352"
+      "sha256": "01e259cf2366c0ba38e25da3a532bfbca95dbacdcb57e876b6de81f169f65352",
+      "extracted_sha256": "3f7320e12d407758d2369f498e1bfdd71b4e04c97a7c2a0bb57503647422b2ef",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/tests/episode_library_runtime.py",
@@ -4008,7 +4069,9 @@
     {
       "source": "roku/tests/episode_mask_runtime.py",
       "destination": "roku/tests/episode_mask_runtime.py",
-      "sha256": "83def601960d98e328fe74a112e7d35286ccb0d925f4e011626de9e8a81bb888"
+      "sha256": "83def601960d98e328fe74a112e7d35286ccb0d925f4e011626de9e8a81bb888",
+      "extracted_sha256": "ead2b0b096d64fadf709f5c310dbffe13026f20e77725ad05e7eba25c08ac210",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/tests/explicit_resume_runtime.py",
@@ -4096,8 +4159,8 @@
       "source": "roku/tests/focus_contract.py",
       "destination": "roku/tests/focus_contract.py",
       "sha256": "e5e127d932cc85f2e60305eaf3ee7a637d72ee135707969ec92fb8bad2d49714",
-      "extracted_sha256": "8b2f1e040c270f4d79b554fc7b28c6443aa281d473a48d36743c89926db25a37",
-      "reason": "Split follow-up: route-handler slices now read the split sibling files."
+      "extracted_sha256": "52a2093889f8e788bc29f611a4c63c361e00841c1e07616ce07e57ccd5d69164",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/tests/guide_boundary_runtime.py",
@@ -4161,7 +4224,9 @@
     {
       "source": "roku/tests/make_ux_preview.py",
       "destination": "roku/tests/make_ux_preview.py",
-      "sha256": "15c88f46d4513d6e1e4eb5f162be06657c5a306f6ded0843e54fff8456268086"
+      "sha256": "15c88f46d4513d6e1e4eb5f162be06657c5a306f6ded0843e54fff8456268086",
+      "extracted_sha256": "db59a0d3d0b013f53869a318fdfc8602e5e5b67a886d7ac5fe4a029875b08910",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/tests/mock_api.py",
@@ -4172,8 +4237,8 @@
       "source": "roku/tests/movie_detail_runtime.py",
       "destination": "roku/tests/movie_detail_runtime.py",
       "sha256": "7bc1a87c88169be062ef351fd1119dce7a0a0df6e4741c999b25454c058a36d7",
-      "extracted_sha256": "34666b57627b315b16cf37ad5e50d49f7bbf5d5c12bcad20279acde74c81df04",
-      "reason": "Split follow-up: showMetadata extraction moved to components/ResponseScene.brs."
+      "extracted_sha256": "3e6353079f26b4532373fa976ebe9a67b3f428c808bca75e899e76e7ef0f9c1c",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/tests/next_episode_runtime.py",
@@ -4203,13 +4268,15 @@
       "source": "roku/tests/playback_static.py",
       "destination": "roku/tests/playback_static.py",
       "sha256": "79f62a2d61f19eeb8d4b08fbe3cfe9a1d6d2c27c9e53708ad4aca9cd7141c3f7",
-      "extracted_sha256": "52422e1d3dd5f7e7d951e22342493a1a6575a3fbca547df0722900fa4267eae8",
-      "reason": "Split follow-up: scene/api/util now read the merged component scope: the split sibling files."
+      "extracted_sha256": "67085c3a647f5b7edf03019758f627dd32ed01824453971671901decc7dfc9f8",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/tests/player-overlay.brs",
       "destination": "roku/tests/player-overlay.brs",
-      "sha256": "3478078f0de5168fbfbcf651544b8e5f0ef0ea980696c25fddddb37855a3a5fb"
+      "sha256": "3478078f0de5168fbfbcf651544b8e5f0ef0ea980696c25fddddb37855a3a5fb",
+      "extracted_sha256": "78d43a06d127879585ab0814904e061289b364e9ad901ee62d46e1381c582ca2",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/tests/presentation_policy_test.brs",
@@ -4230,8 +4297,8 @@
       "source": "roku/tests/profile_management_runtime.py",
       "destination": "roku/tests/profile_management_runtime.py",
       "sha256": "a3950dc5d052a70653a8b82d98e29799dc9a8caa24789f765a8459e47f2b616a",
-      "extracted_sha256": "cb0bf6f7567be8406c1475dc512554dae5e19e245cf24d02032d516dad8fe556",
-      "reason": "Split follow-up: profile-management extractions moved to components/AccountProfilesScene.brs (accountResponse stays in AccountScene.brs)."
+      "extracted_sha256": "72b70aa024cf3755fa9a92807d6b3b63113e3fb9b7cd58f4b5a9263dddaf148f",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/tests/profile_preferences_runtime.py",
@@ -4256,8 +4323,8 @@
       "source": "roku/tests/scenegraph_ux_contract.py",
       "destination": "roku/tests/scenegraph_ux_contract.py",
       "sha256": "ae8ab75f453ff30c0431316d869465669edb5d5810a00640c90c8b3e13e93f36",
-      "extracted_sha256": "42687609037fe651555c6efc429f73e20a984d6755ae4f88cbf6b17c9e86b2dc",
-      "reason": "Split follow-up: scene now reads the merged MainScene component scope: the split sibling files."
+      "extracted_sha256": "893ff4381527a0cb00cd8cbddb61f2a9a5bc6c141a64ea831ad32da07a8bb4d9",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/tests/schema.brs",
@@ -4321,8 +4388,8 @@
       "source": "roku/tests/ux_preview.brs",
       "destination": "roku/tests/ux_preview.brs",
       "sha256": "bfe358b15bfce9e359c42d3f25e53614d9c44fdde69554fb9eddf36f6fe93916",
-      "extracted_sha256": "bce144d415c0e2378147f345d5e86b6dd745812217a4c2cdbbe977532bf73ee4",
-      "reason": "Discover-browse alignment 3570c37, recorded post-hoc: updated the Discover heading expectation; unrelated to the file split."
+      "extracted_sha256": "e1d7c4fece3145edf18c082df90f35a5870be151a831b1b84ae381cdb8e4a8fa",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/tools/fetch_character_avatars.py",

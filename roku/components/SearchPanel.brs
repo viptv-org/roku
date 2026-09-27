@@ -6,8 +6,8 @@ sub init()
     m.keys.textEditBox.maxTextLength = 256
     m.keys.textEditBox.clearOnDownKey = false
     m.keys.textEditBox.hintText = "Search"
-    m.keys.textEditBox.hintTextColor = "#A6A8AA"
-    m.keys.textEditBox.textColor = "#F5F5F5"
+    m.keys.textEditBox.hintTextColor = "#B6B4AF"
+    m.keys.textEditBox.textColor = "#F4F2EE"
     m.keys.textEditBox.backgroundUri = "pkg:/images/ui-input.9.png"
     m.keys.textEditBox.translation = [12,0]
     m.keys.textEditBox.width = 366

@@ -9,10 +9,10 @@ sub Main()
  m.top={nodes:m.nodes,findNode:FindNode}
  m.testDevice={GetDisplaySize:Display,GetUIResolution:Pixels,layout:{w:1280,h:720},pixels:{width:1920,height:1080}}
  init()
- if m.nodes.artworkClip.maskSize[0]<>384 or m.nodes.artworkClip.maskSize[1]<>216 then throw "mask ignores graphics/layout scale"
+ if m.nodes.artworkClip.maskSize[0]<>360 or m.nodes.artworkClip.maskSize[1]<>202.5 then throw "mask ignores graphics/layout scale"
  m.testDevice.pixels={width:1280,height:720}
  init()
- if m.nodes.artworkClip.maskSize[0]<>256 or m.nodes.artworkClip.maskSize[1]<>144 then throw "mask hard-coded for FHD graphics"
+ if m.nodes.artworkClip.maskSize[0]<>240 or m.nodes.artworkClip.maskSize[1]<>135 then throw "mask hard-coded for FHD graphics"
  print "EPISODE_MASK_SCALE_OK"
 end sub
 function TestCreateObject(name as string) as object

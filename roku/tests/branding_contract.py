@@ -1,4 +1,4 @@
-"""Offline contract for Roku branding and remote-only profile avatars."""
+"""Offline contract for Roku branding and validated profile avatar sources."""
 from pathlib import Path
 import re
 
@@ -19,7 +19,9 @@ profile_xml = (ROOT / "components/ProfileCard.xml").read_text()
 profile_brs = (ROOT / "components/ProfileCard.brs").read_text()
 assert 'id="avatar"' in profile_xml and 'id="avatarFallback"' in profile_xml
 assert "item.avatar_url" in profile_brs
-assert not re.search(r'pkg:/images/[^"\n]*avatar', profile_xml + profile_brs, re.I)
+assert 'AccountAvatarStyle(item.avatar_style)' in profile_brs
+assert 'choice >= 1 and choice <= 48' in profile_brs
+assert 'CreateObject("roFileSystem").exists(local)' in profile_brs
 assert 'loadStatus' in profile_brs and 'm.initial.visible = not loaded' in profile_brs
 hero_xml = (ROOT / "components/HeroPanel.xml").read_text()
 hero_brs = (ROOT / "components/HeroPanel.brs").read_text()

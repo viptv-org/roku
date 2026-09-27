@@ -1,7 +1,7 @@
 ' Presentation-only screen ownership, geometry and remote-focus coordination.
 ' Authentication, HTTP scheduling, playback sessions and Video replacement stay in MainScene.
 sub initPresentation()
-    ids = ["pageCaption","detailAtmosphere","detailBackdrop","detailActions","episodeList","seasonList","seasonHeading","episodesHeading","liveTabs","channelList","liveListHeading","sourceFilters","detailCredits","sourceContext","sourceState","sourceHelp","sourceSpinner","emptyState","emptyTitle","emptyMessage","busyPanel","busySpinner","busyMessage","busyShade","noticePanel","noticeText","noticeTimer","choicePanel","fullTextPanel","fullTextTitle","fullTextBody","railSurface","railShade","homeActions","homeShelves","heroArtTimer"]
+    ids = ["pageCaption","detailAtmosphere","detailBackdrop","detailAmbient","detailActions","episodeList","seasonList","seasonHeading","episodesHeading","liveTabs","channelList","liveListHeading","sourceFilters","detailCredits","sourceContext","sourceState","sourceHelp","sourceSpinner","sourcePanelGround","sourcePanelScrim","emptyState","emptyTitle","emptyMessage","busyPanel","busySpinner","busyMessage","busyShade","noticePanel","noticeText","noticeTimer","choicePanel","fullTextPanel","fullTextTitle","fullTextBody","railSurface","railShade","homeActions","homeShelves","heroArtTimer"]
     for each id in ids
         m[id] = m.top.findNode(id)
     end for
@@ -22,10 +22,10 @@ sub initPresentation()
     m.status.observeField("text","uiStatusChanged")
     m.noticeTimer.observeField("fire","uiHideNotice")
     m.top.observeField("focusedChild","uiFocusChanged")
-    m.busySpinner.poster.uri = "pkg:/images/ui-spinner.png"
-    m.sourceSpinner.poster.uri = "pkg:/images/ui-spinner.png"
-    m.busySpinner.poster.width = 60
-    m.busySpinner.poster.height = 60
+    m.busySpinner.poster.uri = "pkg:/images/design/spinner.png"
+    m.sourceSpinner.poster.uri = "pkg:/images/design/spinner.png"
+    m.busySpinner.poster.width = 38
+    m.busySpinner.poster.height = 38
     m.sourceSpinner.poster.width = 26
     m.sourceSpinner.poster.height = 26
     m.homeActions.observeField("activation","uiResumeAction")
@@ -76,7 +76,7 @@ sub uiBusy(active as boolean, message = "Loading" as string)
         end if
     end if
     m.busyMessage.text = message
-    m.busyMessage.font.size = 22
+    m.busyMessage.font.size = 20
     m.busyPanel.visible = active
     if active then m.busySpinner.control = "start" else m.busySpinner.control = "stop"
 end sub
@@ -115,7 +115,7 @@ sub uiHidePageExtras()
     if m.searchPanel <> invalid then m.searchPanel.visible = false
     if m.searchDelay <> invalid then m.searchDelay.control = "stop"
     if m.uiReady <> true then return
-    for each id in ["detailAtmosphere","detailActions","episodeList","seasonList","seasonHeading","episodesHeading","liveTabs","channelList","liveListHeading","sourceFilters","detailCredits","sourceContext","sourceState","sourceHelp","sourceSpinner","emptyState","pageCaption","discoverFilters"]
+    for each id in ["detailAtmosphere","detailActions","episodeList","seasonList","seasonHeading","episodesHeading","liveTabs","channelList","liveListHeading","sourceFilters","detailCredits","sourceContext","sourceState","sourceHelp","sourceSpinner","sourcePanelGround","sourcePanelScrim","emptyState","pageCaption","discoverFilters"]
         m[id].visible = false
     end for
     m.sourceSpinner.control = "stop"
@@ -275,30 +275,41 @@ sub uiLayoutPage(mode as string, subtitle = "" as string)
         m.footer.visible = false
         return
     end if
-    m.heading.translation = [100,54]
+    m.heading.translation = [128,36]
     m.heading.width = 1096
     m.heading.height = 62
     m.heading.wrap = false
-    m.heading.font.size = 42
+    m.heading.font.size = 37
     m.heading.visible = true
-    m.pageCaption.translation = [100,126]
+    m.pageCaption.translation = [128,90]
     m.pageCaption.maxWidth = 1096
     m.pageCaption.text = subtitle
     m.pageCaption.visible = subtitle <> ""
-    m.standardList.translation = [100,176]
-    if subtitle = "" then m.standardList.translation = [100,144]
-    m.standardList.itemSize = [536,56]
+    m.standardList.translation = [128,128]
+    if subtitle = "" then m.standardList.translation = [128,96]
+    m.standardList.itemSize = [480,54]
     m.standardList.numRows = 7
-    m.posterGrid.translation = [100,198]
+    m.posterGrid.translation = [128,138]
     for each id in ["art","detailTitle","detailInfo","description"]
         m[id].visible = false
     end for
     if m.discoverActive = true and mode = "browse" and m.mediaType <> "live"
         m.discoverFilters.visible = true
-        m.posterGrid.translation = [100,248]
+        m.posterGrid.translation = [128,180]
     end if
     if mode = "streams"
         m.heading.text = "Choose a source"
+        m.heading.font.size = 29
+        m.heading.translation = [776,36]
+        m.heading.width = 440
+        m.sourcePanelGround.visible = true
+        m.sourcePanelScrim.visible = true
+        if m.selected <> invalid
+            backdrop = PresentationBackdrop(m.selected)
+            m.detailAtmosphere.visible = backdrop <> ""
+            m.detailBackdrop.uri = ImageUrl(backdrop,1120,720,true)
+            m.detailAmbient.uri = ImageUrl(backdrop,80,45,false)
+        end if
         m.pageCaption.visible = false
         m.sourceFilters.visible = true
         m.sourceContext.visible = true
@@ -323,6 +334,8 @@ sub uiLayoutPage(mode as string, subtitle = "" as string)
 end sub
 
 sub uiEmpty(title as string, message as string)
+    m.emptyTitle.width = 780
+    m.emptyMessage.width = 780
     m.emptyTitle.translation = [250,304]
     m.emptyMessage.translation = [250,360]
     m.emptyState.visible = true

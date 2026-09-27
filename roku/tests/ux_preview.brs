@@ -4,8 +4,8 @@ sub uxFixtureChanged()
     m.config = {base:"",access_token:"",last_profile_id:"fixture",account_id:"fixture-account",capabilities:{}}
     m.profile = "fixture"
     m.identity.text = "Alex"
-    updateProfileNav({name:"Alex",avatar_url:"https://api.dicebear.com/10.x/critters/png?seed=fixture-alex&size=256"})
-    m.sidebar.jumpToItem = 1
+    updateProfileNav({name:"Alex",avatar_style:"critters",avatar_choice:1,avatar_url:"pkg:/images/avatar-catalog/critters-1.png"})
+    m.sidebar.jumpToItem = 2
     names = ["The Last Signal","Northline","After Hours","Wild Coast","Sunward","Deep Current"]
     art = ["signal","northline","afterhours","wildcoast","sunward","deepcurrent"]
     values = []
@@ -251,7 +251,7 @@ sub uxFixtureChanged()
         rows("Movies",values,"browse","Select a title to explore sources")
     else if kind = "profiles"
         m.canCreateProfile = true
-        accountShowProfileGrid([{id:"1",name:"Alex",avatar_url:"https://api.dicebear.com/10.x/critters/png?seed=fixture-alex&size=256",setup_complete:true,presentation_complete:true},{id:"2",name:"Kids",avatar_url:"https://api.dicebear.com/10.x/pixel-art/png?seed=fixture-kids&size=256",setup_complete:true,presentation_complete:true},{name:"Add profile",action:"newprofile",avatar_url:"",setup_complete:true,presentation_complete:true}])
+        accountShowProfileGrid([{id:"1",name:"Alex",avatar_style:"critters",avatar_choice:1,avatar_url:"pkg:/images/avatar-catalog/critters-1.png",setup_complete:true,presentation_complete:true},{id:"2",name:"Kids",avatar_style:"pixel-art",avatar_choice:1,avatar_url:"pkg:/images/avatar-catalog/pixel-art-1.png",setup_complete:true,presentation_complete:true},{name:"Add profile",action:"newprofile",avatar_url:"",setup_complete:true,presentation_complete:true}])
     else if kind = "addons"
         addonResponse("accountaddons",{ok:true,data:[{id:"fixture",name:"Cinemeta",enabled:true}]})
     else if kind = "error"
@@ -285,7 +285,7 @@ sub uxFixtureChanged()
         m.selected = values[0]
         if kind = "detail-long" then m.selected.description = "A lone transmission draws a rescue crew beyond the edge of known space. When their search uncovers a forgotten colony, the crew must choose between completing their mission and helping the people who have waited generations for rescue. An unexpected arrival challenges everything they believe about the signal and its origin. As time runs out, each member must confront the cost of returning home."
         if kind = "detail-empty" then m.selected.description = ""
-        rows(m.selected.name,[{name:"Choose source",action:"play"},{name:"+ My List",action:"favorite"},{name:"More info",action:"moreinfo"}],"detail","")
+        rows(m.selected.name,[{name:"Play",action:"play"},{name:"My List",action:"favorite"},{name:"More info",action:"moreinfo"}],"detail","")
         showDetail(m.selected)
     else if kind = "episodes" or kind = "episode-controls"
         m.selected = values[0]

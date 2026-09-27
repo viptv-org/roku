@@ -1,8 +1,13 @@
 # viptv roku
 
-Extracted from `vynxc/viptv@7d6b413`. `MIGRATION.json` records every original file and SHA-256; the original repository retains history. This repository owns the unchanged native Roku client.
+Extracted from `vynxc/viptv@7d6b413`. `MIGRATION.json` records every original file and SHA-256; the original repository retains history. This repository owns the native Roku client.
 
-The [design repository](https://github.com/viptv-org/design) is the product source of truth. Read [SPEC.md](SPEC.md), [AGENTS.md](AGENTS.md), and the pinned `DESIGN_REF` before implementation. Future platform work must inherit its interaction contracts.
+The [design repository](https://github.com/viptv-org/design) is the product source of truth. The native client adopts the current TV design under [ROK-042](design-contract/ROKU_DESIGN.md): bundled Onest/Bricolage fonts, Lucide controls, landscape Home/detail artwork, stable focus rings, the expanding rail and right-side panels. The 1920×1080 references map proportionally to Roku's 1280×720 logical canvas. Read [SPEC.md](SPEC.md), [AGENTS.md](AGENTS.md), and `DESIGN_REF` before implementation.
+
+`python3 scripts/design-sync.py check` verifies the pinned native assets, fonts,
+tokens and contract. To deliberately adopt a revision:
+`python3 scripts/design-sync.py sync ../design <full-commit>`.
+Fonts and their licenses are included in the compiled runtime package.
 
 ## Build artifact
 

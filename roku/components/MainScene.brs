@@ -246,7 +246,7 @@ sub home()
         showSettings()
         return
     end if
-    if m.sidebar <> invalid then m.sidebar.jumpToItem = 1
+    if m.sidebar <> invalid then m.sidebar.jumpToItem = 2
     showHome()
 end sub
 

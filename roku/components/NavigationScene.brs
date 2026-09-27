@@ -266,7 +266,7 @@ end sub
 
 function favoriteLabel(item as object) as string
     if UiIsFavorite(item) then return "Remove from My List"
-    return "+ My List"
+    return "My List"
 end function
 
 sub toggleFavorite()

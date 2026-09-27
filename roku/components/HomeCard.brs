@@ -3,8 +3,8 @@ sub init()
         m[id] = m.top.findNode(id)
     end for
     m.poster.observeField("loadStatus","artLoaded")
-    m.title.font.size = 21
-    m.subtitle.font.size = 17
+    m.title.font.size = 16
+    m.subtitle.font.size = 13
 end sub
 
 sub contentChanged()
@@ -23,6 +23,25 @@ sub contentChanged()
         item.observeField("HDPosterUrl","contentChanged")
         item.observeField("artworkKind","contentChanged")
     end if
+    w = 213
+    h = 120
+    if item.hasField("uiWidth") and item.uiWidth = 240
+        w = 240
+        h = 135
+    end if
+    for each id in ["surface","artworkMask","focusFrame"]
+        m[id].width = w
+        m[id].height = h
+    end for
+    m.title.translation = [0,h+12]
+    m.subtitle.translation = [0,h+34]
+    m.title.maxWidth = w
+    m.subtitle.maxWidth = w
+    m.fallback.width = w-20
+    m.fallback.height = h-20
+    m.progressTrack.translation = [9,h-12]
+    m.progressFill.translation = [9,h-12]
+    m.progressTrack.width = w-18
     m.title.text = item.title
     m.subtitle.text = item.subtitle
     if not item.hasField("artState") then item.addFields({artState:"none"})
@@ -30,20 +49,20 @@ sub contentChanged()
     m.fallback.text = item.title
     m.fallback.visible = true
     m.poster.translation = [0,0]
-    m.poster.width = 256
-    m.poster.height = 144
+    m.poster.width = w
+    m.poster.height = h
     m.poster.loadDisplayMode = "scaleToZoom"
-    m.poster.loadWidth = ImagePixels(256)
-    m.poster.loadHeight = ImagePixels(144)
+    m.poster.loadWidth = ImagePixels(213)
+    m.poster.loadHeight = ImagePixels(120)
     if item.artworkKind = "portrait"
         ' Preserve the source aspect ratio, then crop rather than stretch.
         ' The complete poster remains available on the detail page.
-        m.poster.loadWidth = ImagePixels(256)
+        m.poster.loadWidth = ImagePixels(213)
         m.poster.loadHeight = ImagePixels(384)
     else if item.artworkKind = "logo"
-        m.poster.translation = [40,22]
-        m.poster.width = 176
-        m.poster.height = 100
+        m.poster.translation = [27,13]
+        m.poster.width = 159
+        m.poster.height = 94
         m.poster.loadDisplayMode = "scaleToFit"
         m.poster.loadWidth = ImagePixels(176)
         m.poster.loadHeight = ImagePixels(100)
@@ -63,7 +82,7 @@ sub contentChanged()
     m.progressFill.visible = fraction > 0
     if fraction > 1 then fraction = 1
     if fraction < 0 then fraction = 0
-    fillWidth = 240*fraction
+    fillWidth = (w-18)*fraction
     ' Keep a rounded dot visible for very small nonzero progress.
     if fillWidth < 6 then fillWidth = 6
     m.progressFill.width = fillWidth

@@ -1,6 +1,6 @@
 # Contributing to VIPTV roku
 
-Thanks for your interest. VIPTV is a multi-repository product; this repository owns the native Roku client. The Roku baseline is frozen during the cross-platform extraction; behavioral change requests start in [viptv-org/design](https://github.com/viptv-org/design).
+Thanks for your interest. VIPTV is a multi-repository product; this repository owns the native Roku client. Behavioral change requests start in [viptv-org/design](https://github.com/viptv-org/design). The extraction baseline remains recorded in MIGRATION.json; ROK-042 intentionally adopts the current TV design.
 
 ## Workflow
 

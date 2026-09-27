@@ -16,7 +16,7 @@ sub Main()
  item={HDPosterUrl:"https://wsrv.nl/?url=https%3A%2F%2Fartworks.thetvdb.com%2Fbanners%2Fepisode%2Ftest.jpg&w=500",title:"Pilot",description:"Episode one",hasField:HasField}
  m.top={itemContent:item,findNode:FindNode,nodes:m.nodes}
  render()
- if instr(1,m.thumbnail.uri,"&w=256&h=144")=0 then throw "episode did not finish rendering a resized thumbnail"
+ if instr(1,m.thumbnail.uri,"&w=240&h=135")=0 then throw "episode did not finish rendering a resized thumbnail"
  if instr(1,m.thumbnail.uri,"wsrv.nl%2F")>0 then throw "episode nested the image proxy"
  if m.nodes.title.text<>"Pilot" then throw "episode title never rendered"
  for each uri in ["", "https://wsrv.nl/?url=%ZZ", "https://private.invalid/image.jpg?token=private"]

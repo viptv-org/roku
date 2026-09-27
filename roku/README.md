@@ -1,6 +1,6 @@
 # VIPTV for Roku
 
-VIPTV is a native 1280×720 SceneGraph client using Roku `Video`, native keyboard input, account-scoped device sessions, and profile-specific history. It contains no static administrator key, packaged bearer, provider credentials, or local avatar artwork.
+VIPTV is a native 1280×720 SceneGraph client using Roku `Video`, native keyboard input, account-scoped device sessions, and profile-specific history. Its TV design uses bundled fonts, Lucide icons and approved avatar artwork. It contains no static administrator key, packaged bearer or provider credentials.
 
 The production package is origin-locked to `https://viptv.syek.tech` with an origin-only configuration. A fresh install starts device-code sign-in. The QR image is served by VIPTV itself and opens the website with the code prefilled; no pairing secret is sent to a third-party QR service. Rotating access/refresh credentials are written only after account approval.
 
@@ -8,11 +8,11 @@ The production package is origin-locked to `https://viptv.syek.tech` with an ori
 
 ## Navigation and profiles
 
-The seven-entry left rail is **Profile, Home, Discover, Live TV, My List, Search, Settings**. The profile entry uses the selected profile’s server-approved DiceBear PNG with an initials fallback; it opens the existing account chooser. The remembered profile ID is revalidated against the signed-in account before automatic selection and is cleared on revocation/sign-out.
+The seven-entry left rail is **Profile, Search, Home, Discover, Live TV, My List, Settings**. The profile entry uses the selected profile’s server-approved DiceBear PNG with an initials fallback; it opens the existing account chooser. The remembered profile ID is revalidated against the signed-in account before automatic selection and is cleared on revocation/sign-out.
 
-Manage profile names and avatars from the phone dashboard. Fresh accounts start without a profile. Imported profiles complete presentation setup without changing their ID, favorites, or history.
+Create, rename, choose avatars and delete non-primary profiles from the native TV editor. Fresh accounts start without a profile. Imported profiles complete presentation setup without changing their ID, favorites, or history.
 
-Focus uses rounded shape cues and small bounded scale changes. Left from the first card enters the rail; Right returns to content. Back restores route, filter, page, and cursor state without allowing late responses to steal focus from the rail, a dialog, or playback.
+Focus uses fixed-size white rings and rounded off-white fills, with no focus scaling. Left from the first card enters the rail; Right returns to content. Back restores route, filter, page, and cursor state without allowing late responses to steal focus from the rail, a dialog, or playback.
 
 ## Home and discovery
 

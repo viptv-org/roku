@@ -21,6 +21,8 @@ jobs:
       - name: Validate account, branding, playback and focus contracts
         run: |
           python3 scripts/verify-migration.py
+          python3 scripts/design-sync.py check
+          python3 roku/tests/design_contract.py
           python3 roku/tests/account_only_contract.py
           python3 roku/tests/branding_contract.py
           python3 roku/tests/playback_static.py
@@ -31,6 +33,7 @@ jobs:
         run: |
           npm install --prefix /tmp/viptv-roku-tests --no-audit --no-fund brs-node@2.5.3
           export VIPTV_BRS_CLI=/tmp/viptv-roku-tests/node_modules/.bin/brs-cli
+          python3 roku/tests/design_rail_runtime.py
           python3 roku/tests/guide_boundary_runtime.py
           python3 roku/tests/continuation_runtime.py
           python3 roku/tests/next_episode_runtime.py

@@ -11,7 +11,7 @@ out = Path(sys.argv[1]).resolve()
 if out.exists():
     raise SystemExit('Output must be new')
 out.mkdir(parents=True)
-for folder in ('components', 'source', 'images', 'data'):
+for folder in ('components', 'source', 'images', 'data', 'fonts'):
     shutil.copytree(root / folder, out / folder)
 shutil.copyfile(root / 'manifest', out / 'manifest')
 for image in (root / 'tests' / 'fixtures').iterdir():

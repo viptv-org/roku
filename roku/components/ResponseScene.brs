@@ -371,14 +371,14 @@ sub showMetadata(data as object)
             showEpisodes(0)
         end if
     else
-        label = "Choose source"
+        label = "Play"
         if meta.position <> invalid
-            if meta.position > 0 then label = "Resume at " + PlayerTime(meta.position)
+            if meta.position > 0 then label = "Resume"
         end if
         action = "play"
-        if label <> "Choose source" then action = "resume"
+        if label = "Resume" then action = "resume"
         actions = [{name:label,action:action}]
-        if label <> "Choose source" then actions.push({name:"Choose source",action:"sources"})
+        if label = "Resume" then actions.push({name:"Choose source",action:"sources"})
         actions.push({name:favoriteLabel(meta),action:"favorite"})
         actions.push({name:"More info",action:"moreinfo"})
         rows(Txt(meta.name),actions,"detail","")

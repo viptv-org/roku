@@ -1,5 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
 <component name="HoldGrid" extends="MarkupGrid">
- <interface><field id="activation" type="assocarray" alwaysNotify="true"/></interface>
- <script type="text/brightscript" uri="pkg:/components/HoldSelect.brs"/>
- <children><Timer id="holdTimer" duration="0.7" repeat="false"/></children>
+ <interface>
+  <field id="activation" type="assocarray" alwaysNotify="true" />
+ </interface>
+ <script type="text/brightscript" uri="pkg:/components/HoldSelect.brs" />
+ <children>
+  <Timer id="holdTimer" duration="0.7" repeat="false" />
+ </children>
 </component>

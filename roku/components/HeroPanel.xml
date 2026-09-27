@@ -1,24 +1,38 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version='1.0' encoding='utf-8'?>
 <component name="HeroPanel" extends="Group">
  <interface>
-  <field id="artState" type="string" value="none"/>
-  <field id="model" type="assocarray" onChange="render"/>
-  <field id="compact" type="boolean" value="false" onChange="render"/>
+  <field id="artState" type="string" value="none" />
+  <field id="model" type="assocarray" onChange="render" />
+  <field id="compact" type="boolean" value="false" onChange="render" />
  </interface>
- <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
- <script type="text/brightscript" uri="pkg:/source/SourceLabels.brs"/>
- <script type="text/brightscript" uri="pkg:/components/HeroPanel.brs"/>
- <script type="text/brightscript" uri="pkg:/source/ImagePolicy.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/Util.brs" />
+ <script type="text/brightscript" uri="pkg:/source/SourceLabels.brs" />
+ <script type="text/brightscript" uri="pkg:/components/HeroPanel.brs" />
+ <script type="text/brightscript" uri="pkg:/source/ImagePolicy.brs" />
  <children>
-  <Rectangle id="base" width="1280" height="720" color="#101112"/>
-  <Poster id="backdropInstant" width="1280" height="720" loadWidth="256" loadHeight="144" loadDisplayMode="scaleToZoom" visible="false"/>
-  <Poster id="backdrop" width="1280" height="720" loadWidth="1280" loadHeight="720" loadDisplayMode="scaleToZoom" visible="false"/>
-  <Poster id="gradientLeft" width="1280" height="720" uri="pkg:/images/ui-hero-left.png"/>
-  <Poster id="gradientBottom" width="1280" height="720" uri="pkg:/images/ui-hero-bottom.png"/>
-  <Poster id="portrait" translation="[938,102]" width="252" height="378" loadWidth="280" loadHeight="420" loadDisplayMode="scaleToFit" visible="false"/>
-  <Label id="eyebrow" translation="[100,128]" width="560" height="26" font="font:SmallBoldSystemFont" color="#C5C6C7"/>
-  <ScrollingLabel id="title" translation="[100,166]" maxWidth="600" font="font:LargeBoldSystemFont" color="#F5F5F5" repeatCount="-1" scrollSpeed="48"/>
-  <Label id="summary" translation="[100,228]" width="548" height="80" numLines="3" wrap="true" font="font:SmallSystemFont" color="#D5D6D7"/>
-  <ScrollingLabel id="facts" translation="[100,322]" maxWidth="650" font="font:SmallSystemFont" color="#B6B8BA" repeatCount="-1" scrollSpeed="42"/>
+  <Rectangle id="base" width="1280" height="633" color="#0B0B0C" />
+  <Poster id="backdropInstant" width="1280" height="633" loadWidth="80" loadHeight="45" loadDisplayMode="scaleToZoom" visible="false" opacity="0.6" />
+  <Poster id="backdrop" width="747" height="480" loadWidth="1280" loadHeight="720" loadDisplayMode="scaleToZoom" visible="false" translation="[533,0]" />
+  <Poster id="gradientLeft" width="1280" height="633" uri="pkg:/images/design/hero-left.png" />
+  <Poster id="gradientBottom" width="1280" height="633" uri="pkg:/images/design/hero-bottom.png" />
+  <Poster id="portrait" translation="[938,102]" width="252" height="378" loadWidth="280" loadHeight="420" loadDisplayMode="scaleToFit" visible="false" />
+  <Label id="eyebrow" translation="[128,100]" width="560" height="26" color="#DAD8D3">
+   <Font role="font" uri="pkg:/fonts/onest_700.ttf" size="15" />
+  </Label>
+  <ScrollingLabel id="title" translation="[128,132]" maxWidth="506" color="#F4F2EE" repeatCount="-1" scrollSpeed="48">
+   <Font role="font" uri="pkg:/fonts/bricolage_grotesque_700.ttf" size="37" />
+  </ScrollingLabel>
+  <Label id="summary" translation="[128,298]" width="510" height="52" numLines="2" wrap="true" color="#DAD8D3">
+   <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
+  </Label>
+  <ScrollingLabel id="facts" translation="[128,262]" maxWidth="580" color="#B6B4AF" repeatCount="-1" scrollSpeed="42">
+   <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
+  </ScrollingLabel>
+  <Poster id="titleLogo" translation="[128,132]" width="273" height="79" loadDisplayMode="scaleToFit" visible="false" />
+  <Label id="episode" translation="[128,228]" width="280" height="24">
+   <Font role="font" uri="pkg:/fonts/onest_700.ttf" size="15" />
+  </Label>
+  <Poster id="progressTrack" translation="[420,232]" width="120" height="4" uri="pkg:/images/ui-progress-pill.9.png" blendColor="#45454BFF" visible="false" />
+  <Poster id="progressFill" translation="[420,232]" width="1" height="4" uri="pkg:/images/ui-progress-pill.9.png" blendColor="#F5C542FF" visible="false" />
  </children>
 </component>

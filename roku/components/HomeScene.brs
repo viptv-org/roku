@@ -61,7 +61,7 @@ end sub
 sub initHome()
     m.footer = m.top.findNode("footer")
     m.homeRows = m.top.findNode("homeRows")
-    m.homeRows.rowLabelFont.size = 18
+    m.homeRows.rowLabelFont.size = 21
     m.homePanel = m.top.findNode("homePanel")
     m.sidebar = m.top.findNode("sidebar")
     m.homeTitle = m.top.findNode("homeTitle")
@@ -75,7 +75,7 @@ sub initHome()
     m.homeExpanded = true
     m.homeKeyValue = ""
     m.homeDirty = false
-    m.navItems = [{name:"Profile",action:"profiles"},{name:"Home",action:"home"},{name:"Discover",action:"discover"},{name:"Live TV",action:"live"},{name:"My List",action:"favorites"},{name:"Search",action:"search"},{name:"Settings",action:"settings"}]
+    m.navItems = [{name:"Profile",action:"profiles"},{name:"Search",action:"search"},{name:"Home",action:"home"},{name:"Discover",action:"discover"},{name:"Live TV",action:"live"},{name:"My List",action:"favorites"},{name:"Settings",action:"settings"}]
     rebuildNavigation()
     if m.sidebar <> invalid then m.sidebar.observeField("itemSelected","navSelected")
     if m.homeRows <> invalid
@@ -187,7 +187,7 @@ end function
 function homeRow(index as integer) as object
     titles = ["Continue Watching","Trending Movies","Popular Series","Live Now","My List","Favorite Channels","Recently Watched Live TV"]
     row = CreateObject("roSGNode","ContentNode")
-    row.title = ucase(titles[index])
+    row.title = titles[index]
     for each item in homeValues(index)
         node = row.createChild("ContentNode")
         UiCardContent(node,item)

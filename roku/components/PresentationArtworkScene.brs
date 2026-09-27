@@ -85,9 +85,9 @@ sub uiLayoutDetailActions()
     bounds = m.description.localBoundingRect()
     height = bounds.height
     if m.description.text = "" then height = 0
-    if height > 128 then height = 128
-    m.detailActions.translation = [380,276+height+28]
-    m.detailCredits.translation = [380,276+height+108]
+    if height > 52 then height = 52
+    m.detailActions.translation = [128,178+height+16]
+    m.detailCredits.translation = [128,178+height+80]
 end sub
 
 ' Only visible cards plus one lookahead column request metadata, one at a time.

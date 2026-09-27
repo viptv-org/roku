@@ -69,9 +69,9 @@ sub render()
     ' The top-left identifies the content, not the app. Live swaps the V mark for
     ' the channel logo/name; VOD replaces the wordmark with the actual title.
     live = (data.live = true)
-    m.top.findNode("brandMark").visible = shown and not live
+    m.top.findNode("brandMark").visible = false
     m.top.findNode("brandWordmark").visible = shown and not live
-    if Txt(data.episode) <> "" then m.top.findNode("brandWordmark").text = Txt(data.episode) else m.top.findNode("brandWordmark").text = displayTitle
+    m.top.findNode("brandWordmark").text = Txt(data.title)
     identity = m.top.findNode("channelIdentity")
     identity.visible = shown and live
     m.top.findNode("channelName").text = Txt(data.title)
@@ -89,14 +89,18 @@ sub render()
     if data.live = true then status = "● LIVE"
     if buffering then status = "LOADING"
     m.top.findNode("playbackStatus").text = status
+    m.top.findNode("playbackStatus").visible = shown
     m.top.findNode("programmeProgress").visible = shown and data.live = true and hasProgramme
     repeats = 0
     if shown then repeats = -1
     if title.repeatCount <> repeats then title.repeatCount = repeats
-    m.top.findNode("context").text = Txt(data.context)
+    m.top.findNode("context").text = Txt(data.episode)
+    m.top.findNode("context").visible = shown and Txt(data.episode) <> ""
+    title.translation = [64,498]
+    if Txt(data.episode) = "" then title.translation = [64,464]
     spinner = m.top.findNode("spinner")
     spinner.visible = buffering
-    if spinner.poster.uri = "" then spinner.poster.uri = "pkg:/images/ui-spinner.png"
+    if spinner.poster.uri = "" then spinner.poster.uri = "pkg:/images/design/spinner.png"
     spinner.poster.width = 60
     spinner.poster.height = 60
     if buffering then spinner.control = "start" else spinner.control = "stop"
@@ -123,7 +127,10 @@ sub render()
     m.top.findNode("seekPreviewMarker").translation = [1152*current-1,-3]
     m.top.findNode("seekPreviewMarker").visible = m.preview <> invalid
     m.top.findNode("timeLeft").text = PlayerTime(position)
-    m.top.findNode("timeRight").text = PlayerTime(duration)
+    minutes = int((duration+30)/60)
+    runtime = minutes.toStr()+" min"
+    if minutes >= 60 then runtime = int(minutes/60).toStr()+" h "+(minutes mod 60).toStr()+" min"
+    m.top.findNode("timeRight").text = runtime
     if data.live = true
         m.top.findNode("seekRow").visible = false
         m.top.findNode("timeLeft").text = "LIVE"
@@ -136,18 +143,18 @@ sub render()
     end if
     pause = "Pause"
     if data.paused = true then pause = "Resume"
-    m.top.findNode("controlRow").translation = [64,624]
+    m.top.findNode("controlRow").translation = [64,617]
     m.top.findNode("controlSurface").visible = false
-    positions = [0,80,160,928,1008,1088,240]
+    positions = [0,60,120,984,1044,1104,180]
     if data.next_episode <> true and m.button = 6
         m.button = 1
         if data.live = true then m.button = 3
     end if
-    if data.live = true then positions = [0,0,0,0,544,1088,0]
+    if data.live = true then positions = [0,0,0,984,1044,1104,0]
     m.top.findNode("btnPauseLabel").text = pause
     pauseIcon = "pause"
     if data.paused = true then pauseIcon = "play"
-    m.top.findNode("btnPauseIcon").uri = "pkg:/images/ui-nav-player-"+pauseIcon+".png"
+    m.top.findNode("btnPauseIcon").uri = "pkg:/images/lucide/"+pauseIcon+"-primary.png"
     focused = m.row = 1 and m.top.hasFocus()
     m.top.findNode("focusPill").visible = focused
     m.top.findNode("focusPill").translation = [positions[m.button],0]
@@ -156,13 +163,19 @@ sub render()
     for i = 0 to 6
         label = m.top.findNode(labels[i])
         label.visible = false
-        label.color = "#F5F5F5"
-        if focused and i = m.button then label.color = "#101112"
+        label.color = "#F4F2EE"
+        if focused and i = m.button then label.color = "#0B0B0C"
         icon = m.top.findNode(icons[i])
-        icon.translation = [positions[i]+18,18]
+        icon.translation = [positions[i]+14,14]
         icon.visible = data.live <> true or i >= 3
         if i = 6 then icon.visible = data.next_episode = true and data.live <> true
-        icon.blendColor = label.color
+        names = ["back10",pauseIcon,"forward30","audio","captions","exit","next"]
+        variant = "primary"
+        if focused and i = m.button then variant = "focus"
+        icon.uri = "pkg:/images/lucide/"+names[i]+"-"+variant+".png"
+        surface = m.top.findNode(left(icons[i],len(icons[i])-4)+"Surface")
+        surface.translation = [positions[i],0]
+        surface.visible = icon.visible
     end for
     m.top.findNode("hint").text = ""
     m.top.findNode("hint").visible = false

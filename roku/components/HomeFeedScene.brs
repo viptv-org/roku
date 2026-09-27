@@ -198,7 +198,7 @@ sub homeHero()
         if cached <> invalid
             meta = cached.data.meta
             if meta <> invalid
-                for each field in ["background","backdrop","description","overview","genres","runtime","releaseInfo"]
+                for each field in ["background","backdrop","description","overview","genres","runtime","releaseInfo","logo","imdbRating"]
                     if hero[field] = invalid or Txt(hero[field]) = ""
                         if meta[field] <> invalid then hero[field] = meta[field]
                     end if
@@ -206,7 +206,7 @@ sub homeHero()
             end if
         end if
         if m.uiHeroMetadata <> invalid and m.uiHeroMetadata[path] <> invalid
-            for each field in ["background","backdrop","description","overview","genres","runtime","releaseInfo"]
+            for each field in ["background","backdrop","description","overview","genres","runtime","releaseInfo","logo","imdbRating"]
                 if hero[field] = invalid or Txt(hero[field]) = ""
                     if m.uiHeroMetadata[path][field] <> invalid then hero[field] = m.uiHeroMetadata[path][field]
                 end if

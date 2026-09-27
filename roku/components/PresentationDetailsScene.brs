@@ -17,23 +17,23 @@ sub uiShowDetails(item as object)
     m.detailTitle.font.size = 28
     panelY = m.standardList.translation[1] + 8
     if m.list.isSameNode(m.channelList) then panelY = 242
-    m.detailTitle.translation = [778,panelY]
-    m.detailTitle.maxWidth = 424
+    m.detailTitle.translation = [693,panelY]
+    m.detailTitle.maxWidth = 523
     m.detailTitle.text = Txt(item.name,Txt(item.title))
-    m.detailInfo.translation = [778,panelY+44]
-    m.detailInfo.width = 424
+    m.detailInfo.translation = [693,panelY+44]
+    m.detailInfo.width = 523
     m.detailInfo.height = 60
     m.detailInfo.text = PresentationFacts(item)
-    m.description.translation = [778,panelY+116]
-    m.description.width = 424
+    m.description.translation = [693,panelY+116]
+    m.description.width = 523
     m.description.height = 208
     m.description.numLines = 7
     m.description.maxLines = 0
-    m.description.font.size = 22
+    m.description.font.size = 17
     m.description.text = Txt(item.description,Txt(item.overview))
     m.detailInfo.visible = m.detailInfo.text <> ""
-    if not m.detailInfo.visible then m.description.translation = [778,panelY+44]
-    m.art.translation = [778,panelY-48]
+    if not m.detailInfo.visible then m.description.translation = [693,panelY+44]
+    m.art.translation = [693,panelY-48]
     m.art.width = 100
     m.art.height = 40
     m.art.uri = Txt(item.logo,Txt(item.poster))
@@ -41,52 +41,47 @@ sub uiShowDetails(item as object)
     if m.mode = "settings" or m.mode = "addons"
         m.art.visible = false
         m.detailInfo.visible = false
-        m.detailTitle.translation = [778,panelY]
-        m.description.translation = [778,panelY+44]
+        m.detailTitle.translation = [693,panelY]
+        m.description.translation = [693,panelY+44]
     else if m.mode = "detail" or m.mode = "episodes"
         backdrop = PresentationBackdrop(item)
         m.detailAtmosphere.visible = backdrop <> ""
-        m.detailBackdrop.loadWidth = ImagePixels(1280)
-        m.detailBackdrop.loadHeight = ImagePixels(720)
-        m.detailBackdrop.uri = ImageUrl(backdrop,1280,720,true)
+        m.detailBackdrop.uri = ImageUrl(backdrop,1120,720,true)
+        if m.detailAmbient <> invalid then m.detailAmbient.uri = ImageUrl(backdrop,80,45,false)
         m.heading.visible = false
         m.pageCaption.visible = false
-        m.detailTitle.translation = [380,126]
-        m.detailTitle.maxWidth = 804
-        m.detailTitle.font.size = 46
-        m.detailInfo.translation = [380,198]
-        m.detailInfo.width = 706
-        m.detailInfo.height = 48
-        m.description.translation = [380,276]
-        m.description.width = 804
-        m.description.height = 122
-        m.description.numLines = 4
-        m.description.font.size = 23
-        m.art.translation = [112,126]
-        m.art.width = 236
-        m.art.height = 354
-        m.art.loadWidth = ImagePixels(236)
-        m.art.loadHeight = ImagePixels(354)
-        m.art.uri = ImageUrl(Txt(item.poster),236,354,true)
+        m.detailTitle.translation = [128,64]
+        m.detailTitle.maxWidth = 760
+        m.detailTitle.font.size = 37
+        m.detailInfo.translation = [128,142]
+        m.detailInfo.width = 900
+        m.detailInfo.height = 28
+        m.description.translation = [128,178]
+        m.description.width = 520
+        m.description.height = 52
+        m.description.numLines = 2
+        m.description.maxLines = 2
+        m.description.font.size = 17
+        m.art.translation = [128,64]
+        m.art.width = 273
+        m.art.height = 60
+        m.art.loadWidth = ImagePixels(410)
+        m.art.loadHeight = ImagePixels(90)
+        m.art.uri = ImageUrl(Txt(item.logo),410,90,false,true)
         m.art.visible = m.art.uri <> ""
+        m.detailTitle.visible = not m.art.visible
         m.detailCredits.text = PresentationCredits(item)
-        m.detailCredits.visible = m.mode = "detail" and m.detailCredits.text <> ""
+        m.detailCredits.visible = false
         if m.mode = "detail"
-            m.description.height = 0
-            m.description.numLines = 0
-            m.description.maxLines = 4
             uiLayoutDetailActions()
             m.detailLayoutTimer.control = "start"
-        end if
-        if m.mode = "episodes"
-            m.detailTitle.translation = [112,74]
-            m.detailTitle.font.size = 36
-            m.detailTitle.maxWidth = 900
-            m.detailInfo.translation = [112,132]
-            m.description.translation = [112,186]
-            m.description.width = 760
+        else
+            m.detailTitle.translation = [128,48]
+            m.detailTitle.font.size = 32
+            m.detailInfo.translation = [128,104]
             m.description.visible = false
             m.art.visible = false
+            m.detailTitle.visible = true
         end if
     else if item.type = "live" and (m.mode = "browse" or m.mode = "livefavorites" or m.mode = "collection")
         queueLiveEpg(item)
@@ -115,19 +110,21 @@ sub uiSourceHeader()
     if Txt(m.sourceFilter) <> "" then m.sourceState.text += " / " + count.toStr() + " total"
     loading = m.discoveryDone <> true
     if loading then m.sourceState.text += "  ·  Finding more…" else m.sourceState.text += "  ·  Search complete"
-    m.sourceHelp.visible = count > 0
+    m.sourceHelp.visible = false
     m.sourceSpinner.visible = loading
     if loading then m.sourceSpinner.control = "start" else m.sourceSpinner.control = "stop"
     if count = 0 and loading
         m.sourceList.visible = false
-        m.sourceSpinner.translation = [610,294]
-        m.sourceSpinner.poster.width = 60
-        m.sourceSpinner.poster.height = 60
+        m.sourceSpinner.translation = [987,260]
+        m.sourceSpinner.poster.width = 38
+        m.sourceSpinner.poster.height = 38
         uiEmpty("Finding sources","Sources appear here as they arrive.")
-        m.emptyTitle.translation = [250,380]
-        m.emptyMessage.translation = [250,436]
+        m.emptyTitle.width = 440
+        m.emptyMessage.width = 440
+        m.emptyTitle.translation = [770,340]
+        m.emptyMessage.translation = [770,390]
     else
-        m.sourceSpinner.translation = [1172,162]
+        m.sourceSpinner.translation = [1182,128]
         m.sourceSpinner.poster.width = 26
         m.sourceSpinner.poster.height = 26
         m.emptyState.visible = false
@@ -138,9 +135,7 @@ sub uiFocusChanged()
     if m.uiReady <> true then return
     if m.epgGrid <> invalid then m.epgGrid.active = m.epgGrid.isInFocusChain()
     rail = m.sidebar.hasFocus() and m.gatewayActive <> true and m.video.visible <> true
-    m.railShade.visible = false
-    m.railSurface.width = 88
-    m.railSurface.visible = false
+    m.sidebar.active = rail
     for each collection in [m.profileGrid,m.profileActions,m.profilePages,m.homeActions,m.homeRows,m.posterGrid,m.sourceList,m.sourceFilters,m.detailActions,m.standardList,m.episodeList,m.seasonList,m.channelList,m.liveTabs,m.discoverFilters]
         if collection <> invalid and collection.content <> invalid
             ownsFocus = collection.hasFocus() and collection.visible and not m.choicePanel.visible and not m.fullTextPanel.visible

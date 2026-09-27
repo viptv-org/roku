@@ -155,12 +155,12 @@ sub Main()
  accountShowProfileGrid(profiles)
  if m.profilePage<>2 or m.profileGrid.jumpToItem<>1 or m.profileFocusId<>"12" then throw "action return lost exact third-page person"
  accountShowProfileGrid([profiles[0],profiles[1]])
- if m.profileButtons.count()<>2 or m.profileButtons[0].action<>"newprofile" or m.profileButtons[1].action<>"profilesdone" then throw "separate management buttons wrong"
+ if m.profileButtons.count()<>1 or m.profileButtons[0].action<>"profilesdone" or m.items[2].action<>"newprofile" then throw "separate management buttons wrong"
  if m.profilePages.visible then throw "unneeded pager visible"
- m.profileActions.itemSelected=0:accountProfileButtonSelected()
- if m.action<>"newprofile" then throw "Add button unreachable"
+ accountProfileAction(m.items[2])
+ if m.action<>"newprofile" then throw "Add tile unreachable"
  m.managingProfiles=false:accountRenderProfilePage()
- if m.profileButtons[1].action<>"manageprofiles" then throw "chooser lacks normal Manage button"
+ if m.profileButtons[0].action<>"manageprofiles" then throw "chooser lacks normal Manage button"
  m.profileGrid.focused=true:m.profileActions.focused=false
  if not accountProfileKey("down") or m.profileActions.focused<>true then throw "Down cannot reach buttons"
  m.profileGrid.focused=false

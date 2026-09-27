@@ -143,7 +143,9 @@ function epgLabel(parent as object, text as string, x as integer, y as integer, 
     node.height = 32
     node.text = text
     node.color = color
-    node.font = "font:SmallSystemFont"
+    font = CreateObject("roSGNode","Font")
+    font.uri = "pkg:/fonts/onest_400.ttf"
+    node.font = font
     node.font.size = size
     return node
 end function
@@ -187,12 +189,12 @@ sub epgRender()
     for i = firstMenu to m.filtersData.count()-1
         if i >= firstMenu+8 then exit for
         y = 166+(i-firstMenu)*48
-        color = "#A6A8AA"
+        color = "#B6B4AF"
         if i = m.menu
             color = "#FFFFFF"
             if m.menuFocus and m.top.active
-                bar = epgRect(m.filters,104,y-3,184,42,"#F5F5F5")
-                color = "#101112"
+                bar = epgRect(m.filters,104,y-3,184,42,"#F4F2EE")
+                color = "#0B0B0C"
             end if
         end if
         label = epgLabel(m.filters,m.filtersData[i].name,112,y-3,172,19,color)
@@ -219,7 +221,7 @@ sub epgRender()
         y = 166+slot*91
         if slot >= m.rowViews.count()
             group = m.rows.createChild("Group")
-            background = epgRect(group,300,0,128,87,"#202224")
+            background = epgRect(group,300,0,128,87,"#212124")
             icon = group.createChild("Poster")
             icon.translation = [308,7]
             icon.width = 112
@@ -239,8 +241,8 @@ sub epgRender()
         view = m.rowViews[slot]
         view.group.visible = true
         view.group.translation = [0,y]
-        view.background.color = "#202224"
-        if i = m.row and not m.menuFocus and m.top.active then view.background.color = "#303234"
+        view.background.color = "#212124"
+        if i = m.row and not m.menuFocus and m.top.active then view.background.color = "#34343A"
         logo = ImageUrl(Txt(channel.logo,Txt(channel.poster)),112,73,false,true)
         if view.icon.uri <> logo then view.icon.uri = logo
         view.icon.visible = logo <> ""
@@ -254,9 +256,9 @@ sub epgRender()
         for c = 0 to cells.count()-1
             cell = cells[c]
             geometry = EpgGeometry(cell,m.window,7200,804)
-            color = "#202224"
+            color = "#212124"
             focused = i = m.row and c = selected and not m.menuFocus and m.top.active
-            if focused then color = "#F5F5F5"
+            if focused then color = "#F4F2EE"
             width = geometry.width-3
             if width < 1 then width = 1
             bar = epgRect(parent,432+geometry.x,y,width,87,color)
@@ -269,10 +271,10 @@ sub epgRender()
                     hint = "LIVE CHANNEL"
                     if not m.cache.doesExist(id) then hint = "LOADING GUIDE…"
                 end if
-                ink = "#F5F5F5"
-                secondary = "#A6A8AA"
+                ink = "#F4F2EE"
+                secondary = "#B6B4AF"
                 if focused
-                    ink = "#101112"
+                    ink = "#0B0B0C"
                     secondary = "#414548"
                 end if
                 label = epgLabel(parent,hint,444+geometry.x,y+10,width-22,15,secondary)

@@ -117,11 +117,11 @@ sub uiHomeLayout()
     m.homeHeroPanel.compact = false
     m.homeActions.visible = expanded and m.mode = "home" and homeCurrent() <> invalid
     if expanded
-        m.homeShelves.translation = [92,466]
-        m.homeShelves.clippingRect = [0,0,1188,254]
+        m.homeShelves.translation = [120,466]
+        m.homeShelves.clippingRect = [0,0,1096,218]
     else
-        m.homeShelves.translation = [92,100]
-        m.homeShelves.clippingRect = [0,0,1188,620]
+        m.homeShelves.translation = [120,36]
+        m.homeShelves.clippingRect = [0,0,1096,648]
     end if
 end sub
 
@@ -136,6 +136,9 @@ sub uiHomeFocus()
 end sub
 
 sub uiHomeActions(item as object)
+    actionY = 366
+    if PresentationContext(item) = "" and UiProgressFraction(item) <= 0 then actionY = 332
+    m.homeActions.translation = [128,actionY]
     label = "Play"
     context = StreamContext(item)
     if item.type = "series" and context.episode = invalid then label = "Episodes"
@@ -148,18 +151,28 @@ sub uiHomeActions(item as object)
         label = "Watch live"
         secondary = "Guide"
     end if
-    key = label + "|" + secondary
+    saved = UiIsFavorite(item)
+    key = label + "|" + secondary + "|" + Txt(saved)
     if key <> Txt(m.uiHomeActionKey)
         m.uiHomeActionKey = key
-        width = 144
+        width = 152
         if item.queue_status = "next" then width = 236
-        m.homeActions.itemSize = [width,50]
+        m.homeActions.itemSize = [width,48]
         root = CreateObject("roSGNode","ContentNode")
         for each name in [label,secondary]
             node = root.createChild("ContentNode")
             node.title = name
-            node.addFields({uiWidth:width,uiHeight:50,uiOwnerFocused:false})
+            node.addFields({uiWidth:width,uiHeight:48,uiOwnerFocused:false})
         end for
+        m.homeActions.numColumns = 2
+        if item.type <> "live"
+            m.homeActions.numColumns = 3
+            icon = "plus"
+            if saved then icon = "check"
+            node = root.createChild("ContentNode")
+            node.title = ""
+            node.addFields({uiWidth:48,uiHeight:48,uiIcon:icon,uiOwnerFocused:false})
+        end if
         m.homeActions.content = root
     end if
     uiHomeLayout()
@@ -169,6 +182,10 @@ sub uiHomeActionSelected()
     item = homeCurrent()
     if item = invalid then return
     m.homeAutoPick = false
+    if m.homeActions.itemFocused = 2
+        toggleFavorite()
+        return
+    end if
     if m.homeActions.itemFocused = 0
         if item.queue_status = "next"
             m.nextScope = m.profile

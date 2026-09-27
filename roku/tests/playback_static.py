@@ -33,7 +33,7 @@ assert 'm.manualSources = true' in resume
 assert 'startPlayback(' not in resume
 assert 'function StableSourcePreference' in util and 'function SourceMatchesPreference' in util
 assert 'return actual.source_addon_id = expected.source_addon_id and Txt(actual.source_fingerprint) = Txt(expected.source_fingerprint)' in util
-assert 'label = "Choose source"' in scene and '{name:"Sources",action:"sources"}' not in scene
+assert 'label = "Play"' in scene and '{name:"Sources",action:"sources"}' not in scene
 assert '<Video id="replacementVideo"' not in xml and '<Timer id="seekTimer"' in xml
 assert 'm.video.control = "pause"' in scene
 assert 'm.video.visible = true' in scene
