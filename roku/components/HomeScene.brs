@@ -110,6 +110,11 @@ end sub
 sub clearHomeCache()
     m.homeKeyValue = ""
     m.liveFavoriteItems = invalid
+    m.uiArtworkTried = {}
+    m.uiArtworkOrder = []
+    m.uiLandscapeCache = {}
+    m.uiLandscapeOrder = []
+    m.uiHeroMetadata = {}
     m.uiHeroTried = {}
     m.uiHeroTriedOrder = []
     m.uiHomeActionKey = ""

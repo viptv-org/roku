@@ -153,7 +153,28 @@ sub uiLoadCardArtwork()
             if m.mode = "home" and m.homeExpanded = true
                 current = homeCurrent()
                 if current <> invalid
-                    if PresentationMetadataId(current) = node.metadataId and Txt(current.type) = node.mediaType then needsMetadata = true
+                    if PresentationMetadataId(current) = node.metadataId and Txt(current.type) = node.mediaType
+                        needsMetadata = true
+                        key = HeroEpisodeKey(current)
+                        if key <> "" and HeroEpisodeTitle(current) = ""
+                            if m.uiHeroMetadata = invalid then m.uiHeroMetadata = {}
+                            details = m.uiHeroMetadata[path]
+                            if details = invalid then details = {id:node.metadataId,episodeTitles:{}}
+                            if details.episodeTitles = invalid then details.episodeTitles = {}
+                            if not details.episodeTitles.doesExist(key)
+                                ' A new episode in a cached series needs a new lookup. Mark the
+                                ' attempt before dispatch so failures do not loop each timer tick.
+                                if details.episodeTitles.count() >= 16 then details.episodeTitles = {}
+                                details.episodeTitles[key] = ""
+                                m.uiHeroMetadata[path] = details
+                                pending = false
+                                for each pendingTag in m.uiArtworkInflight
+                                    if m.uiArtworkInflight[pendingTag].path = path then pending = true
+                                end for
+                                if not pending then m.uiArtworkTried.delete(path)
+                            end if
+                        end if
+                    end if
                 end if
             end if
             if needsMetadata and not m.uiArtworkTried.doesExist(path)
@@ -181,11 +202,17 @@ sub uiCardArtworkResponse(tag as string,result as object)
         if Txt(meta.id) = owner.id
             if m.uiHeroMetadata = invalid then m.uiHeroMetadata = {}
             if m.uiLandscapeOrder.count() >= 96 then m.uiHeroMetadata.delete(m.uiLandscapeOrder[0])
-            details = {}
-            for each field in ["background","backdrop","description","overview","genres","runtime","releaseInfo"]
-                if meta[field] <> invalid then details[field] = meta[field]
-            end for
+            contexts = []
+            if m.homeData <> invalid
+                for each item in Bounded(m.homeData[0],14)
+                    if PresentationMetadataId(item) = owner.id then contexts.push(item)
+                end for
+                current = homeCurrent()
+                if current <> invalid and PresentationMetadataId(current) = owner.id then contexts.push(current)
+            end if
+            details = HeroMetadataProjection(meta,contexts)
             m.uiHeroMetadata[owner.path] = details
+            uiHomeEpisodeMetadata(owner.id,details)
             if m.uiLandscapeOrder.count() >= 96 then m.uiLandscapeCache.delete(m.uiLandscapeOrder.shift())
             m.uiLandscapeOrder.push(owner.path)
             m.uiLandscapeCache[owner.path] = uri
@@ -368,4 +395,25 @@ sub uiResumeAction(event as object)
             selectItem(m.items[index])
         end if
     end if
+end sub
+
+sub uiHomeEpisodeMetadata(id as string, details as object)
+    if m.homeData = invalid then return
+    for column = 0 to m.homeData[0].count()-1
+        item = m.homeData[0][column]
+        if PresentationMetadataId(item) = id and Txt(item.type) = "series"
+            title = HeroEpisodeTitle(item,details)
+            if title <> ""
+                item.episodeTitle = title
+                if m.homeRowKeys <> invalid and m.homeRoot <> invalid
+                    for rowIndex = 0 to m.homeRowKeys.count()-1
+                        if m.homeRowKeys[rowIndex] = 0
+                            node = m.homeRoot.getChild(rowIndex).getChild(column)
+                            if node <> invalid then node.subtitle = PresentationContext(item)
+                        end if
+                    end for
+                end if
+            end if
+        end if
+    end for
 end sub

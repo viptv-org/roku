@@ -1,6 +1,7 @@
 sub init()
     m.top.findNode("backdrop").observeField("loadStatus","heroArtLoaded")
     m.top.findNode("titleLogo").observeField("loadStatus","logoLoaded")
+    m.top.findNode("metadataLayoutTimer").observeField("fire","layoutMetadata")
 end sub
 sub logoLoaded()
     logo = m.top.findNode("titleLogo")
@@ -65,24 +66,20 @@ sub render()
     logoLoaded()
     context = m.top.findNode("episode")
     context.font.size = 16
-    context.text = Txt(item.context).replace("Season ","S").replace("Episode ","E").replace("  ·  E"," E")
+    context.text = Txt(item.context)
     context.visible = context.text <> ""
-    context.width = 230
-    fraction = 0.0
+    fraction = -1.0
     if item.progressFraction <> invalid then fraction = item.progressFraction
-    if fraction < 0 then fraction = 0
     if fraction > 1 then fraction = 1
-    progressX = 374
-    if not context.visible then progressX = 128
-    m.top.findNode("progressTrack").translation = [progressX,238]
-    m.top.findNode("progressFill").translation = [progressX,238]
-    elapsed = m.top.findNode("elapsed")
-    elapsed.translation = [progressX+136,228]
-    elapsed.text = Txt(item.elapsed)
-    elapsed.visible = elapsed.text <> ""
-    m.top.findNode("progressTrack").visible = fraction > 0
+    m.top.findNode("progressTrack").visible = fraction >= 0
     m.top.findNode("progressFill").visible = fraction > 0
     m.top.findNode("progressFill").width = 120*fraction
+    if fraction < 0 then m.top.findNode("progressFill").width = 0
+    elapsed = m.top.findNode("elapsed")
+    elapsed.text = Txt(item.elapsed)
+    elapsed.visible = elapsed.text <> ""
+    layoutMetadata()
+    m.top.findNode("metadataLayoutTimer").control = "start"
     facts = []
     if Txt(item.year,Txt(item.releaseInfo)) <> "" then facts.push(Txt(item.year,Txt(item.releaseInfo)))
     if Txt(item.imdbRating) <> "" then facts.push("IMDb " + Txt(item.imdbRating))
@@ -91,7 +88,7 @@ sub render()
         facts.push(Txt(genre))
     end for
     factsY = 262
-    if not context.visible and fraction = 0 then factsY = 228
+    if not context.visible and fraction < 0 and not elapsed.visible then factsY = 228
     factLabel = m.top.findNode("facts")
     factLabel.text = facts.join(" · ")
     factLabel.font.size = 15
@@ -100,4 +97,20 @@ sub render()
     summary.text = Txt(item.description,Txt(item.overview))
     summary.font.size = 17
     summary.translation = [128,factsY+36]
+end sub
+
+sub layoutMetadata()
+    context = m.top.findNode("episode")
+    context.width = 0
+    contextWidth = 0
+    if context.visible then contextWidth = context.localBoundingRect().width
+    if contextWidth > 340 then contextWidth = 340
+    context.width = contextWidth
+    nextX = 128
+    if context.visible then nextX += contextWidth+12
+    track = m.top.findNode("progressTrack")
+    track.translation = [nextX,238]
+    m.top.findNode("progressFill").translation = track.translation
+    if track.visible then nextX += 120+12
+    m.top.findNode("elapsed").translation = [nextX,228]
 end sub

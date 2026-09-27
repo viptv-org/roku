@@ -29,13 +29,14 @@
    <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
   </ScrollingLabel>
   <Poster id="titleLogo" translation="[128,132]" width="273" height="79" loadDisplayMode="scaleToFit" visible="false" />
-  <Label id="episode" translation="[128,228]" width="280" height="24">
+  <Label id="episode" translation="[128,228]" width="0" height="24" vertAlign="center">
    <Font role="font" uri="pkg:/fonts/onest_700.ttf" size="15" />
   </Label>
-  <Label id="elapsed" width="190" height="24" color="#B6B4AF">
+  <Label id="elapsed" width="190" height="24" vertAlign="center" color="#B6B4AF">
    <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="16" />
   </Label>
   <Poster id="progressTrack" translation="[420,232]" width="120" height="4" uri="pkg:/images/ui-progress-pill.9.png" blendColor="#45454BFF" visible="false" />
   <Poster id="progressFill" translation="[420,232]" width="1" height="4" uri="pkg:/images/ui-progress-pill.9.png" blendColor="#F5C542FF" visible="false" />
+  <Timer id="metadataLayoutTimer" duration="0.05" repeat="false" />
  </children>
 </component>

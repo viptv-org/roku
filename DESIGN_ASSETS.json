@@ -1,5 +1,5 @@
 {
-  "revision": "3b6e4340773b31f427f46b9ef7dd888936b381f0",
+  "revision": "65e2b68bb5f9c8ce32bca27241e5c893a7126d82",
   "files": {
     "roku/fonts/README.md": "7102f4162f3d7e0d1e1b5429aa2ea9606e0ad23d3ec2a99b13af665d27b53a5b",
     "roku/fonts/bricolage-grotesque-LICENSE.txt": "923f4ddf0fd39f9b7794ab0df7332f3d95dc43e8ad7ec2289d6d9e8491177f51",
@@ -180,7 +180,7 @@
     "roku/images/lucide/space-primary.svg": "f88ddb7c8fbeea401d77efd0e6240b307deda856cbf23b1d2b5713e15e7240a8",
     "roku/images/lucide/space-secondary.png": "f38d4e83a44c55d6e665b9404701f1d3ac26fb647438639530df89f8af6773dd",
     "roku/images/lucide/space-secondary.svg": "5d40b34166bd6c630aee923849034afee3a0c371e890e9dba115a2e4b5a7dbfe",
-    "design-contract/ROKU_DESIGN.md": "b42f83f93e687fce71dc59d433e3545a620f98c4da4c54fea587eccfcff107b9",
+    "design-contract/ROKU_DESIGN.md": "c982c96f54e0706ab42dd7bb84b3a8f2bf71904c768c0ea6321bf96488041722",
     "design-contract/DESIGN_SYNC.md": "a9c136ab42d220842d2f6d8cf77a797905fb07e2893653a94a7bb27704e6ee61",
     "design-contract/viptv-design-system/components.md": "f9566958d430d44feb0456c403c9051aade96e250558ba39f2862b515891feda",
     "design-contract/viptv-design-system/copy.md": "a3bc0faf1c5b7e6987a7804be3eb4cf526d658009f7784425577d26d9fee50ff",

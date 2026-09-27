@@ -1,3 +1,31 @@
+# ROK-044 hero metadata correction — 1.11.1 (2026-09-27)
+
+Design `65e2b68bb5f9c8ce32bca27241e5c893a7126d82`. Corrects the missed episode
+name and fixed progress-column spacing, plus the dropped logo/rating on the same
+metadata path. Title identity is verified against the owning series. Compact
+metadata retains only needed episode titles; the actual asynchronous adapter is
+exercised for late responses and a changed episode of the same series.
+
+Physical TV captures verify real long-title series, short-title series and movie
+heroes, all with logos. The short context and bar are adjacent; long text is
+bounded; movies have no episode reservation. No playback or profile mutation
+was needed for these checks. See the correction in [TV_AUDIT.md](TV_AUDIT.md).
+
+Passed locally: seven static checks, all26 runtime harnesses including
+`hero_metadata_runtime.py`, design integrity, migration hashes and BrighterScript
+0.73.1 validation/staging. Both installable ZIP flavors were generated.
+
+Artifacts: `artifacts/rok044-1.11.1/viptv-roku.zip` and
+`artifacts/rok044-1.11.1/viptv-roku-public.zip`. SHA-256 respectively:
+
+```
+6bbaed7dd8783b53cef8a7245e1666fda5b26e5fa371d3d9d2dae8a3746d44e8
+782f8b8b94b5177dfccee75d831c0b6c6b5e55d566f4962bcdf51dcf6d9f6e23
+```
+
+Older records below remain historical; their broad Home metadata verdict was
+incorrect and is explicitly corrected above.
+
 # ROK-043 TV audit — 1.11.0 (2026-09-27)
 
 Design `3b6e4340773b31f427f46b9ef7dd888936b381f0`. See [TV_AUDIT.md](TV_AUDIT.md)

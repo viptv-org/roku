@@ -16,7 +16,7 @@ sub contentChanged()
     if m.observedItem <> invalid then changed = not m.observedItem.isSameNode(item)
     if changed
         if m.observedItem <> invalid
-            for each field in ["uiOwnerFocused","HDPosterUrl","artworkKind"]
+            for each field in ["uiOwnerFocused","HDPosterUrl","artworkKind","subtitle"]
                 m.observedItem.unobserveField(field)
             end for
         end if
@@ -24,6 +24,7 @@ sub contentChanged()
         item.observeField("uiOwnerFocused","focusChanged")
         item.observeField("HDPosterUrl","contentChanged")
         item.observeField("artworkKind","contentChanged")
+        item.observeField("subtitle","contentChanged")
     end if
     w = 213
     h = 120

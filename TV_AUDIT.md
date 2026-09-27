@@ -4,6 +4,30 @@ Scope: every TV entry in the design screen index (46 states), shared components,
 copy, TV-034/038/040/041, and the owner's 2026-09-27 corrections. Design pin:
 `3b6e4340773b31f427f46b9ef7dd888936b381f0`. Application: 1.11.0.
 
+## Correction to the earlier Home verdict — ROK-044
+
+The 1.11.0 captures still lacked the episode title. The previous Home verdict
+was too broad: listing and visiting all reference screens did not establish
+correct metadata presentation. This defect was raised again by the owner.
+
+1.11.1 resolves the queued episode against its series metadata (exact ID, then
+verified S/E), preserves the title logo and IMDb rating through the compact cache,
+and populates the same episode title in the Continue Watching subtitle. The
+progress bar follows the measured context with a 12px gap, capped at340px only
+for long labels. Movies and unavailable-title/duration states reserve no empty
+context/progress slots. Series runtime follows the actual queued duration.
+
+Private physical captures on the same TV verify a long episode name, a short
+three-letter episode name, and a movie. Each displayed its title logo. The short
+series context occupies74px from x128, with the bar starting at214; the long
+label caps at340px, bar x480; the movie bar starts at128. All three have elapsed
+text after the120px bar plus12px. Unavailable-title and zero/unknown-progress
+geometry, specials, Up Next, cross-series identity and late/fresh episode
+responses are separately covered by the executable hero regression.
+
+This supersedes the earlier metadata-completeness implication, not every other
+untested state in the inventory below.
+
 ## Precedence and corrections
 
 The older component sheet says white Resume. TV-038 and the current owner request

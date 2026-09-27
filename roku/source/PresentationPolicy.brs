@@ -335,3 +335,75 @@ function SourceMatch(item as object, caps as dynamic, prefs as dynamic) as objec
     if likely and resolution = height then rank = (9-audioScore)*10
     return {rank:rank,likely:likely,best:likely and audioScore >= 4 and resolution = height}
 end function
+
+' Hero display metadata must belong to the selected episode, never the series title.
+function HeroEpisodeKey(item as object) as string
+    if Txt(item.type) <> "series" then return ""
+    context = StreamContext(item)
+    if context.season <> invalid and context.episode <> invalid then return Txt(context.season)+":"+Txt(context.episode)
+    if Txt(item.id) <> "" and Txt(item.id) <> PresentationMetadataId(item) then return "id:"+Txt(item.id)
+    return ""
+end function
+
+function HeroEpisodeTitle(item as object, meta = invalid as dynamic) as string
+    if Txt(item.type) <> "series" then return ""
+    name = Txt(item.episodeTitle).trim()
+    if name = "" then name = Txt(item.episode_title).trim()
+    if name <> "" then return name
+    if meta = invalid or Txt(meta.id) <> PresentationMetadataId(item) then return ""
+    key = HeroEpisodeKey(item)
+    if key = "" then return ""
+    if meta.episodeTitles <> invalid then return Txt(meta.episodeTitles[key])
+    ' An exact video identity takes priority over duplicate/special coordinates.
+    for each video in Bounded(meta.videos,2000)
+        if Txt(video.id) <> "" and Txt(video.id) = Txt(item.id) then return HeroVideoTitle(video)
+    end for
+    context = StreamContext(item)
+    if context.season = invalid or context.episode = invalid then return ""
+    for each video in Bounded(meta.videos,2000)
+        if MatchInteger(video.season,0,100000) and MatchInteger(video.episode,0,100000)
+            if video.season = context.season and video.episode = context.episode then return HeroVideoTitle(video)
+        end if
+    end for
+    return ""
+end function
+
+function HeroMetadataProjection(meta as object, contexts as object) as object
+    details = {episodeTitles:{}}
+    for each field in ["id","background","backdrop","description","overview","genres","runtime","releaseInfo","logo","imdbRating"]
+        if meta[field] <> invalid then details[field] = meta[field]
+    end for
+    for each item in Bounded(contexts,16)
+        key = HeroEpisodeKey(item)
+        if key <> "" and PresentationMetadataId(item) = Txt(meta.id) then details.episodeTitles[key] = HeroEpisodeTitle(item,meta)
+    end for
+    return details
+end function
+
+function HeroContext(item as object) as string
+    if Txt(item.type) <> "series" then return ""
+    status = Txt(item.queue_status)
+    if status = "caught_up" then return "You're caught up"
+    if status = "upcoming" then return "Next episode not released"
+    if status = "pending" or status = "unavailable" then return "Find next episode"
+    context = StreamContext(item)
+    coordinates = ""
+    if context.season <> invalid then coordinates = "S"+Txt(context.season)
+    if context.episode <> invalid
+        if coordinates <> "" then coordinates += " "
+        coordinates += "E"+Txt(context.episode)
+    end if
+    name = HeroEpisodeTitle(item)
+    if name <> ""
+        if coordinates <> "" then coordinates += " · "
+        coordinates += name
+    end if
+    if status = "next" and coordinates <> "" then coordinates = "Up next · "+coordinates
+    return coordinates
+end function
+
+function HeroVideoTitle(video as object) as string
+    name = Txt(video.title).trim()
+    if name = "" then name = Txt(video.name).trim()
+    return name
+end function

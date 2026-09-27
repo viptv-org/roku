@@ -129,3 +129,30 @@ My List exposes My List and Continue Watching segments. Programme details use
 the TvLiveDetails side panel with explicit Watch and Close actions. PIN and
 full text-entry still retain the native input semantics while using the shared
 full-screen surface; these controls are never described as measured pixel parity.
+
+## ROK-044 — Hero episode identity and measured inline progress
+
+Owner correction, 2026-09-27. The earlier audit missed an absent episode title
+in its own device captures; inventory coverage is not evidence for this state.
+
+Home series context is `S2 E1 · [actual episode title]`, using the queued title
+or the matching video in the series metadata. Match exact episode ID first,
+then verified season/episode within the same series; never use another episode
+or substitute the series title. Preserve logo and rating through the same cache
+projection. Keep only episode titles needed by the current queue/context, and
+reject stale metadata ownership. An unavailable title falls back to coordinates.
+
+This overrides the earlier fixed-width episode column: measure the displayed
+single-line context, cap long text at 340 HD pixels with ellipsis, then place the
+120px progress bar 12px after it and elapsed/total text 12px after the bar. Short
+or missing titles must not leave a reserved empty column. Movies omit episode
+context and start progress at the normal left content edge. Unknown/zero duration
+must not leave an empty progress slot. Metadata, progress and elapsed labels share
+a centerline. The bar and label remain inside their allocated bounds.
+
+Acceptance covers title supplied in the queue, title resolved from metadata,
+short/long/unavailable titles, exact-ID versus S/E matching, specials (season 0),
+Up Next, missing/zero progress, movies, logo/rating hydration, metadata arriving
+after focus changes, and a changed episode of an already cached series. Verify
+actual title text and measured adjacency on the physical TV; do not infer success
+from a build, a screen-name checklist or an unrelated screenshot.

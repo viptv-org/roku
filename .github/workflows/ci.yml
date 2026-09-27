@@ -35,6 +35,7 @@ jobs:
           export VIPTV_BRS_CLI=/tmp/viptv-roku-tests/node_modules/.bin/brs-cli
           python3 roku/tests/design_rail_runtime.py
           python3 roku/tests/home_catalog_runtime.py
+          python3 roku/tests/hero_metadata_runtime.py
           python3 roku/tests/horizontal_strip_runtime.py
           python3 roku/tests/player_tracks_panel_runtime.py
           python3 roku/tests/search_keypad_runtime.py

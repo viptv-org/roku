@@ -178,11 +178,13 @@ sub homeHero()
     if m.homeHeroPanel <> invalid
         hero = {}
         hero.append(item)
+        hero.episodeTitle = HeroEpisodeTitle(item)
         path = "/api/meta/" + Enc(Txt(item.type,"movie")) + "/" + Enc(PresentationMetadataId(item))
         cached = m.cache[path]
         if cached <> invalid
             meta = cached.data.meta
             if meta <> invalid
+                if hero.episodeTitle = "" then hero.episodeTitle = HeroEpisodeTitle(item,meta)
                 for each field in ["background","backdrop","description","overview","genres","runtime","releaseInfo","logo","imdbRating"]
                     if hero[field] = invalid or Txt(hero[field]) = ""
                         if meta[field] <> invalid then hero[field] = meta[field]
@@ -191,6 +193,7 @@ sub homeHero()
             end if
         end if
         if m.uiHeroMetadata <> invalid and m.uiHeroMetadata[path] <> invalid
+            if hero.episodeTitle = "" then hero.episodeTitle = HeroEpisodeTitle(item,m.uiHeroMetadata[path])
             for each field in ["background","backdrop","description","overview","genres","runtime","releaseInfo","logo","imdbRating"]
                 if hero[field] = invalid or Txt(hero[field]) = ""
                     if m.uiHeroMetadata[path][field] <> invalid then hero[field] = m.uiHeroMetadata[path][field]
@@ -198,11 +201,10 @@ sub homeHero()
             end for
         end if
         hero.name = m.homeTitle.text
-        contextItem = CopyRouteData(item)
-        contextItem.delete("position")
-        hero.context = PresentationContext(contextItem)
+        hero.context = HeroContext(hero)
+        if hero.type = "series" and hero.duration <> invalid and hero.duration > 0 then hero.runtime = int((hero.duration+30)/60).toStr()+" min"
         hero.elapsed = ""
-        if item.position <> invalid and item.position > 0
+        if item.position <> invalid and (item.position > 0 or (item.duration <> invalid and item.duration > 0))
             hero.elapsed = PlayerTime(item.position)
             if item.duration <> invalid and item.duration > 0 then hero.elapsed += " of " + int((item.duration+30)/60).toStr() + " min"
         end if

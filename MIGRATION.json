@@ -186,15 +186,15 @@
       "source": "roku/components/HeroPanel.brs",
       "destination": "roku/components/HeroPanel.brs",
       "sha256": "9bff2f788e73de7bfd7b8af2671884a5d093e20928c036a077790e89b878e137",
-      "extracted_sha256": "69175e9ffbda834fb165d2384e0546657f8ee5f434807b7b717a856449316d43",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
+      "extracted_sha256": "935596b1852c118a1c2fe6fd00f850d0f2871fbdebbacde16a803ab5e1878a56",
+      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset."
     },
     {
       "source": "roku/components/HeroPanel.xml",
       "destination": "roku/components/HeroPanel.xml",
       "sha256": "ee72fe82f207f083a9c673a84a1a74027331f65f01cc969e8e91eee2599ef790",
-      "extracted_sha256": "a79d37e3ea6fe8794a67ff2094e1158cc378a39379b29568e743cf9cad884e88",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
+      "extracted_sha256": "142158a45fb72049d796340db6a7f2353f3175d86cae8ef008eff9200c008e38",
+      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset."
     },
     {
       "source": "roku/components/HoldGrid.xml",
@@ -219,8 +219,8 @@
       "source": "roku/components/HomeCard.brs",
       "destination": "roku/components/HomeCard.brs",
       "sha256": "5373dda84e661fc0dd62f33e8bd49683918a807ce14acf4426d1a6612cba7285",
-      "extracted_sha256": "a2a65dcc64497e894f16cec94c03afc3797204dc3ef4f49f733965dd9b3f315d",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
+      "extracted_sha256": "626f45bf18502e6df4a0b909b5ca8a94487ea68976f22a34dec8f3de119bedbb",
+      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset."
     },
     {
       "source": "roku/components/HomeCard.xml",
@@ -233,15 +233,15 @@
       "source": "roku/components/HomeFeedScene.brs",
       "destination": "roku/components/HomeFeedScene.brs",
       "sha256": "d637da6fe6b503b790bee68ba35c939273d080e912071772f32029300d294c9a",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434.",
-      "extracted_sha256": "3e65c127caeace0340471be84470e7784e70468b4a7c00b3e7aeeebe365f6b35"
+      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset.",
+      "extracted_sha256": "61cbde28fc403302293c0864ba4648d35c44a936aa4a3c38ea991bd450774416"
     },
     {
       "source": "roku/components/HomeScene.brs",
       "destination": "roku/components/HomeScene.brs",
       "sha256": "98eff40f139b55c320c4eb4901c04061833c7e6223cc1afe7eb93e91e4f0d166",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434.",
-      "extracted_sha256": "ff77439884488e79d8aa85d2500fef1a7bbefcc4a1f8af4f4b80f10cca7d2125"
+      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset.",
+      "extracted_sha256": "85e8f3a46f6757ef5fa0a2c945fc1e9e8b738236f2f7dff1e14065311d4a76f8"
     },
     {
       "source": "roku/components/LibraryScene.brs",
@@ -314,8 +314,8 @@
       "source": "roku/components/PresentationArtworkScene.brs",
       "destination": "roku/components/PresentationArtworkScene.brs",
       "sha256": "f4d9ae9fe9239a1e967f152906115bdf69810611933fe0cf64b4e7b6448f671e",
-      "reason": "ROK-043 complete TV audit corrections and acceptance checks; design 3b6e434.",
-      "extracted_sha256": "445bd5fe50d945362e42a4700bb639db7412429df0932c4ead537bbb06ff314a"
+      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset.",
+      "extracted_sha256": "74e588ee6447fe900b62301833ea43146e5da3bc06096c6687116077bafeba5e"
     },
     {
       "source": "roku/components/PresentationDetailsScene.brs",
@@ -3903,8 +3903,8 @@
       "source": "roku/manifest",
       "destination": "roku/manifest",
       "sha256": "e3ec6e7a1150fbd14f500736f2b28550b8a7a4bf08832546fc29b208b22dee58",
-      "extracted_sha256": "b42eb496df3b6583355495c4ea5f94564af5eb846cfa399d0797fe4dc59fb424",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
+      "extracted_sha256": "198f60eb69f35bba6787e4ae78ae62f26eba12223ca9964c16468e1f3ae0afcc",
+      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset."
     },
     {
       "source": "roku/source/AccountPolicy.brs",
@@ -3951,8 +3951,8 @@
       "source": "roku/source/PresentationPolicy.brs",
       "destination": "roku/source/PresentationPolicy.brs",
       "sha256": "fd2f4800cf57b02088852fe0c4147487ba5bd9dbb9cb5ac82052e8b805b296d2",
-      "extracted_sha256": "8976f7816c0a3081d39dc63bec8b29b6bf94acc072d8320297bb9a12b77a9e7b",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
+      "extracted_sha256": "7becde6e6331ad765e8d1050a085e3f537e4474c25cd43c7ef23799e3177898a",
+      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset."
     },
     {
       "source": "roku/source/SourceLabels.brs",
