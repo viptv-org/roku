@@ -1,0 +1,43 @@
+name: Build Roku ZIP
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: roku-build-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python3 scripts/design-sync.py check
+      - name: Compile runtime
+        working-directory: roku
+        run: npx --yes brighterscript@0.73.1 --project bsconfig.json --copy-to-staging --staging-folder-path "$RUNNER_TEMP/viptv-roku-staging" --retain-staging-folder
+      - run: python3 scripts/package.py --input "$RUNNER_TEMP/viptv-roku-staging"
+      - name: Record build
+        env:
+          BUILD_SHA: ${{ github.sha }}
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,zipfile
+          root=pathlib.Path('artifacts');files=list(root.glob('*.zip'));assert files,'No Roku ZIP'
+          for file in files:
+              with zipfile.ZipFile(file) as archive:
+                  assert {'manifest','source/bslib.brs'}.issubset(archive.namelist())
+          (root/'SHA256SUMS').write_text(''.join(hashlib.sha256(f.read_bytes()).hexdigest()+'  '+f.name+'\n' for f in files))
+          (root/'build.json').write_text(json.dumps({'revision':os.environ['BUILD_SHA'],'platform':'roku','design':pathlib.Path('DESIGN_REF').read_text().strip()}))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: roku-${{ github.sha }}
+          path: artifacts/*
+          if-no-files-found: error
+          retention-days: 30
