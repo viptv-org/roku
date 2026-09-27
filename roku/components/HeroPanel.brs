@@ -59,13 +59,21 @@ sub render()
     logoLoaded()
     context = m.top.findNode("episode")
     context.font.size = 16
-    context.text = Txt(item.context)
+    context.text = Txt(item.context).replace("Season ","S").replace("Episode ","E").replace("  ·  E"," E")
     context.visible = context.text <> ""
-    context.width = 280
+    context.width = 230
     fraction = 0.0
     if item.progressFraction <> invalid then fraction = item.progressFraction
     if fraction < 0 then fraction = 0
     if fraction > 1 then fraction = 1
+    progressX = 374
+    if not context.visible then progressX = 128
+    m.top.findNode("progressTrack").translation = [progressX,238]
+    m.top.findNode("progressFill").translation = [progressX,238]
+    elapsed = m.top.findNode("elapsed")
+    elapsed.translation = [progressX+136,228]
+    elapsed.text = Txt(item.elapsed)
+    elapsed.visible = elapsed.text <> ""
     m.top.findNode("progressTrack").visible = fraction > 0
     m.top.findNode("progressFill").visible = fraction > 0
     m.top.findNode("progressFill").width = 120*fraction

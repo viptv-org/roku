@@ -1,3 +1,66 @@
+# Physical Roku UI corrections — 1.10.1 (2026-09-27)
+
+Design: `6e56136a698a52c87d232ed940775244e9d93d33` (ROK-042).
+The 1.10.0 device screenshot revealed clipped top/left button outlines,
+inconsistent nine-patch cap sizes and an incorrect yellow Resume fill.
+`DesignSurface` draws a shared circular contour and 3px inset border inside
+fixed bounds. Action pills, icon circles, filters, source and channel rows now
+use it. Geometry never scales on focus.
+
+Also corrected: obsolete 256×144 backing under 240×135 episode artwork;
+card mask variants; two-line Home/detail synopsis; compact S/E text separated
+from elapsed/total time; View all action content; explicit rail focus release
+when selecting a destination. Episode-grid summaries are bounded to one line
+so the second row fits its viewport; full descriptions remain in More info.
+
+The physical profile chooser uncovered a real render-thread exception from
+`roFileSystem`. Local avatar lookup now uses the validated bundled catalog,
+including character asset paths, and transparent avatar backgrounds stay
+stable. Removed an unsupported ScrollingLabel width field. The branding check
+now validates all catalog image paths and rejects render-thread filesystem use.
+
+## Physical evidence
+
+TCL Roku TV 50S435, Roku OS 15.3.4, HD logical canvas, private developer captures:
+
+| Surface/state | Inspected result |
+| --- | --- |
+| Home Resume / Details / plus | Continuous matching outlines; off-white focus; pill/circle geometry |
+| Home final card and another Right | Complete card and ring; cursor remains in the row |
+| Lower Home shelves | Hero removed; complete focused card and separated shelf headings |
+| Profiles / Manage / Done | Stable square outline; compact centered management button; no avatar crash |
+| Profile editor / avatar picker | Name, Save, Cancel, avatar and category focus inspected; cancelled editing |
+| Settings / Search | Readable rows/icons and native keyboard; keyboard remains documented native adaptation |
+| Discover / navigation rail | Landscape card geometry; selecting destination releases rail into page |
+| Movie detail / More info | Landscape hero, two-line summary, icon-led actions and readable full description |
+| Series episodes | Matching artwork/background/ring dimensions; no protruding backing |
+| Source panel / preparation | Readable focused row, progress spinner, loading spinner |
+| Movie player | Circular Lucide controls, elapsed time and `1 h 40 min` duration; no empty episode line |
+| Live guide | Readable current/future programme grid and focused programme |
+
+This is a visual and navigation audit of the reached states, not proof of every
+error, destructive action, parent-PIN or track-switch flow. Decoder video is
+absent from developer screenshots; player evidence covers the UI overlay.
+Profile create/delete mutations were not exercised on the household. Local
+runtime fixtures cover profile mutation, PIN cancellation and playback policy.
+The device log has no new script errors; oversized hero texture warnings remain
+and do not establish a playback or visual failure.
+
+Passed: seven static scripts, all 20 runtime harnesses, five standalone policy
+fixtures, immutable design inputs, migration inventory, BrighterScript 0.73.1
+validation/staging and both ZIP flavors. Developer installer reports success;
+its package MD5 matches the local ZIP and ECP reports active VIPTV 1.10.1.
+
+Artifacts: `artifacts/rok042-outline-release/viptv-roku.zip` and
+`viptv-roku-public.zip`. SHA-256 respectively:
+
+```
+86e402503d2f94d2afef539d85c8d2baa10badf74ac5abe36a7890f635ca26fc
+36f5d4a766f7c9e7e3bc6f1ac6d38cd6c4e39228da4b032be23dccf2bcb11a1e
+```
+
+The prior 1.10.0 validation below is historical.
+
 # Native TV design adoption — 2026-09-27
 
 Version 1.10.0 adopts design `e33bf664f8370aea72ef839fb6f81c9687eac9d9`

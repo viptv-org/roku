@@ -10,21 +10,15 @@ sub render()
     if item.hasField("uiHeight") then height = item.uiHeight
     m.top.findNode("surface").width = width
     m.top.findNode("surface").height = height
-    frame = m.top.findNode("focusFrame")
-    frame.width = width+4
-    frame.height = height+4
     label = m.top.findNode("label")
     label.width = width
     label.height = height
     label.translation = [0,0]
     label.horizAlign = "center"
     label.font.size = 17
-    m.top.findNode("surface").uri = "pkg:/images/design/pill.9.png"
-    frame.uri = "pkg:/images/design/pill-focus.9.png"
+    m.top.findNode("surface").radius = height/2
     if height <= 40
         label.font.size = 15
-        m.top.findNode("surface").uri = "pkg:/images/design/pill-small.9.png"
-        frame.uri = "pkg:/images/design/pill-small-focus.9.png"
     end if
     label.text = item.title
     label.visible = item.title <> ""
@@ -50,10 +44,11 @@ sub render()
         label.width = width-62
         label.horizAlign = "left"
         label.font.size = 25
+        m.top.findNode("surface").radius = 13
     end if
     m.isRow = width >= 400 and not (item.hasField("uiField") and item.uiField = true)
     if m.isRow
-        m.top.findNode("surface").uri = "pkg:/images/design/row.9.png"
+        m.top.findNode("surface").radius = 15
         label.font.size = 19
         label.horizAlign = "left"
         label.translation = [20,0]
@@ -75,14 +70,9 @@ sub renderFocus()
     surface.blendColor = "#2A2A2EFF"
     label.color = "#F4F2EE"
     variant = "primary"
-    m.top.findNode("focusFrame").visible = active and m.isRow <> true
+    surface.focused = active
     if active
         surface.blendColor = "#F4F2EEFF"
-        label.color = "#111113"
-        variant = "focus"
-    end if
-    if left(item.title,6) = "Resume"
-        surface.blendColor = "#F5C542FF"
         label.color = "#111113"
         variant = "focus"
     end if

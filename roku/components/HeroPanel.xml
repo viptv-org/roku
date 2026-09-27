@@ -22,7 +22,7 @@
   <ScrollingLabel id="title" translation="[128,132]" maxWidth="506" color="#F4F2EE" repeatCount="-1" scrollSpeed="48">
    <Font role="font" uri="pkg:/fonts/bricolage_grotesque_700.ttf" size="37" />
   </ScrollingLabel>
-  <Label id="summary" translation="[128,298]" width="510" height="52" numLines="2" wrap="true" color="#DAD8D3">
+  <Label id="summary" translation="[128,298]" width="510" height="0" numLines="0" maxLines="2" wrap="true" color="#DAD8D3">
    <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
   </Label>
   <ScrollingLabel id="facts" translation="[128,262]" maxWidth="580" color="#B6B4AF" repeatCount="-1" scrollSpeed="42">
@@ -31,6 +31,9 @@
   <Poster id="titleLogo" translation="[128,132]" width="273" height="79" loadDisplayMode="scaleToFit" visible="false" />
   <Label id="episode" translation="[128,228]" width="280" height="24">
    <Font role="font" uri="pkg:/fonts/onest_700.ttf" size="15" />
+  </Label>
+  <Label id="elapsed" width="190" height="24" color="#B6B4AF">
+   <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="16" />
   </Label>
   <Poster id="progressTrack" translation="[420,232]" width="120" height="4" uri="pkg:/images/ui-progress-pill.9.png" blendColor="#45454BFF" visible="false" />
   <Poster id="progressFill" translation="[420,232]" width="1" height="4" uri="pkg:/images/ui-progress-pill.9.png" blendColor="#F5C542FF" visible="false" />

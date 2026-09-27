@@ -9,7 +9,7 @@
  <script type="text/brightscript" uri="pkg:/source/SourceLabels.brs" />
  <script type="text/brightscript" uri="pkg:/components/FilterChip.brs" />
  <children>
-  <Poster id="surface" width="240" height="38" uri="pkg:/images/design/pill-small.9.png" blendColor="#212124FF" />
+  <DesignSurface id="surface" width="240" height="38" radius="19" blendColor="#212124FF" />
   <ScrollingLabel id="label" translation="[16,8]" maxWidth="200" color="#B6B4AF" repeatCount="0" scrollSpeed="48">
    <Font role="font" uri="pkg:/fonts/onest_700.ttf" size="15" />
   </ScrollingLabel>

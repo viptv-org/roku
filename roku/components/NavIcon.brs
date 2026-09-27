@@ -30,6 +30,7 @@ sub render()
     m.top.findNode("avatarFallback").visible = profile and not ready
     m.top.findNode("initial").visible = profile and not ready
     m.top.findNode("surface").visible = active
+    m.top.findNode("surface").focused = active
     width = 42
     if m.top.expanded then width = 293
     m.top.findNode("surface").width = width

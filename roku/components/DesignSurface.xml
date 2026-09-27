@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="DesignSurface" extends="Group">
+ <interface>
+  <field id="width" type="float" value="48" onChange="render" />
+  <field id="height" type="float" value="48" onChange="render" />
+  <field id="radius" type="float" value="-1" onChange="render" />
+  <field id="blendColor" type="color" value="#2A2A2EFF" onChange="render" />
+  <field id="focused" type="boolean" value="false" onChange="render" />
+ </interface>
+ <script type="text/brightscript" uri="pkg:/components/DesignSurface.brs" />
+ <children>
+  <Group id="border" />
+  <Group id="fill" />
+ </children>
+</component>

@@ -22,6 +22,7 @@ end sub
 sub focusChanged()
     if m.provider = invalid then return
     active = m.top.listHasFocus and m.top.focusPercent > 0.5
+    m.top.findNode("surface").focused = active
     m.surface.blendColor = "#212124FF"
     m.provider.color = "#F4F2EE"
     m.description.color = "#B6B4AF"

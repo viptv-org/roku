@@ -17,12 +17,12 @@
   <Poster id="avatar" translation="[0,0]" width="146" height="146" loadWidth="256" loadHeight="256" loadDisplayMode="scaleToFit" />
   <Poster translation="[0,0]" width="146" height="146" uri="pkg:/images/design/profile-corners.png" />
   <Poster id="focusFrame" width="146" height="146" uri="pkg:/images/design/profile-focus.png" opacity="0" />
-  <ScrollingLabel id="name" translation="[0,160]" width="146" maxWidth="146" horizAlign="center" color="#B6B4AF" repeatCount="0" scrollSpeed="42">
+  <ScrollingLabel id="name" translation="[0,160]" maxWidth="146" horizAlign="center" color="#B6B4AF" repeatCount="0" scrollSpeed="42">
    <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
   </ScrollingLabel>
   <Poster id="addIcon" translation="[54,54]" width="38" height="38" uri="pkg:/images/lucide/plus-secondary.png" visible="false" />
   <Group id="editBadge" translation="[108,8]" visible="false">
-   <Poster width="27" height="27" uri="pkg:/images/design/pill-small.9.png" blendColor="#F4F2EEFF" />
+   <DesignSurface width="27" height="27" blendColor="#F4F2EEFF" />
    <Poster translation="[5,5]" width="17" height="17" uri="pkg:/images/lucide/pencil-focus.png" />
   </Group>
  </children>

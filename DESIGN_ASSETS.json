@@ -1,5 +1,5 @@
 {
-  "revision": "e33bf664f8370aea72ef839fb6f81c9687eac9d9",
+  "revision": "6e56136a698a52c87d232ed940775244e9d93d33",
   "files": {
     "roku/fonts/README.md": "7102f4162f3d7e0d1e1b5429aa2ea9606e0ad23d3ec2a99b13af665d27b53a5b",
     "roku/fonts/bricolage-grotesque-LICENSE.txt": "923f4ddf0fd39f9b7794ab0df7332f3d95dc43e8ad7ec2289d6d9e8491177f51",
@@ -13,6 +13,7 @@
     "roku/images/design/card-corners.png": "0bc638fd83874ce7c20622820cf657538e4c49eaa0b918b55d5031c20c65d8f3",
     "roku/images/design/card-focus.png": "b43117e653ee87d14cab2b6e799ea7257549ac51364f5f8b48e9dee12cd6fb29",
     "roku/images/design/card-mask.png": "24c4169879a009e40fca5677003e34127b7aed6ec25a5cd97e72b640eee540e3",
+    "roku/images/design/circle.png": "89fea9f218f0e0b6865577e1e671130be4b5011894acdacd6efeb8064c759ba6",
     "roku/images/design/episode-corners.png": "f7cbeca0a2a413d3b13e29eb4f60886b5c8dd6763554db7374ebb297bb72ab79",
     "roku/images/design/episode-focus.png": "474e9b13d38a7881fa5c9284f72b6aff85a8998340f6d3558c426dff90a6f568",
     "roku/images/design/episode-mask.png": "29c3d3c072d79ced4d889e40ae9840d80d6d8dce916f556942aa4c221e7a6f0f",
@@ -167,7 +168,7 @@
     "roku/images/lucide/source-primary.svg": "ae83ae36ff63e8757672fa80fdb17edee60cd024281d17b4ffcc8ad5560be9b5",
     "roku/images/lucide/source-secondary.png": "7206d51d8874e331bbd132bbc42921509e8b401b2dbf8d5d4b392e0c419be450",
     "roku/images/lucide/source-secondary.svg": "33918018a1506fc12b72ac7b1a321ed7af3e3223a70de59272070c1f7ce26712",
-    "design-contract/ROKU_DESIGN.md": "ef0fab55f4adc3e1d23dcce8802f4a95e28015f97b3b870b2acb0c2ff1615519",
+    "design-contract/ROKU_DESIGN.md": "932c590998eca03e4b88de15fba28a8dce8563604b5c01f81ff59f1802f946ba",
     "design-contract/DESIGN_SYNC.md": "a9c136ab42d220842d2f6d8cf77a797905fb07e2893653a94a7bb27704e6ee61",
     "design-contract/viptv-design-system/components.md": "f9566958d430d44feb0456c403c9051aade96e250558ba39f2862b515891feda",
     "design-contract/viptv-design-system/copy.md": "a3bc0faf1c5b7e6987a7804be3eb4cf526d658009f7784425577d26d9fee50ff",

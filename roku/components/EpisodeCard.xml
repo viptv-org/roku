@@ -10,10 +10,10 @@
  <script type="text/brightscript" uri="pkg:/components/EpisodeCard.brs" />
  <script type="text/brightscript" uri="pkg:/source/ImagePolicy.brs" />
  <children>
-  <Poster width="256" height="144" uri="pkg:/images/ui-corner-mask.png" blendColor="#2A2A2EFF" />
+  <DesignSurface width="240" height="135" radius="11" blendColor="#2A2A2EFF" />
   <Group id="placeholder">
-   <Poster translation="[112,35]" width="32" height="32" uri="pkg:/images/viptv-mark.png" opacity="0.35" />
-   <Label translation="[12,84]" width="232" height="28" text="Preview unavailable" horizAlign="center" color="#B6B4AF">
+   <Poster translation="[104,35]" width="32" height="32" uri="pkg:/images/viptv-mark.png" opacity="0.35" />
+   <Label translation="[12,84]" width="216" height="28" text="Preview unavailable" horizAlign="center" color="#B6B4AF">
     <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
    </Label>
   </Group>
@@ -34,7 +34,7 @@
   <ScrollingLabel id="title" translation="[0,165]" maxWidth="240" color="#F4F2EE" repeatCount="0" scrollSpeed="48">
    <Font role="font" uri="pkg:/fonts/bricolage_grotesque_700.ttf" size="15" />
   </ScrollingLabel>
-  <Label id="summary" translation="[0,190]" width="240" height="38" wrap="true" numLines="2" color="#B6B4AF">
+  <Label id="summary" translation="[0,190]" width="240" height="24" wrap="true" numLines="0" maxLines="1" color="#B6B4AF">
    <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
   </Label>
  </children>

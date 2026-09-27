@@ -13,7 +13,12 @@ Home cards 213×120 with 24 horizontal spacing, profile artwork 146 square,
 action pills 48 tall, section headings 21 and body 17–19. Bundle Onest and
 Bricolage Grotesque TrueType fonts and the design-owned Lucide PNG variants.
 Use the #0B0B0C ground, #161618/#212124/#2A2A2E surfaces, #F4F2EE text,
-#B6B4AF metadata and #F5C542 progress/spinners. Focus never scales artwork,
+#B6B4AF metadata and #F5C542 progress/spinners. TV action buttons use a neutral surface when unfocused and off-white when focused;
+Resume has no yellow override. Pill radius is half its height. Draw a continuous
+3px white focus border inside the fixed control bounds so native grid clipping
+cannot trim its top/left edges; fill and border share one contour. Circular
+controls remain circles at the HD canvas on both HD and FHD devices.
+Focus never scales artwork,
 controls or captions; it uses a white ring and the established focus fill.
 
 Home retains its bounded native RowList and per-row cursor restoration. The
@@ -52,3 +57,22 @@ contracts; add checks for palette, font packaging, icon variants, no scaling,
 Home row geometry, detail landscape layout and right panels. Check networkless
 visual fixtures where a renderer is available. Physical Roku installation is
 separate from source/package validation and requires an explicit device request.
+
+## ROK-042 hardware close inspection corrections (2026-09-27)
+
+The first physical install exposed a clipped ActionRow ring, inconsistent
+nine-patch corner scaling, an obsolete 256×144 episode backing under 240×135
+artwork, and truncated hero context/synopsis. Correct these against the existing
+TV reference states. Home context separates compact S/E identity from elapsed
+and total time; allow the synopsis two full lines. Keep profile actions centred,
+icons aligned, and all card backgrounds, artwork, progress and rings within
+the same bounds. TV card focus remains an outline without scale.
+
+Remote press/release/hold, source choice, profile edits and cancellation retain
+their established behavior. Acceptance on physical hardware: inspect Resume,
+Details and icon-only focus at each grid edge; inspect profile Manage/Done,
+name/Save/Cancel, avatar picker, Settings, Discover, series episodes, movie
+detail, source panel, lower Home shelves and player controls. Check rightmost
+Home card visibility and row boundaries, then Back focus restoration. Record
+which states were actually reached; visual inspection does not authorize
+destructive profile or account operations.

@@ -1,4 +1,5 @@
 sub init()
+    m.catalog = ParseJson(ReadAsciiFile("pkg:/data/avatar-catalog.json"))
     m.avatar = m.top.findNode("avatar")
     m.fallback = m.top.findNode("avatarFallback")
     m.initial = m.top.findNode("initial")
@@ -24,7 +25,16 @@ sub render()
     choice = val(Txt(item.avatar_choice))
     if style <> "" and choice >= 1 and choice <= 48
         local = "pkg:/images/avatar-catalog/"+style+"-"+int(choice).toStr()+".png"
-        if CreateObject("roFileSystem").exists(local) then avatar = local
+        for each category in m.catalog.categories
+            if category.style = style
+                if category.items = invalid
+                    avatar = local
+                else if choice <= category.items.count()
+                    avatar = category.items[int(choice)-1].local
+                end if
+                exit for
+            end if
+        end for
     end if
     m.top.findNode("editBadge").visible = item.managing = true and Txt(item.action) <> "newprofile"
     m.top.findNode("addIcon").visible = Txt(item.action) = "newprofile"
@@ -45,7 +55,7 @@ end sub
 sub avatarLoadChanged()
     loaded = m.avatar.loadStatus = "ready"
     m.avatar.visible = loaded
-    m.fallback.visible = not loaded
+    m.fallback.visible = true
     m.initial.visible = not loaded
     if m.top.itemContent <> invalid
         if Txt(m.top.itemContent.action) = "newprofile" then m.initial.visible = false

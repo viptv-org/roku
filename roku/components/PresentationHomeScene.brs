@@ -151,6 +151,7 @@ sub uiHomeActions(item as object)
         label = "Watch live"
         secondary = "Guide"
     end if
+    if item.action <> invalid then label = Txt(item.name,"View all")
     saved = UiIsFavorite(item)
     key = label + "|" + secondary + "|" + Txt(saved)
     if key <> Txt(m.uiHomeActionKey)
@@ -159,13 +160,15 @@ sub uiHomeActions(item as object)
         if item.queue_status = "next" then width = 236
         m.homeActions.itemSize = [width,48]
         root = CreateObject("roSGNode","ContentNode")
-        for each name in [label,secondary]
+        names = [label,secondary]
+        if item.action <> invalid then names = [label]
+        for each name in names
             node = root.createChild("ContentNode")
             node.title = name
             node.addFields({uiWidth:width,uiHeight:48,uiOwnerFocused:false})
         end for
-        m.homeActions.numColumns = 2
-        if item.type <> "live"
+        m.homeActions.numColumns = names.count()
+        if item.type <> "live" and item.action = invalid
             m.homeActions.numColumns = 3
             icon = "plus"
             if saved then icon = "check"

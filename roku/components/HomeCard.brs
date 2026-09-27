@@ -29,6 +29,10 @@ sub contentChanged()
         w = 240
         h = 135
     end if
+    shape = "card"
+    if w = 240 then shape = "episode"
+    m.artworkMask.uri = "pkg:/images/design/"+shape+"-corners.png"
+    m.focusFrame.uri = "pkg:/images/design/"+shape+"-focus.png"
     for each id in ["surface","artworkMask","focusFrame"]
         m[id].width = w
         m[id].height = h

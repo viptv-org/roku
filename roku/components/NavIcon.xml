@@ -10,7 +10,7 @@
  <script type="text/brightscript" uri="pkg:/source/SourceLabels.brs" />
  <script type="text/brightscript" uri="pkg:/components/NavIcon.brs" />
  <children>
-  <Poster id="surface" width="42" height="42" uri="pkg:/images/design/pill.9.png" blendColor="#F4F2EEFF" visible="false" />
+  <DesignSurface id="surface" width="42" height="42" blendColor="#F4F2EEFF" visible="false" />
   <Poster id="icon" translation="[11,11]" width="19" height="19" loadWidth="64" loadHeight="64" />
   <Poster id="avatarFallback" translation="[2,0]" width="37" height="37" uri="pkg:/images/ui-round-fill.9.png" blendColor="#34343AFF" visible="false" />
   <Label id="initial" translation="[2,0]" width="37" height="37" horizAlign="center" vertAlign="center" color="#F4F2EE" visible="false">

@@ -19,6 +19,7 @@ sub render()
     selected = item.selected = true
     owner = m.top.gridHasFocus
     active = owner and m.top.focusPercent > 0.5
+    m.top.findNode("surface").focused = active
     surface = m.top.findNode("surface")
     surface.blendColor = "#212124FF"
     label.color = "#B6B4AF"

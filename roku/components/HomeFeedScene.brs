@@ -213,7 +213,14 @@ sub homeHero()
             end for
         end if
         hero.name = m.homeTitle.text
-        hero.context = PresentationContext(item)
+        contextItem = CopyRouteData(item)
+        contextItem.delete("position")
+        hero.context = PresentationContext(contextItem)
+        hero.elapsed = ""
+        if item.position <> invalid and item.position > 0
+            hero.elapsed = PlayerTime(item.position)
+            if item.duration <> invalid and item.duration > 0 then hero.elapsed += " of " + int((item.duration+30)/60).toStr() + " min"
+        end if
         hero.background = PresentationBackdrop(hero)
         if hero.background = "" and m.uiLandscapeCache[path] <> invalid then hero.background = m.uiLandscapeCache[path]
         hero.backdrop = hero.background
@@ -251,6 +258,7 @@ sub navSelected()
     index = m.sidebar.itemSelected
     if index < 0 or index >= m.navItems.count() then return
     if m.navItems[index].action <> "home" then saveView()
+    m.sidebar.setFocus(false)
     m.top.setFocus(true)
     selectItem(m.navItems[index])
     uiFocusChanged()

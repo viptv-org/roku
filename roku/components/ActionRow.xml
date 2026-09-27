@@ -10,8 +10,7 @@
  <script type="text/brightscript" uri="pkg:/source/SourceLabels.brs" />
  <script type="text/brightscript" uri="pkg:/components/ActionRow.brs" />
  <children>
-  <Poster id="focusFrame" translation="[-2,-2]" uri="pkg:/images/design/pill-focus.9.png" visible="false" />
-  <Poster id="surface" width="536" height="56" uri="pkg:/images/design/pill.9.png" blendColor="#212124FF" />
+  <DesignSurface id="surface" width="536" height="56" blendColor="#212124FF" />
   <Label id="label" translation="[0,0]" width="536" height="56" horizAlign="center" vertAlign="center" color="#F4F2EE">
    <Font role="font" uri="pkg:/fonts/onest_700.ttf" size="15" />
   </Label>

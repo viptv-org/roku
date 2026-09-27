@@ -44,15 +44,15 @@
       "source": "roku/components/ActionRow.brs",
       "destination": "roku/components/ActionRow.brs",
       "sha256": "290b36676f8b03935d596f758d93903d891be9dd71fa81298fe179f580af33dd",
-      "extracted_sha256": "8f6033054b6fcd1a8b437cbc25403ebc77ca8ebd7f42ccdebe763bf6e62c9767",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "1fef8f5b6cfcbe50db9062209643dcac42477ba80b22c4c2bf0600acbbbcecdb",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/ActionRow.xml",
       "destination": "roku/components/ActionRow.xml",
       "sha256": "74dcd5feffbdcc94de82a12c2c9e47376e2dab7dc763d4e60f1c205fe3618858",
-      "extracted_sha256": "e7bbe26fd52d46fc5f6903e6cf5b974143ebb263e39945c769acb271e399de94",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "58c5b1fc236d83446c4e009a54d7e2189bc9c2a4eefad92a21213959ffc4a5f5",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/AddonScene.brs",
@@ -111,15 +111,15 @@
       "source": "roku/components/ChannelRow.brs",
       "destination": "roku/components/ChannelRow.brs",
       "sha256": "7eeefa73395748984806b1d654465b4ae3a801bd40d7eb80cf91da9292b17eff",
-      "extracted_sha256": "daaf3eea5230dcc84e7e12d25c5f6471016c027808cfae7853f8c13b724918ae",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "2b7534ca94fa9c79b139408ff10c7bdb2aa7604cd1a818088018aef065e4dbbb",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/ChannelRow.xml",
       "destination": "roku/components/ChannelRow.xml",
       "sha256": "e7ed26306c02e3d5837e65c121686158f773f2bdde7706a2c48e6f1c338c5f8c",
-      "extracted_sha256": "8f565b1c1c175752a3abc567ce6a80fba507d5283fed775bebb828adb30bc775",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "745e02a470d08ca9fc8df089ac035702ef04579fb49f70ef5762a0fd1fae8de5",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/ContinuationScene.brs",
@@ -164,36 +164,36 @@
       "source": "roku/components/EpisodeCard.xml",
       "destination": "roku/components/EpisodeCard.xml",
       "sha256": "4ccffbb9cfa679b9885a5c488532a63e747333bad366c21bd6edbfb810c07c57",
-      "extracted_sha256": "1f903622d8158f476e1fb2650b691cd65c0a92e3bed65d085f655564198339d8",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "83bad8b53d3884967f432cd51f87fb076db4002a2900bc50c55ce6c2c73b2f8a",
+      "reason": "ROK-042 hardware UI corrections: consistent outlines, bounded text/card geometry and render-thread-safe avatar lookup with bundled-catalog validation; design 6e56136."
     },
     {
       "source": "roku/components/FilterChip.brs",
       "destination": "roku/components/FilterChip.brs",
       "sha256": "b9881061cd1c82d35e38c6792f8752352fa642a7b0e02f2df8ec6ed31a75dcf0",
-      "extracted_sha256": "3ebb6888d9ae1690daa5383cce9cc4ad7a99a32edbc839ce2961f79629c725a0",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "2b3ebd530eb7e8924d9da73a6916c507b5aa3c76ee8aba65dad5198d22811f3c",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/FilterChip.xml",
       "destination": "roku/components/FilterChip.xml",
       "sha256": "2693b4770fb44cf830247efc14174ebebea09896f546bb7d4dfddb4b604c05db",
-      "extracted_sha256": "49c90494471208f98e6beb9cb5fc953f00c6dfaff840bc963ac050d954b1489b",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "ebc5b901002a7a17a834e94ec7ea9a9fdaff98a50d815d29ec26da1a984ca649",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/HeroPanel.brs",
       "destination": "roku/components/HeroPanel.brs",
       "sha256": "9bff2f788e73de7bfd7b8af2671884a5d093e20928c036a077790e89b878e137",
-      "extracted_sha256": "b5c5292cbd4ef838c61ae7cf9cf43710510bf077108388a5aac53218a8818ba8",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "b04d6154a264b315f6a2e078b4cf2cfb3034cd5a1263c799c18741f19ebc8c44",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/HeroPanel.xml",
       "destination": "roku/components/HeroPanel.xml",
       "sha256": "ee72fe82f207f083a9c673a84a1a74027331f65f01cc969e8e91eee2599ef790",
-      "extracted_sha256": "d0f71390850016fca062cd3d32b277f6d615ac06e153c2d94015a77cd91af4f2",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "621003536b6731a2172bfe9334f9b31790f6218faecc46c7b58c6feee43911eb",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/HoldGrid.xml",
@@ -218,8 +218,8 @@
       "source": "roku/components/HomeCard.brs",
       "destination": "roku/components/HomeCard.brs",
       "sha256": "5373dda84e661fc0dd62f33e8bd49683918a807ce14acf4426d1a6612cba7285",
-      "extracted_sha256": "ec1fb3d679557214c8c6b98829d9e7eb6fc2d4951add2c9dac5f3ec3b7a8f49e",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "13f2012017d2c320f18eb466ffd604a3c6d5a6138b982ced9f3f7b2aa1f47998",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/HomeCard.xml",
@@ -232,8 +232,8 @@
       "source": "roku/components/HomeFeedScene.brs",
       "destination": "roku/components/HomeFeedScene.brs",
       "sha256": "d637da6fe6b503b790bee68ba35c939273d080e912071772f32029300d294c9a",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained.",
-      "extracted_sha256": "85eb906f550b3a43a1d132c6d2662f7d6b1a35b104ea0b596ca9dcc150958764"
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136.",
+      "extracted_sha256": "cfa0c4d56603ec41337ab949aa54d94ec730c8844c2feabb53cc8de9f783f3a4"
     },
     {
       "source": "roku/components/HomeScene.brs",
@@ -271,15 +271,15 @@
       "source": "roku/components/NavIcon.brs",
       "destination": "roku/components/NavIcon.brs",
       "sha256": "7cea2a3386c95d5afd060eee3789894a94f59c06b10d113d2c27e0611d9d875d",
-      "extracted_sha256": "c3068f26e9284941d7e69dedd423f8e6ee97d3ef6631652177c6afded26da2ee",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "abfe941d6e4d98f95692d8dc0bd322bc1dfcf506a5288e1cefd64f3e35dcfda6",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/NavIcon.xml",
       "destination": "roku/components/NavIcon.xml",
       "sha256": "5c8b1f3d36f18170c8050915db890a0e5977cb9e3514964eb1a4bce6f08b7049",
-      "extracted_sha256": "69fadf32ce7fb9b4ef10d505ac338104f65b4c4980640fd02ad76bd7584adc2e",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "afd283e52038242415df9a10f63199b9f4efd58bd703209c285141efd0b5c200",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/NavigationScene.brs",
@@ -305,8 +305,8 @@
       "source": "roku/components/PlayerOverlay.xml",
       "destination": "roku/components/PlayerOverlay.xml",
       "sha256": "eb62b131591468cfe845857a2c172989dd887612555bf4c53ea3cd05971ec3e9",
-      "extracted_sha256": "2e68ccd79076bd74e09ac632da34621fc41cc446fb934ffc60c98378fcf932d2",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "c8ad8da73f3dd6d6f56bd4017dd8933d13d49f1ca5ab026e53dd4bf9d80b260a",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/PresentationArtworkScene.brs",
@@ -319,15 +319,15 @@
       "source": "roku/components/PresentationDetailsScene.brs",
       "destination": "roku/components/PresentationDetailsScene.brs",
       "sha256": "b946dbeeb415cd49b7fe9a2a0fab0849adbd2a8c6dfa241ab20e08191f65c9b9",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained.",
-      "extracted_sha256": "81aa78b8d470ae4518216f337504ddde8ed837382c7cbc91f8a73b939fbcdd3e"
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136.",
+      "extracted_sha256": "1990dbb190269708a46f01450f1710f7d600b54733f51f8eeb70c34c8d5eeb3f"
     },
     {
       "source": "roku/components/PresentationHomeScene.brs",
       "destination": "roku/components/PresentationHomeScene.brs",
       "sha256": "2bfb69990dfc3f24cd494e35c0c6ab440a5582dcf930e61bdd06019b17e67e76",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained.",
-      "extracted_sha256": "0c15c4384f4c948f101df625f43c978add479d4d2ceb7b7dcfd37aaad2058db8"
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136.",
+      "extracted_sha256": "57d3b7fff13144223006d951a7104e15c3ed91a5c4363cfd28ffc57626fb1353"
     },
     {
       "source": "roku/components/PresentationScene.brs",
@@ -340,15 +340,15 @@
       "source": "roku/components/ProfileCard.brs",
       "destination": "roku/components/ProfileCard.brs",
       "sha256": "db427417dbe1bf328656127c52aa949ec3cd7b181b83292a77d4dffc92ef38e6",
-      "extracted_sha256": "55e0be852439009acdf070971a4e117e716431458b4a1b5a85592f73064295c4",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "225770d3c2fdf05059422423ef7c6c79bda2a39a6e7ba719f84db74e0570e051",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/ProfileCard.xml",
       "destination": "roku/components/ProfileCard.xml",
       "sha256": "1a85ec923168c6f166bd7fb021b57ba21eb781f622e8931aed7dad41c7ede9f4",
-      "extracted_sha256": "567fafa965d4cd2696f7946775bfc308498a1dae32cd3f3eeeda201f2436e4f3",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "94793ed324a681285c91c345efe40d12e24bd8312a7c2a3d787479286b09a6c3",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/ProfileEditor.brs",
@@ -408,15 +408,15 @@
       "source": "roku/components/SourceCard.brs",
       "destination": "roku/components/SourceCard.brs",
       "sha256": "b8d09c20b83441efa319dd96f067c86eaf2b4d50a48f06aee934dabe9e7745fb",
-      "extracted_sha256": "e9b10a8f771544ddbd0d1292c7c2614f0af8bfc80a75d98885edc9d0604118a9",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "79493ce2e656aece9bd5a554319bb36197978b6e883d2487c5cff1dba95de3e1",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/SourceCard.xml",
       "destination": "roku/components/SourceCard.xml",
       "sha256": "f23fffbb1a71ffc0f552a15b359812a632f300b4c6746e94144b09c988f4e1b5",
-      "extracted_sha256": "0dd0dd12f19d66fd993572e45bdb1755984a335cc695e29a9db35fd7674d0bcc",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "2bbc8fa7664cc5e46d66a354d4a60ef7a2359579ae7ca3586d9990bbe79ea94e",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/SourcesScene.brs",
@@ -3899,8 +3899,8 @@
       "source": "roku/manifest",
       "destination": "roku/manifest",
       "sha256": "e3ec6e7a1150fbd14f500736f2b28550b8a7a4bf08832546fc29b208b22dee58",
-      "extracted_sha256": "e46ee98e1f37fdc88cad76a3ba4229908a21988560d6b1fcda04975a54774bdc",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "98f84b46da58ea8571a03cb9238ecae782d7c734ba2cf595ac00bc84a9ee2197",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/source/AccountPolicy.brs",
@@ -3993,8 +3993,8 @@
       "source": "roku/tests/branding_contract.py",
       "destination": "roku/tests/branding_contract.py",
       "sha256": "56f5dd474cf933f299238037251129543f3dda54c40fe75a80e1973523ad3eb7",
-      "extracted_sha256": "a70dc1d8c5aa7a2348b1dcc45d37f7696d545b7ddf862e622d02c4729dec201e",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "2035b15434712b61df89d9cd922623a9d0182045028c6847f12c4c65c447e303",
+      "reason": "ROK-042 hardware UI corrections: consistent outlines, bounded text/card geometry and render-thread-safe avatar lookup with bundled-catalog validation; design 6e56136."
     },
     {
       "source": "roku/tests/browse-policy.brs",

@@ -58,8 +58,8 @@ sub uiShowDetails(item as object)
         m.detailInfo.height = 28
         m.description.translation = [128,178]
         m.description.width = 520
-        m.description.height = 52
-        m.description.numLines = 2
+        m.description.height = 0
+        m.description.numLines = 0
         m.description.maxLines = 2
         m.description.font.size = 17
         m.art.translation = [128,64]
