@@ -17,7 +17,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: python3 scripts/design-sync.py check
+      # main predates the design snapshot tool on feat/roku-tv-design.
+      - run: if [ -f scripts/design-sync.py ]; then python3 scripts/design-sync.py check; fi
       - name: Compile runtime
         working-directory: roku
         run: npx --yes brighterscript@0.73.1 --project bsconfig.json --copy-to-staging --staging-folder-path "$RUNNER_TEMP/viptv-roku-staging" --retain-staging-folder
