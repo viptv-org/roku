@@ -16,12 +16,12 @@ source/title overlay context, preparation and library empty/segment presentation
 The full audit separates those checks from native-input adaptations and states
 not replayed on the paired household device. Decoder pixels are not in screenshots.
 
-Installed ZIP: `artifacts/rok043-1.11.0/viptv-roku.zip`. Public ZIP:
-`artifacts/rok043-1.11.0/viptv-roku-public.zip`. SHA-256 respectively:
+Installed ZIP: `artifacts/rok043-verified/viptv-roku.zip`. Public ZIP:
+`artifacts/rok043-verified/viptv-roku-public.zip`. SHA-256 respectively:
 
 ```
-386630574ec91fba4c2f155e5649a2f32ef377654408be7d76719e580199bb62
-7f17e5660bb50a5a983c6ec874c6b3b65bda4d23a9a0d76f0d1c304d8d7ce7f9
+7e2b737dd776d17f66619de8774daa50d83973f2205ae30bf20751bef26e6ada
+82db2c5408ef5d73142a6f898e84eabb7a36e2301bb771a90e39528319e9775d
 ```
 
 Developer installer reports Install Success with matching package MD5; ECP reports

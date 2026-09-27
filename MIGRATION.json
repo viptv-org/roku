@@ -139,15 +139,15 @@
       "source": "roku/components/EpgGrid.brs",
       "destination": "roku/components/EpgGrid.brs",
       "sha256": "1a942f3bb3db967b9fe079d176bd20e3cabacb1b7c3c0e5f9ca6f88716895a42",
-      "extracted_sha256": "bf6aaa79dfac9c4c67a830ba361371111e6e2011ecf3a05492d4164f89065cd2",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
+      "extracted_sha256": "426e76afd65a2861e5e6ed774b03b3d89206898d7ef892bf22e14369ad8b7de8",
+      "reason": "ROK-043 guide audit: preserve true programme bounds when cells clip to the time window; readable detail panel."
     },
     {
       "source": "roku/components/EpgGrid.xml",
       "destination": "roku/components/EpgGrid.xml",
       "sha256": "72782188dbdb7913581205a071c90598d61ac6eaa35d415492bee05703e3ea24",
-      "extracted_sha256": "51076a727a122bf6de462e19bdad83456680e9df9978ec850ae0ab3a6d3b527c",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
+      "extracted_sha256": "3a1f74a536c230d426db2278c77c67eb637178128ef22132625d337dede14fe2",
+      "reason": "ROK-043 guide audit: preserve true programme bounds when cells clip to the time window; readable detail panel."
     },
     {
       "source": "roku/components/EpgScene.brs",
@@ -3926,7 +3926,9 @@
     {
       "source": "roku/source/EpgPolicy.brs",
       "destination": "roku/source/EpgPolicy.brs",
-      "sha256": "1ab584eb4ceea9662009d2cc44dcf675f407f914cbbd172afc6d4e83a68efe96"
+      "sha256": "1ab584eb4ceea9662009d2cc44dcf675f407f914cbbd172afc6d4e83a68efe96",
+      "extracted_sha256": "8bbc9804c4422d06383c46b777a4937eeb8299758520e8f1a0bd9b6827648994",
+      "reason": "ROK-043 guide audit: preserve true programme bounds when cells clip to the time window; readable detail panel."
     },
     {
       "source": "roku/source/ImagePolicy.brs",
@@ -4171,7 +4173,9 @@
     {
       "source": "roku/tests/guide_boundary_runtime.py",
       "destination": "roku/tests/guide_boundary_runtime.py",
-      "sha256": "f1917f22326cdf0305c8c46c9d166cfd0955a9844d6e46189f5b82ed4a44b919"
+      "sha256": "f1917f22326cdf0305c8c46c9d166cfd0955a9844d6e46189f5b82ed4a44b919",
+      "extracted_sha256": "0db9685d4c4e91b8021b1493eb5b2a0eaae563c489714bbd8a47d355655084ae",
+      "reason": "ROK-043 guide audit: preserve true programme bounds when cells clip to the time window; readable detail panel."
     },
     {
       "source": "roku/tests/home.brs",

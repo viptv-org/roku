@@ -54,3 +54,17 @@ function EpgTime(at as integer) as string
     if len(minute) = 1 then minute = "0"+minute
     return hour.toStr()+":"+minute+" "+suffix
 end function
+
+' Timeline geometry may clip a cell; visible programme times retain true bounds.
+function EpgActualStart(cell as object) as integer
+    if cell.programme <> invalid
+        if cell.programme.start <> invalid then return cell.programme.start
+    end if
+    return cell.start
+end function
+function EpgActualEnd(cell as object) as integer
+    if cell.programme <> invalid
+        if cell.programme.end <> invalid then return cell.programme.end
+    end if
+    return cell.end
+end function

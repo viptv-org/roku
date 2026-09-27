@@ -6,6 +6,9 @@ source = (root/'components/EpgGrid.brs').read_text()
 def extract(start, end):
     return source[source.index(start):source.index(end, source.index(start))+len(end)]
 checks = '''sub Main()
+ clipped={start:1800,end:3600,programme:{start:0,end:7200}}
+ if EpgActualStart(clipped)<>0 or EpgActualEnd(clipped)<>7200 then throw "clipped cell changed programme time"
+
     m.top = {visible:true,query:"",route:{filter:{id:"all"},search:""}}
     m.details = {visible:false}
     m.channels = [{id:"one"},{id:"two"}]

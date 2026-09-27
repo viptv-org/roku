@@ -290,7 +290,7 @@ sub epgRender()
             if width < 1 then width = 1
             bar = epgSurface(view.cells,328+geometry.x,2,width,59,fill,focused)
             if geometry.width > 52
-                hint = epgCompactTick(cell.start)+" – "+epgCompactTick(cell.end)
+                hint = epgCompactTick(EpgActualStart(cell))+" – "+epgCompactTick(EpgActualEnd(cell))
                 if cell.missing
                     hint = "LIVE CHANNEL"
                     if not m.cache.doesExist(id) then hint = "Loading guide…"
@@ -352,9 +352,9 @@ sub epgHeader(channel as object, cell as object, now as integer)
     m.headerTrack.visible = current
     m.headerProgress.visible = current
     if not cell.missing
-        m.programmeTime.text = epgCompactTick(cell.start)+" – "+epgCompactTick(cell.end)
+        m.programmeTime.text = epgCompactTick(EpgActualStart(cell))+" – "+epgCompactTick(EpgActualEnd(cell))
         if current
-            m.headerProgress.width = 146.0*(now-cell.start)/(cell.end-cell.start)
+            m.headerProgress.width = 146.0*(now-EpgActualStart(cell))/(EpgActualEnd(cell)-EpgActualStart(cell))
             m.programmeRemaining.text = int((cell.end-now+59)/60).toStr()+" min left"
         end if
         for each programme in epgProgrammes(Txt(channel.id))
@@ -383,13 +383,22 @@ sub epgDetails()
     if m.channels.count() = 0 then return
     cell = m.selectedCell
     m.detailHeading.text = cell.title
-    m.detailTime.text = Txt(m.channels[m.row].name)+" · "+epgCompactTick(cell.start)+" – "+epgCompactTick(cell.end)
+    m.detailTime.text = Txt(m.channels[m.row].name)+" · "+epgCompactTick(EpgActualStart(cell))+" – "+epgCompactTick(EpgActualEnd(cell))
     text = "No guide information. You can still watch this channel."
     if not cell.missing
         text = Txt(cell.programme.description,"No programme description available.")
         if cell.start > CreateObject("roDateTime").asSeconds() then text = "UPCOMING  ·  "+text
     end if
     m.detailBody.text = text
+    if cell.missing then m.detailTime.text = Txt(m.channels[m.row].name)
+    headingBounds = m.detailHeading.localBoundingRect()
+    timeY = 43+headingBounds.height+12
+    m.detailTime.translation = [776,timeY]
+    m.detailBody.translation = [776,timeY+42]
+    bodyBounds = m.detailBody.localBoundingRect()
+    actionY = timeY+42+bodyBounds.height+24
+    if actionY > 544 then actionY = 544
+    m.detailActions.translation = [776,actionY]
     m.details.visible = true
     m.detailActions.jumpToItem = 0
     m.detailActions.setFocus(true)
