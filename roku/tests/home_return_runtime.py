@@ -56,6 +56,8 @@ end function
 function uiHomeHeroRow() as integer
  return 0
 end function
+sub homeCatalogPump(advance = false as boolean)
+end sub
 sub uiQueueCardArtwork()
 end sub
 sub uiHomeLayout()

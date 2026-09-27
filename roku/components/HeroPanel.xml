@@ -19,9 +19,9 @@
   <Label id="eyebrow" translation="[128,100]" width="560" height="26" color="#DAD8D3">
    <Font role="font" uri="pkg:/fonts/onest_700.ttf" size="15" />
   </Label>
-  <ScrollingLabel id="title" translation="[128,132]" maxWidth="506" color="#F4F2EE" repeatCount="-1" scrollSpeed="48">
+  <Label id="title" translation="[128,132]" width="506" height="0" maxLines="2" wrap="true" color="#F4F2EE">
    <Font role="font" uri="pkg:/fonts/bricolage_grotesque_700.ttf" size="37" />
-  </ScrollingLabel>
+  </Label>
   <Label id="summary" translation="[128,298]" width="510" height="0" numLines="0" maxLines="2" wrap="true" color="#DAD8D3">
    <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
   </Label>

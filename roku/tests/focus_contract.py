@@ -13,7 +13,7 @@ class FocusContract(unittest.TestCase):
         root = ET.parse(Path(__file__).resolve().parents[1] / "components/MainScene.xml").getroot()
         expected = {
 
-            "sourceList": ("MarkupList", "[776,172]", "3", "SourceCard"),
+            "sourceList": ("MarkupList", "[776,172]", "5", "SourceCard"),
             "posterGrid": ("HoldGrid", "[128,180]", "2", "HomeCard"),
         }
         for node_id, (tag, translation, rows, component) in expected.items():

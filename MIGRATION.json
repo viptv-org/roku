@@ -44,8 +44,8 @@
       "source": "roku/components/ActionRow.brs",
       "destination": "roku/components/ActionRow.brs",
       "sha256": "290b36676f8b03935d596f758d93903d891be9dd71fa81298fe179f580af33dd",
-      "extracted_sha256": "1fef8f5b6cfcbe50db9062209643dcac42477ba80b22c4c2bf0600acbbbcecdb",
-      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry and render-thread-safe profile avatars; design 6e56136."
+      "extracted_sha256": "5d92bcd4c0cb41cfc5f715d311608c6237b4d5f67488eb0c054fbda772043c30",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/ActionRow.xml",
@@ -132,21 +132,22 @@
       "source": "roku/components/DiscoverScene.brs",
       "destination": "roku/components/DiscoverScene.brs",
       "sha256": "d389426f5f252714c53698bbb12bc148f40fbb9f20c2cc8ca9c3b91626e8140c",
-      "reason": "New file split from MainScene.brs: discover catalog/filter and browse handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434.",
+      "extracted_sha256": "f55410199bbedc7b12e3f1c00640583006fb22ad3516e1a6a1a41313b2cb3e81"
     },
     {
       "source": "roku/components/EpgGrid.brs",
       "destination": "roku/components/EpgGrid.brs",
       "sha256": "1a942f3bb3db967b9fe079d176bd20e3cabacb1b7c3c0e5f9ca6f88716895a42",
-      "extracted_sha256": "a65dcb1470852d207f26a0636ed46a3d9d1f562aa651ab57df3b6308bd3a9a94",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "bf6aaa79dfac9c4c67a830ba361371111e6e2011ecf3a05492d4164f89065cd2",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/EpgGrid.xml",
       "destination": "roku/components/EpgGrid.xml",
       "sha256": "72782188dbdb7913581205a071c90598d61ac6eaa35d415492bee05703e3ea24",
-      "extracted_sha256": "c785b481d7ab6718ba1edaab03e26ec4f7f21d5b27145b1534397fdb2ebef939",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "51076a727a122bf6de462e19bdad83456680e9df9978ec850ae0ab3a6d3b527c",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/EpgScene.brs",
@@ -157,22 +158,22 @@
       "source": "roku/components/EpisodeCard.brs",
       "destination": "roku/components/EpisodeCard.brs",
       "sha256": "d35f1732b06008778b8f9c1289d8e9a19e8c1c6ad40c4bbc9d981e0ac8eabae4",
-      "extracted_sha256": "e5b30d8114c6696cba6688d0650bd4faeae4be38f2a49aa38bc7dd338b7014fa",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "5014ebdb7d4fc4d9d20ae1ad38ccd8b504cef0800190882203b545e52d79a1be",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/EpisodeCard.xml",
       "destination": "roku/components/EpisodeCard.xml",
       "sha256": "4ccffbb9cfa679b9885a5c488532a63e747333bad366c21bd6edbfb810c07c57",
-      "extracted_sha256": "83bad8b53d3884967f432cd51f87fb076db4002a2900bc50c55ce6c2c73b2f8a",
-      "reason": "ROK-042 hardware UI corrections: consistent outlines, bounded text/card geometry and render-thread-safe avatar lookup with bundled-catalog validation; design 6e56136."
+      "extracted_sha256": "55ba577a6df9ae6653c4fc8d7b0f09c228a70e41736a7927c2e27907546d33a4",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/FilterChip.brs",
       "destination": "roku/components/FilterChip.brs",
       "sha256": "b9881061cd1c82d35e38c6792f8752352fa642a7b0e02f2df8ec6ed31a75dcf0",
-      "extracted_sha256": "2b3ebd530eb7e8924d9da73a6916c507b5aa3c76ee8aba65dad5198d22811f3c",
-      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
+      "extracted_sha256": "d04f836c8583e4937dd5ede908d17c5474df4f485cbf65670bd231d6487a9d65",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/FilterChip.xml",
@@ -185,15 +186,15 @@
       "source": "roku/components/HeroPanel.brs",
       "destination": "roku/components/HeroPanel.brs",
       "sha256": "9bff2f788e73de7bfd7b8af2671884a5d093e20928c036a077790e89b878e137",
-      "extracted_sha256": "b04d6154a264b315f6a2e078b4cf2cfb3034cd5a1263c799c18741f19ebc8c44",
-      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
+      "extracted_sha256": "69175e9ffbda834fb165d2384e0546657f8ee5f434807b7b717a856449316d43",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/HeroPanel.xml",
       "destination": "roku/components/HeroPanel.xml",
       "sha256": "ee72fe82f207f083a9c673a84a1a74027331f65f01cc969e8e91eee2599ef790",
-      "extracted_sha256": "621003536b6731a2172bfe9334f9b31790f6218faecc46c7b58c6feee43911eb",
-      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
+      "extracted_sha256": "a79d37e3ea6fe8794a67ff2094e1158cc378a39379b29568e743cf9cad884e88",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/HoldGrid.xml",
@@ -218,29 +219,29 @@
       "source": "roku/components/HomeCard.brs",
       "destination": "roku/components/HomeCard.brs",
       "sha256": "5373dda84e661fc0dd62f33e8bd49683918a807ce14acf4426d1a6612cba7285",
-      "extracted_sha256": "13f2012017d2c320f18eb466ffd604a3c6d5a6138b982ced9f3f7b2aa1f47998",
-      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
+      "extracted_sha256": "a2a65dcc64497e894f16cec94c03afc3797204dc3ef4f49f733965dd9b3f315d",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/HomeCard.xml",
       "destination": "roku/components/HomeCard.xml",
       "sha256": "e0d64773fb09a3b6b2fb820a724a43fc76d53773780a6b98aa4b0d9f21c68223",
-      "extracted_sha256": "5aea517cfd276fad827daf363f6b1834e37f727cc619c60c90d2d23c1ee21f1f",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "923beba63362b53712fd8832e804405281884d881375ef8f86e0f41f54674325",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/HomeFeedScene.brs",
       "destination": "roku/components/HomeFeedScene.brs",
       "sha256": "d637da6fe6b503b790bee68ba35c939273d080e912071772f32029300d294c9a",
-      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136.",
-      "extracted_sha256": "cfa0c4d56603ec41337ab949aa54d94ec730c8844c2feabb53cc8de9f783f3a4"
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434.",
+      "extracted_sha256": "3e65c127caeace0340471be84470e7784e70468b4a7c00b3e7aeeebe365f6b35"
     },
     {
       "source": "roku/components/HomeScene.brs",
       "destination": "roku/components/HomeScene.brs",
       "sha256": "98eff40f139b55c320c4eb4901c04061833c7e6223cc1afe7eb93e91e4f0d166",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained.",
-      "extracted_sha256": "09bbf5f9347970fa5919fecb50d77cdeb610c31350b04abf6bf82ba0c64e5c72"
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434.",
+      "extracted_sha256": "ff77439884488e79d8aa85d2500fef1a7bbefcc4a1f8af4f4b80f10cca7d2125"
     },
     {
       "source": "roku/components/LibraryScene.brs",
@@ -257,15 +258,15 @@
       "source": "roku/components/MainScene.brs",
       "destination": "roku/components/MainScene.brs",
       "sha256": "86b18096942ced4d58c9408fe81598e2b7f648dde69c90ead66d376734d3b1b8",
-      "extracted_sha256": "bc8c377229ea5887a57fb7e1ab248f0072485ceb5a132823bf7c9488f25f6bef",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "4011ca3a56d46154c0411b1b0f3f9f5ad1db3b421f370cbc1194a37a5d2cd8b5",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/MainScene.xml",
       "destination": "roku/components/MainScene.xml",
       "sha256": "683ee2541fb021de8402c8fc590ed211abc043d423c6f7cbc3a4b5b75626063c",
-      "extracted_sha256": "f15871c1308d6d4791d6483f7c9d1843a20ed6bf2ed26174689d21c9abeb075b",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "a369823d6db99d6063b8b7e90a99af162564f3a80d5d204fff9f3a03b8fbd2a7",
+      "reason": "ROK-043 complete TV audit corrections and acceptance checks; design 3b6e434."
     },
     {
       "source": "roku/components/NavIcon.brs",
@@ -285,14 +286,15 @@
       "source": "roku/components/NavigationScene.brs",
       "destination": "roku/components/NavigationScene.brs",
       "sha256": "11dd77e46308cf597fdd2b7dbcdcf8c99be17f640ad0ba48b153191d86bccc8c",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained.",
-      "extracted_sha256": "9f3f0a4ee9193ec54e2f07609ca5de5ee7c1048da6da523ae148e786e5c71954"
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434.",
+      "extracted_sha256": "cc1d89f14799c8654f5bb2f398d8773e8d8f2e119fff34a6c931d674a1391694"
     },
     {
       "source": "roku/components/PlaybackScene.brs",
       "destination": "roku/components/PlaybackScene.brs",
       "sha256": "2895f449c1c79ce16987253c68728b4e2baca7539ca6e10e47955947e7ee09b3",
-      "reason": "New file split from MainScene.brs: stream discovery, playback start, player state and track dialog handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434.",
+      "extracted_sha256": "e77fd50e967bea2a4495d190e7624fdf11dff785ee7f52893266d2e08133453a"
     },
     {
       "source": "roku/components/PlayerOverlay.brs",
@@ -305,36 +307,36 @@
       "source": "roku/components/PlayerOverlay.xml",
       "destination": "roku/components/PlayerOverlay.xml",
       "sha256": "eb62b131591468cfe845857a2c172989dd887612555bf4c53ea3cd05971ec3e9",
-      "extracted_sha256": "c8ad8da73f3dd6d6f56bd4017dd8933d13d49f1ca5ab026e53dd4bf9d80b260a",
-      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
+      "extracted_sha256": "803de1d438def5f52ef8372b993f735b25a7fdbb1addb122475cba4d6a11da70",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/PresentationArtworkScene.brs",
       "destination": "roku/components/PresentationArtworkScene.brs",
       "sha256": "f4d9ae9fe9239a1e967f152906115bdf69810611933fe0cf64b4e7b6448f671e",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained.",
-      "extracted_sha256": "160be12048e6be0f5c1f083c64a1cdfead6be0a985a9659ac2f3115a4d6bc5ca"
+      "reason": "ROK-043 complete TV audit corrections and acceptance checks; design 3b6e434.",
+      "extracted_sha256": "445bd5fe50d945362e42a4700bb639db7412429df0932c4ead537bbb06ff314a"
     },
     {
       "source": "roku/components/PresentationDetailsScene.brs",
       "destination": "roku/components/PresentationDetailsScene.brs",
       "sha256": "b946dbeeb415cd49b7fe9a2a0fab0849adbd2a8c6dfa241ab20e08191f65c9b9",
-      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136.",
-      "extracted_sha256": "1990dbb190269708a46f01450f1710f7d600b54733f51f8eeb70c34c8d5eeb3f"
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434.",
+      "extracted_sha256": "a990a1caf1331a4ef2b7ef910d1ae0690228b30eee7214afd076246af8d3c606"
     },
     {
       "source": "roku/components/PresentationHomeScene.brs",
       "destination": "roku/components/PresentationHomeScene.brs",
       "sha256": "2bfb69990dfc3f24cd494e35c0c6ab440a5582dcf930e61bdd06019b17e67e76",
-      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136.",
-      "extracted_sha256": "57d3b7fff13144223006d951a7104e15c3ed91a5c4363cfd28ffc57626fb1353"
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434.",
+      "extracted_sha256": "4e52b2ba73635ba762c8d8d4e30fc7c8c2ad07142e1f41bac559d3ad9f9ba863"
     },
     {
       "source": "roku/components/PresentationScene.brs",
       "destination": "roku/components/PresentationScene.brs",
       "sha256": "21e2793fd82e785b1baa933c7d7e62c9e072cc0f990d0a213ed53f0aef8dda32",
-      "extracted_sha256": "ed21d1bcdc88c16cc06d87281165bc19c551c3a17869670c18ad7840b013b718",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "cd8bfdf3bd2b9d9c3fed8844f836e7d369f38c5d881787cc47bcfa13d82ed5a6",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/ProfileCard.brs",
@@ -368,29 +370,29 @@
       "source": "roku/components/ResponseScene.brs",
       "destination": "roku/components/ResponseScene.brs",
       "sha256": "582c565e78ae88fd170b1c873e7253fb1906865b62dc647d5987ecac9e77f9f5",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained.",
-      "extracted_sha256": "608158dc6099f6c85e168820164e5e62f48fa0e8da516336da6edbfc6a0806d6"
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434.",
+      "extracted_sha256": "cb7f6bf1d23bbdfd4bc27659f8d9e52a3ada82d3263889fcf2f21476ca34f236"
     },
     {
       "source": "roku/components/SearchPanel.brs",
       "destination": "roku/components/SearchPanel.brs",
       "sha256": "3a3e1e5c3037b3b083f5d46badb1a70c54d1abc59c5eb502138a7086b0967dc8",
-      "extracted_sha256": "3f8dacea1d6ac05944e476851dcd4ad9ef374d6e8bf8e2f8ccbaf09c9a7146c9",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "c22b2a3f76a937a65cc28e2eba0d50683d9d35ae7b8a7f8528407e51e98fbfc9",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/SearchPanel.xml",
       "destination": "roku/components/SearchPanel.xml",
       "sha256": "e7b3d24081ed20fa9b7ea5dbaf30a8b4587cd3460c458ac6429bd975d2785576",
-      "extracted_sha256": "f915f9daec77735950ffb68bcd4620e9fdefe8175971122ac87b1dac1f4a8bb9",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "88c79e27ffbbb9a615fb03d4e36a52c755a55cc3373f66422cb21185610bb54f",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/SearchScene.brs",
       "destination": "roku/components/SearchScene.brs",
       "sha256": "7dd943ac418c54be97d1d5f2ea611d4d1e73390b4a90dde21c6403a3f87c45d5",
-      "extracted_sha256": "c138b1a6aa6f33cac2afbc7b4b2e4adb072ebf7fdcbe8af6aea20efa34d501eb",
-      "reason": "Cleanup: removed the write-only m.searchItems assignment."
+      "extracted_sha256": "57a148044cc483f6c9be0cba276f07cec65d09c39ce3fbd05dca40f9957d350b",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/SeekScene.brs",
@@ -408,15 +410,15 @@
       "source": "roku/components/SourceCard.brs",
       "destination": "roku/components/SourceCard.brs",
       "sha256": "b8d09c20b83441efa319dd96f067c86eaf2b4d50a48f06aee934dabe9e7745fb",
-      "extracted_sha256": "79493ce2e656aece9bd5a554319bb36197978b6e883d2487c5cff1dba95de3e1",
-      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
+      "extracted_sha256": "8c0150433496149443656240c82b44c033eeaabe8528fc040a25d30925bc3b4b",
+      "reason": "ROK-043 complete TV audit corrections and acceptance checks; design 3b6e434."
     },
     {
       "source": "roku/components/SourceCard.xml",
       "destination": "roku/components/SourceCard.xml",
       "sha256": "f23fffbb1a71ffc0f552a15b359812a632f300b4c6746e94144b09c988f4e1b5",
-      "extracted_sha256": "2bbc8fa7664cc5e46d66a354d4a60ef7a2359579ae7ca3586d9990bbe79ea94e",
-      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
+      "extracted_sha256": "d7de3a9d79758539fb32f9f8a27cefa185dcb77621afb887ef9b11cb6d91414b",
+      "reason": "ROK-043 complete TV audit corrections and acceptance checks; design 3b6e434."
     },
     {
       "source": "roku/components/SourcesScene.brs",
@@ -427,7 +429,9 @@
     {
       "source": "roku/components/StartupScene.brs",
       "destination": "roku/components/StartupScene.brs",
-      "sha256": "13ae6e14156384227c60429ef32e78964c4338c5fce233c9e8248288c1acdd02"
+      "sha256": "13ae6e14156384227c60429ef32e78964c4338c5fce233c9e8248288c1acdd02",
+      "extracted_sha256": "edfdeb36de025fdff902175cc0c682b925e382a6184178f26d001e2cedb566ae",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/TextEntry.brs",
@@ -445,15 +449,15 @@
       "source": "roku/components/UiChoice.brs",
       "destination": "roku/components/UiChoice.brs",
       "sha256": "637bd94aac40af9c6b2b4e5f3500f5371a33018dc6345d0d725436897f887b87",
-      "extracted_sha256": "f8cfe882fd94b88ec5a04ba831cce91cee683abbaeb6cead4a85f798ec8f6a37",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "fcf7b114cb00c05f61cefe24435a972ef6fadb64abf95aa3544de7136157c2a9",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/UiChoice.xml",
       "destination": "roku/components/UiChoice.xml",
       "sha256": "8a075f9f786f46ef7371fefb225eff47a311ce8f50104083935a80c7d8c9d07d",
-      "extracted_sha256": "d7c282c78a86f19c18fbedd8ef4c994c630a559e014a644c440c045cb46202ed",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "033dd4006fa2ea3e4f90fb1c14e718f2e88bf3bc46775e60cca0ccdbbd0a6cb1",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/data/BSLIB-LICENSE.txt",
@@ -3899,8 +3903,8 @@
       "source": "roku/manifest",
       "destination": "roku/manifest",
       "sha256": "e3ec6e7a1150fbd14f500736f2b28550b8a7a4bf08832546fc29b208b22dee58",
-      "extracted_sha256": "98f84b46da58ea8571a03cb9238ecae782d7c734ba2cf595ac00bc84a9ee2197",
-      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry and render-thread-safe profile avatars; design 6e56136."
+      "extracted_sha256": "b42eb496df3b6583355495c4ea5f94564af5eb846cfa399d0797fe4dc59fb424",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/source/AccountPolicy.brs",
@@ -3927,7 +3931,9 @@
     {
       "source": "roku/source/ImagePolicy.brs",
       "destination": "roku/source/ImagePolicy.brs",
-      "sha256": "cb9ba53488b8a2659ec0e7c227e5c1b5fc2299cc6eec684404a150455347b5ea"
+      "sha256": "cb9ba53488b8a2659ec0e7c227e5c1b5fc2299cc6eec684404a150455347b5ea",
+      "extracted_sha256": "3046760adac883676bb8baa9a51641c9c568ca2502e65cdaad11a465ae91bdd5",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/source/JellyfinCaptionPolicy.brs",
@@ -3943,8 +3949,8 @@
       "source": "roku/source/PresentationPolicy.brs",
       "destination": "roku/source/PresentationPolicy.brs",
       "sha256": "fd2f4800cf57b02088852fe0c4147487ba5bd9dbb9cb5ac82052e8b805b296d2",
-      "extracted_sha256": "660b916accba377cabdb5ade5381d9293f30c5b8ef58ad80c01d2a5dc6b62c2c",
-      "reason": "Cleanup: removed duplicated helper SourceProviderKey (byte-identical to Util.brs SourceGroup); callers now use SourceGroup."
+      "extracted_sha256": "8976f7816c0a3081d39dc63bec8b29b6bf94acc072d8320297bb9a12b77a9e7b",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/source/SourceLabels.brs",
@@ -4063,8 +4069,8 @@
       "source": "roku/tests/episode_library_runtime.py",
       "destination": "roku/tests/episode_library_runtime.py",
       "sha256": "e080002b80a7459cd476bd1f5ce47bbc5cce7056650f8fbc603883bd9b951563",
-      "extracted_sha256": "1a395ea91de186c233b1236590b71b594dc44d117b0bf8daf83d18dc518a6c23",
-      "reason": "Split follow-up: showEpisodes from ResponseScene.brs and applyEpisodeProgress from HomeScene.brs."
+      "extracted_sha256": "0a57becb2fe0180933b8abedb7d2f3a025c4289792c972a55cb43b16f434a962",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/tests/episode_mask_runtime.py",
@@ -4159,8 +4165,8 @@
       "source": "roku/tests/focus_contract.py",
       "destination": "roku/tests/focus_contract.py",
       "sha256": "e5e127d932cc85f2e60305eaf3ee7a637d72ee135707969ec92fb8bad2d49714",
-      "extracted_sha256": "52a2093889f8e788bc29f611a4c63c361e00841c1e07616ce07e57ccd5d69164",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "0b53dd30b05d58c4ce90e4068c497d880d6288465429cae557a7ac0dc2ee28d0",
+      "reason": "ROK-043 complete TV audit corrections and acceptance checks; design 3b6e434."
     },
     {
       "source": "roku/tests/guide_boundary_runtime.py",
@@ -4183,13 +4189,15 @@
       "source": "roku/tests/home_return_runtime.py",
       "destination": "roku/tests/home_return_runtime.py",
       "sha256": "233e5dfb486190bb99797dad12918788dd82a5ffd68a9f67bdf194e27d1a4c99",
-      "extracted_sha256": "4a5bc3292319240b5fb79cf7f1d4c7c0e8e274f677eb6bb014cd2c9903611330",
-      "reason": "Split follow-up: home handlers extracted from HomeScene.brs and HomeFeedScene.brs."
+      "extracted_sha256": "5598e7fc5f2c781cf193ff724412e71274bc3268c3ac1b5ef9a8e0bdf0a0484f",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/tests/image-policy.brs",
       "destination": "roku/tests/image-policy.brs",
-      "sha256": "f56a56ce6784fabdbef0d092b9a31de63502c39484c4c1be146599011c1cf699"
+      "sha256": "f56a56ce6784fabdbef0d092b9a31de63502c39484c4c1be146599011c1cf699",
+      "extracted_sha256": "788265320938e2e4b6e91f8ffe0f205e7cc5f76aebf13f0c8b33da2c2595a98f",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/tests/keyboard-input.brs",
@@ -4376,8 +4384,8 @@
       "source": "roku/tests/startup_ready_runtime.py",
       "destination": "roku/tests/startup_ready_runtime.py",
       "sha256": "a228d66af0c75ee47212b775d213d284e8d46a942d91329f83e3beb66d0fa1c9",
-      "extracted_sha256": "acd20bacd596fa2ea30ff7c1c92e971834ffa694479033a142e3d260ec56f261",
-      "reason": "Split follow-up: homeVisible extraction moved to components/HomeScene.brs."
+      "extracted_sha256": "16f40f39bb3fc27255e0b6b2f8bdbb3dd274bb878a2cc4c8add561c94ae427e3",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/tests/transport.brs",

@@ -24,6 +24,7 @@
  <script type="text/brightscript" uri="pkg:/components/SeekScene.brs" />
  <script type="text/brightscript" uri="pkg:/components/HomeScene.brs" />
  <script type="text/brightscript" uri="pkg:/components/HomeFeedScene.brs" />
+ <script type="text/brightscript" uri="pkg:/components/HomeCatalogScene.brs" />
  <script type="text/brightscript" uri="pkg:/components/SourcesScene.brs" />
  <script type="text/brightscript" uri="pkg:/components/SessionScene.brs" />
  <script type="text/brightscript" uri="pkg:/source/ContinuationPolicy.brs" />
@@ -39,8 +40,6 @@
    <Poster width="1280" height="633" uri="pkg:/images/design/hero-left.png" />
    <Poster width="1280" height="633" uri="pkg:/images/design/hero-bottom.png" />
   </Group>
-  <Rectangle id="sourcePanelScrim" width="1280" height="720" color="#00000099" visible="false" />
-  <Rectangle id="sourcePanelGround" translation="[733,0]" width="547" height="720" color="#161618" visible="false" />
   <Group id="homePanel" visible="false">
    <HeroPanel id="homeHeroPanel" />
    <HoldGrid id="homeActions" translation="[128,366]" itemComponentName="ActionRow" itemSize="[152,48]" itemSpacing="[12,0]" numColumns="2" numRows="1" drawFocusFeedback="false" visible="false" />
@@ -65,39 +64,28 @@
   </ScrollingLabel>
   <Label id="status" visible="false" />
   <Label id="footer" visible="false" />
-  <MarkupGrid id="discoverFilters" translation="[128,118]" itemComponentName="FilterChip" itemSize="[240,38]" itemSpacing="[20,0]" numColumns="4" numRows="1" drawFocusFeedback="false" visible="false" />
+  <MarkupGrid id="libraryTabs" translation="[128,102]" itemComponentName="FilterChip" itemSize="[220,38]" itemSpacing="[16,0]" numColumns="2" numRows="1" drawFocusFeedback="false" visible="false" />
+  <MarkupGrid id="discoverTypes" translation="[128,104]" itemComponentName="FilterChip" itemSize="[146,38]" itemSpacing="[12,0]" numColumns="4" numRows="1" drawFocusFeedback="false" visible="false" />
+  <HorizontalStrip id="discoverFilters" translation="[128,156]" itemComponentName="FilterChip" itemSize="[240,38]" itemSpacing="[16,0]" viewportWidth="1088" visible="false" />
   <MarkupList id="list" translation="[100,184]" itemSize="[536,56]" numRows="7" itemSpacing="[0,12]" itemComponentName="ActionRow" vertFocusAnimationStyle="floatingFocus" drawFocusFeedback="false" visible="false" />
   <HoldGrid id="posterGrid" translation="[128,180]" itemComponentName="HomeCard" itemSize="[240,180]" itemSpacing="[24,32]" numColumns="4" numRows="2" drawFocusFeedback="false" vertFocusAnimationStyle="floatingFocus" visible="false" />
   <HoldGrid id="detailActions" translation="[128,244]" itemComponentName="ActionRow" itemSize="[180,48]" itemSpacing="[12,0]" numColumns="4" numRows="1" drawFocusFeedback="false" visible="false" />
-  <MarkupGrid id="seasonList" translation="[128,190]" itemComponentName="FilterChip" itemSize="[240,38]" itemSpacing="[24,0]" numColumns="3" numRows="1" drawFocusFeedback="false" vertFocusAnimationStyle="floatingFocus" visible="false" />
+  <MarkupGrid id="seasonList" translation="[128,403]" itemComponentName="FilterChip" itemSize="[240,38]" itemSpacing="[24,0]" numColumns="3" numRows="1" drawFocusFeedback="false" vertFocusAnimationStyle="floatingFocus" visible="false" />
   <Label id="seasonHeading" translation="[100,282]" text="SEASONS" color="#B6B4AF" visible="false">
    <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
   </Label>
-  <Label id="episodesHeading" translation="[996,195]" width="220" horizAlign="right" color="#B6B4AF" visible="false">
+  <Label id="episodesHeading" translation="[396,408]" width="600" horizAlign="left" color="#B6B4AF" visible="false">
    <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
   </Label>
-  <MarkupGrid id="episodeList" translation="[128,250]" itemComponentName="EpisodeCard" itemSize="[240,220]" itemSpacing="[24,24]" numColumns="4" numRows="2" itemClippingRect="[0,0,1088,460]" drawFocusFeedback="false" vertFocusAnimationStyle="fixedFocus" visible="false" />
+  <HorizontalStrip id="episodeList" translation="[128,455]" itemComponentName="EpisodeCard" itemSize="[240,248]" itemSpacing="[24,0]" viewportWidth="1088" visible="false" />
   <MarkupGrid id="liveTabs" translation="[100,142]" itemComponentName="FilterChip" itemSize="[256,48]" itemSpacing="[24,0]" numColumns="4" numRows="1" drawFocusFeedback="false" visible="false" />
   <MarkupList id="channelList" translation="[100,234]" itemComponentName="ChannelRow" itemSize="[588,74]" itemSpacing="[0,10]" numRows="5" drawFocusFeedback="false" vertFocusAnimationStyle="floatingFocus" visible="false" />
   <Label id="liveListHeading" translation="[100,204]" width="588" text="CHANNELS" color="#B6B4AF" visible="false">
    <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
   </Label>
-  <MarkupGrid id="sourceFilters" translation="[776,124]" itemComponentName="FilterChip" itemSize="[240,38]" numColumns="1" numRows="1" drawFocusFeedback="false" visible="false" />
   <Label id="detailCredits" translation="[380,520]" width="804" height="104" wrap="true" numLines="3" color="#B6B4AF" visible="false">
    <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
   </Label>
-  <MarkupList id="sourceList" translation="[776,172]" itemComponentName="SourceCard" itemSize="[440,130]" itemSpacing="[0,12]" numRows="3" vertFocusAnimationStyle="floatingFocus" drawFocusFeedback="false" visible="false" />
-  <ScrollingLabel id="sourceContext" translation="[776,88]" maxWidth="440" color="#F4F2EE" repeatCount="-1" scrollSpeed="48" visible="false">
-   <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="19" />
-  </ScrollingLabel>
-  <Label id="sourceState" translation="[776,650]" width="410" height="30" color="#B6B4AF" visible="false">
-   <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
-  </Label>
-  <Label id="sourceHelp" translation="[804,178]" width="350" height="30" horizAlign="right" text="*  Full source details" color="#B6B4AF" visible="false">
-   <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
-  </Label>
-  <BusySpinner id="sourceSpinner" translation="[1172,174]" spinInterval="1.1" control="stop" visible="false" />
-  <ScrollableText id="sourceText" visible="false" />
   <Rectangle id="detailPanel" visible="false" />
   <Poster id="art" translation="[954,110]" width="236" height="354" loadWidth="280" loadHeight="420" loadDisplayMode="scaleToFit" visible="false" />
   <ScrollingLabel id="detailTitle" translation="[778,252]" maxWidth="424" color="#F4F2EE" repeatCount="-1" scrollSpeed="48" visible="false">
@@ -134,9 +122,6 @@
   <Label id="profilePageLabel" translation="[928,585]" width="160" height="36" color="#B6B4AF" visible="false">
    <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
   </Label>
-  <Group id="appChrome" visible="false">
-   <DesignRail id="sidebar" />
-  </Group>
   <Group id="emptyState" visible="false">
    <Label id="emptyTitle" translation="[250,304]" width="780" height="62" horizAlign="center" color="#F4F2EE">
     <Font role="font" uri="pkg:/fonts/bricolage_grotesque_700.ttf" size="37" />
@@ -146,6 +131,27 @@
    </Label>
   </Group>
   <EpgGrid id="epgGrid" visible="false" />
+  <Rectangle id="sourcePanelScrim" width="1280" height="720" color="#00000099" visible="false" />
+  <Rectangle id="sourcePanelGround" translation="[733,0]" width="547" height="720" color="#161618" visible="false" />
+  <Label id="sourceHeading" translation="[776,36]" width="440" height="52" text="Choose a source" visible="false">
+   <Font role="font" uri="pkg:/fonts/bricolage_grotesque_700.ttf" size="29" />
+  </Label>
+  <MarkupGrid id="sourceFilters" translation="[776,124]" itemComponentName="FilterChip" itemSize="[240,38]" numColumns="1" numRows="1" drawFocusFeedback="false" visible="false" />
+  <MarkupList id="sourceList" translation="[776,172]" itemComponentName="SourceCard" itemSize="[440,82]" itemSpacing="[0,12]" numRows="5" vertFocusAnimationStyle="floatingFocus" drawFocusFeedback="false" visible="false" />
+  <ScrollingLabel id="sourceContext" translation="[776,88]" maxWidth="440" color="#F4F2EE" repeatCount="-1" scrollSpeed="48" visible="false">
+   <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="19" />
+  </ScrollingLabel>
+  <Label id="sourceState" translation="[776,650]" width="410" height="30" color="#B6B4AF" visible="false">
+   <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
+  </Label>
+  <Label id="sourceHelp" translation="[804,178]" width="350" height="30" horizAlign="right" text="*  Full source details" color="#B6B4AF" visible="false">
+   <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
+  </Label>
+  <BusySpinner id="sourceSpinner" translation="[1172,174]" spinInterval="1.1" control="stop" visible="false" />
+  <ScrollableText id="sourceText" visible="false" />
+  <Group id="appChrome" visible="false">
+   <DesignRail id="sidebar" />
+  </Group>
   <Rectangle id="playerBackdrop" width="1280" height="720" color="#000000" visible="false" />
   <Video id="video" width="1280" height="720" visible="false" enableUI="false" />
   <Group id="playerHint" visible="false" />
@@ -170,12 +176,10 @@
    <Label id="fullTextTitle" translation="[128,48]" width="1050" height="60" text="Source details" color="#F4F2EE">
     <Font role="font" uri="pkg:/fonts/bricolage_grotesque_700.ttf" size="29" />
    </Label>
-   <ScrollableText id="fullTextBody" translation="[128,106]" width="1024" height="530" color="#F4F2EE">
+   <ScrollableText id="fullTextBody" translation="[128,132]" width="1024" height="468" color="#F4F2EE">
     <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="19" />
    </ScrollableText>
-   <Label translation="[100,650]" width="1000" height="32" text="Back to close" color="#B6B4AF" visible="false">
-    <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
-   </Label>
+   <MarkupGrid id="fullTextClose" translation="[1028,628]" itemComponentName="ActionRow" itemSize="[160,48]" numColumns="1" numRows="1" drawFocusFeedback="false" />
   </Group>
   <SearchPanel id="searchPanel" visible="false" />
   <Timer id="searchDelay" duration="0.65" repeat="false" />

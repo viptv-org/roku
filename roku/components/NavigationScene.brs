@@ -4,7 +4,9 @@ sub selectItem(item as object)
     end if
     if item.action <> invalid
         action = item.action
-        if action = "librarypage"
+        if left(action,11) = "homecatalog"
+            homeCatalogAction(item)
+        else if action = "librarypage"
             openLibraryPage(item.offset)
         else if action = "libraryremove"
             m.favoriteItem = m.libraryItem

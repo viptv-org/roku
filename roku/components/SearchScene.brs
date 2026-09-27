@@ -120,11 +120,11 @@ sub searchRender()
     end for
     m.searchPanel.results = root
     uiQueueCardArtwork()
-    m.searchPanel.status = count.toStr() + " results"
+    m.searchPanel.status = ""
     if m.searchPending > 0
-        m.searchPanel.status = "Searching…  " + count.toStr() + " results"
+        m.searchPanel.status = "Searching…"
     else if count = 0
-        m.searchPanel.status = "No results. Try another title."
+        m.searchPanel.status = "No matching titles"
     end if
     if m.searchErrors > 0 then m.searchPanel.status += "  Some sources couldn't load."
 end sub

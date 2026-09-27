@@ -1,10 +1,25 @@
 sub uiDiscoverFilters()
     if m.discoverFilters = invalid then return
-    name = DiscoverTypeName(m.discoverType)
-    values = [{name:name,action:"dtype",selected:true}]
-    catalogName = "Choose catalog"
-    if m.catalog <> invalid then catalogName = Txt(m.catalog.name,Txt(m.catalog.id))
-    values.push({name:catalogName,action:"dcat",selected:false})
+    typeRoot = CreateObject("roSGNode","ContentNode")
+    m.discoverTypeItems = ["movie","series","anime","other"]
+    for each kind in m.discoverTypeItems
+        node = typeRoot.createChild("ContentNode")
+        node.title = DiscoverGroupLabel(kind)
+        node.addFields({uiWidth:146,selected:DiscoverTypeGroup(m.discoverType) = kind,dropdown:false,uiOwnerFocused:false})
+    end for
+    m.discoverTypes.content = typeRoot
+    m.discoverTypes.visible = m.mode = "browse" and m.discoverActive = true
+    values = []
+    for i = 0 to m.discoverCatalogs.count()-1
+        catalog = m.discoverCatalogs[i]
+        if DiscoverTypeMatches(Txt(catalog.type),m.discoverType)
+            chosen = false
+            if m.catalog <> invalid then chosen = Txt(catalog.id) = Txt(m.catalog.id) and Txt(catalog.addon_id) = Txt(m.catalog.addon_id)
+            label = Txt(catalog.name,Txt(catalog.id))
+            if Txt(catalog.addon_name) <> "" then label = Txt(catalog.addon_name)+" · "+label
+            values.push({name:label,action:"catalog",catalogIndex:i,selected:chosen})
+        end if
+    end for
     if m.catalog <> invalid
         genres = Bounded(m.catalog.genres,256)
         if genres.count() > 0
@@ -31,7 +46,7 @@ sub uiDiscoverFilters()
     for each value in values
         node = root.createChild("ContentNode")
         node.title = value.name
-        node.addFields({selected:value.selected,dropdown:value.action <> "dsearch",uiOwnerFocused:false})
+        node.addFields({selected:value.selected,dropdown:value.action <> "dsearch" and value.action <> "catalog",uiOwnerFocused:false})
     end for
     m.discoverFilters.content = root
     m.discoverFilters.visible = m.mode = "browse" and m.discoverActive = true
@@ -41,7 +56,14 @@ sub uiDiscoverFilterSelected()
     index = m.discoverFilters.itemSelected
     if index < 0 or index >= m.discoverFilterItems.count() then return
     item = m.discoverFilterItems[index]
-    if item.action = "dtype"
+    if item.action = "catalog"
+        m.catalog = m.discoverCatalogs[item.catalogIndex]
+        m.discoverGenre = ""
+        m.discoverExtras = {}
+        m.search = ""
+        uiRequiredGenre()
+        browse(m.discoverType,0)
+    else if item.action = "dtype"
         values = []
         seen = {}
         for each group in ["movie","series","anime","other"]
@@ -117,9 +139,15 @@ sub uiHomeLayout()
     m.homeHeroPanel.compact = false
     m.homeActions.visible = expanded and m.mode = "home" and homeCurrent() <> invalid
     if expanded
+        m.homeRows.itemSize = [1088,237]
+        m.homeRows.numRows = 1
         m.homeShelves.translation = [120,466]
         m.homeShelves.clippingRect = [0,0,1096,218]
     else
+        m.homeHeroPanel.model = {name:"",type:""}
+        m.uiHeroFingerprint = ""
+        m.homeRows.itemSize = [1088,214]
+        m.homeRows.numRows = 3
         m.homeShelves.translation = [120,36]
         m.homeShelves.clippingRect = [0,0,1096,648]
     end if
@@ -242,3 +270,17 @@ function uiHomeKey(key as string) as boolean
     end if
     return false
 end function
+
+sub uiDiscoverTypeSelected()
+    index = m.discoverTypes.itemSelected
+    if index < 0 or index >= m.discoverTypeItems.count() then return
+    m.discoverType = m.discoverTypeItems[index]
+    m.discoverGenre = ""
+    m.discoverExtras = {}
+    m.search = ""
+    discoverChooseDefaultCatalog()
+    browse(m.discoverType,0)
+    m.discoverTypes.jumpToItem = index
+    m.discoverFilters.setFocus(true)
+    uiFocusChanged()
+end sub

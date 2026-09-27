@@ -51,7 +51,8 @@ sub uiHomeArtwork(id as string, mediaType as string, uri as string)
     end for
     ' Warm the full-quality hero texture behind hidden posters so focus swaps
     ' straight to the sharp image instead of a blurry upscale.
-    prefetchHeroBackdrop(uri)
+    ' The visible HeroPanel owns its sharp texture; shelf hydration must not
+    ' allocate four extra full-screen textures.
 end sub
 
 sub prefetchHeroBackdrop(backdrop as string)
@@ -68,8 +69,8 @@ sub prefetchHeroBackdrop(backdrop as string)
     m.heroPrefetchLast[slot] = hiRes
     m.heroPrefetchIndex++
     if node <> invalid
-        node.loadWidth = ImagePixels(1280)
-        node.loadHeight = ImagePixels(720)
+        node.loadWidth = 1280
+        node.loadHeight = 720
         node.uri = hiRes
     end if
 end sub
@@ -81,7 +82,7 @@ sub uiLayoutDetailActions()
         m.standardList.translation = [380,360+bounds.height+32]
         return
     end if
-    if m.mode <> "detail" then return
+    if m.mode <> "detail" and m.mode <> "episodes" then return
     bounds = m.description.localBoundingRect()
     height = bounds.height
     if m.description.text = "" then height = 0
@@ -321,7 +322,7 @@ sub uiUpdateSources(values as object, reset = false as boolean)
         node = root.createChild("ContentNode")
         node.title = CreateObject("roRegex",chr(10),"").replaceAll(ReadableSourceText(OriginalSourceName(item))," · ")
         node.description = SourceCardText(item)
-        node.addFields({sourceBadges:SourceBadges(item,m.playItem),uiWidth:1096,uiHeight:216,uiOwnerFocused:m.sourceList.hasFocus()})
+        node.addFields({sourceBadges:SourceBadges(item,m.playItem),uiWidth:440,uiHeight:82,uiOwnerFocused:m.sourceList.hasFocus()})
     end for
     m.items = filtered
     if not samePrefix
@@ -355,6 +356,10 @@ sub uiResumeAction(event as object)
             uiHomeActionSelected()
         end if
     else if m.detailActions.hasFocus()
+        if m.mode = "episodes"
+            uiSeriesActionSelected(held)
+            return
+        end if
         index = m.detailActions.itemFocused
         if index < 0 or index >= m.items.count() then return
         if held and m.items[index].action = "play"

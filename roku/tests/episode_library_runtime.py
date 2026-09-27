@@ -49,6 +49,8 @@ end sub
 sub request(method as string,path as string,body as dynamic,tag as string)
  m.sent={tag:tag,path:path}
 end sub
+sub uiSeriesActions()
+end sub
 sub showDetail(item as object)
 end sub
 function acknowledgementMayFocus() as boolean

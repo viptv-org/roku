@@ -1,3 +1,32 @@
+# ROK-043 TV audit — 1.11.0 (2026-09-27)
+
+Design `3b6e4340773b31f427f46b9ef7dd888936b381f0`. See [TV_AUDIT.md](TV_AUDIT.md)
+for all 46 TV reference states, correction precedence, device evidence and limits.
+
+Passed: seven static scripts; 25 runtime harnesses including new 100-catalog,
+virtual strip, graphics-resolution, complete track-panel and keypad tests; five
+standalone BRS fixtures; BrighterScript 0.73.1 validation/staging; design import
+integrity (186 files); migration inventory; both package flavors.
+
+Physical TV: TCL 50S435 / Roku OS 15.3.4. Checked three complete Home shelves,
+Cinemeta and AIOMetadata catalog rows, yellow Resume, detailed series composition,
+episode 12 fully visible, guide header/categories/cells and rail above them,
+Discover horizontal catalogs, custom search keys and mobile literal search,
+source/title overlay context, preparation and library empty/segment presentation.
+The full audit separates those checks from native-input adaptations and states
+not replayed on the paired household device. Decoder pixels are not in screenshots.
+
+Installed ZIP: `artifacts/rok043-1.11.0/viptv-roku.zip`. Public ZIP:
+`artifacts/rok043-1.11.0/viptv-roku-public.zip`. SHA-256 respectively:
+
+```
+386630574ec91fba4c2f155e5649a2f32ef377654408be7d76719e580199bb62
+7f17e5660bb50a5a983c6ec874c6b3b65bda4d23a9a0d76f0d1c304d8d7ce7f9
+```
+
+Developer installer reports Install Success with matching package MD5; ECP reports
+VIPTV 1.11.0 active. Prior records below describe historical builds.
+
 # Physical Roku UI corrections — 1.10.1 (2026-09-27)
 
 Design: `6e56136a698a52c87d232ed940775244e9d93d33` (ROK-042).

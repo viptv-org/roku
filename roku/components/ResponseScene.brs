@@ -103,6 +103,10 @@ sub handleResponse(event as object)
         uiHeroArtResponse(tag,result)
         return
     end if
+    if left(tag,12) = "homecatalog:"
+        homeCatalogResponse(tag,result)
+        return
+    end if
     if left(tag,5) = "home:"
         homeParts = tag.split(":")
         if homeParts.count() > 2
@@ -401,4 +405,5 @@ sub showEpisodes(offset as integer, enter = true as boolean)
     if count > m.episodeOffset + 80 then values.push({name:"More episodes",title:"More episodes",action:"episodesnext"})
     rows(Txt(m.selected.name),values,"episodes","*  Episode options",enter)
     showDetail(m.selected)
+    if enter and acknowledgementMayFocus() then m.detailActions.setFocus(true)
 end sub

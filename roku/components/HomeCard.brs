@@ -5,9 +5,11 @@ sub init()
     m.poster.observeField("loadStatus","artLoaded")
     m.title.font.size = 16
     m.subtitle.font.size = 13
+    if m.top.itemContent <> invalid then contentChanged()
 end sub
 
 sub contentChanged()
+    if m.poster = invalid or m.artworkMask = invalid then return
     item = m.top.itemContent
     if item = invalid then return
     changed = true
@@ -46,6 +48,11 @@ sub contentChanged()
     m.progressTrack.translation = [9,h-12]
     m.progressFill.translation = [9,h-12]
     m.progressTrack.width = w-18
+    skeleton = item.hasField("uiSkeleton") and item.uiSkeleton
+    m.top.findNode("skeletonTitle").visible = skeleton
+    m.top.findNode("skeletonMeta").visible = skeleton
+    m.title.visible = not skeleton
+    m.subtitle.visible = not skeleton
     m.title.text = item.title
     m.subtitle.text = item.subtitle
     if not item.hasField("artState") then item.addFields({artState:"none"})
@@ -56,20 +63,20 @@ sub contentChanged()
     m.poster.width = w
     m.poster.height = h
     m.poster.loadDisplayMode = "scaleToZoom"
-    m.poster.loadWidth = ImagePixels(213)
-    m.poster.loadHeight = ImagePixels(120)
+    m.poster.loadWidth = w
+    m.poster.loadHeight = h
     if item.artworkKind = "portrait"
         ' Preserve the source aspect ratio, then crop rather than stretch.
         ' The complete poster remains available on the detail page.
-        m.poster.loadWidth = ImagePixels(213)
-        m.poster.loadHeight = ImagePixels(384)
+        m.poster.loadWidth = w
+        m.poster.loadHeight = int(w*1.5)
     else if item.artworkKind = "logo"
         m.poster.translation = [27,13]
         m.poster.width = 159
         m.poster.height = 94
         m.poster.loadDisplayMode = "scaleToFit"
-        m.poster.loadWidth = ImagePixels(176)
-        m.poster.loadHeight = ImagePixels(100)
+        m.poster.loadWidth = 176
+        m.poster.loadHeight = 100
     end if
     uri = ImageUrl(item.HDPosterUrl,int(m.poster.width),int(m.poster.height),false,item.artworkKind = "logo")
     if m.artOriginal <> item.HDPosterUrl then m.artRetried = false
@@ -121,5 +128,5 @@ sub artLoaded()
     item.artState = state
     ready = state = "ready" and m.poster.uri <> ""
     m.poster.visible = ready
-    m.fallback.visible = not ready
+    m.fallback.visible = not ready and not (item.hasField("uiSkeleton") and item.uiSkeleton)
 end sub

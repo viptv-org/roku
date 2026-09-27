@@ -86,6 +86,7 @@ sub initHome()
 end sub
 
 sub homeVisible(visible as boolean)
+    if not visible and m.homeRows <> invalid then m.homeRows.content = invalid
     if visible
         accountHideQr()
         accountLayout(false)
@@ -112,6 +113,9 @@ sub clearHomeCache()
     m.uiHeroTried = {}
     m.uiHeroTriedOrder = []
     m.uiHomeActionKey = ""
+    m.homeCatalogWindowEnd = invalid
+    m.homeCatalogs = invalid
+    m.homeCatalogPending = {}
     m.homeData = invalid
     m.cache = {}
     m.cacheKeys = []
@@ -131,6 +135,8 @@ sub showHome()
         ' Back/return must never choose a different shelf.
         m.homeAutoPick = false
     end if
+    m.homeCatalogPending = {}
+    m.homeCatalogWindowEnd = invalid
     cold = m.homeData = invalid
     refresh = cold
     if not refresh then refresh = now - m.homeTime > 120 or m.homeDirty = true
@@ -170,6 +176,7 @@ sub showHome()
         end for
         m.homeRows.content = root
     end if
+    if m.homeRows.content = invalid then m.homeRows.content = m.homeRoot
     homeRestore()
     homeHero()
     if acknowledgementMayFocus() then uiHomeFocus()
@@ -177,17 +184,19 @@ sub showHome()
     if not m.homeDone.doesExist("favorites") then request("GET","/api/profiles/" + Enc(m.profile) + "/favorites/page?limit=13&exclude_live=true",invalid,"home:favorites")
     if not m.homeDone.doesExist("recent") then request("GET","/api/live?view=us&collection=recent&limit=24",invalid,"home:recent")
     if not m.homeDone.doesExist("live") then request("GET","/api/live?view=us&offset=0&limit=12&search=",invalid,"home:live")
-    if not m.homeDone.doesExist("movie") or not m.homeDone.doesExist("series") then request("GET","/api/catalogs",invalid,"home:catalogs")
+    if m.homeCatalogs = invalid then request("GET","/api/catalogs",invalid,"home:catalogs")
+    homeCatalogPump()
 end sub
 
 function homeValues(index as integer) as object
+    if index < 0 or index >= m.homeData.count() then return []
     return m.homeData[index]
 end function
 
 function homeRow(index as integer) as object
     titles = ["Continue Watching","Trending Movies","Popular Series","Live Now","My List","Favorite Channels","Recently Watched Live TV"]
     row = CreateObject("roSGNode","ContentNode")
-    row.title = titles[index]
+    if index < 7 then row.title = titles[index] else row.title = m.homeCatalogs[index-7].title
     for each item in homeValues(index)
         node = row.createChild("ContentNode")
         UiCardContent(node,item)
@@ -208,7 +217,7 @@ sub homeRestore()
     m.homeRestoring = true
     r = m.homePosition[0]
     c = m.homePosition[1]
-    if r < 0 or r > 6 then r = 0
+    if r < 0 or r >= m.homeData.count() then r = 0
     if c < 0 then c = 0
     displayRow = -1
     if m.homeRowKeys <> invalid
@@ -263,7 +272,9 @@ sub homeDefaultShelf()
             earlierPending = false
             for each j in HomeShelfOrder()
                 if j = i then exit for
-                if not m.homeDone.doesExist(kinds[j]) then earlierPending = true
+                if j < 7
+                    if not m.homeDone.doesExist(kinds[j]) then earlierPending = true
+                end if
             end for
             m.homeAutoPick = earlierPending
             return
@@ -271,14 +282,21 @@ sub homeDefaultShelf()
     end for
 end sub
 function HomeShelfOrder() as object
-    return [0,6,1,2,3,4,5]
+    order = [0,4,6,5,3]
+    if m.homeCatalogs <> invalid
+        for i = 0 to m.homeCatalogs.count()-1
+            order.push(i+7)
+        end for
+    end if
+    return order
 end function
 
 function HomeShelfRank(key as integer) as integer
-    for i = 0 to 6
-        if HomeShelfOrder()[i] = key then return i
+    order = HomeShelfOrder()
+    for i = 0 to order.count()-1
+        if order[i] = key then return i
     end for
-    return 7
+    return order.count()
 end function
 sub applyEpisodeProgress(result as object, preserveNavigation = false as boolean)
     if m.selected = invalid or m.episodes = invalid then return
@@ -364,6 +382,8 @@ sub applyEpisodeProgress(result as object, preserveNavigation = false as boolean
             end if
         end for
     end if
+    uiSeriesActions()
+    if acknowledgementMayFocus() then m.detailActions.setFocus(true)
 end sub
 
 sub cancelAutomaticResume()

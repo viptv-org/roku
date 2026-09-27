@@ -82,7 +82,7 @@ sub UiCardContent(node as object, item as object)
     subtitle = PresentationFacts(item)
     context = PresentationContext(item)
     if context <> "" then subtitle = context
-    node.addFields({metadataPath:path,metadataId:PresentationMetadataId(item),artworkKind:kind,mediaType:Txt(item.type),subtitle:subtitle,progressFraction:UiProgressFraction(item),badge:"",uiOwnerFocused:false})
+    node.addFields({uiSkeleton:item.uiSkeleton = true,metadataPath:path,metadataId:PresentationMetadataId(item),artworkKind:kind,mediaType:Txt(item.type),subtitle:subtitle,progressFraction:UiProgressFraction(item),badge:"",uiOwnerFocused:false})
     node.description = Txt(item.description,Txt(item.overview))
 end sub
 

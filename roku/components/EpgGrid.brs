@@ -1,14 +1,22 @@
 sub init()
-    for each id in ["clock","day","selection","ticks","filters","rows","nowLine","empty","position","details","detailHeading","detailBody","refresh","guideBatch","guideReveal"]
+    for each id in ["clock","day","selection","ticks","filters","rows","nowLine","empty","position","details","detailHeading","detailTime","detailBody","detailActions","refresh","guideBatch","guideReveal","channelIdentity","programmeTitle","programmeTime","programmeRemaining","programmeNext","headerTrack","headerProgress","previewLogo","previewName"]
         m[id] = m.top.findNode(id)
     end for
+    actions = CreateObject("roSGNode","ContentNode")
+    for each title in ["Watch channel now","Close"]
+        node = actions.createChild("ContentNode")
+        node.title = title
+        node.addFields({uiWidth:440,uiHeight:54})
+    end for
+    m.detailActions.content = actions
+    m.detailActions.observeField("itemSelected","epgDetailSelected")
     m.rowViews = []
     m.channels = []
     m.cache = {}
     m.order = []
     m.labels = {}
-    m.filtersData = [{id:"search",name:"Search Live TV"},{id:"all",name:"All US channels"},{id:"favorites",name:"My channels"},{id:"recent",name:"Recent"}]
-    m.menu = 1
+    m.filtersData = [{id:"all",name:"All US channels"},{id:"favorites",name:"My channels"},{id:"recent",name:"Recent"},{id:"search",name:"Search"}]
+    m.menu = 0
     m.row = 0
     m.offset = 0
     m.total = 0
@@ -25,11 +33,11 @@ sub open(scope as string)
         m.cache = {}
         m.order = []
         m.labels = {}
-        m.filtersData = [{id:"search",name:"Search Live TV"},{id:"all",name:"All US channels"},{id:"favorites",name:"My channels"},{id:"recent",name:"Recent"}]
+        m.filtersData = [{id:"all",name:"All US channels"},{id:"favorites",name:"My channels"},{id:"recent",name:"Recent"},{id:"search",name:"Search"}]
     end if
     m.top.query = ""
     m.scope = scope
-    m.menu = 1
+    m.menu = 0
     m.row = 0
     m.channels = []
     m.offset = 0
@@ -58,11 +66,11 @@ sub epgVisibility()
 end sub
 
 sub epgCategories()
-    m.filtersData = [{id:"search",name:"Search Live TV"},{id:"all",name:"All US channels"},{id:"favorites",name:"My channels"},{id:"recent",name:"Recent"}]
+    m.filtersData = [{id:"all",name:"All US channels"},{id:"favorites",name:"My channels"},{id:"recent",name:"Recent"},{id:"search",name:"Search"}]
     for each category in Bounded(m.top.categories,100)
         if Txt(category.id) <> "" then m.filtersData.push({id:category.id,name:Txt(category.name)})
     end for
-    if m.menu >= m.filtersData.count() then m.menu = 1
+    if m.menu >= m.filtersData.count() then m.menu = 0
     epgRender()
 end sub
 
@@ -170,6 +178,17 @@ function epgProgrammes(id as string) as object
     return []
 end function
 
+function epgSurface(parent as object, x as integer, y as integer, width as integer, height as integer, color as string, focused = false as boolean) as object
+    node = parent.createChild("DesignSurface")
+    node.translation = [x,y]
+    node.width = width
+    node.height = height
+    node.radius = 10
+    node.blendColor = color
+    node.focused = focused
+    return node
+end function
+
 sub epgRender()
     if m.top.visible <> true or m.window = invalid then return
     now = CreateObject("roDateTime").asSeconds()
@@ -181,121 +200,175 @@ sub epgRender()
     m.day.visible = false
     m.ticks.removeChildrenIndex(m.ticks.getChildCount(),0)
     for i = 0 to 3
-        label = epgLabel(m.ticks,epgTick(m.window+i*1800),432+i*201,116,197,19,"#FFFFFF")
+        label = epgLabel(m.ticks,epgTick(m.window+i*1800),338+i*222,309,211,15,"#B6B4AF")
     end for
     m.filters.removeChildrenIndex(m.filters.getChildCount(),0)
-    firstMenu = 0
-    if m.menu > 7 then firstMenu = m.menu-7
-    for i = firstMenu to m.filtersData.count()-1
-        if i >= firstMenu+8 then exit for
-        y = 166+(i-firstMenu)*48
-        color = "#B6B4AF"
-        if i = m.menu
-            color = "#FFFFFF"
-            if m.menuFocus and m.top.active
-                bar = epgRect(m.filters,104,y-3,184,42,"#F4F2EE")
-                color = "#0B0B0C"
-            end if
-        end if
-        label = epgLabel(m.filters,m.filtersData[i].name,112,y-3,172,19,color)
-        label.height = 42
-        label.vertAlign = "center"
+    if m.filterStart = invalid then m.filterStart = 0
+    if m.menu < m.filterStart then m.filterStart = m.menu
+    extent = 0
+    for i = m.filterStart to m.menu
+        extent += epgFilterWidth(m.filtersData[i].name)+10
     end for
-    ' Reuse logo nodes: rebuilding them on every focus/guide event flashes artwork.
+    while extent > 1088 and m.filterStart < m.menu
+        extent -= epgFilterWidth(m.filtersData[m.filterStart].name)+10
+        m.filterStart++
+    end while
+    x = 128
+    for i = m.filterStart to m.filtersData.count()-1
+        width = epgFilterWidth(m.filtersData[i].name)
+        if x+width > 1216 then exit for
+        color = "#B6B4AF"
+        fill = "#0B0B0CFF"
+        focused = i = m.menu and m.menuFocus and m.top.active
+        if i = m.menu then fill = "#34343AFF"
+        if focused
+            fill = "#F4F2EEFF"
+            color = "#111113"
+        end if
+        surface = epgSurface(m.filters,x,250,width,37,fill,focused)
+        surface.radius = 18.5
+        label = epgLabel(m.filters,m.filtersData[i].name,x+16,250,width-32,16,color)
+        label.height = 37
+        label.vertAlign = "center"
+        x += width+10
+    end for
     for each view in m.rowViews
         view.group.visible = false
     end for
     firstRow = 0
     if m.row > 4 then firstRow = m.row-4
-    m.selection.text = ""
     m.visibleFirst = firstRow
     m.visibleLast = firstRow+4
     if m.visibleLast >= m.channels.count() then m.visibleLast = m.channels.count()-1
     m.empty.visible = m.channels.count() = 0
     m.empty.text = m.message
-    for i = firstRow to m.channels.count()-1
-        if i >= firstRow+5 then exit for
+    for i = firstRow to m.visibleLast
         channel = m.channels[i]
         id = Txt(channel.id)
         slot = i-firstRow
-        y = 166+slot*91
         if slot >= m.rowViews.count()
             group = m.rows.createChild("Group")
-            background = epgRect(group,300,0,128,87,"#212124")
+            number = epgLabel(group,"",128,18,24,14,"#8F8D89")
+            background = epgSurface(group,160,6,48,48,"#212124FF")
             icon = group.createChild("Poster")
-            icon.translation = [308,7]
-            icon.width = 112
-            icon.height = 73
-            icon.loadWidth = ImagePixels(112)
-            icon.loadHeight = ImagePixels(73)
+            icon.translation = [164,10]
+            icon.width = 40
+            icon.height = 40
+            icon.loadWidth = 80
+            icon.loadHeight = 80
             icon.loadDisplayMode = "scaleToFit"
             icon.observeField("loadStatus","epgLogoStatus")
-            label = epgLabel(group,"",308,16,112,16,"#FFFFFF")
-            label.height = 60
-            label.wrap = true
-            label.numLines = 3
+            label = epgLabel(group,"",164,18,40,12,"#F4F2EE")
             label.horizAlign = "center"
+            name = epgLabel(group,"",220,20,101,15,"#F4F2EE")
             cellsGroup = group.createChild("Group")
-            m.rowViews.push({group:group,background:background,icon:icon,label:label,cells:cellsGroup})
+            cellsGroup.clippingRect = [328,0,888,64]
+            m.rowViews.push({group:group,background:background,icon:icon,label:label,name:name,number:number,cells:cellsGroup})
         end if
         view = m.rowViews[slot]
         view.group.visible = true
-        view.group.translation = [0,y]
-        view.background.color = "#212124"
-        if i = m.row and not m.menuFocus and m.top.active then view.background.color = "#34343A"
-        logo = ImageUrl(Txt(channel.logo,Txt(channel.poster)),112,73,false,true)
+        view.group.translation = [0,343+slot*67]
+        view.number.text = (m.offset+i+1).toStr()
+        view.name.text = Txt(channel.name)
+        logo = ImageUrl(Txt(channel.logo,Txt(channel.poster)),80,80,false,true)
         if view.icon.uri <> logo then view.icon.uri = logo
         view.icon.visible = logo <> ""
         view.label.visible = logo = "" or view.icon.loadStatus = "failed"
-        view.label.text = Txt(channel.name)
+        view.label.text = ucase(left(Txt(channel.name),3))
         view.cells.removeChildrenIndex(view.cells.getChildCount(),0)
-        parent = view.cells
-        y = 0
         cells = EpgCells(epgProgrammes(id),m.window,m.window+7200)
         selected = EpgCellAt(cells,m.anchor)
         for c = 0 to cells.count()-1
             cell = cells[c]
-            geometry = EpgGeometry(cell,m.window,7200,804)
-            color = "#212124"
+            geometry = EpgGeometry(cell,m.window,7200,888)
             focused = i = m.row and c = selected and not m.menuFocus and m.top.active
-            if focused then color = "#F4F2EE"
-            width = geometry.width-3
+            fill = "#161618FF"
+            current = cell.start <= now and cell.end > now
+            if current then fill = "#212124FF"
+            if focused then fill = "#F4F2EEFF"
+            width = geometry.width-5
             if width < 1 then width = 1
-            bar = epgRect(parent,432+geometry.x,y,width,87,color)
-            if focused then bar = epgRect(parent,432+geometry.x,y,3,87,"#FFFFFF")
+            bar = epgSurface(view.cells,328+geometry.x,2,width,59,fill,focused)
             if geometry.width > 52
-                hint = epgTick(cell.start)
-                if cell.programme <> invalid then hint = Txt(cell.programme.display_time,hint)
-                if cell.start <= now and cell.end > now then hint = int((cell.end-now+59)/60).toStr()+" MIN LEFT"
+                hint = epgCompactTick(cell.start)+" – "+epgCompactTick(cell.end)
                 if cell.missing
                     hint = "LIVE CHANNEL"
-                    if not m.cache.doesExist(id) then hint = "LOADING GUIDE…"
+                    if not m.cache.doesExist(id) then hint = "Loading guide…"
                 end if
                 ink = "#F4F2EE"
                 secondary = "#B6B4AF"
                 if focused
-                    ink = "#0B0B0C"
+                    ink = "#111113"
                     secondary = "#414548"
                 end if
-                label = epgLabel(parent,hint,444+geometry.x,y+10,width-22,15,secondary)
-                label = epgLabel(parent,cell.title,444+geometry.x,y+38,width-22,20,ink)
-                label.height = 48
-                label.wrap = true
-                label.numLines = 2
+                label = epgLabel(view.cells,hint,340+geometry.x,8,width-24,12,secondary)
+                label.height = 20
+                label = epgLabel(view.cells,cell.title,340+geometry.x,29,width-24,16,ink)
+                label.font.uri = "pkg:/fonts/onest_600.ttf"
+                label.height = 25
+                if current and not cell.missing
+                    fraction = (now-cell.start)*1.0/(cell.end-cell.start)
+                    progress = epgRect(view.cells,334+geometry.x,57,int((width-12)*fraction),3,"#F5C542")
+                end if
             end if
             if i = m.row and c = selected
                 m.selectedCell = cell
-                m.selection.text = cell.title
-                if cell.missing then m.selection.text = Txt(channel.name)
+                epgHeader(channel,cell,now)
             end if
         end for
     end for
-    x = 432+int((now-m.window)*804.0/7200)
-    m.nowLine.visible = x >= 432 and x < 1236
-    m.nowLine.translation = [x,150]
-    m.position.text = m.total.toStr() + " channels"
-    if m.channels.count() > 0 then m.position.text = (m.offset+m.row+1).toStr()+" / "+m.total.toStr()
+    x = 328+int((now-m.window)*888.0/7200)
+    m.nowLine.visible = x >= 328 and x < 1216
+    m.nowLine.translation = [x,338]
+    if m.channels.count() = 0
+        m.programmeTitle.text = "Live TV"
+        m.channelIdentity.text = ""
+        m.programmeTime.text = ""
+        m.programmeRemaining.text = ""
+        m.programmeNext.text = ""
+        m.previewLogo.visible = false
+        m.previewName.text = "Live TV"
+        m.headerTrack.visible = false
+        m.headerProgress.visible = false
+    end if
     epgRequestGuides()
+end sub
+
+function epgFilterWidth(name as string) as integer
+    width = len(name)*9+40
+    if width < 86 then width = 86
+    if width > 224 then width = 224
+    return width
+end function
+
+sub epgHeader(channel as object, cell as object, now as integer)
+    m.channelIdentity.text = (m.offset+m.row+1).toStr()+" · "+Txt(channel.name)
+    m.programmeTitle.text = cell.title
+    if cell.missing then m.programmeTitle.text = Txt(channel.name)
+    m.programmeTime.text = "No guide information"
+    m.programmeRemaining.text = ""
+    m.programmeNext.text = ""
+    current = not cell.missing and cell.start <= now and cell.end > now
+    m.headerTrack.visible = current
+    m.headerProgress.visible = current
+    if not cell.missing
+        m.programmeTime.text = epgCompactTick(cell.start)+" – "+epgCompactTick(cell.end)
+        if current
+            m.headerProgress.width = 146.0*(now-cell.start)/(cell.end-cell.start)
+            m.programmeRemaining.text = int((cell.end-now+59)/60).toStr()+" min left"
+        end if
+        for each programme in epgProgrammes(Txt(channel.id))
+            if programme.start >= cell.end
+                m.programmeNext.text = "Next at "+epgCompactTick(programme.start)+" · "+Txt(programme.title)
+                exit for
+            end if
+        end for
+    end if
+    logo = ImageUrl(Txt(channel.logo,Txt(channel.poster)),303,158,false,true)
+    if m.previewLogo.uri <> logo then m.previewLogo.uri = logo
+    m.previewLogo.visible = logo <> ""
+    m.previewName.visible = logo = ""
+    m.previewName.text = Txt(channel.name)
 end sub
 
 sub epgRoute(offset as integer, last = false as boolean)
@@ -309,20 +382,26 @@ end sub
 sub epgDetails()
     if m.channels.count() = 0 then return
     cell = m.selectedCell
-    m.detailHeading.text = Txt(m.channels[m.row].name)+"  ·  "+cell.title
-    text = "Schedule unavailable. You can still watch this channel live."
+    m.detailHeading.text = cell.title
+    m.detailTime.text = Txt(m.channels[m.row].name)+" · "+epgCompactTick(cell.start)+" – "+epgCompactTick(cell.end)
+    text = "No guide information. You can still watch this channel."
     if not cell.missing
-        text = Txt(cell.programme.display_time,epgTick(cell.start))+"  ·  "+Txt(cell.programme.description,"No programme description available.")
+        text = Txt(cell.programme.description,"No programme description available.")
         if cell.start > CreateObject("roDateTime").asSeconds() then text = "UPCOMING  ·  "+text
     end if
     m.detailBody.text = text
     m.details.visible = true
+    m.detailActions.jumpToItem = 0
+    m.detailActions.setFocus(true)
 end sub
 
 function onKeyEvent(key as string, press as boolean) as boolean
     if not press or m.top.visible <> true then return false
     if m.details.visible
-        if key = "back" then m.details.visible = false
+        if key = "back"
+            m.details.visible = false
+            m.top.setFocus(true)
+        end if
         if key = "OK" then epgWatchChannel()
         return true
     end if
@@ -336,13 +415,13 @@ function onKeyEvent(key as string, press as boolean) as boolean
         m.window = (m.anchor \ 1800)*1800
         m.menuFocus = false
     else if m.menuFocus
-        if key = "up" and m.menu > 0 then m.menu--
-        if key = "down" and m.menu < m.filtersData.count()-1 then m.menu++
-        if (key = "OK" or key = "right") and m.menu = 0
+        if key = "left" and m.menu > 0 then m.menu--
+        if key = "right" and m.menu < m.filtersData.count()-1 then m.menu++
+        if (key = "OK" or key = "down") and m.filtersData[m.menu].id = "search"
             m.top.searchRequested = true
             return true
         end if
-        if key = "OK" or key = "right"
+        if key = "OK" or key = "down"
             m.menuFocus = false
             active = m.top.route
             unchanged = false
@@ -353,7 +432,7 @@ function onKeyEvent(key as string, press as boolean) as boolean
                 m.row = 0
                 epgRoute(0)
             end if
-        else if key = "left"
+        else if key = "up"
             m.top.leave = true
         end if
     else if m.channels.count() = 0
@@ -364,6 +443,8 @@ function onKeyEvent(key as string, press as boolean) as boolean
             m.row--
         else if m.offset > 0
             epgRoute(m.offset-40,true)
+        else
+            m.menuFocus = true
         end if
     else if key = "down"
         if m.row < m.channels.count()-1
@@ -423,7 +504,7 @@ end function
 
 sub epgSearchChanged()
     if m.top.visible <> true then return
-    m.menu = 1
+    m.menu = 0
     m.menuFocus = false
     m.row = 0
     epgRoute(0)
@@ -457,4 +538,20 @@ sub epgLogoStatus(event as object)
             return
         end if
     end for
+end sub
+
+function epgCompactTick(at as integer) as string
+    pieces = epgTick(at).split(" ")
+    if pieces.count() > 1 then return pieces[0]+" "+pieces[1]
+    return epgTick(at)
+end function
+
+sub epgDetailSelected()
+    if m.detailActions.itemSelected = 0
+        epgWatchChannel()
+    else
+        m.details.visible = false
+        m.top.setFocus(true)
+        epgRender()
+    end if
 end sub

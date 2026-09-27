@@ -14,7 +14,7 @@ action pills 48 tall, section headings 21 and body 17–19. Bundle Onest and
 Bricolage Grotesque TrueType fonts and the design-owned Lucide PNG variants.
 Use the #0B0B0C ground, #161618/#212124/#2A2A2E surfaces, #F4F2EE text,
 #B6B4AF metadata and #F5C542 progress/spinners. TV action buttons use a neutral surface when unfocused and off-white when focused;
-Resume has no yellow override. Pill radius is half its height. Draw a continuous
+Resume follows TV-038 and retains the selected accent (default yellow) in both states. Pill radius is half its height. Draw a continuous
 3px white focus border inside the fixed control bounds so native grid clipping
 cannot trim its top/left edges; fill and border share one contour. Circular
 controls remain circles at the HD canvas on both HD and FHD devices.
@@ -31,9 +31,8 @@ and icon-led Play/Resume and Details. Detail uses the same artwork treatment,
 without the old portrait column. Missing art keeps a legible title fallback.
 
 Native adaptations: Roku's decoded low-resolution ambient texture supplies
-the soft backdrop without a custom blur shader. Episode browsing keeps the
-existing four-column paged grid and season control, using the new landscape
-episode cards; it preserves the established page/season focus semantics.
+the soft backdrop without a custom blur shader. Episode browsing uses the TvTitle horizontal episode strip under the complete
+title hero and actions. Up always returns to Season; Down restores the episode.
 Roku Keyboard/MiniKeyboard remain the text and PIN input controls. These
 adaptations must be recorded independently from exact reference-image parity.
 
@@ -76,3 +75,57 @@ detail, source panel, lower Home shelves and player controls. Check rightmost
 Home card visibility and row boundaries, then Back focus restoration. Record
 which states were actually reached; visual inspection does not authorize
 destructive profile or account operations.
+
+## ROK-043 — Complete TV screen audit and catalog correction
+
+Owner requested 2026-09-27 after physical review. This supersedes conflicting
+ROK-042 adaptations and extends TV-034/038/040/041 to native Roku presentation.
+Reference HTML/images remain the baseline; later owner corrections take priority.
+Resume is accent yellow with dark text and a white focus border, never scaled.
+
+- Home retains personal shelves, then every enabled Stremio catalog in manifest
+  order with addon/catalog identity. No synthetic Trending/Popular replacement
+  for the full catalog inventory. Keep descriptor rows lightweight; load visible
+  rows and one ahead, at most two catalog requests in flight, retain at most five
+  catalog payloads around the viewport. Empty rows disappear; failed rows expose
+  Retry. Required-filter rows open their actual catalog filters. Pagination is
+  cursor-driven, deduplicated, stops on repeated/empty/non-advancing pages, and
+  rejects stale profile/route completions. Returning restores the logical row.
+- Expanded Home keeps the hero and first shelf. The lower browsing viewport
+  shows three complete shelves: HD row pitch 214, 213×120 art, 24px horizontal
+  gaps, captions inside each row; first heading y48 and final caption before684.
+  Expanded hero spacing remains unchanged. Right stays in its own shelf.
+- Card textures must cover the actual graphics-plane pixel dimensions, not just
+  logical HD coordinates. Prefer real landscape metadata over enlarged portrait
+  crops; sharp art never shares the low-resolution ambient texture.
+- TvTitle: complete logo/title, facts, two-line synopsis and primary/source/My
+  List/More info actions remain above Season and one horizontal episode strip.
+  HD season y403, episode art y455, 240×135 thumbnails. Movies omit season and
+  episodes without leaving placeholder controls. Back restores originating card.
+- TvLive: programme identity/title/time/progress/next at the top, contained channel
+  artwork preview at the right, horizontal scrollable categories below, then the
+  channel-number/logo/name column and rounded programme cells on a timeline.
+  HD content starts x128, category y250, timeline y307, rows y343 at67px pitch.
+  Up from first channel reaches categories, Left/Right moves categories, OK/Down
+  enters guide, Back reaches the main rail. Programme-window semantics remain.
+  The rail expands above every browsing surface, including guide categories.
+- Discover retains separate type and catalog/filter rows; all catalogs remain
+  reachable. Source and track choices use the right panel. Full title information
+  includes an actionable Close control. Profiles, editor, avatar picker, Settings,
+  search, sources, player, loading, empty/error and confirmation states are audited
+  against their reference families; no blanket parity claim from compilation.
+
+Acceptance: test 100 catalog descriptors without sweeping requests, a slow and
+failed catalog, eviction/refetch, cursor termination and profile/route cancellation;
+show three populated shelves on hardware; inspect texture dimensions; inspect
+movie and series title composition; traverse an episode strip longer than eight;
+inspect Live header/categories/programmes and expanded rail above them; check
+Resume accent and all primary action focus states. Publish per-screen evidence
+and explicit remaining differences separately from automated checks.
+
+ROK-043 audit follow-through: Search uses the six-column TvSearch keypad with
+rounded keys and Lucide Space/Backspace/Delete, retaining mobile literal input.
+My List exposes My List and Continue Watching segments. Programme details use
+the TvLiveDetails side panel with explicit Watch and Close actions. PIN and
+full text-entry still retain the native input semantics while using the shared
+full-screen surface; these controls are never described as measured pixel parity.

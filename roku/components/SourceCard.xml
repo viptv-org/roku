@@ -7,14 +7,17 @@
  </interface>
  <script type="text/brightscript" uri="pkg:/components/SourceCard.brs" />
  <children>
-  <DesignSurface id="surface" width="440" height="130" radius="15" blendColor="#212124FF" />
-  <Label id="provider" translation="[16,10]" width="408" height="25">
+  <DesignSurface id="surface" width="440" height="82" radius="15" blendColor="#212124FF" />
+  <DesignSurface id="qualitySurface" translation="[14,12]" width="60" height="28" radius="5" blendColor="#34343AFF" />
+  <Label id="quality" translation="[14,12]" width="60" height="28" horizAlign="center" vertAlign="center"><Font role="font" uri="pkg:/fonts/onest_700.ttf" size="13" /></Label>
+  <Poster id="playIcon" translation="[405,31]" width="20" height="20" uri="pkg:/images/lucide/play-primary.png" />
+  <Label id="provider" translation="[86,9]" width="302" height="25">
    <Font role="font" uri="pkg:/fonts/onest_700.ttf" size="15" />
   </Label>
-  <Label id="description" translation="[16,40]" width="408" height="58" numLines="3" wrap="true" color="#B6B4AF">
+  <Label id="description" translation="[86,35]" width="302" height="22" color="#B6B4AF">
    <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
   </Label>
-  <Label id="badges" translation="[16,104]" width="408" height="20" color="#DAD8D3">
+  <Label id="badges" translation="[86,59]" width="302" height="18" color="#DAD8D3">
    <Font role="font" uri="pkg:/fonts/onest_700.ttf" size="15" />
   </Label>
  </children>

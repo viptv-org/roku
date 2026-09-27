@@ -22,9 +22,8 @@ sub Main()
  if not m.authLoading.visible then throw "Home revealed before data and artwork"
  startupReadyTick()
  if not m.authLoading.visible then throw "Pending shelves revealed"
- for each kind in ["progress","movie","series","live","favorites","livefavorites","recent"]
- m.homeDone[kind]=true
- end for
+ ' One usable shelf is enough; unrelated catalog reads can still be pending.
+ m.homeRoot={getChildCount:OneChild} : m.homeDone={progress:true}
  m.startupArtStarted=true : m.startupArtPending={outstanding:{}}
  startupReadyTick()
  if not m.authLoading.visible then throw "Pending metadata revealed"
@@ -43,12 +42,15 @@ sub Main()
  m.startupArtStarted=false : m.startupStable=0 : m.homeHeroPanel.artState="loading"
  GetGlobalAA().elapsed=12000
  startupReadyTick() : startupReadyTick()
- if m.homeDone.count()<>7 or m.authLoading.visible then throw "Unavailable services trapped startup"
+ if m.authLoading.visible then throw "Unavailable services trapped startup"
  m.homeInitialLoading=true : m.authLoading.visible=true : m.homeKeyValue="profile2"
  startupReadyTick()
  if m.homeInitialLoading or not m.authLoading.visible then throw "Old profile revealed new profile"
  print "STARTUP_READY_OK"
 end sub
+function OneChild() as integer
+ return 1
+end function
 function clockTime() as integer
  return GetGlobalAA().elapsed
 end function

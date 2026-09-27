@@ -7,6 +7,8 @@ sub init()
     m.posterGrid = m.top.findNode("posterGrid")
     m.sourceList = m.top.findNode("sourceList")
     m.discoverFilters = m.top.findNode("discoverFilters")
+    m.discoverTypes = m.top.findNode("discoverTypes")
+    m.discoverTypes.observeField("itemSelected","uiDiscoverTypeSelected")
     m.profileGrid = m.top.findNode("profileGrid")
     m.homeHeroPanel = m.top.findNode("homeHeroPanel")
     for each node in [m.standardList,m.posterGrid,m.sourceList]

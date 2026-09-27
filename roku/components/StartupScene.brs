@@ -55,13 +55,10 @@ sub startupReadyTick()
     ' One budget includes shelf requests, metadata and decoded visible artwork.
     ' Leave room for native launch before Roku's 15-second launch target.
     deadline = 12000
-    if m.homeDone.count() < 7
-        startupStatus("Loading your library · " + m.homeDone.count().toStr() + " of 7")
+    ' Reveal the usable first shelf without waiting for all addon/catalog work.
+    if m.homeRoot = invalid or m.homeRoot.getChildCount() = 0
+        startupStatus("Starting VIPTV…")
         if elapsed < deadline then return
-        ' Freeze timed-out shelves as failed; late responses cannot move the first view.
-        for each kind in ["progress","movie","series","live","favorites","livefavorites","recent"]
-            if not m.homeDone.doesExist(kind) then homeResponse(kind,{ok:false})
-        end for
     end if
     if not m.startupArtStarted
         m.startupArtStarted = true

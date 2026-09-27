@@ -14,8 +14,12 @@ sub render()
     chevron = m.top.findNode("chevron")
     chevron.visible = item.dropdown = true
     chevron.blendColor = "#B6B4AFFF"
-    label.maxWidth = 208
-    if chevron.visible then label.maxWidth = 186
+    width = 240
+    if item.hasField("uiWidth") then width = item.uiWidth
+    m.top.findNode("surface").width = width
+    chevron.translation = [width-26,11]
+    label.maxWidth = width-32
+    if chevron.visible then label.maxWidth = width-54
     selected = item.selected = true
     owner = m.top.gridHasFocus
     active = owner and m.top.focusPercent > 0.5

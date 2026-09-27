@@ -24,8 +24,8 @@ sub render()
     if m.thumbnail.uri <> uri
         m.thumbnail.visible = false
         m.top.findNode("placeholder").visible = true
-        m.thumbnail.loadWidth = ImagePixels(240)
-        m.thumbnail.loadHeight = ImagePixels(135)
+        m.thumbnail.loadWidth = 240
+        m.thumbnail.loadHeight = 135
         m.thumbnail.uri = uri
     else
         artLoaded()

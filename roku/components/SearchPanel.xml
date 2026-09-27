@@ -9,20 +9,22 @@
   <function name="open" />
   <function name="focusField" />
   <function name="focusResults" />
+  <function name="syncFocus" />
  </interface>
  <script type="text/brightscript" uri="pkg:/source/KeyboardInput.brs" />
  <script type="text/brightscript" uri="pkg:/components/SearchPanel.brs" />
  <children>
   <Rectangle translation="[88,130]" width="1192" height="590" color="#0B0B0C" />
-  <Label id="queryLabel" translation="[128,91]" width="372" height="44" color="#F4F2EE">
-   <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="19" />
+  <DesignSurface translation="[128,95]" width="374" height="54" radius="14" blendColor="#212124FF" />
+  <Label id="queryLabel" translation="[144,104]" width="340" height="38" color="#F4F2EE">
+   <Font role="font" uri="pkg:/fonts/onest_600.ttf" size="23" />
   </Label>
-  <MiniKeyboard id="keys" translation="[128,162]" scale="[0.82,0.82]" showTextEditBox="false" keyColor="#F4F2EE" focusedKeyColor="#F4F2EE" focusBitmapUri="pkg:/images/ui-round-outline.9.png" />
+  <SearchKeypad id="keys" translation="[128,167]" />
   <Label translation="[100,572]" width="304" height="64" wrap="true" text="Type here or use the Roku app. Play/Pause opens results." color="#B6B4AF" visible="false">
    <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
   </Label>
-  <Group translation="[456,164]" clippingRect="[0,0,740,484]">
-   <RowList id="resultsList" itemComponentName="HomeCard" itemSize="[700,237]" rowItemSize="[[213,170]]" rowItemSpacing="[[24,0]]" itemSpacing="[0,8]" numRows="2" showRowLabel="[true]" showRowCounter="[false]" rowLabelOffset="[[0,8]]" rowLabelColor="#F4F2EE" drawFocusFeedback="false" rowFocusAnimationStyle="floatingFocus" vertFocusAnimationStyle="fixedFocus">
+  <Group translation="[566,104]" clippingRect="[0,0,650,540]">
+   <RowList id="resultsList" itemComponentName="HomeCard" itemSize="[650,240]" rowItemSize="[[213,170]]" rowItemSpacing="[[24,0]]" itemSpacing="[0,8]" numRows="2" showRowLabel="[true]" showRowCounter="[false]" rowLabelOffset="[[0,8]]" rowLabelColor="#F4F2EE" drawFocusFeedback="false" rowFocusAnimationStyle="floatingFocus" vertFocusAnimationStyle="fixedFocus">
     <Font role="rowLabelFont" uri="pkg:/fonts/bricolage_grotesque_700.ttf" size="21" />
    </RowList>
   </Group>

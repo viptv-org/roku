@@ -1,5 +1,6 @@
 sub uiShowDetails(item as object)
     if m.gridActive = true
+        if m.discoverActive = true then return
         m.pageCaption.text = Txt(item.name,Txt(item.title))
         facts = PresentationFacts(item)
         if facts <> "" then m.pageCaption.text += "  ·  " + facts
@@ -65,24 +66,16 @@ sub uiShowDetails(item as object)
         m.art.translation = [128,64]
         m.art.width = 273
         m.art.height = 60
-        m.art.loadWidth = ImagePixels(410)
-        m.art.loadHeight = ImagePixels(90)
+        m.art.loadWidth = 410
+        m.art.loadHeight = 90
         m.art.uri = ImageUrl(Txt(item.logo),410,90,false,true)
         m.art.visible = m.art.uri <> ""
         m.detailTitle.visible = not m.art.visible
         m.detailCredits.text = PresentationCredits(item)
         m.detailCredits.visible = false
-        if m.mode = "detail"
-            uiLayoutDetailActions()
-            m.detailLayoutTimer.control = "start"
-        else
-            m.detailTitle.translation = [128,48]
-            m.detailTitle.font.size = 32
-            m.detailInfo.translation = [128,104]
-            m.description.visible = false
-            m.art.visible = false
-            m.detailTitle.visible = true
-        end if
+        uiLayoutDetailActions()
+        m.detailLayoutTimer.control = "start"
+        if m.mode = "episodes" then uiSeriesActions()
     else if item.type = "live" and (m.mode = "browse" or m.mode = "livefavorites" or m.mode = "collection")
         queueLiveEpg(item)
     end if
@@ -133,7 +126,10 @@ end sub
 
 sub uiFocusChanged()
     if m.uiReady <> true then return
+    if m.searchPanel <> invalid then m.searchPanel.callFunc("syncFocus")
     if m.epgGrid <> invalid then m.epgGrid.active = m.epgGrid.isInFocusChain()
+    if m.episodeList <> invalid then m.episodeList.active = m.episodeList.hasFocus()
+    if m.discoverFilters <> invalid then m.discoverFilters.active = m.discoverFilters.hasFocus()
     rail = m.sidebar.hasFocus() and m.gatewayActive <> true and m.video.visible <> true
     m.sidebar.active = rail
     for each collection in [m.profileGrid,m.profileActions,m.profilePages,m.homeActions,m.homeRows,m.posterGrid,m.sourceList,m.sourceFilters,m.detailActions,m.standardList,m.episodeList,m.seasonList,m.channelList,m.liveTabs,m.discoverFilters]
@@ -170,7 +166,7 @@ sub uiBuildSeasons()
         end if
     end for
     root = CreateObject("roSGNode","ContentNode")
-    for each item in [{name:seasonName,dropdown:true},{name:favoriteLabel(m.selected),dropdown:false},{name:"More info",dropdown:false}]
+    for each item in [{name:seasonName,dropdown:true}]
         node = root.createChild("ContentNode")
         node.title = item.name
         node.addFields({dropdown:item.dropdown,selected:false,uiOwnerFocused:false})
@@ -212,11 +208,13 @@ sub uiFullText(title as string, text as string)
     m.fullTextTitle.text = title
     m.fullTextBody.text = text
     m.fullTextPanel.visible = true
-    m.fullTextBody.setFocus(true)
+    m.fullTextClose.setFocus(true)
 end sub
 
 function uiPresentationKey(key as string) as boolean
     if m.fullTextPanel.visible
+        if key = "up" and m.fullTextClose.hasFocus() then m.fullTextBody.setFocus(true)
+        if key = "down" and m.fullTextBody.hasFocus() then m.fullTextClose.setFocus(true)
         if key = "back"
             m.fullTextPanel.visible = false
             uiRestoreFocus()
@@ -226,6 +224,29 @@ function uiPresentationKey(key as string) as boolean
     if m.choicePanel.visible then return true
     if key = "back" and accountProfileBack() then return true
     if m.video.visible then return false
+    if m.libraryTabs.visible
+        if m.libraryTabs.hasFocus() and key = "down"
+            if m.items.count() > 0 then m.list.setFocus(true)
+            return true
+        else if m.list.hasFocus() and m.list.itemFocused < 4 and key = "up"
+            m.libraryTabs.setFocus(true)
+            return true
+        end if
+    end if
+    if m.mode = "browse" and m.discoverActive = true
+        if m.discoverTypes.hasFocus()
+            if key = "down"
+                m.discoverFilters.setFocus(true)
+                return true
+            else if key = "left" and m.discoverTypes.itemFocused = 0
+                m.sidebar.setFocus(true)
+                return true
+            end if
+        else if m.discoverFilters.hasFocus() and key = "up"
+            m.discoverTypes.setFocus(true)
+            return true
+        end if
+    end if
     if m.mode = "searchall"
         if m.sidebar.hasFocus() and key = "right"
             m.searchPanel.setFocus(true)
@@ -252,37 +273,27 @@ function uiPresentationKey(key as string) as boolean
         end if
     end if
     if m.mode = "episodes"
-        if m.seasonList.hasFocus()
+        if m.detailActions.hasFocus()
+            if key = "down"
+                m.seasonList.setFocus(true)
+                return true
+            end if
+        else if m.seasonList.hasFocus()
             if key = "down"
                 m.episodeList.setFocus(true)
                 return true
-            else if key = "left" and m.seasonList.itemFocused = 0
-                m.sidebar.setFocus(true)
+            else if key = "up"
+                m.detailActions.setFocus(true)
+                return true
+            else if key = "left" or key = "right"
+                uiOpenChoice("episodeSeason","Choose season",m.seasonItems)
                 return true
             end if
-        else if m.episodeList.hasFocus()
-            ' A one-row MarkupGrid can leave vertical keys unhandled on hardware.
-            ' Move by columns explicitly, retaining the column in the next row.
-            if key = "down"
-                index = m.episodeList.itemFocused
-                if int(index / 4) < int((m.items.count()-1) / 4)
-                    target = index + 4
-                    if target >= m.items.count() then target = m.items.count()-1
-                    m.episodeList.jumpToItem = target
-                end if
-                return true
-            else if key = "up" and m.episodeList.itemFocused >= 4
-                m.episodeList.jumpToItem = m.episodeList.itemFocused - 4
-                return true
-            else if key = "up" and m.episodeList.itemFocused < 4
-                m.seasonList.setFocus(true)
-                return true
-            else if key = "left" and m.episodeList.itemFocused mod 4 = 0
-                m.sidebar.setFocus(true)
-                return true
-            else if key = "left"
-                return false
-            end if
+        else if m.episodeList.hasFocus() and key = "down"
+            return true
+        else if m.episodeList.hasFocus() and key = "up"
+            m.seasonList.setFocus(true)
+            return true
         end if
     end if
     if m.liveTabs.visible
@@ -317,3 +328,86 @@ function uiPresentationKey(key as string) as boolean
     end if
     return false
 end function
+
+sub uiSeriesActions()
+    if m.mode <> "episodes" then return
+    target = invalid
+    index = m.episodeList.itemFocused
+    if index >= 0 and index < m.items.count() then target = m.items[index]
+    if target = invalid or target.action <> invalid
+        for each candidate in m.items
+            if candidate.action = invalid
+                target = candidate
+                exit for
+            end if
+        end for
+    end if
+    m.seriesPlayItem = invalid
+    label = "Play"
+    if target <> invalid and target.action = invalid
+        m.seriesPlayItem = EpisodePresentationItem(m.selected,target)
+        if target.position <> invalid and target.position > 0 then label = "Resume"
+        if target.season <> invalid and target.episode <> invalid then label += " S"+Txt(target.season)+" E"+Txt(target.episode)
+    end if
+    source = Txt(m.selected.source_name,"Choose source")
+    if len(source) > 26 then source = left(source,25)+"…"
+    names = [label,source,favoriteLabel(m.selected),"More info"]
+    icons = ["play","source","plus","info"]
+    if UiIsFavorite(m.selected) then icons[2] = "check"
+    root = CreateObject("roSGNode","ContentNode")
+    for i = 0 to names.count()-1
+        node = root.createChild("ContentNode")
+        node.title = names[i]
+        node.addFields({uiWidth:216,uiHeight:48,uiIcon:icons[i],uiOwnerFocused:false})
+    end for
+    m.detailActions.itemSize = [216,48]
+    m.detailActions.numColumns = 4
+    m.detailActions.content = root
+    m.detailActions.visible = true
+    m.detailActions.translation = [128,244]
+end sub
+
+sub uiSeriesActionSelected(held as boolean)
+    index = m.detailActions.itemFocused
+    if index = 0 or index = 1
+        if m.seriesPlayItem = invalid then return
+        manual = index = 1 or held
+        findStreams(m.seriesPlayItem,manual,StableResumePreference(m.seriesPlayItem))
+    else if index = 2
+        toggleFavorite()
+    else if index = 3
+        uiFullText(Txt(m.selected.name),PresentationFullDetails(m.selected))
+    end if
+end sub
+
+sub uiCloseFullText()
+    m.fullTextPanel.visible = false
+    uiRestoreFocus()
+end sub
+
+sub uiTitleLogoLoaded()
+    if m.mode <> "detail" and m.mode <> "episodes" then return
+    ready = m.art.uri <> "" and m.art.loadStatus = "ready"
+    if ready and m.art.bitmapHeight > 0
+        width = 60.0*m.art.bitmapWidth/m.art.bitmapHeight
+        if width > 506 then width = 506
+        m.art.width = width
+    end if
+    m.art.visible = ready
+    m.detailTitle.visible = not ready
+end sub
+
+sub uiLibraryTabs()
+    root = CreateObject("roSGNode","ContentNode")
+    for each name in ["My List","Continue Watching"]
+        node = root.createChild("ContentNode")
+        node.title = name
+        current = (name = "My List" and m.collection = "favorites") or (name = "Continue Watching" and m.collection = "progress")
+        node.addFields({uiWidth:220,selected:current,dropdown:false,uiOwnerFocused:false})
+    end for
+    m.libraryTabs.content = root
+    m.libraryTabs.visible = true
+end sub
+sub uiLibraryTabSelected()
+    if m.libraryTabs.itemSelected = 0 then openLibraryPage(0) else openViewingQueue(0)
+end sub

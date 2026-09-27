@@ -7,12 +7,20 @@ root = Path(__file__).resolve().parents[1]
 main = ET.parse(root / "components/MainScene.xml")
 node = lambda ident: main.find(f".//*[@id='{ident}']")
 assert node("sidebar").tag == "DesignRail"
+children = list(main.getroot().find("children"))
+assert children.index(node("appChrome")) > children.index(node("epgGrid")), "guide covers expanded rail"
+assert node("episodeList").tag == "HorizontalStrip"
+assert node("discoverFilters").tag == "HorizontalStrip"
+assert node("discoverTypes") is not None
+home_layout = (root / "components/PresentationHomeScene.brs").read_text()
+assert "m.homeRows.numRows = 3" in home_layout
+assert "m.homeRows.itemSize = [1088,214]" in home_layout
 assert node("homeRows").get("showRowCounter") == "[false]"
 assert node("homeRows").get("rowItemSize") == "[[213,170]]"
 assert node("homeShelves").get("clippingRect") == "[0,0,1096,218]"
 assert node("detailBackdrop").get("width") == "747"
 assert node("sourceList").get("translation") == "[776,172]"
-assert node("sourceList").get("itemSize") == "[440,130]"
+assert node("sourceList").get("itemSize") == "[440,82]"
 assert node("profileGrid").get("itemSize") == "[146,188]"
 for path in (root / "components").glob("*.xml"):
     tree = ET.parse(path)

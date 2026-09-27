@@ -34,6 +34,10 @@ jobs:
           npm install --prefix /tmp/viptv-roku-tests --no-audit --no-fund brs-node@2.5.3
           export VIPTV_BRS_CLI=/tmp/viptv-roku-tests/node_modules/.bin/brs-cli
           python3 roku/tests/design_rail_runtime.py
+          python3 roku/tests/home_catalog_runtime.py
+          python3 roku/tests/horizontal_strip_runtime.py
+          python3 roku/tests/player_tracks_panel_runtime.py
+          python3 roku/tests/search_keypad_runtime.py
           python3 roku/tests/guide_boundary_runtime.py
           python3 roku/tests/continuation_runtime.py
           python3 roku/tests/next_episode_runtime.py
@@ -52,6 +56,7 @@ jobs:
           python3 roku/tests/library_runtime.py
           python3 roku/tests/episode_library_runtime.py
           python3 roku/tests/episode_image_runtime.py
+          python3 roku/tests/image_resolution_runtime.py
           python3 roku/tests/episode_mask_runtime.py
           "$VIPTV_BRS_CLI" roku/tests/audio-score.brs roku/source/Util.brs roku/source/PresentationPolicy.brs
           "$VIPTV_BRS_CLI" roku/tests/direct-policy.brs roku/source/Util.brs roku/source/PresentationPolicy.brs

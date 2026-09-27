@@ -22,7 +22,9 @@ sub render()
     m.top.findNode("surface").translation = [733,0]
     m.top.findNode("surface").height = panelHeight
     m.top.findNode("title").translation = [776,43]
+    m.top.findNode("description").text = Txt(model.description)
     m.choices.translation = [776,130]
+    if Txt(model.description) <> "" then m.choices.translation = [776,190]
     m.choices.numRows = count
     m.choices.content = root
     m.top.visible = true

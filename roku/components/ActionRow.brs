@@ -76,6 +76,11 @@ sub renderFocus()
         label.color = "#111113"
         variant = "focus"
     end if
+    if left(item.title,6) = "Resume"
+        surface.blendColor = "#F5C542FF"
+        label.color = "#111113"
+        variant = "focus"
+    end if
     if item.title = "Delete profile"
         label.color = "#FF8A7E"
         if active then label.color = "#B42318"

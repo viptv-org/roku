@@ -5,6 +5,11 @@ end sub
 sub logoLoaded()
     logo = m.top.findNode("titleLogo")
     ready = logo.uri <> "" and logo.loadStatus = "ready"
+    if ready and logo.bitmapHeight > 0
+        width = 79.0*logo.bitmapWidth/logo.bitmapHeight
+        if width > 400 then width = 400
+        logo.width = width
+    end if
     logo.visible = ready
     m.top.findNode("title").visible = not ready
 end sub
@@ -53,6 +58,7 @@ sub render()
     title = m.top.findNode("title")
     title.font.size = 37
     title.text = Txt(item.name,"VIPTV")
+    if len(title.text) > 30 then title.font.size = 32
     logo = m.top.findNode("titleLogo")
     logoUri = ImageUrl(Txt(item.logo),410,118,false,true)
     if logo.uri <> logoUri then logo.uri = logoUri

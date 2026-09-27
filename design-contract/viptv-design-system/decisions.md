@@ -40,3 +40,9 @@ native username/password sign-in, keeps pairing optional, and requires original
 source playback on Android. Source feedback, player lifetime, provider groups,
 stateful library actions, insets and the scrolling/blurred TV hero are specified
 in `../../ANDROID_DESIGN.md#and-036--native-sign-in-direct-playback-and-interaction-corrections`.
+
+## 15. Native Roku complete TV audit (ROK-043)
+
+The owner extends the later TV corrections to Roku, including accent Resume,
+all addon catalog shelves, bounded lazy loading, three lower Home shelves,
+TvTitle composition and TvLive guide. See [ROK-043](../ROKU_DESIGN.md#rok-043--complete-tv-screen-audit-and-catalog-correction).

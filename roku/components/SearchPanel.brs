@@ -23,10 +23,11 @@ sub open()
 end sub
 sub focusField()
     m.keys.setFocus(true)
+    m.keys.active = true
 end sub
 sub updateQueryLabel()
     value = m.keys.text
-    if value = "" then value = "Search movies and shows"
+    if value = "" then value = "Search movies and series"
     m.top.findNode("queryLabel").text = value
 end sub
 sub changed()
@@ -80,8 +81,13 @@ end sub
 sub focusResults(position = invalid as dynamic)
     if m.results.content <> invalid and m.results.content.getChildCount() > 0
         if position <> invalid and position.count() = 2 then m.results.jumpToRowItem = position
+        m.keys.active = false
         m.results.setFocus(true)
     else
         focusField()
     end if
+end sub
+
+sub syncFocus()
+    if m.keys <> invalid then m.keys.active = m.keys.hasFocus()
 end sub

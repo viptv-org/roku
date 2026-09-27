@@ -2,24 +2,7 @@ sub homeResponse(kind as string, result as object)
     if m.mode <> "home" or m.homeData = invalid then return
     if m.homeKeyValue <> m.config.base + "|" + Txt(m.config.account_id) + "|" + m.profile then return
     if kind = "catalogs"
-        for each media in ["movie","series"]
-            if not m.homeDone.doesExist(media)
-                chosen = invalid
-                if result.ok
-                    for each catalog in Bounded(result.data,100)
-                        if catalog.type = media
-                            chosen = catalog
-                            exit for
-                        end if
-                    end for
-                end if
-                if chosen <> invalid
-                    request("GET","/api/discover?type=" + media + "&addon_id=" + Enc(Txt(chosen.addon_id)) + "&catalog=" + Enc(Txt(chosen.id)) + "&skip=0",invalid,"home:" + media)
-                else
-                    homeResponse(media,{ok:false})
-                end if
-            end if
-        end for
+        homeUseCatalogs(result)
         return
     end if
     slots = {progress:0,movie:1,series:2,live:3,favorites:4,livefavorites:5,recent:6}
@@ -118,20 +101,21 @@ sub homeResponse(kind as string, result as object)
     end if
     if m.homeRowKeys.count() = 0
         m.status.text = "Loading…"
-        if m.homeDone.count() >= 7 then m.status.text = "No titles yet. Search or try again."
+        if m.homeDone.count() >= 6 then m.status.text = "No titles yet. Search or try again."
     else
         m.status.text = ""
     end if
     homeDefaultShelf()
     homeRestore()
     homeHero()
+    homeCatalogPump()
 end sub
 
 function homeCurrent() as dynamic
     if m.homeData = invalid then return invalid
     r = m.homePosition[0]
     c = m.homePosition[1]
-    if r < 0 or r > 6 then return invalid
+    if r < 0 or r >= m.homeData.count() then return invalid
     values = homeValues(r)
     if c < 0 or c >= values.count() then return invalid
     return values[c]
@@ -154,6 +138,7 @@ sub homeFocused()
     ' Update the hero immediately on focus, rather than after the artwork timer.
     homeHero()
     uiQueueCardArtwork()
+    homeCatalogPump(true)
 end sub
 
 sub retryHome()
@@ -168,7 +153,7 @@ sub homeHero()
         for each flag in m.homeFailed
             if flag then failed = true
         end for
-        empty = m.homeRowKeys.count() = 0 and m.homeDone.count() >= 7
+        empty = m.homeRowKeys.count() = 0 and m.homeDone.count() >= 6
         m.homeRetry.visible = failed or empty or m.homeRetry.hasFocus()
         m.homeRetry.translation = [1030,64]
         if empty

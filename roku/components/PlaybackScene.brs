@@ -297,55 +297,52 @@ end function
 
 sub showPlayerTracks(kind as string, page = 0 as integer)
     m.trackKind = kind
-    m.trackPage = page
     m.trackDialogSession = m.session
     m.trackDialogOwner = TrackOwner(m.playItem)
     m.trackChoices = []
-    buttons = []
     tracks = Bounded(m.audioTracks,32)
-    title = "Audio tracks"
-    message = "Choose any available audio track. Language labels are informational."
+    title = "Audio"
+    message = "Choose an audio track."
     if kind = "subtitles"
         tracks = Bounded(m.subtitleTracks,32)
         title = "Subtitles"
-        message = "Select a supported text track. Image subtitles cannot be displayed."
-        if m.subtitlesSupported <> true then message = "Subtitles are unavailable for this output. Listed tracks cannot currently be displayed."
-        if m.subtitlesSupported = true
-            buttons.push("Off")
-            m.trackChoices.push({action:"off"})
-        end if
+        message = "Choose a subtitle track."
+        if m.subtitlesSupported = true then m.trackChoices.push({action:"off",name:"Off"})
     end if
-    for index = page to page + 4
-        if index >= tracks.count() then exit for
-        track = tracks[index]
+    selectedIndex = 0
+    for each track in tracks
         label = PlayerTrackLabel(track)
-        if track.selected = true then label = "Playing · " + label
-        if not PlayerTrackSelectable(track) or (kind = "subtitles" and m.subtitlesSupported <> true) then label = "Unavailable · " + label
-        buttons.push(left(label,100))
-        m.trackChoices.push(track)
+        if track.selected = true
+            selectedIndex = m.trackChoices.count()
+            label += " · Current"
+        end if
+        if not PlayerTrackSelectable(track) or (kind = "subtitles" and m.subtitlesSupported <> true) then label += " · unavailable"
+        choice = CopyRouteData(track)
+        choice.name = label
+        m.trackChoices.push(choice)
     end for
-    if page + 5 < tracks.count()
-        buttons.push("More tracks")
-        m.trackChoices.push({action:"next"})
-    end if
-    if page > 0
-        buttons.push("Previous tracks")
-        m.trackChoices.push({action:"previous"})
-    end if
     if tracks.count() = 0
-        message = "This stream supplies no selectable audio tracks."
-        if kind = "subtitles" then message = "This stream supplies no selectable subtitles."
+        message = "This stream has no selectable audio tracks."
+        if kind = "subtitles" then message = "This stream has no selectable subtitles."
     end if
-    buttons.push("Back to player")
-    m.trackChoices.push({action:"back"})
-    dialog = CreateObject("roSGNode","Dialog")
-    dialog.id = nextPlayerDialogId()
-    dialog.title = title
-    dialog.message = message
-    dialog.buttons = buttons
-    dialog.observeField("buttonSelected","playerTrackSelected")
-    dialog.observeField("wasClosed","playerDialogClosed")
-    m.top.dialog = dialog
+    m.trackChoices.push({action:"back",name:"Back to player"})
+    m.choiceKind = "playerTracks"
+    m.choiceGeneration = m.generation
+    m.choicePanel.model = {title:title,description:message,items:m.trackChoices,index:selectedIndex}
+end sub
+
+sub uiPlayerTrackChosen(index as integer)
+    if index < 0 or index >= m.trackChoices.count() then return
+    choice = m.trackChoices[index]
+    closePlayerTracks()
+    if m.trackDialogOwner <> TrackOwner(m.playItem) or m.trackDialogSession <> m.session then return
+    if choice.action = "back" then return
+    if choice.action <> "off"
+        if not MatchInteger(choice.input_index,0,65535) then return
+        if not PlayerTrackSelectable(choice) then return
+        if m.trackKind = "subtitles" and m.subtitlesSupported <> true then return
+    end if
+    choosePlayerTrack(choice)
 end sub
 
 sub playerTrackSelected(event as object)
@@ -431,6 +428,7 @@ sub playerDialogClosed(event = invalid as dynamic)
 end sub
 
 sub closePlayerTracks()
+    if m.choiceKind = "playerTracks" then m.choicePanel.visible = false
     if m.top.dialog <> invalid then m.top.dialog.close = true
     if m.playerOverlay <> invalid
         m.playerOverlay.opened = true
