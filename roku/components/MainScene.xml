@@ -194,7 +194,6 @@
    </Label>
    <BusySpinner id="authLoadingSpinner" translation="[610,476]" spinInterval="1.1" control="stop" />
   </Group>
-  <Timer id="startupReadyTimer" duration="0.15" repeat="true" />
   <Timer id="pairQrTimer" duration="6" repeat="false" />
   <Timer id="detailLayoutTimer" duration="0.05" repeat="false" />
   <Timer id="artworkTimer" duration="0.15" repeat="false" />

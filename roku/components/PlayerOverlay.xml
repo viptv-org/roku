@@ -47,10 +47,10 @@
    <Rectangle id="seekPreviewMarker" width="3" height="10" color="#B6B4AF" visible="false" />
    <Poster id="seekThumb" width="16" height="16" uri="pkg:/images/player-circle.png" blendColor="#F4F2EEFF" visible="false" />
   </Group>
-  <Label monospacedDigits="true" id="timeLeft" translation="[64,575]" width="576" height="32" color="#F4F2EE">
+  <Label id="timeLeft" translation="[64,575]" width="576" height="32" color="#F4F2EE">
    <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
   </Label>
-  <Label monospacedDigits="true" id="timeRight" translation="[640,575]" width="576" height="32" horizAlign="right" color="#B6B4AF">
+  <Label id="timeRight" translation="[640,575]" width="576" height="32" horizAlign="right" color="#B6B4AF">
    <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
   </Label>
   <Group id="controlRow" translation="[64,617]">

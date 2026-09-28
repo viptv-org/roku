@@ -139,14 +139,14 @@ sub handleResponse(event as object)
         if tag = "config" then showSettings()
         m.status.text = Txt(result.error,"Unable to reach server. Check Settings and try again.")
         if tag = "discovercatalogs"
-            rows("Discover",[{name:"Try again",action:"discover"}],"discovererror","Catalogs are unavailable. Check your addons or try again.")
+            rows("Discover",[{name:"Try again",action:"discover"}],"discovererror",Txt(result.error,"Catalogs are unavailable. Check your addons or try again."))
         end if
         if tag = "streamstart" or tag = "streampoll"
             m.discoveryDone = true
-            sourceExhausted("Sources unavailable. Try again.")
+            sourceExhausted(Txt(result.error,"Sources unavailable. Try again."))
         end if
         if tag = "seekplayback"
-            seekReplacementFailed("Seek failed. Playback resumed at the prior position.")
+            seekReplacementFailed(Txt(result.error,"Seek failed.") + " Playback resumed at the prior position.")
         else if tag = "playback"
             ' Family channels exhaust verified server candidates under one startup budget.
             print "VIPTV playback request failed: "; result.status; " "; Txt(result.error)
@@ -154,7 +154,7 @@ sub handleResponse(event as object)
                 sourceExhausted(Txt(result.error,"No working stream is available for this channel. Try again later."))
             else
                 if retryContinuationSource() then return
-                sourceExhausted("Selected source unavailable (" + Txt(result.error,"request failed") + "). Choose another source.")
+                sourceExhausted(Txt(result.error,"Selected source unavailable. Choose another source."))
             end if
         end if
         return

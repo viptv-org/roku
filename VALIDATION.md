@@ -190,3 +190,20 @@ Later dead-code cleanups diverge from those bytes, and MIGRATION.json records ea
 Local checks passed: migration checksums; account, branding, playback, focus, scenegraph and node-identity static contracts; all 19 *_runtime.py harnesses (18 initially passed and the corrected direct harness then passed); BrighterScript 0.73.1 validation/staging; generated runtime ZIP layout with 749 entries including generated source/bslib.brs. CI also exercises the explicit BRS policy fixtures.
 
 ZIP packaging uses compiled staging, not raw source; artifact creation refuses to overwrite an existing archive. GitHub CI uploads the checksummed archive, and validated version-tag builds publish it as a release asset. This split did not install a device package, submit a Roku Store build or perform physical TV validation.
+# REL-001 — 2026-09-28
+
+Removed the Home metadata/image readiness cover and timer entirely. Account
+connection status remains separate. Production startup handlers now pass the
+updated runtime check: absent rows/loading artwork, repeat Home entry and stale
+artwork responses never raise that cover. Error decoding preserves safe reasons
+and stable codes without ParseJSON logging malformed error bodies; discovery,
+catalog, preparation and seek failures carry them through the UI. The numeric
+player labels no longer enable monospacedDigits; bundled regular/tabular glyphs
+were inspected and the player-overlay runtime still reports correct time text.
+
+Passed: BrighterScript 0.73.1 validation/staging, design contract and pin checks,
+startup_ready_runtime.py, isolated production api_error_runtime.py, and the
+player-overlay BRS fixture. A compiled ZIP includes runtime helpers and fonts.
+The full schema harness cannot run under the available off-device interpreter
+because roRegistrySection/roFileSystem are unsupported; no full-schema or physical
+Roku acceptance is claimed. Real firmware must confirm the font rendering fix.
