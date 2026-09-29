@@ -28,6 +28,7 @@
  <script type="text/brightscript" uri="pkg:/components/HomeCatalogScene.brs" />
  <script type="text/brightscript" uri="pkg:/components/SourcesScene.brs" />
  <script type="text/brightscript" uri="pkg:/components/SessionScene.brs" />
+ <script type="text/brightscript" uri="pkg:/components/PlaybackLeaseScene.brs" />
  <script type="text/brightscript" uri="pkg:/source/ContinuationPolicy.brs" />
  <script type="text/brightscript" uri="pkg:/components/ContinuationScene.brs" />
  <script type="text/brightscript" uri="pkg:/components/LibraryScene.brs" />
@@ -210,5 +211,6 @@
   <Timer id="startup" duration="25" repeat="false" />
   <Timer id="seekTimer" duration="35" repeat="false" />
   <Timer id="heartbeat" duration="15" repeat="true" />
+  <Timer id="leaseTick" duration="1" repeat="true" />
  </children>
 </component>

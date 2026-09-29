@@ -44,7 +44,11 @@ sub findStreams(item as object, manual = true as boolean, preferredSource = inva
             body.only_addons = true
         end if
     end if
-    request("POST","/api/streams",body,"streamstart")
+    m.discoveryV2 = Txt(item.type) <> "live"
+    m.discoveryError = ""
+    path = "/api/streams"
+    if m.discoveryV2 then path = "/api/v2/streams"
+    request("POST",path,body,"streamstart")
     if not m.manualSources
         ' Resume is an explicit operation, never a timer attached to the picker.
         m.mode = "resuming"
@@ -59,7 +63,9 @@ end sub
 
 sub pollStreams()
     m.pollCount++
-    request("GET","/api/streams/" + Enc(m.job) + "?after=" + m.cursor.toStr(),invalid,"streampoll")
+    path = "/api/streams/"
+    if m.discoveryV2 = true then path = "/api/v2/streams/"
+    request("GET",path + Enc(m.job) + "?after=" + m.cursor.toStr(),invalid,"streampoll")
 end sub
 
 sub beginPlayback(force as boolean)
@@ -100,7 +106,9 @@ sub beginPlayback(force as boolean)
     if m.directRetryUsed = true then body.managed_only = true
     body.append(TrackRequestFields(m.playItem,m.trackPreferences))
     if Txt(m.playItem.audio_language) <> "" then body.audio_language = m.playItem.audio_language
-    request("POST","/api/playback",body,"playback")
+    path = "/api/playback"
+    if m.playItem.type <> "live" then path = "/api/v2/playback"
+    request("POST",path,body,"playback")
     if m.pendingPlayback then m.pendingRequestId = m.generation.toStr() + "-" + m.requestSequence.toStr()
 end sub
 
@@ -184,7 +192,7 @@ sub retryPlayback(reason as string)
     category = ""
     if m.video.state = "error" and GetInterface(m.video.errorInfo,"ifAssociativeArray") <> invalid then category = lcase(Txt(m.video.errorInfo.category))
     originFailure = category = "http" or category = "drm"
-    if m.playbackMode = "direct" and m.directRetryUsed <> true and not originFailure
+    if m.playbackMode = "direct" and m.playbackDeliveryKind <> "gateway" and m.directRetryUsed <> true and not originFailure
         saveProgress()
         stopPlayback(false)
         m.directRetryUsed = true
@@ -208,6 +216,10 @@ end sub
 
 sub heartbeat()
     if m.session = "" then return
+    if m.playbackDeliveryKind = "gateway"
+        saveProgress()
+        return
+    end if
     request("POST","/api/playback/" + Enc(m.session) + "/heartbeat",{},"sideheartbeat")
     saveProgress()
 end sub
@@ -221,8 +233,12 @@ sub saveProgress()
         m.homeDirty = true
         return
     end if
-    if m.video.position > 0 then m.position = m.timelineOffset + m.video.position
-    if m.playbackMode = "direct" and m.video.duration > 0
+    if m.pausedVOD = true and m.playbackDeliveryKind = "gateway" and m.managedPausePosition <> invalid
+        m.position = m.managedPausePosition
+    else if m.video.position > 0
+        m.position = m.timelineOffset + m.video.position
+    end if
+    if m.playbackMode = "direct" and m.playbackDeliveryKind <> "gateway" and m.video.duration > 0
         if m.duration <= 0 or m.video.duration > m.duration then m.duration = m.video.duration
     end if
     ' Duration 0 honestly means unknown, never the rolling HLS window length.

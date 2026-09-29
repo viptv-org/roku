@@ -1,4 +1,11 @@
 ' Pure, render-thread-safe helpers; no network, registry or device queries.
+function PlaybackSessionPath(connection as dynamic, identity as string) as string
+    if GetInterface(connection,"ifAssociativeArray") <> invalid
+        if Left(Txt(connection.path),16) = "/api/v2/playback" then return "/api/v2/playback/" + Enc(identity)
+    end if
+    return "/api/playback/" + Enc(identity)
+end function
+
 function TrackOwner(item as object) as string
     if Txt(item.type) = "live" then return "live:" + Txt(item.id)
     return "source:" + Txt(item.stream_id,Txt(item.id))

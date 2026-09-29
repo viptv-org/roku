@@ -3,7 +3,7 @@ sub stopPlayback(restore = true as boolean)
     saveProgress()
     ' Retire a still-pending next-episode transition before restoring the view.
     if m.nextPrepping = true or m.nextTransitionSession <> ""
-        if m.nextTransitionSession <> "" then request("DELETE","/api/playback/" + Enc(m.nextTransitionSession),invalid,"cleanup",m.nextTransitionConnection)
+        if m.nextTransitionSession <> "" then request("DELETE",PlaybackSessionPath(m.nextTransitionConnection,m.nextTransitionSession),invalid,"cleanup",m.nextTransitionConnection)
         m.nextTransitionSession = ""
         m.nextTransitionConnection = invalid
     end if
@@ -26,7 +26,7 @@ sub stopPlayback(restore = true as boolean)
         if Txt(m.pendingStartupId) <> "" then cancelBrowse()
         m.seeking = false
         m.seekPhase = ""
-        if Txt(m.seekNewSession) <> "" then request("DELETE","/api/playback/" + Enc(m.seekNewSession),invalid,"cleanup",m.seekNewConnection)
+        if Txt(m.seekNewSession) <> "" then request("DELETE",PlaybackSessionPath(m.seekNewConnection,m.seekNewSession),invalid,"cleanup",m.seekNewConnection)
         m.seekNewSession = ""
         m.seekNewContent = invalid
         m.seekData = invalid
@@ -43,7 +43,7 @@ sub stopPlayback(restore = true as boolean)
     m.heartbeat.control = "stop"
     m.video.control = "stop"
     m.video.visible = false
-    if m.session <> "" then request("DELETE","/api/playback/" + Enc(m.session),invalid,"cleanup",m.sessionConnection)
+    if m.session <> "" then request("DELETE",PlaybackSessionPath(m.sessionConnection,m.session),invalid,"cleanup",m.sessionConnection)
     m.session = ""
     if restore
         if m.captionRestore <> invalid
@@ -86,10 +86,18 @@ sub pauseVOD()
     ' Pause the current Video node in place. Never delete the server session,
     ' clear content, hide video, or replace the paused frame.
     if m.pausedVOD = true or m.video.state = "paused"
+        if m.playbackDeliveryKind = "gateway" and m.managedPausePosition <> invalid
+            seekToPosition(m.managedPausePosition,true,true)
+            return
+        end if
         m.directSeekPause = false
         m.video.control = "resume"
         m.pausedVOD = false
     else
+        if m.playbackDeliveryKind = "gateway"
+            saveProgress()
+            m.managedPausePosition = m.position
+        end if
         m.video.control = "pause"
         m.pausedVOD = true
     end if
@@ -107,13 +115,13 @@ sub seekRestart(delta as integer)
     seekToPosition(m.position + delta)
 end sub
 
-sub seekToPosition(target as double, managed = false as boolean)
+sub seekToPosition(target as double, managed = false as boolean, resumeAfterPause = false as boolean)
     if not m.playing or m.playItem.type = "live" or m.playbackLive = true or m.seeking = true then return
     target = ClampPlayerSeek(target,m.duration)
     if not managed and m.position <> invalid
         if abs(target - m.position) < 0.5 then return
     end if
-    if m.playbackMode = "direct" and not managed
+    if m.playbackMode = "direct" and m.playbackDeliveryKind <> "gateway" and not managed
         m.directSeekPause = m.pausedVOD = true or m.video.state = "paused"
         m.video.autoplayAfterSeek = not m.directSeekPause
         m.video.seek = target
@@ -132,9 +140,9 @@ sub seekToPosition(target as double, managed = false as boolean)
     m.seekOldConnection = m.sessionConnection
     m.seekOldContent = m.video.content
     m.seekOldPosition = m.position
-    if m.video.position > 0 then m.seekOldPosition = m.timelineOffset + m.video.position
+    if m.video.position > 0 and not (m.pausedVOD = true and m.playbackDeliveryKind = "gateway" and m.managedPausePosition <> invalid) then m.seekOldPosition = m.timelineOffset + m.video.position
     m.seekOldTimelineOffset = m.timelineOffset
-    m.seekWasPaused = (m.pausedVOD = true or m.video.state = "paused")
+    m.seekWasPaused = not resumeAfterPause and (m.pausedVOD = true or m.video.state = "paused")
     m.video.control = "pause"
     m.pausedVOD = true
     m.pendingPlayback = true
@@ -153,7 +161,9 @@ sub seekToPosition(target as double, managed = false as boolean)
     body.managed_only = true
     body.append(TrackRequestFields(m.playItem,m.trackPreferences))
     if Txt(m.playItem.audio_language) <> "" then body.audio_language = m.playItem.audio_language
-    request("POST","/api/playback",body,"seekplayback")
+    path = "/api/playback"
+    if m.playItem.type <> "live" then path = "/api/v2/playback"
+    request("POST",path,body,"seekplayback")
     m.pendingRequestId = m.generation.toStr() + "-" + m.requestSequence.toStr()
     if m.seekTimer <> invalid
         m.seekTimer.duration = 60
@@ -163,7 +173,7 @@ end sub
 
 sub prepareSeekReplacement(data as object, connection as object)
     if m.seeking <> true
-        if data.id <> invalid then request("DELETE","/api/playback/" + Enc(Txt(data.id)),invalid,"cleanup",connection)
+        if data.id <> invalid then request("DELETE",PlaybackSessionPath(connection,Txt(data.id)),invalid,"cleanup",connection)
         return
     end if
     url = ResolveUrl(connection.base,Txt(data.url))
@@ -172,6 +182,7 @@ sub prepareSeekReplacement(data as object, connection as object)
         return
     end if
     m.seekNewSession = Txt(data.id)
+    if Txt(data.delivery_kind) = "gateway" then registerRokuPlaybackLease(data,connection)
     m.seekNewConnection = connection
     m.seekData = data
     content = CreateObject("roSGNode","ContentNode")
@@ -232,7 +243,8 @@ sub finishSeekSuccess()
     m.session = m.seekNewSession
     m.sessionConnection = m.seekNewConnection
     m.timelineOffset = m.seekTarget
-    if Txt(data.mode) = "direct" then m.timelineOffset = 0
+    if Txt(data.mode) = "direct" and Txt(data.delivery_kind) <> "gateway" then m.timelineOffset = 0
+    m.playbackDeliveryKind = Txt(data.delivery_kind)
     m.position = m.seekTarget
     if data.duration <> invalid then m.duration = data.duration
     m.playbackMode = Txt(data.mode)
@@ -246,8 +258,10 @@ sub finishSeekSuccess()
     m.pendingPlayback = false
     if m.seekTimer <> invalid then m.seekTimer.control = "stop"
     m.pausedVOD = (m.seekWasPaused = true)
+    m.managedPausePosition = invalid
+    if m.pausedVOD and m.playbackDeliveryKind = "gateway" then m.managedPausePosition = m.seekTarget
     if m.pausedVOD then m.video.control = "pause"
-    if oldSession <> "" then request("DELETE","/api/playback/" + Enc(oldSession),invalid,"cleanup",oldConnection)
+    if oldSession <> "" then request("DELETE",PlaybackSessionPath(oldConnection,oldSession),invalid,"cleanup",oldConnection)
     m.seekNewSession = ""
     m.seekNewContent = invalid
     m.seekData = invalid
@@ -260,7 +274,7 @@ sub beginSeekRollback(message as string)
     if m.seeking <> true then return
     m.seekFailureMessage = message
     if m.seekTimer <> invalid then m.seekTimer.control = "stop"
-    if Txt(m.seekNewSession) <> "" then request("DELETE","/api/playback/" + Enc(m.seekNewSession),invalid,"cleanup",m.seekNewConnection)
+    if Txt(m.seekNewSession) <> "" then request("DELETE",PlaybackSessionPath(m.seekNewConnection,m.seekNewSession),invalid,"cleanup",m.seekNewConnection)
     m.seekNewSession = ""
     if m.seekPhase = "primary" and m.seekOldContent <> invalid
         m.seekPhase = "rollback"
@@ -286,6 +300,8 @@ sub finishSeekRollback(recovered as boolean)
     m.sessionConnection = m.seekOldConnection
     m.video.visible = true
     m.pausedVOD = (m.seekWasPaused = true)
+    m.managedPausePosition = invalid
+    if m.pausedVOD and m.playbackDeliveryKind = "gateway" then m.managedPausePosition = m.seekOldPosition
     if recovered
         if m.pausedVOD
             m.video.control = "pause"
@@ -298,7 +314,7 @@ sub finishSeekRollback(recovered as boolean)
         m.pausedVOD = false
         m.video.control = "stop"
         m.video.visible = false
-        if Txt(m.seekOldSession) <> "" then request("DELETE","/api/playback/" + Enc(m.seekOldSession),invalid,"cleanup",m.seekOldConnection)
+        if Txt(m.seekOldSession) <> "" then request("DELETE",PlaybackSessionPath(m.seekOldConnection,m.seekOldSession),invalid,"cleanup",m.seekOldConnection)
         m.session = ""
         m.heartbeat.control = "stop"
         if m.playerTick <> invalid then m.playerTick.control = "stop"

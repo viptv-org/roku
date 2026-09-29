@@ -24,7 +24,7 @@ sub handleResponse(event as object)
     end if
     if (tag = "playback" or tag = "seekplayback") and val(parts[1]) <> m.generation
         if result.ok and result.data <> invalid
-            request("DELETE", "/api/playback/" + Enc(Txt(result.data.id)), invalid, "cleanup", origin)
+            request("DELETE", PlaybackSessionPath(origin,Txt(result.data.id)), invalid, "cleanup", origin)
         end if
         return
     end if
@@ -33,6 +33,10 @@ sub handleResponse(event as object)
     ' Account responses validate account_epoch before changing any profile/UI state.
     if accountResponse(tag,result,origin) then return
     if origin.account_epoch <> m.accountEpoch then return
+    if tag = "sideheartbeat" and Left(Txt(origin.path),17) = "/api/v2/playback/"
+        rokuPlaybackHeartbeatResponse(result,origin)
+        return
+    end if
     if result.status = 403 and (result.auth_code = "profile_required" or result.auth_code = "profile_policy_changed")
         stopPlayback()
         accountClearRememberedProfile()
@@ -314,6 +318,7 @@ sub handleResponse(event as object)
     else if tag = "streampoll"
         for each entry in Bounded(data.events,100)
             if entry.seq > m.cursor then m.cursor = entry.seq
+            if Txt(entry.error) <> "" then m.discoveryError = Txt(entry.error)
             m.streams = AppendDistinctSources(m.streams,Bounded(entry.streams,1000),320)
         end for
         m.discoveryDone = data.done or m.pollCount >= 80
@@ -330,7 +335,7 @@ sub handleResponse(event as object)
         end if
         if not m.discoveryDone then m.poll.control = "start"
         if not m.manualSources then tryResumeSource()
-        if m.discoveryDone and m.streams.count() = 0 then sourceExhausted("No sources available.")
+        if m.discoveryDone and m.streams.count() = 0 then sourceExhausted(Txt(m.discoveryError,"No sources available."))
     else if tag = "playback"
         acceptPlayback(data,origin)
     end if

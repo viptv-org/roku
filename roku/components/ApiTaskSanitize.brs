@@ -216,10 +216,10 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
             meta.videos = ApiItems(data.meta.videos, 2000)
         end if
         output = { meta: meta }
-    else if route = "/api/streams" and method = "POST"
+    else if (route = "/api/streams" or route = "/api/v2/streams") and method = "POST"
         if output.id = "" then return failure
         output = { id: output.id }
-    else if Left(route, 13) = "/api/streams/" and method = "GET"
+    else if (Left(route, 13) = "/api/streams/" or Left(route,16) = "/api/v2/streams/") and method = "GET"
         if not ApiIsArray(data.events) or GetInterface(data.done, "ifBoolean") = invalid then return failure
         events = []
         for each entry in data.events
@@ -228,6 +228,10 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
                 if not ApiIsNumber(entry.seq) or not ApiIsArray(entry.streams) then return failure
                 if entry.seq < 0 or entry.seq > 2147483647 then return failure
                 cleaned = ApiItem(entry)
+                if Left(route,16) = "/api/v2/streams/" and Txt(entry.error_code) <> ""
+                    cleaned.error_code = left(Txt(entry.error_code),80)
+                    cleaned.error = ApiDisplayError(FormatJson({error_code:cleaned.error_code}),502)
+                end if
                 candidates = ApiItems(entry.streams, 1000)
                 for each candidate in candidates
                     if Txt(candidate.source) = "" then candidate.source = Txt(cleaned.source,"unknown")

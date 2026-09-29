@@ -33,6 +33,9 @@ sub init()
     m.seekTimer = m.top.findNode("seekTimer")
     m.seekTimer.observeField("fire","seekReplacementFailed")
     m.heartbeat.observeField("fire", "heartbeat")
+    m.playbackLeases = {}
+    m.leaseTick = m.top.findNode("leaseTick")
+    m.leaseTick.observeField("fire","rokuPlaybackLeaseTick")
     m.tasks = []
     m.queue = []
     m.pendingPlayback = false
@@ -77,6 +80,10 @@ end sub
 
 sub request(method as string, path as string, body as dynamic, tag as string, connection = invalid as dynamic)
     if connection = invalid then connection = m.config
+    if method = "DELETE" and Left(path,17) = "/api/v2/playback/" and m.playbackLeases <> invalid
+        identity = Mid(path,18)
+        m.playbackLeases.delete(identity)
+    end if
     if tag = "home:progress" or tag = "home:favorites" then tag += ":" + homeRevision(mid(tag,6)).toStr()
     if tag = "home:recent" then tag += ":" + homeRevision("progress").toStr()
     if tag = "home:livefavorites" then tag += ":" + homeRevision("favorites").toStr()
@@ -162,7 +169,7 @@ end sub
 sub cancelBrowse()
     m.resumeSourcePreference = invalid
     if Txt(m.pendingStartupId) <> ""
-        request("DELETE","/api/playback/startups/" + Enc(m.pendingStartupId),invalid,"cleanupstartup",m.pendingStartupConnection)
+        if Left(Txt(m.pendingStartupConnection.path),16) <> "/api/v2/playback" then request("DELETE","/api/playback/startups/" + Enc(m.pendingStartupId),invalid,"cleanupstartup",m.pendingStartupConnection)
         m.pendingStartupId = ""
         m.pendingPlayback = false
     end if

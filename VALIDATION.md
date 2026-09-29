@@ -1,3 +1,36 @@
+# BE-002 v2 VOD playback — 2026-09-29
+
+Native movie/exact-episode discovery, startup, renewal and release now use v2.
+Roku always requests authorized gateway delivery; no usable original URL is
+accepted. Startup/polling and independent ambiguous/cancelled cleanup are bounded;
+reconciliation preserves the exact idempotency body. Gateway copy/direct mode
+remains a managed timeline. Paused title time survives a sliding native window,
+and Resume replaces at that anchor instead of blindly resuming stale HLS.
+
+Logical leases cover active, paused, seek and Next transition admissions. Renewal
+refusal/expiry stops media; transient network retries retain the original deadline,
+and a late acknowledgement cannot recreate a released lease. V2 controls require
+the configured HTTPS backend and never follow media URLs. Native decoder limits
+remain measured and 2160p capability facts are not artificially capped.
+
+Passed locally: all 31 Python runtime harnesses, seven static/contract scripts,
+the new standalone v2 contract fixture, BrighterScript 0.73.1 compilation/staging,
+design integrity and migration inventory. New tests exercise production Task and
+Scene callbacks while mocking HTTP/device/SceneGraph boundaries, not real provider
+or physical playback. Partial discovery retains healthy sources and safe provider
+causes. The broader schema.brs simulator fixture could not run with this CLI's
+missing roRegistrySection/roFileSystem; it is not counted as passing evidence.
+
+Two compiled ZIP candidates: artifacts/be002-vod-final.Cdey8Q/viptv-roku.zip and
+viptv-roku-public.zip (SHA256SUMS beside them). They contain bslib, fonts and
+notices. No device installation, store submission or production change occurred.
+Live, real backend/gateway/Roku media integration, background return, native
+TLS/redirect qualification, 4K/tracks and full cutover remain open.
+
+Four pre-existing migration-inventory mismatches were traced to committed
+8e24931 font/artwork-gate/error changes. Their hashes/reasons are now recorded;
+those source bytes were not changed by this pass. Original extraction hashes stay.
+
 # ROK-044 visibility follow-up — 1.11.3 (2026-09-27)
 
 Design `ac5ae2bad129753135aed01cb85e5a2b343f33f9`. Following the episode-title
