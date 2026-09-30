@@ -79,12 +79,14 @@ sub Main()
   if i = 2048 or i = 2049 or i = 4096 or i = 4097
    for each field in ["next_cursor","previous_cursor"]
     bounded = {} : bounded.append(good) : bounded[field] = token
-    decoded = SanitizeApiResponse("/api/v2/iptv/live/channels","GET",bounded)
-    if i <= 4096
-     if not decoded.ok or decoded.data[field] <> token then throw "bounded cursor rejected or changed"
-    else
-     if decoded.ok then throw "oversized cursor accepted"
-    end if
+    for each route in ["/api/v2/iptv/live/channels","/api/v2/iptv/live/categories"]
+     decoded = SanitizeApiResponse(route,"GET",bounded)
+     if i <= 4096
+      if not decoded.ok or decoded.data[field] <> token then throw "bounded cursor rejected or changed"
+     else
+      if decoded.ok then throw "oversized cursor accepted"
+     end if
+    end for
    end for
   end if
  end for

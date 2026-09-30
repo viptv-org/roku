@@ -309,6 +309,7 @@ player-overlay BRS fixture. A compiled ZIP includes runtime helpers and fonts.
 The full schema harness cannot run under the available off-device interpreter
 because roRegistrySection/roFileSystem are unsupported; no full-schema or physical
 Roku acceptance is claimed. Real firmware must confirm the font rendering fix.
+
 # Live v2 wire bounds — 2026-09-30
 
 Baseline `d46fe668995e6fe2c924d65ba98c722027390cb3`. The shared live-page
