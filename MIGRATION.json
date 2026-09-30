@@ -79,8 +79,8 @@
       "source": "roku/components/ApiTaskSanitize.brs",
       "destination": "roku/components/ApiTaskSanitize.brs",
       "sha256": "8798de2daef05dcdad6aa8f8279026366c41d520f8e4c8fcf59c00ead907513b",
-      "reason": "New file split from ApiTask.brs: ApiOrigin and the pure response-sanitization functions moved byte-identical into the merged ApiTask component scope (script tag in ApiTask.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. BE-002 review: implicit category boundary paging and fail-closed raw page/source validation; original hash retained.",
-      "extracted_sha256": "c111eddf52f20f2557edc323d150e2aac665c332483afd553b6308ca40f41c54"
+      "reason": "New file split from ApiTask.brs: ApiOrigin and the pure response-sanitization functions moved byte-identical into the merged ApiTask component scope (script tag in ApiTask.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. BE-002 review: implicit category boundary paging and fail-closed raw page/source validation; original hash retained. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained.",
+      "extracted_sha256": "1b37a852ce9acedb7d6cd2fd5263040177fc3b154169318fe98b5ee5abd717c3"
     },
     {
       "source": "roku/components/AvatarTile.brs",
@@ -245,8 +245,8 @@
       "source": "roku/components/HomeScene.brs",
       "destination": "roku/components/HomeScene.brs",
       "sha256": "98eff40f139b55c320c4eb4901c04061833c7e6223cc1afe7eb93e91e4f0d166",
-      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
-      "extracted_sha256": "cba0d6db6476b1f2e23d4a4f63e6ed569d12ebdd9dfb14383e821c4553c67e9d"
+      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained.",
+      "extracted_sha256": "098dc051b25f809d775e77258b62b79d6c2c2d5a9509be51683a6a9649c5050f"
     },
     {
       "source": "roku/components/LibraryScene.brs",
@@ -292,8 +292,8 @@
       "source": "roku/components/NavigationScene.brs",
       "destination": "roku/components/NavigationScene.brs",
       "sha256": "11dd77e46308cf597fdd2b7dbcdcf8c99be17f640ad0ba48b153191d86bccc8c",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
-      "extracted_sha256": "e942e231115f13f145417b64454cea1ba05a681a721fb359802ce147ca70e848"
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained.",
+      "extracted_sha256": "1a45afdf6f4099075912ddca308d8066fede55db86f2ec7fc181dfb556643ece"
     },
     {
       "source": "roku/components/PlaybackScene.brs",
@@ -3960,8 +3960,8 @@
       "source": "roku/source/PresentationPolicy.brs",
       "destination": "roku/source/PresentationPolicy.brs",
       "sha256": "fd2f4800cf57b02088852fe0c4147487ba5bd9dbb9cb5ac82052e8b805b296d2",
-      "extracted_sha256": "2b000595261cdbaa4d854ee7aae68e5be3c40c3ca78b4f2a229f1161871d3e26",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership."
+      "extracted_sha256": "bc17af4c4e4ee4c1ffc26bff93fc80220fc914799a0d7ebe625ecdc5d584ea36",
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained."
     },
     {
       "source": "roku/source/SourceLabels.brs",
@@ -4040,7 +4040,9 @@
     {
       "source": "roku/tests/direct-policy.brs",
       "destination": "roku/tests/direct-policy.brs",
-      "sha256": "f642895c969643b7a2ad48421b7b4380fbc99fca13b159b9c275613c3172ef3b"
+      "sha256": "f642895c969643b7a2ad48421b7b4380fbc99fca13b159b9c275613c3172ef3b",
+      "extracted_sha256": "7557bc2e6e33b845d2b625d93aa39aca71f89e56f12dfcc414d3c323123cf007",
+      "reason": " BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained."
     },
     {
       "source": "roku/tests/direct_runtime.py",
@@ -4327,8 +4329,8 @@
       "source": "roku/tests/profile_preferences_runtime.py",
       "destination": "roku/tests/profile_preferences_runtime.py",
       "sha256": "de7a0ef4cc50e5e868b873ca708bdace8bccd6a2a0b714d406626471ee685786",
-      "extracted_sha256": "9bbcd3f977b21c7533dcaba7b1cf481be922c0f408b4ba4dd0ad4a1474375afc",
-      "reason": "Split follow-up: showPlaybackPreferences from HomeScene.brs, selectItem from NavigationScene.brs, ProfilePreferencesWire from ApiTaskSanitize.brs."
+      "extracted_sha256": "a75d855f7f8cfe6e8fd455e6f278651069bd20e941a7fcc2af3475c83dd22a1c",
+      "reason": "Split follow-up: showPlaybackPreferences from HomeScene.brs, selectItem from NavigationScene.brs, ProfilePreferencesWire from ApiTaskSanitize.brs. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained."
     },
     {
       "source": "roku/tests/request-propagation.brs",
@@ -4346,8 +4348,8 @@
       "source": "roku/tests/scenegraph_ux_contract.py",
       "destination": "roku/tests/scenegraph_ux_contract.py",
       "sha256": "ae8ab75f453ff30c0431316d869465669edb5d5810a00640c90c8b3e13e93f36",
-      "extracted_sha256": "893ff4381527a0cb00cd8cbddb61f2a9a5bc6c141a64ea831ad32da07a8bb4d9",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "c4508e1a1936539594561e13769c2cc962935c5372a18070db71c697e0b82c71",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained."
     },
     {
       "source": "roku/tests/schema.brs",

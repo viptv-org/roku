@@ -1,3 +1,28 @@
+# BE-002 retired quality preference — 2026-09-30
+
+Roku no longer requires or publishes the retired profile `quality` preference.
+Fresh backend responses without that field decode successfully; legacy responses
+may include it, but it is ignored. Source compatibility hints use actual decoder
+facts, not a historical profile cap. Resolution badges and source identities are
+unchanged. The Maximum quality row is removed from the existing preferences
+view; the remaining five rows retain their styling, options and navigation.
+Stale quality-choice/save events cannot send a retired mutation.
+
+All 32 runtime harnesses, six standalone static contracts, design/extraction
+integrity, BrighterScript 0.73.1 compile/staging and both runtime ZIP flavors
+passed. The focused preferences harness checks missing/legacy quality, five
+rows, active language save, caption style/manual overrides and stale event
+suppression. Actual source policy allows declared 2160p despite a legacy 480p
+preference while still rejecting 2160p on an actual 1080p capability envelope.
+These are interpreter/compile fixtures, not physical Roku or native renderer
+qualification. No device install or production change occurred.
+
+Local private/public ZIP SHA256 respectively:
+`388214a61ba9c421acab343ff3f7a6fa1a7c62b2a727c18447d5cca0aed930de` /
+`dc2fc86ac0a561fb52ed297cd00c19e6c1cc974bee5e1f0d6acff1780252dc46`.
+Original extraction checksums remain; seven current content hashes/reasons were
+mechanically updated for these owned source/test changes.
+
 # BE-002 ordinary raw live guide — 2026-09-29
 
 Design pin `4e153a7daca300389049e5fcfd5c3bc0af5edbee`, adopted through

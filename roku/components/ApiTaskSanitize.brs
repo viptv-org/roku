@@ -349,7 +349,7 @@ end function
 function ProfilePreferencesWire(data as dynamic) as object
     if not AccountIsObject(data) then return {ok:false,data:invalid}
     output = {}
-    for each key in ["audio_language","subtitle_language","subtitle_size","subtitle_style","quality"]
+    for each key in ["audio_language","subtitle_language","subtitle_size","subtitle_style"]
         value = Txt(data[key])
         if value = "" or len(value) > 16 then return {ok:false,data:invalid}
         output[key] = value

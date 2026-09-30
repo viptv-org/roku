@@ -29,7 +29,7 @@ for label in ("Profile", "Home", "Discover", "Live TV", "My List", "Search", "Se
     assert f'name:"{label}"' in scene
 for shelf in ("Continue Watching", "Trending Movies", "Popular Series", "Live Now", "My List"):
     assert shelf in scene
-for setting in ("Switch profile", "Maximum quality", "About VIPTV", "Addons", "Sign out"):
+for setting in ("Switch profile", "Subtitle appearance", "About VIPTV", "Addons", "Sign out"):
     assert setting in scene
 
 for misleading in ("subtitlesetting", "audiosetting", "subtitle_default", "audio_default", "PLAYBACK DEFAULTS"):

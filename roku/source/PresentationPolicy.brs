@@ -314,10 +314,6 @@ function SourceMatch(item as object, caps as dynamic, prefs as dynamic) as objec
     language = "en"
     if GetInterface(prefs,"ifAssociativeArray") <> invalid
         language = Txt(prefs.audio_language,"en")
-        quality = Txt(prefs.quality)
-        if quality = "720p" and height > 720 then height = 720
-        if quality = "1080p" and height > 1080 then height = 1080
-        if quality = "480p" and height > 480 then height = 480
     end if
     text = lcase(ReadableSourceText(Txt(item.name)+chr(10)+SourceCardText(item)))
     audioScore = SourceLanguageScore(item,language)

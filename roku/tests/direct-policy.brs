@@ -6,6 +6,8 @@ sub Main()
     ensure(not multi.best and multi.rank < english.rank,"MULTI scores above plain English but is not verified English")
     ensure(not SourceMatch({title:"Movie.1080p.x265.English"},caps,{}).likely,"unsupported HEVC is not a direct hint")
     ensure(not SourceMatch({title:"Movie.2160p.x264.English"},caps,{}).likely,"oversized sources are not output matches")
+    ultra = {max_width:3840,max_height:2160,hevc_sdr:true,direct_play:true}
+    ensure(SourceMatch({title:"Movie.2160p.x264.English"},ultra,{quality:"480p"}).likely,"retired preference must not cap actual decoder facts")
     ensure(not SourceMatch({title:"Movie.1080p.x264.HDR.English"},caps,{}).likely,"HDR remains conservative")
     ensure(SourceMatch({title:"Movie.1080p.x264.Spanish.Audio"},caps,{audio_language:"es"}).best,"profile language takes priority")
     ensure(not SourceMatch({title:"Movie.1080p.x264",description:"English subtitles"},caps,{}).best,"subtitles do not prove spoken language")

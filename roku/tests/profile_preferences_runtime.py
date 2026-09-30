@@ -7,15 +7,25 @@ def routine(file,start,end):
 source=routine('components/HomeScene.brs','sub showPlaybackPreferences','end sub')+'\n'+routine('components/NavigationScene.brs','sub selectItem(','end sub')+'\n'+routine('components/ApiTaskSanitize.brs','function ProfilePreferencesWire','end function')+'\n'+(root/'source/JellyfinCaptionPolicy.brs').read_text()+'\n'+(root/'source/Util.brs').read_text()+'''
 sub Main()
  m.profile="2":m.preferencesScope="2":m.config={base:"https://fixture.invalid"}
- prefs={audio_language:"en",subtitle_language:"en",subtitle_size:"large",subtitle_style:"opaque",quality:"720p",subtitles_enabled:true,autoplay:false}
+ prefs={audio_language:"en",subtitle_language:"en",subtitle_size:"large",subtitle_style:"opaque",subtitles_enabled:true,autoplay:false}
  clean=ProfilePreferencesWire(prefs)
- if clean.ok<>true or clean.data.quality<>"720p" then throw "settings lost at Task boundary"
+ if clean.ok<>true or clean.data.DoesExist("quality") then throw "active settings require a retired quality field"
+ prefs.quality="720p"
+ legacy=ProfilePreferencesWire(prefs)
+ if legacy.ok<>true or legacy.data.DoesExist("quality") then throw "legacy quality value remains active"
  showPlaybackPreferences(clean.data)
- if m.rendered.count()<>6 then throw "settings are not a bounded six-row view"
+ if m.rendered.count()<>5 then throw "settings are not a bounded five-row view"
+ if m.rendered[4].preferenceKey<>"subtitle_style" then throw "remaining final setting lost"
  selectItem(m.rendered[0])
  if m.options.count()<>11 then throw "audio language choices missing"
  selectItem(m.options[6])
  if m.savedPath<>"/api/profiles/2/preferences" or m.savedBody.audio_language<>"ja" then throw "native preference choice not saved to selected profile"
+ m.savedPath=invalid:m.options=invalid
+ selectItem({action:"preferencechoice",preferenceKey:"quality",name:"Retired",options:[]})
+ if m.options<>invalid then throw "retired quality choice reopened"
+ m.preferenceKey="quality"
+ selectItem({action:"preferencesave",value:"480p"})
+ if m.savedPath<>invalid then throw "retired quality mutation sent"
  video={}
  ApplyProfileCaptionStyle(video,clean.data)
  if video.captionStyle["Text/Size"]<>"Large" or video.captionStyle["Background/Opacity"]<>"100%" then throw "caption presentation not applied"

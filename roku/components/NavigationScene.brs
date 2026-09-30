@@ -43,6 +43,7 @@ sub selectItem(item as object)
             rows("Playback preferences",[{name:"Loading…",action:"waiting"}],"preferences","")
             request("GET","/api/profiles/"+Enc(m.profile)+"/preferences",invalid,"profilepreferences")
         else if action = "preferencechoice"
+            if Txt(item.preferenceKey) = "quality" then return
             m.preferenceKey = item.preferenceKey
             choices = []
             for each option in item.options
@@ -50,6 +51,7 @@ sub selectItem(item as object)
             end for
             uiOpenChoice("preferences",item.name,choices)
         else if action = "preferencesave"
+            if Txt(m.preferenceKey) = "quality" then return
             body = {}
             body[m.preferenceKey] = item.value
             request("PUT","/api/profiles/"+Enc(m.profile)+"/preferences",body,"profilepreferences")

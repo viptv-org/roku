@@ -419,8 +419,7 @@ sub showPlaybackPreferences(prefs as object)
         {name:"Preferred subtitles",key:"subtitle_language",options:languages},
         {name:"Start with subtitles",key:"subtitles_enabled",options:switches},
         {name:"Subtitle size",key:"subtitle_size",options:[{name:"Small",value:"small"},{name:"System default",value:"normal"},{name:"Large",value:"large"}]},
-        {name:"Subtitle appearance",key:"subtitle_style",options:[{name:"System default",value:"system"},{name:"Text with shadow",value:"shadow"},{name:"White text on black",value:"opaque"}]},
-        {name:"Maximum quality",key:"quality",options:[{name:"Auto",value:"auto"},{name:"1080p",value:"1080p"},{name:"720p",value:"720p"},{name:"480p",value:"480p"}]}
+        {name:"Subtitle appearance",key:"subtitle_style",options:[{name:"System default",value:"system"},{name:"Text with shadow",value:"shadow"},{name:"White text on black",value:"opaque"}]}
     ]
     values = []
     for each definition in definitions
