@@ -59,6 +59,35 @@ sub Main()
  if not page.ok or page.data.items[0].type <> "live" or page.data.next_cursor <> "next" then throw "raw page sanitization failed"
  if page.data.items[0].logo <> "http://logo.test/a.png" then throw "HTTP logo lost"
  good = {catalog_id:1,generation:2,items:[{id:"iptv:1:1",name:"Channel"}],next_cursor:invalid,previous_cursor:invalid}
+ ' Integer metadata retains exact native LongInteger identity, without Int32 conversion.
+ for each value in [ParseJson("2147483647"),ParseJson("2147483648"),9007199254740993&,9223372036854775807&]
+  large = {} : large.append(good) : large.catalog_id = value : large.generation = value
+  for each route in ["/api/v2/iptv/live/channels","/api/v2/iptv/live/categories"]
+   decoded = SanitizeApiResponse(route,"GET",large)
+   if not decoded.ok then throw "valid long metadata rejected"
+   if Txt(decoded.data.catalog_id) <> value.ToStr() or Txt(decoded.data.generation) <> value.ToStr() then throw "long metadata narrowed"
+  end for
+ end for
+ if not ApiLiveMetadataInteger(0&,false) or ApiLiveMetadataInteger(0&,true) then throw "zero metadata semantics lost"
+ for each value in [-1,-1&,0.5,1.0,1.0#,9007199254740992#,9007199254740993#,"2147483648",true,{}]
+  if ApiLiveMetadataInteger(value,true) or ApiLiveMetadataInteger(value,false) then throw "unsafe metadata accepted"
+ end for
+ ' Both directions preserve opaque tokens through the backend's public 4096 bound.
+ token = ""
+ for i = 1 to 4097
+  token += "A"
+  if i = 2048 or i = 2049 or i = 4096 or i = 4097
+   for each field in ["next_cursor","previous_cursor"]
+    bounded = {} : bounded.append(good) : bounded[field] = token
+    decoded = SanitizeApiResponse("/api/v2/iptv/live/channels","GET",bounded)
+    if i <= 4096
+     if not decoded.ok or decoded.data[field] <> token then throw "bounded cursor rejected or changed"
+    else
+     if decoded.ok then throw "oversized cursor accepted"
+    end if
+   end for
+  end if
+ end for
  for each field in ["catalog_id","generation","previous_cursor","next_cursor"]
   bad = {} : bad.append(good) : bad.delete(field)
   if SanitizeApiResponse("/api/v2/iptv/live/channels","GET",bad).ok then throw "missing metadata accepted"

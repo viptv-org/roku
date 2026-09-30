@@ -309,3 +309,42 @@ player-overlay BRS fixture. A compiled ZIP includes runtime helpers and fonts.
 The full schema harness cannot run under the available off-device interpreter
 because roRegistrySection/roFileSystem are unsupported; no full-schema or physical
 Roku acceptance is claimed. Real firmware must confirm the font rendering fix.
+# Live v2 wire bounds — 2026-09-30
+
+Baseline `d46fe668995e6fe2c924d65ba98c722027390cb3`. The shared live-page
+sanitizer now accepts opaque base64url next/previous cursors through 4096
+characters, matching the backend decoder. Live catalog/generation metadata uses
+a dedicated integer/LongInteger validator rather than the signed-32-bit generic
+matching helper. Exact native integer values are retained; Float/Double and string
+identity encodings fail closed. Generic `MatchInteger` and other numeric fields
+are unchanged. No client request/response schema or UI layout changed.
+
+`live_v2_runtime.py` covers both page routes and cursor directions at
+2048/2049/4096/4097, JSON metadata at 2147483647/2147483648, typed LongInteger
+9007199254740993 and 9223372036854775807, zero/sign semantics, malformed scalars,
+fractional/unsafe floating-point identities and preserved exact metadata strings.
+The >2^53 cases are typed native LongInteger fixtures, not a claim that arbitrary
+JavaScript JSON parsing preserves every i64 value. Actual device decoding remains
+unqualified. Baseline temporary probes rejected valid >32-bit metadata and a
+2049-character cursor; the expanded production runtime fixture passes now.
+
+Passed: all 32 runtime harnesses, six Python static contracts, design/inventory
+checks, BrighterScript 0.73.1 validation/staging and both locked/public runtime
+ZIP builds. Interpreter:
+`/home/vynxc/.npm/_npx/a9b2b3b0ed971b66/node_modules/.bin/brs`.
+Local packages: `/tmp/roku-wire-final-packages.pvpJ0E/`; no device install, CI dispatch,
+production operation or Android/backend source change was performed.
+Locked/public ZIP SHA-256 respectively:
+`4ee62f6c055a37ee2aec4375506098a0703b328ffc20766986c7fbac7e65e088` /
+`b20f82cd002ebff7429bf4881db7d91031cf05b8993d5113886360737b6893a7`.
+
+The audited backend encoder had a separate unbounded pivot issue: its live
+cursor included provider category ID verbatim. A 3000-character ASCII category
+ID plus a second row, requested with categories/default filters/limit1,
+reconstructs a 4276-character cursor which the 4096-character decoder refused
+with `invalid_cursor`. Raising the Roku cap cannot repair this. The backend owner
+is separately bounding emitted live/VOD tokens with safe
+`catalog_cursor_too_large` refusal, preserving raw IDs/data rather than truncating,
+filtering or changing import policy. That fix and its tests are not part of this
+Roku checkpoint. This is source-derived diagnostic evidence, not a production-
+provider observation.

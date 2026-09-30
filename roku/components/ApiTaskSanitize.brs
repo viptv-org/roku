@@ -21,6 +21,15 @@ function ApiIsNumber(value as dynamic) as boolean
     return GetInterface(value, "ifInt") <> invalid or GetInterface(value, "ifLongInt") <> invalid or GetInterface(value, "ifFloat") <> invalid or GetInterface(value, "ifDouble") <> invalid
 end function
 
+' Raw live snapshot identities are JSON integers, not floating-point quantities.
+' Preserve the exact native 64-bit value; never narrow it through Int()/Val().
+' Float/Double are outside this integer-identity wire contract and fail closed.
+function ApiLiveMetadataInteger(value as dynamic, positive as boolean) as boolean
+    if GetInterface(value,"ifInt") = invalid and GetInterface(value,"ifLongInt") = invalid then return false
+    if positive then return value > 0
+    return value >= 0
+end function
+
 ' Whitelist shallow primitives: never forward arbitrary nested addon payloads.
 ' Optional bad numeric fields are omitted; display strings always have safe types.
 function ApiItem(value as object) as object
@@ -207,14 +216,14 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
         for each field in ["next_cursor","previous_cursor"]
             if data[field] <> invalid and GetInterface(data[field],"ifString") = invalid then return failure
             if data[field] <> invalid
-                if not CreateObject("roRegex","^[A-Za-z0-9_-]{1,2048}$","").IsMatch(data[field]) then return failure
+                if not CreateObject("roRegex","^[A-Za-z0-9_-]{1,4096}$","").IsMatch(data[field]) then return failure
             end if
         end for
         if data.catalog_id <> invalid
-            if not MatchInteger(data.catalog_id,1,2147483647) then return failure
+            if not ApiLiveMetadataInteger(data.catalog_id,true) then return failure
         end if
         if data.generation <> invalid
-            if not MatchInteger(data.generation,0,2147483647) then return failure
+            if not ApiLiveMetadataInteger(data.generation,false) then return failure
         end if
         if (data.catalog_id = invalid) <> (data.generation = invalid) then return failure
         if data.catalog_id = invalid
