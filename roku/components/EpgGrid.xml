@@ -4,6 +4,8 @@
   <field id="active" type="boolean" value="true" onChange="epgRender" />
   <field id="data" type="assocarray" onChange="epgData" />
   <field id="categories" type="array" onChange="epgCategories" />
+  <field id="categoryPage" type="assocarray" onChange="epgCategoryState" />
+  <field id="categoryNeeded" type="assocarray" alwaysNotify="true" />
   <field id="guide" type="assocarray" alwaysNotify="true" onChange="epgGuide" />
   <field id="needed" type="array" alwaysNotify="true" />
   <field id="route" type="assocarray" alwaysNotify="true" />

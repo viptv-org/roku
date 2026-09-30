@@ -10,6 +10,9 @@ def routine(source, start, end):
 production = routine(grid, 'sub epgRoute(', 'end sub')
 production += '\n' + routine(grid, 'sub epgData(', 'end sub')
 production += '\n' + routine(grid, 'sub epgGuide(', 'end sub')
+production += '\n' + routine(grid, 'sub epgCategories(', 'end sub')
+production += '\n' + routine(grid, 'sub epgCategoryState(', 'end sub')
+production += '\n' + routine(grid, 'function onKeyEvent(', 'end function')
 production += '\n' + routine(playback, 'sub beginPlayback(', 'end sub')
 fixture = '''
 sub Main()
@@ -55,9 +58,53 @@ sub Main()
  page = SanitizeApiResponse("/api/v2/iptv/live/channels?limit=40","GET",{catalog_id:1,generation:2,items:[{id:"raw:1",name:"Channel",logo:"http://logo.test/a.png"}],next_cursor:"next",previous_cursor:invalid})
  if not page.ok or page.data.items[0].type <> "live" or page.data.next_cursor <> "next" then throw "raw page sanitization failed"
  if page.data.items[0].logo <> "http://logo.test/a.png" then throw "HTTP logo lost"
- source = SanitizeApiResponse("/api/v2/iptv/live/raw%3A1/source","POST",{source:{id:"opaque",url:"http://private.test/input",headers:{Authorization:"private"}}})
+ good = {catalog_id:1,generation:2,items:[{id:"iptv:1:1",name:"Channel"}],next_cursor:invalid,previous_cursor:invalid}
+ for each field in ["catalog_id","generation","previous_cursor","next_cursor"]
+  bad = {} : bad.append(good) : bad.delete(field)
+  if SanitizeApiResponse("/api/v2/iptv/live/channels","GET",bad).ok then throw "missing metadata accepted"
+ end for
+ for each token in ["", "https://private.test/token", "bad token", "bad"+chr(10), 123]
+  bad = {} : bad.append(good) : bad.next_cursor = token
+  if SanitizeApiResponse("/api/v2/iptv/live/channels","GET",bad).ok then throw "bad cursor accepted"
+ end for
+ bad = {} : bad.append(good) : bad.generation = "2"
+ if SanitizeApiResponse("/api/v2/iptv/live/channels","GET",bad).ok then throw "string generation accepted"
+ bad.generation = 0.5
+ if SanitizeApiResponse("/api/v2/iptv/live/channels","GET",bad).ok then throw "fractional generation accepted"
+ bad = {} : bad.append(good) : bad.items = [good.items[0],good.items[0]]
+ if SanitizeApiResponse("/api/v2/iptv/live/channels","GET",bad).ok then throw "duplicate channels accepted"
+ card = {id:"opaque",source:"iptv:1",source_addon_id:"iptv:1"}
+ source = SanitizeApiResponse("/api/v2/iptv/live/iptv%3A1%3A1/source","POST",{source:card})
  if not source.ok or source.data.source.id <> "opaque" then throw "source id lost"
  if source.data.source.url <> invalid or source.data.source.headers <> invalid then throw "source leaked URL authority"
+ for each field in ["url","headers","authorization","integration_key"]
+  badCard = {} : badCard.append(card) : badCard[field] = "private"
+  if SanitizeApiResponse("/api/v2/iptv/live/iptv%3A1%3A1/source","POST",{source:badCard}).ok then throw "source authority accepted"
+ end for
+ for each identity in ["", "http://private.test/source", "bad id",string(129,"x")]
+  badCard = {} : badCard.append(card) : badCard.id = identity
+  if SanitizeApiResponse("/api/v2/iptv/live/iptv%3A1%3A1/source","POST",{source:badCard}).ok then throw "invalid opaque identity accepted"
+ end for
+ badCard = {} : badCard.append(card) : badCard.source_addon_id = "iptv:2"
+ if SanitizeApiResponse("/api/v2/iptv/live/iptv%3A1%3A1/source","POST",{source:badCard}).ok then throw "provider substitution accepted"
+ if SanitizeApiResponse("/api/v2/iptv/live/iptv%3A2%3A1/source","POST",{source:card}).ok then throw "cross-provider source accepted"
+
+ m.top.visible = true : m.menuFocus = true : m.categoryBusy = false
+ m.top.categories = [{id:"__categories_next",name:"A provider's real category"},{id:"last",name:"Last"}]
+ m.top.categoryPage = {next_cursor:"nextpage",previous_cursor:"",last:false}
+ epgCategoryState() : epgCategories()
+ if m.filtersData.count() <> 6 then throw "new category controls introduced"
+ m.menu = 5 : onKeyEvent("right",true)
+ if m.top.categoryNeeded.cursor <> "nextpage" or not m.categoryBusy then throw "forward category boundary lost"
+ m.top.categories = [{id:"first",name:"First"},{id:"last2",name:"Last"}]
+ m.top.categoryPage = {next_cursor:"",previous_cursor:"priorpage",last:false}
+ epgCategoryState() : epgCategories()
+ if m.menu <> 4 or m.anchor <> 1900 then throw "forward category focus/time changed"
+ onKeyEvent("left",true)
+ if m.top.categoryNeeded.cursor <> "priorpage" or not m.top.categoryNeeded.last then throw "reverse category boundary lost"
+ m.top.categoryPage = {next_cursor:"nextpage",previous_cursor:"",last:true}
+ epgCategoryState() : epgCategories()
+ if m.menu <> 5 then throw "backward category focus lost"
  body = PlaybackBody({id:"raw:1",type:"live",stream_id:"opaque"},"profile",{},0,false)
  if body.stream_id <> "opaque" or body.channel_id <> invalid or body.position <> 0 then throw "live lease body not opaque"
  print "LIVE_V2_RUNTIME_OK"
@@ -68,6 +115,13 @@ sub epgRequestGuides()
 end sub
 sub epgReveal()
 end sub
+sub epgWatchChannel()
+end sub
+sub epgDetails()
+end sub
+function epgProgrammes(id)
+ return []
+end function
 sub uiBusy(busy)
 end sub
 sub request(method,path,body,tag)

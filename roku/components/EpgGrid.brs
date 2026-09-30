@@ -30,6 +30,9 @@ sub init()
 end sub
 
 sub open(scope as string)
+    m.categoryBusy = false
+    m.categoryNext = ""
+    m.categoryPrevious = ""
     if m.scope <> scope
         m.cache = {}
         m.order = []
@@ -68,19 +71,34 @@ sub epgVisibility()
 end sub
 
 sub epgCategories()
-    paging = false
-    if m.menu < m.filtersData.count() then paging = Left(Txt(m.filtersData[m.menu].id),13) = "__categories_"
+    paging = m.categoryBusy = true
     m.filtersData = [{id:"all",name:"All channels"},{id:"favorites",name:"My channels"},{id:"recent",name:"Recent"},{id:"search",name:"Search"}]
-    for each category in Bounded(m.top.categories,102)
+    for each category in Bounded(m.top.categories,100)
         if Txt(category.id) <> "" then m.filtersData.push({id:category.id,name:Txt(category.name)})
     end for
     if paging
-        m.menu = 0
+        m.menu = 4
+        if m.top.categoryPage.last = true then m.menu = m.filtersData.count()-1
+        if m.menu >= m.filtersData.count() then m.menu = 0
         m.menuFocus = true
     else if m.menu >= m.filtersData.count()
         m.menu = 0
     end if
+    m.categoryBusy = false
     epgRender()
+end sub
+
+sub epgCategoryState()
+    data = m.top.categoryPage
+    if data = invalid then return
+    m.categoryNext = Txt(data.next_cursor)
+    m.categoryPrevious = Txt(data.previous_cursor)
+    if Txt(data.error) <> ""
+        m.categoryBusy = false
+        m.message = data.error
+        m.empty.text = data.error
+        m.empty.visible = true
+    end if
 end sub
 
 sub epgData()
@@ -439,6 +457,17 @@ function onKeyEvent(key as string, press as boolean) as boolean
         m.window = (m.anchor \ 1800)*1800
         m.menuFocus = false
     else if m.menuFocus
+        if m.categoryBusy = true then return true
+        if key = "right" and m.menu = m.filtersData.count()-1 and Txt(m.categoryNext) <> ""
+            m.categoryBusy = true
+            m.top.categoryNeeded = {cursor:m.categoryNext,last:false}
+            return true
+        end if
+        if key = "left" and m.menu = 4 and Txt(m.categoryPrevious) <> ""
+            m.categoryBusy = true
+            m.top.categoryNeeded = {cursor:m.categoryPrevious,last:true}
+            return true
+        end if
         if key = "left" and m.menu > 0 then m.menu--
         if key = "right" and m.menu < m.filtersData.count()-1 then m.menu++
         if (key = "OK" or key = "down") and m.filtersData[m.menu].id = "search"

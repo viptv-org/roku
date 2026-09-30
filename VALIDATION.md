@@ -5,7 +5,8 @@ design-sync without manually changing imported assets. Ordinary guide, Home
 live shelves, live search, programme reads and channel playback use v2. Existing
 guide geometry, programme window, hold, details and Back behavior remain.
 The raw guide replaces 40-row pages with opaque next/previous tokens, including
-backward refetch after eviction. Categories replace bounded 100-item pages;
+backward refetch after eviction. Categories replace bounded 100-item pages on
+existing D-pad filter boundaries, without new entries or reserved category IDs;
 EPG retains at most 40 channels with at most 100 programmes each, fetching only
 visible rows plus bounded lookahead with three requests in flight. Route serials
 reject old page/guide responses; account/profile generation guards remain.
@@ -16,7 +17,9 @@ Watch resolves the exact channel into an opaque source ID, then uses the existin
 mandatory authorized gateway logical lease at position zero. Startup, renewal,
 release and track replacement use v2. Duplicate source admissions are suppressed;
 Back/filter cancellation clears source admission and ignores its late response.
-Source sanitization explicitly excludes URLs and headers. Gateway/source/cursor
+Source sanitization rejects URL/header authority and substituted provider identity.
+Page decoding rejects missing metadata, malformed tokens/scalars and duplicate IDs.
+Gateway/source/cursor
 failures use the existing error surfaces; partial EPG failure retains channels.
 
 Passed locally: all 32 Python runtime harnesses; seven static contracts; standalone
@@ -24,17 +27,20 @@ EPG transport fixture; design integrity and migration inventory; BrighterScript
 0.73.1 compilation/staging and both runtime ZIP flavors. The added runtime exercises
 production cursor routing, 100 page replacements, 100 EPG insertions/evictions,
 bounded rows/cache, backward focus and airtime, exact source routing, duplicate
-admission, HTTP logos, authority stripping and opaque lease payloads.
+admission, HTTP logos, authority rejection and opaque lease payloads. Negative
+fixtures cover malformed/missing cursor metadata, duplicate rows, substituted
+providers and source authority. Category boundary tests verify forward/reverse
+focus and preserve a provider category named like the former reserved ID.
 Interpreter: `VIPTV_BRS_CLI=/home/vynxc/.npm/_npx/a9b2b3b0ed971b66/node_modules/.bin/brs`
 (`@rokucommunity/brs` cached CLI). These use mocked HTTP/device/SceneGraph boundaries.
 Real backend/gateway/media integration, physical guide focus/hold, native TLS,
 background/foreground expiry and 4K/tracks remain unqualified. No production,
 provider subscription, device installation or Store submission occurred.
 
-Compiled artifacts: `artifacts/be002-live-v2-final/viptv-roku.zip`
-(`3ef3b0efe717c3fb52613ef7ce1e7f724a4909d87c529ea322b79d9eb9706ce6`)
+Compiled artifacts after review: `artifacts/be002-live-v2-boundary/viptv-roku.zip`
+(`35f960c95c8b8003352a48d417878f922d343f20026afb3ff681e6a6a76ba2c1`)
 and `viptv-roku-public.zip`
-(`cd39af5fa877d4bc913a189bf2e32cdeb3e2852911f04081c602ea189dfa8834`).
+(`d568443b34f0adf0e08e3dcd6e666f20aaff479ff3a6750149aed4551aa41570`).
 
 # BE-002 v2 VOD playback — 2026-09-29
 

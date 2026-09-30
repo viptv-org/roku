@@ -6,6 +6,7 @@ sub initEpg()
     m.epgGrid.observeField("watch","epgWatch")
     m.epgGrid.observeField("leave","epgLeave")
     m.epgGrid.observeField("searchRequested","epgSearch")
+    m.epgGrid.observeField("categoryNeeded","epgCategoryNeeded")
     m.epgPending = {}
     m.epgSerial = 0
 end sub
@@ -23,6 +24,8 @@ sub openEpg(resuming = false as boolean, collection = "" as string)
         m.epgGrid.callFunc("resume")
     else
         m.epgSnapshot = invalid
+        m.epgCategoryPaging = false
+        m.epgCategoryLast = false
         m.epgGrid.callFunc("open",m.accountEpoch.toStr()+":"+m.profile)
         if collection <> "" then m.epgGrid.callFunc("chooseFilter",collection)
         request("GET","/api/v2/iptv/live/categories?limit=100",invalid,"epg:categories")
@@ -48,13 +51,6 @@ sub epgRouteChanged()
         end for
     end if
     filter = Txt(route.filter.id)
-    if filter = "__categories_next" or filter = "__categories_previous"
-        m.epgCategoryPaging = true
-        cursor = m.epgCategoryNext
-        if filter = "__categories_previous" then cursor = m.epgCategoryPrevious
-        request("GET","/api/v2/iptv/live/categories?limit=100&cursor="+Enc(Txt(cursor)),invalid,"epg:categories")
-        return
-    end if
     m.epgPending = {}
     path = "/api/v2/iptv/live/channels?limit=40"
     if Txt(route.cursor) <> "" then path += "&cursor="+Enc(route.cursor)
@@ -96,12 +92,10 @@ sub epgResponse(tag as string, result as object)
         if result.ok
             m.epgCategoryNext = result.data.next_cursor
             m.epgCategoryPrevious = result.data.previous_cursor
-            categories = result.data.items
-            if Txt(m.epgCategoryPrevious) <> "" then categories.push({id:"__categories_previous",name:"Previous categories"})
-            if Txt(m.epgCategoryNext) <> "" then categories.push({id:"__categories_next",name:"More categories"})
-            m.epgGrid.categories = categories
+            m.epgGrid.categoryPage = {next_cursor:m.epgCategoryNext,previous_cursor:m.epgCategoryPrevious,last:m.epgCategoryLast = true}
+            m.epgGrid.categories = result.data.items
         else if m.epgCategoryPaging = true or Txt(result.error) = "The playlist changed. Return to Live TV to reload it."
-            m.epgGrid.data = {channels:[],offset:m.epgRoute.offset,next_cursor:"",previous_cursor:"",message:Txt(result.error,"Categories couldn't load. Press OK to retry.")}
+            m.epgGrid.categoryPage = {next_cursor:m.epgCategoryNext,previous_cursor:m.epgCategoryPrevious,error:Txt(result.error,"Categories couldn't load. Try again.")}
         end if
         m.epgCategoryPaging = false
     else if left(tag,13) = "epg:channels:"
@@ -131,6 +125,15 @@ sub epgResponse(tag as string, result as object)
         if result.ok then update.append(result.data)
         m.epgGrid.guide = update
     end if
+end sub
+
+sub epgCategoryNeeded()
+    if m.mode <> "epg" or m.epgCategoryPaging = true then return
+    needed = m.epgGrid.categoryNeeded
+    if needed = invalid or Txt(needed.cursor) = "" then return
+    m.epgCategoryPaging = true
+    m.epgCategoryLast = needed.last = true
+    request("GET","/api/v2/iptv/live/categories?limit=100&cursor="+Enc(needed.cursor),invalid,"epg:categories")
 end sub
 
 

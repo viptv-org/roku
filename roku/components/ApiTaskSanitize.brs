@@ -186,11 +186,29 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
         if ApiIsNumber(data.max_catalogs) then output.max_catalogs = data.max_catalogs
         if ApiIsNumber(data.max_results) then output.max_results = data.max_results
     else if route = "/api/v2/iptv/live/channels" or route = "/api/v2/iptv/live/categories"
+        for each field in ["catalog_id","generation","items","next_cursor","previous_cursor"]
+            if not data.DoesExist(field) then return failure
+        end for
         if not ApiIsArray(data.items) or data.items.count() > 200 then return failure
+        limitMatch = CreateObject("roRegex","[?&]limit=([0-9]+)","").Match(path)
+        if limitMatch.count() > 1
+            if data.items.count() > Val(limitMatch[1]) then return failure
+        end if
+        known = {}
+        for each item in data.items
+            if not AccountIsObject(item) then return failure
+            if GetInterface(item.id,"ifString") = invalid or GetInterface(item.name,"ifString") = invalid then return failure
+            if Len(item.id) < 1 or Len(item.id) > 256 or Len(item.name) > 512 then return failure
+            if CreateObject("roRegex","[\x00-\x1f\x7f]","").IsMatch(item.id) then return failure
+            if known.DoesExist(item.id) then return failure
+            known[item.id] = true
+        end for
         output = {items:ApiItems(data.items,200),next_cursor:Txt(data.next_cursor),previous_cursor:Txt(data.previous_cursor),catalog_id:data.catalog_id,generation:data.generation}
         for each field in ["next_cursor","previous_cursor"]
             if data[field] <> invalid and GetInterface(data[field],"ifString") = invalid then return failure
-            if len(output[field]) > 4096 then return failure
+            if data[field] <> invalid
+                if not CreateObject("roRegex","^[A-Za-z0-9_-]{1,2048}$","").IsMatch(data[field]) then return failure
+            end if
         end for
         if data.catalog_id <> invalid
             if not MatchInteger(data.catalog_id,1,2147483647) then return failure
@@ -198,13 +216,27 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
         if data.generation <> invalid
             if not MatchInteger(data.generation,0,2147483647) then return failure
         end if
+        if (data.catalog_id = invalid) <> (data.generation = invalid) then return failure
+        if data.catalog_id = invalid
+            if data.items.count() > 0 or data.next_cursor <> invalid or data.previous_cursor <> invalid then return failure
+        end if
         if route = "/api/v2/iptv/live/channels"
             for each item in output.items
                 item.type = "live"
             end for
         end if
     else if Left(route,18) = "/api/v2/iptv/live/" and Right(route,7) = "/source"
-        if not AccountIsObject(data.source) or Txt(data.source.id) = "" or len(Txt(data.source.id)) > 256 then return failure
+        if not AccountIsObject(data.source) then return failure
+        if GetInterface(data.source.id,"ifString") = invalid then return failure
+        if not CreateObject("roRegex","^[A-Za-z0-9_-]{1,128}$","").IsMatch(data.source.id) then return failure
+        provider = Txt(data.source.source)
+        if not CreateObject("roRegex","^iptv:[1-9][0-9]*$","").IsMatch(provider) then return failure
+        if provider <> Txt(data.source.source_addon_id) then return failure
+        prefix = Enc(provider)+"%3A"
+        if Left(Mid(route,19),Len(prefix)) <> prefix then return failure
+        for each field in ["url","headers","authorization","integration_key","gateway_key"]
+            if data.source.DoesExist(field) then return failure
+        end for
         output = {source:{id:Txt(data.source.id)}}
         for each field in ["source","source_addon_id","name","title","source_fingerprint"]
             output.source[field] = Left(Txt(data.source[field]),256)
