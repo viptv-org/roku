@@ -63,6 +63,10 @@ sub discoverFilterSelected()
 end sub
 
 sub browse(kind as string, offset as integer)
+    if kind = "live"
+        openEpg(false)
+        return
+    end if
     cancelBrowse()
     m.mediaType = kind
     m.offset = offset

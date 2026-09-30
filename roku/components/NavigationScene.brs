@@ -224,7 +224,7 @@ sub selectItem(item as object)
         cancelBrowse()
         if item.type = "live"
             resetAttempts()
-            m.playItem = item
+            m.playItem = CopyRouteData(item)
             m.position = 0
             beginPlayback(false)
         else

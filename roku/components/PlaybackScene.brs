@@ -1,4 +1,14 @@
 sub findStreams(item as object, manual = true as boolean, preferredSource = invalid as dynamic, automatic = false as boolean)
+    if Txt(item.type) = "live"
+        saveView()
+        cancelBrowse()
+        resetAttempts()
+        m.playItem = CopyRouteData(item)
+        m.playItem.stream_id = ""
+        m.position = 0
+        beginPlayback(false)
+        return
+    end if
     ' Home-shelf playback returns to the title's detail page on Back. A running
     ' next-episode transition keeps its already-chosen return target.
     if m.nextPrepping <> true
@@ -44,7 +54,7 @@ sub findStreams(item as object, manual = true as boolean, preferredSource = inva
             body.only_addons = true
         end if
     end if
-    m.discoveryV2 = Txt(item.type) <> "live"
+    m.discoveryV2 = true
     m.discoveryError = ""
     path = "/api/streams"
     if m.discoveryV2 then path = "/api/v2/streams"
@@ -69,6 +79,14 @@ sub pollStreams()
 end sub
 
 sub beginPlayback(force as boolean)
+    if m.playItem.type = "live" and Txt(m.playItem.stream_id) = ""
+        if m.pendingPlayback then return
+        m.pendingPlayback = true
+        m.liveSourcePending = true
+        uiBusy(true)
+        request("POST","/api/v2/iptv/live/" + Enc(Txt(m.playItem.id)) + "/source",{},"livesource")
+        return
+    end if
     if m.pendingPlayback
         m.status.text = "Playback is already preparing. Please wait."
         return
@@ -106,8 +124,7 @@ sub beginPlayback(force as boolean)
     if m.directRetryUsed = true then body.managed_only = true
     body.append(TrackRequestFields(m.playItem,m.trackPreferences))
     if Txt(m.playItem.audio_language) <> "" then body.audio_language = m.playItem.audio_language
-    path = "/api/playback"
-    if m.playItem.type <> "live" then path = "/api/v2/playback"
+    path = "/api/v2/playback"
     request("POST",path,body,"playback")
     if m.pendingPlayback then m.pendingRequestId = m.generation.toStr() + "-" + m.requestSequence.toStr()
 end sub

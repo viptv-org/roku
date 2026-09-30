@@ -29,7 +29,7 @@ function openFocusedLiveGuide() as boolean
     saveView()
     m.selected = item
     cancelBrowse()
-    request("GET","/api/guide/" + Enc(Txt(item.id)),invalid,"guide")
+    request("GET","/api/v2/iptv/guide/" + Enc(Txt(item.id)),invalid,"guide")
     m.status.text = "Loading guide…"
     return true
 end function
@@ -66,7 +66,7 @@ sub fetchFocusedLiveEpg()
     m.liveEpgBusy = "liveepg:" + m.liveEpgSequence.toStr()
     m.liveEpgOwner = pending
     m.liveEpgPending = invalid
-    request("GET","/api/guide/" + Enc(pending.id),invalid,m.liveEpgBusy)
+    request("GET","/api/v2/iptv/guide/" + Enc(pending.id),invalid,m.liveEpgBusy)
 end sub
 
 sub liveEpgResponse(tag as string, result as object, generation as integer)
@@ -121,10 +121,6 @@ function LiveNowNext(programs as dynamic, now as double) as string
 end function
 
 sub liveCategories(offset as integer)
-    cancelBrowse()
-    if offset < 0 then offset = 0
-    m.categoryOffset = offset
-    m.mediaType = "live"
-    rows("Categories",[{name:"Loading categories…",action:"waiting"}],"livecategories","")
-    request("GET","/api/live/categories?limit=80&offset=" + offset.toStr(),invalid,"livecategories")
+    openEpg(false)
+    return
 end sub

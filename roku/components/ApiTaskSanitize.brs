@@ -185,6 +185,30 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
         end if
         if ApiIsNumber(data.max_catalogs) then output.max_catalogs = data.max_catalogs
         if ApiIsNumber(data.max_results) then output.max_results = data.max_results
+    else if route = "/api/v2/iptv/live/channels" or route = "/api/v2/iptv/live/categories"
+        if not ApiIsArray(data.items) or data.items.count() > 200 then return failure
+        output = {items:ApiItems(data.items,200),next_cursor:Txt(data.next_cursor),previous_cursor:Txt(data.previous_cursor),catalog_id:data.catalog_id,generation:data.generation}
+        for each field in ["next_cursor","previous_cursor"]
+            if data[field] <> invalid and GetInterface(data[field],"ifString") = invalid then return failure
+            if len(output[field]) > 4096 then return failure
+        end for
+        if data.catalog_id <> invalid
+            if not MatchInteger(data.catalog_id,1,2147483647) then return failure
+        end if
+        if data.generation <> invalid
+            if not MatchInteger(data.generation,0,2147483647) then return failure
+        end if
+        if route = "/api/v2/iptv/live/channels"
+            for each item in output.items
+                item.type = "live"
+            end for
+        end if
+    else if Left(route,18) = "/api/v2/iptv/live/" and Right(route,7) = "/source"
+        if not AccountIsObject(data.source) or Txt(data.source.id) = "" or len(Txt(data.source.id)) > 256 then return failure
+        output = {source:{id:Txt(data.source.id)}}
+        for each field in ["source","source_addon_id","name","title","source_fingerprint"]
+            output.source[field] = Left(Txt(data.source[field]),256)
+        end for
     else if route = "/api/live/categories"
         if not ApiIsArray(data.categories) or not ApiIsNumber(data.total) then return failure
         if data.total < 0 then return failure
@@ -193,7 +217,7 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
         if not ApiIsArray(data.channels) or not ApiIsNumber(data.total) then return failure
         if data.total < 0 then return failure
         output = { channels: ApiItems(data.channels, 100), total: data.total }
-    else if Left(route, 11) = "/api/guide/"
+    else if Left(route, 11) = "/api/guide/" or Left(route,19) = "/api/v2/iptv/guide/"
         if not ApiIsArray(data.programs) then return failure
         programs = []
         for each program in data.programs

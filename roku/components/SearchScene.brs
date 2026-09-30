@@ -64,7 +64,7 @@ sub searchCatalogs(result as object)
         m.searchErrors++
     end if
     if m.searchScope <> "movie" and m.searchScope <> "series"
-    m.searchSections.push({name:"Live TV",kind:"live",items:[],done:false,path:"/api/live?view=us&offset=0&limit=80&search=" + Enc(m.search)})
+    m.searchSections.push({name:"Live TV",kind:"live",items:[],done:false,path:"/api/v2/iptv/live/channels?limit=80&search=" + Enc(m.search)})
     m.searchPending++
     end if
     searchRender()
@@ -82,7 +82,7 @@ sub searchBatch(key as string, result as object)
     m.searchInFlight--
     if result.ok
         incoming = result.data.metas
-        if section.kind = "live" then incoming = result.data.channels
+        if section.kind = "live" then incoming = result.data.items
         seen = {}
         for each item in Bounded(incoming,24)
             id = Txt(item.id)

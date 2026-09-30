@@ -79,8 +79,8 @@
       "source": "roku/components/ApiTaskSanitize.brs",
       "destination": "roku/components/ApiTaskSanitize.brs",
       "sha256": "8798de2daef05dcdad6aa8f8279026366c41d520f8e4c8fcf59c00ead907513b",
-      "reason": "New file split from ApiTask.brs: ApiOrigin and the pure response-sanitization functions moved byte-identical into the merged ApiTask component scope (script tag in ApiTask.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained.",
-      "extracted_sha256": "ca6376c7f072d62aa59e42d45b90953124dca935e3025193e8e8de05d2d73ae2"
+      "reason": "New file split from ApiTask.brs: ApiOrigin and the pure response-sanitization functions moved byte-identical into the merged ApiTask component scope (script tag in ApiTask.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
+      "extracted_sha256": "57d64a212d8794d98a4b45a0b1cd4f3a560bceda35efdcbda7c438345f825749"
     },
     {
       "source": "roku/components/AvatarTile.brs",
@@ -135,15 +135,15 @@
       "source": "roku/components/DiscoverScene.brs",
       "destination": "roku/components/DiscoverScene.brs",
       "sha256": "d389426f5f252714c53698bbb12bc148f40fbb9f20c2cc8ca9c3b91626e8140c",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434.",
-      "extracted_sha256": "f55410199bbedc7b12e3f1c00640583006fb22ad3516e1a6a1a41313b2cb3e81"
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
+      "extracted_sha256": "a56880d5495cbd3b3a7a3e6e5d9c7f0151f061ae70102663b79e06b66dcf06cb"
     },
     {
       "source": "roku/components/EpgGrid.brs",
       "destination": "roku/components/EpgGrid.brs",
       "sha256": "1a942f3bb3db967b9fe079d176bd20e3cabacb1b7c3c0e5f9ca6f88716895a42",
-      "extracted_sha256": "426e76afd65a2861e5e6ed774b03b3d89206898d7ef892bf22e14369ad8b7de8",
-      "reason": "ROK-043 guide audit: preserve true programme bounds when cells clip to the time window; readable detail panel."
+      "extracted_sha256": "dbf6826f2ba287a2e1282f772e7aa50be68dabc9f330223baa88e2bc47866c60",
+      "reason": "ROK-043 guide audit: preserve true programme bounds when cells clip to the time window; readable detail panel. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved."
     },
     {
       "source": "roku/components/EpgGrid.xml",
@@ -155,7 +155,9 @@
     {
       "source": "roku/components/EpgScene.brs",
       "destination": "roku/components/EpgScene.brs",
-      "sha256": "48d8740b0898fbc1e38ac7cac2919a83d2a6a14a2864ca8bef18168b37fd8382"
+      "sha256": "48d8740b0898fbc1e38ac7cac2919a83d2a6a14a2864ca8bef18168b37fd8382",
+      "extracted_sha256": "d0de97b8493023202596fea37cfed41c619a1413732f3e1374e43f81d1d03371",
+      "reason": " BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved."
     },
     {
       "source": "roku/components/EpisodeCard.brs",
@@ -236,15 +238,15 @@
       "source": "roku/components/HomeFeedScene.brs",
       "destination": "roku/components/HomeFeedScene.brs",
       "sha256": "d637da6fe6b503b790bee68ba35c939273d080e912071772f32029300d294c9a",
-      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset.",
-      "extracted_sha256": "61cbde28fc403302293c0864ba4648d35c44a936aa4a3c38ea991bd450774416"
+      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
+      "extracted_sha256": "ed56ad7d38d4fc9633502eae65b67ba2b099470cdb9e621f8b3a93ca2b0f8f8f"
     },
     {
       "source": "roku/components/HomeScene.brs",
       "destination": "roku/components/HomeScene.brs",
       "sha256": "98eff40f139b55c320c4eb4901c04061833c7e6223cc1afe7eb93e91e4f0d166",
-      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset.",
-      "extracted_sha256": "85e8f3a46f6757ef5fa0a2c945fc1e9e8b738236f2f7dff1e14065311d4a76f8"
+      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
+      "extracted_sha256": "cba0d6db6476b1f2e23d4a4f63e6ed569d12ebdd9dfb14383e821c4553c67e9d"
     },
     {
       "source": "roku/components/LibraryScene.brs",
@@ -255,14 +257,15 @@
       "source": "roku/components/LiveScene.brs",
       "destination": "roku/components/LiveScene.brs",
       "sha256": "8dac25bfd390c145138c1250168b26c5dd9435aa4b5f7f7c144da77676d1226e",
-      "reason": "New file split from MainScene.brs: live UX, focused-channel guide and now/next handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "New file split from MainScene.brs: live UX, focused-channel guide and now/next handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml). BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
+      "extracted_sha256": "cdd06a1e86e625977cfc66c4ce07a209eccf98847158da870cd710dadbf171ce"
     },
     {
       "source": "roku/components/MainScene.brs",
       "destination": "roku/components/MainScene.brs",
       "sha256": "86b18096942ced4d58c9408fe81598e2b7f648dde69c90ead66d376734d3b1b8",
-      "extracted_sha256": "ff9f868b39431c59818777334ec523a2fcb4f5e2959497ce8e3f9188a4215c2f",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained."
+      "extracted_sha256": "bc4ee221225eabbebd81a12ae985c65515c419fb399e17d046d2894396a45af0",
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved."
     },
     {
       "source": "roku/components/MainScene.xml",
@@ -289,15 +292,15 @@
       "source": "roku/components/NavigationScene.brs",
       "destination": "roku/components/NavigationScene.brs",
       "sha256": "11dd77e46308cf597fdd2b7dbcdcf8c99be17f640ad0ba48b153191d86bccc8c",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434.",
-      "extracted_sha256": "cc1d89f14799c8654f5bb2f398d8773e8d8f2e119fff34a6c931d674a1391694"
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
+      "extracted_sha256": "e942e231115f13f145417b64454cea1ba05a681a721fb359802ce147ca70e848"
     },
     {
       "source": "roku/components/PlaybackScene.brs",
       "destination": "roku/components/PlaybackScene.brs",
       "sha256": "2895f449c1c79ce16987253c68728b4e2baca7539ca6e10e47955947e7ee09b3",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained.",
-      "extracted_sha256": "2d3654a7ffe64d90da5d4e0717a5c4d04dd2086d74f5d0dd96c5a89a39f74997"
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
+      "extracted_sha256": "0b833264a9089e60c14db5d796d0b43530f3d354e07c32e4e33b46095790cf83"
     },
     {
       "source": "roku/components/PlayerOverlay.brs",
@@ -331,8 +334,8 @@
       "source": "roku/components/PresentationHomeScene.brs",
       "destination": "roku/components/PresentationHomeScene.brs",
       "sha256": "2bfb69990dfc3f24cd494e35c0c6ab440a5582dcf930e61bdd06019b17e67e76",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434.",
-      "extracted_sha256": "4e52b2ba73635ba762c8d8d4e30fc7c8c2ad07142e1f41bac559d3ad9f9ba863"
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
+      "extracted_sha256": "094c19e41e1c7d6d7d275795882cd6a2062825d1d28f6d413c82ed6fde3f4bea"
     },
     {
       "source": "roku/components/PresentationScene.brs",
@@ -373,8 +376,8 @@
       "source": "roku/components/ResponseScene.brs",
       "destination": "roku/components/ResponseScene.brs",
       "sha256": "582c565e78ae88fd170b1c873e7253fb1906865b62dc647d5987ecac9e77f9f5",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained.",
-      "extracted_sha256": "d85d099689bd8db24902912e0a455c67dcd27ebaaee54eac237a213d120b5b1a"
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
+      "extracted_sha256": "44911daf2d0940cd15549ca64b654df50a1110377de4a7def5b375a425f077e6"
     },
     {
       "source": "roku/components/SearchPanel.brs",
@@ -394,15 +397,15 @@
       "source": "roku/components/SearchScene.brs",
       "destination": "roku/components/SearchScene.brs",
       "sha256": "7dd943ac418c54be97d1d5f2ea611d4d1e73390b4a90dde21c6403a3f87c45d5",
-      "extracted_sha256": "57a148044cc483f6c9be0cba276f07cec65d09c39ce3fbd05dca40f9957d350b",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
+      "extracted_sha256": "e5a631501083d8860214c0e29860bcdb6abaa324d2f7316a5013e88184f8f2b2",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved."
     },
     {
       "source": "roku/components/SeekScene.brs",
       "destination": "roku/components/SeekScene.brs",
       "sha256": "f0598482ad4cead37a554455f68f67ae05297a80eb8714575ce88f8b93dcd752",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained.",
-      "extracted_sha256": "5962ec2b2ddd347622b68063b4ba4b96748dab24be1d21e21fc215b2eb45c5ee"
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
+      "extracted_sha256": "b093b6c9c4c3288c9064f5b0765771a3f87c938e3cb7abfd4d504ac153bbba98"
     },
     {
       "source": "roku/components/SessionScene.brs",
@@ -3970,8 +3973,8 @@
       "source": "roku/source/Util.brs",
       "destination": "roku/source/Util.brs",
       "sha256": "35e9bf7a05399ae8a14d783b159b65436c1f2906b0ee56333c800f93b6169f0d",
-      "extracted_sha256": "5862bc8d41f6ecf9edadeac86116a7b6313268c6536bdd25d05bc0e999deb566",
-      "reason": "Split: the m-free source-label cluster (SourceFullDetails, DistinctSourceLabels, SourceGroup, FairSources, SourceCardTitle, SourceAudioStatus, SourceReportedLanguages) moved byte-identical into source/SourceLabels.brs; SourceScore, CleanSourceLabel and SourceDisplayLabel stay because they cache compiled patterns in m. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained."
+      "extracted_sha256": "2ec3baef3c1d09f53d80c3431d089bfe7bf023f613f9abbb9cb46f369dc4f0fc",
+      "reason": "Split: the m-free source-label cluster (SourceFullDetails, DistinctSourceLabels, SourceGroup, FairSources, SourceCardTitle, SourceAudioStatus, SourceReportedLanguages) moved byte-identical into source/SourceLabels.brs; SourceScore, CleanSourceLabel and SourceDisplayLabel stay because they cache compiled patterns in m. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved."
     },
     {
       "source": "roku/source/main.brs",
@@ -4064,7 +4067,9 @@
     {
       "source": "roku/tests/epg_transport.brs",
       "destination": "roku/tests/epg_transport.brs",
-      "sha256": "24bbb11be42ee0b7732c6342d322254bb046fd9af7dce6ae6880328da2f0f28b"
+      "sha256": "24bbb11be42ee0b7732c6342d322254bb046fd9af7dce6ae6880328da2f0f28b",
+      "extracted_sha256": "0a325441167697e04a3594d15f621c029431c7bf47b36dc68b8c6326fa897e17",
+      "reason": " BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved."
     },
     {
       "source": "roku/tests/episode_image_runtime.py",

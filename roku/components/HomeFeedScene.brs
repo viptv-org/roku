@@ -20,16 +20,16 @@ sub homeResponse(kind as string, result as object)
         if kind = "favorites"
             if GetInterface(incoming,"ifAssociativeArray") <> invalid then incoming = incoming.items
             m.liveFavoriteItems = Bounded(incoming,40)
-            request("GET","/api/live?view=us&collection=favorites&limit=24",invalid,"home:livefavorites")
+            request("GET","/api/v2/iptv/live/channels?collection=favorites&limit=24",invalid,"home:livefavorites")
         end if
         if kind = "progress"
             if GetInterface(incoming,"ifAssociativeArray") <> invalid then incoming = incoming.items
             incoming = ContinueWatchingItems(incoming)
         end if
-        if kind = "recent" or kind = "livefavorites" then incoming = result.data.channels
+        if kind = "recent" or kind = "livefavorites" then incoming = result.data.items
         if kind = "favorites" then incoming = OnDemandItems(incoming)
         if kind = "movie" or kind = "series" then incoming = result.data.metas
-        if kind = "live" then incoming = result.data.channels
+        if kind = "live" then incoming = result.data.items
         values = []
         for each item in Bounded(incoming,12)
             if type(item) = "roAssociativeArray"

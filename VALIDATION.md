@@ -1,3 +1,41 @@
+# BE-002 ordinary raw live guide — 2026-09-29
+
+Design pin `4e153a7daca300389049e5fcfd5c3bc0af5edbee`, adopted through
+design-sync without manually changing imported assets. Ordinary guide, Home
+live shelves, live search, programme reads and channel playback use v2. Existing
+guide geometry, programme window, hold, details and Back behavior remain.
+The raw guide replaces 40-row pages with opaque next/previous tokens, including
+backward refetch after eviction. Categories replace bounded 100-item pages;
+EPG retains at most 40 channels with at most 100 programmes each, fetching only
+visible rows plus bounded lookahead with three requests in flight. Route serials
+reject old page/guide responses; account/profile generation guards remain.
+Provider ordering and HTTP logos survive the transport boundary; no full index,
+exact count, US classification or catalog swap control is introduced.
+
+Watch resolves the exact channel into an opaque source ID, then uses the existing
+mandatory authorized gateway logical lease at position zero. Startup, renewal,
+release and track replacement use v2. Duplicate source admissions are suppressed;
+Back/filter cancellation clears source admission and ignores its late response.
+Source sanitization explicitly excludes URLs and headers. Gateway/source/cursor
+failures use the existing error surfaces; partial EPG failure retains channels.
+
+Passed locally: all 32 Python runtime harnesses; seven static contracts; standalone
+EPG transport fixture; design integrity and migration inventory; BrighterScript
+0.73.1 compilation/staging and both runtime ZIP flavors. The added runtime exercises
+production cursor routing, 100 page replacements, 100 EPG insertions/evictions,
+bounded rows/cache, backward focus and airtime, exact source routing, duplicate
+admission, HTTP logos, authority stripping and opaque lease payloads.
+Interpreter: `VIPTV_BRS_CLI=/home/vynxc/.npm/_npx/a9b2b3b0ed971b66/node_modules/.bin/brs`
+(`@rokucommunity/brs` cached CLI). These use mocked HTTP/device/SceneGraph boundaries.
+Real backend/gateway/media integration, physical guide focus/hold, native TLS,
+background/foreground expiry and 4K/tracks remain unqualified. No production,
+provider subscription, device installation or Store submission occurred.
+
+Compiled artifacts: `artifacts/be002-live-v2-final/viptv-roku.zip`
+(`3ef3b0efe717c3fb52613ef7ce1e7f724a4909d87c529ea322b79d9eb9706ce6`)
+and `viptv-roku-public.zip`
+(`cd39af5fa877d4bc913a189bf2e32cdeb3e2852911f04081c602ea189dfa8834`).
+
 # BE-002 v2 VOD playback — 2026-09-29
 
 Native movie/exact-episode discovery, startup, renewal and release now use v2.

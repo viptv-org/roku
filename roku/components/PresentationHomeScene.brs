@@ -233,7 +233,7 @@ sub uiHomeActionSelected()
         saveView()
         m.selected = item
         cancelBrowse()
-        request("GET","/api/guide/" + Enc(Txt(item.id)),invalid,"guide")
+        request("GET","/api/v2/iptv/guide/" + Enc(Txt(item.id)),invalid,"guide")
         m.status.text = "Loading guide…"
     else
         details = {}

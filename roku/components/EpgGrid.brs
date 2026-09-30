@@ -15,11 +15,12 @@ sub init()
     m.cache = {}
     m.order = []
     m.labels = {}
-    m.filtersData = [{id:"all",name:"All US channels"},{id:"favorites",name:"My channels"},{id:"recent",name:"Recent"},{id:"search",name:"Search"}]
+    m.filtersData = [{id:"all",name:"All channels"},{id:"favorites",name:"My channels"},{id:"recent",name:"Recent"},{id:"search",name:"Search"}]
     m.menu = 0
     m.row = 0
     m.offset = 0
-    m.total = 0
+    m.nextCursor = ""
+    m.previousCursor = ""
     m.menuFocus = false
     m.message = "Loading channels…"
     m.guideBatch.observeField("fire","epgRender")
@@ -33,7 +34,7 @@ sub open(scope as string)
         m.cache = {}
         m.order = []
         m.labels = {}
-        m.filtersData = [{id:"all",name:"All US channels"},{id:"favorites",name:"My channels"},{id:"recent",name:"Recent"},{id:"search",name:"Search"}]
+        m.filtersData = [{id:"all",name:"All channels"},{id:"favorites",name:"My channels"},{id:"recent",name:"Recent"},{id:"search",name:"Search"}]
     end if
     m.top.query = ""
     m.scope = scope
@@ -41,7 +42,8 @@ sub open(scope as string)
     m.row = 0
     m.channels = []
     m.offset = 0
-    m.total = 0
+    m.nextCursor = ""
+    m.previousCursor = ""
     m.menuFocus = false
     m.message = "Loading channels…"
     m.followNow = true
@@ -66,11 +68,18 @@ sub epgVisibility()
 end sub
 
 sub epgCategories()
-    m.filtersData = [{id:"all",name:"All US channels"},{id:"favorites",name:"My channels"},{id:"recent",name:"Recent"},{id:"search",name:"Search"}]
-    for each category in Bounded(m.top.categories,100)
+    paging = false
+    if m.menu < m.filtersData.count() then paging = Left(Txt(m.filtersData[m.menu].id),13) = "__categories_"
+    m.filtersData = [{id:"all",name:"All channels"},{id:"favorites",name:"My channels"},{id:"recent",name:"Recent"},{id:"search",name:"Search"}]
+    for each category in Bounded(m.top.categories,102)
         if Txt(category.id) <> "" then m.filtersData.push({id:category.id,name:Txt(category.name)})
     end for
-    if m.menu >= m.filtersData.count() then m.menu = 0
+    if paging
+        m.menu = 0
+        m.menuFocus = true
+    else if m.menu >= m.filtersData.count()
+        m.menu = 0
+    end if
     epgRender()
 end sub
 
@@ -79,7 +88,8 @@ sub epgData()
     if data = invalid then return
     m.channels = Bounded(data.channels,40)
     m.offset = data.offset
-    m.total = data.total
+    m.nextCursor = Txt(data.next_cursor)
+    m.previousCursor = Txt(data.previous_cursor)
     m.row = 0
     if data.focusEnd = true then m.row = m.channels.count()-1
     if m.row < 0 then m.row = 0
@@ -372,10 +382,15 @@ sub epgHeader(channel as object, cell as object, now as integer)
 end sub
 
 sub epgRoute(offset as integer, last = false as boolean)
+    cursor = ""
+    if offset > m.offset then cursor = Txt(m.nextCursor)
+    if offset < m.offset then cursor = Txt(m.previousCursor)
+    if offset = m.offset and m.top.route <> invalid then cursor = Txt(m.top.route.cursor)
+    if offset = 0 and not last then cursor = ""
     m.message = "Loading channels…"
     m.channels = []
     m.details.visible = false
-    m.top.route = {filter:m.filtersData[m.menu],offset:offset,focusEnd:last,search:m.top.query}
+    m.top.route = {filter:m.filtersData[m.menu],offset:offset,cursor:cursor,focusEnd:last,search:m.top.query}
     epgRender()
 end sub
 
@@ -450,7 +465,7 @@ function onKeyEvent(key as string, press as boolean) as boolean
     else if key = "up"
         if m.row > 0
             m.row--
-        else if m.offset > 0
+        else if Txt(m.previousCursor) <> ""
             epgRoute(m.offset-40,true)
         else
             m.menuFocus = true
@@ -458,7 +473,7 @@ function onKeyEvent(key as string, press as boolean) as boolean
     else if key = "down"
         if m.row < m.channels.count()-1
             m.row++
-        else if m.offset+m.channels.count() < m.total
+        else if Txt(m.nextCursor) <> ""
             epgRoute(m.offset+40)
         end if
     else if key = "left" or key = "right"

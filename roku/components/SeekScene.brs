@@ -161,8 +161,7 @@ sub seekToPosition(target as double, managed = false as boolean, resumeAfterPaus
     body.managed_only = true
     body.append(TrackRequestFields(m.playItem,m.trackPreferences))
     if Txt(m.playItem.audio_language) <> "" then body.audio_language = m.playItem.audio_language
-    path = "/api/playback"
-    if m.playItem.type <> "live" then path = "/api/v2/playback"
+    path = "/api/v2/playback"
     request("POST",path,body,"seekplayback")
     m.pendingRequestId = m.generation.toStr() + "-" + m.requestSequence.toStr()
     if m.seekTimer <> invalid

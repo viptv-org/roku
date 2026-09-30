@@ -73,6 +73,17 @@ sub handleResponse(event as object)
         return
     end if
     if val(parts[1]) <> m.generation then return
+    if tag = "livesource"
+        m.pendingPlayback = false
+        m.liveSourcePending = false
+        if result.ok and result.data.source <> invalid
+            m.playItem.stream_id = result.data.source.id
+            beginPlayback(false)
+        else
+            sourceExhausted(Txt(result.error,"This channel is unavailable."))
+        end if
+        return
+    end if
     if left(tag,4) = "epg:"
         epgResponse(tag,result)
         return

@@ -120,6 +120,11 @@ sub request(method as string, path as string, body as dynamic, tag as string, co
         end for
     end if
     if m.queue.count() >= 24 and left(tag,4) <> "side" and tag <> "cleanup"
+        if tag = "livesource"
+            m.pendingPlayback = false
+            m.liveSourcePending = false
+            sourceExhausted("Network queue is busy. Wait a moment and try again.")
+        end if
         if tag = "playback" then m.pendingPlayback = false
         if tag = "favorited" then m.favoriteBusy = false
         m.status.text = "Network queue is busy. Wait a moment and try again."
@@ -167,6 +172,10 @@ sub startRequest(entry as object)
 end sub
 
 sub cancelBrowse()
+    if m.liveSourcePending = true
+        m.liveSourcePending = false
+        m.pendingPlayback = false
+    end if
     m.resumeSourcePreference = invalid
     if Txt(m.pendingStartupId) <> ""
         if Left(Txt(m.pendingStartupConnection.path),16) <> "/api/v2/playback" then request("DELETE","/api/playback/startups/" + Enc(m.pendingStartupId),invalid,"cleanupstartup",m.pendingStartupConnection)

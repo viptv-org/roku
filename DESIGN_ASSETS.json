@@ -1,5 +1,5 @@
 {
-  "revision": "80e133103c8039b8822db32006907c8b361b093c",
+  "revision": "4e153a7daca300389049e5fcfd5c3bc0af5edbee",
   "files": {
     "roku/fonts/README.md": "7102f4162f3d7e0d1e1b5429aa2ea9606e0ad23d3ec2a99b13af665d27b53a5b",
     "roku/fonts/bricolage-grotesque-LICENSE.txt": "923f4ddf0fd39f9b7794ab0df7332f3d95dc43e8ad7ec2289d6d9e8491177f51",
@@ -183,7 +183,7 @@
     "design-contract/ROKU_DESIGN.md": "919060d607d56604d573173ad0e75db00969be28686761e68ba0e9725c0b0554",
     "design-contract/DESIGN_SYNC.md": "a9c136ab42d220842d2f6d8cf77a797905fb07e2893653a94a7bb27704e6ee61",
     "design-contract/viptv-design-system/components.md": "84e214655b5a2f606bb0d770b04c5a2b2c87c988b53814e1cd3376381fff5331",
-    "design-contract/viptv-design-system/copy.md": "5bd9e34cd323759539a7be2d900485c3909444d5367253d01b98fa2b78c7ab58",
+    "design-contract/viptv-design-system/copy.md": "6231bc35838c170836fade9c54ba0592601cd6fe067f0acf7e587b0252ed2d87",
     "design-contract/viptv-design-system/decisions.md": "0bc26628c89206055d45ab8f2efde6fad469cd7a5be60291553c0006bbd870c7",
     "design-contract/viptv-design-system/tokens/tokens.json": "3c502ddf30eb838d0de2955a319716bf309f062c0ee420771b5d4a36688ffd10",
     "roku/source/ViptvTokens.brs": "e615be41646612f32d9cceccb00468133ad90634ce2efc403f2555870acd89ef"
