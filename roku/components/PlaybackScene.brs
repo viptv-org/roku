@@ -317,19 +317,6 @@ sub playerCommand(event as object)
     updatePlayer()
 end sub
 
-function nextPlayerDialogId() as string
-    if m.playerDialogSequence = invalid then m.playerDialogSequence = 0
-    m.playerDialogSequence++
-    return "player:" + m.playerDialogSequence.toStr()
-end function
-
-function playerDialogEventMatches(event as object) as boolean
-    if m.top.dialog = invalid then return false
-    node = event.getRoSGNode()
-    if node = invalid then return false
-    return left(Txt(node.id),7) = "player:" and Txt(node.id) = Txt(m.top.dialog.id)
-end function
-
 sub showPlayerTracks(kind as string, page = 0 as integer)
     m.trackKind = kind
     m.trackDialogSession = m.session
@@ -372,29 +359,6 @@ sub uiPlayerTrackChosen(index as integer)
     closePlayerTracks()
     if m.trackDialogOwner <> TrackOwner(m.playItem) or m.trackDialogSession <> m.session then return
     if choice.action = "back" then return
-    if choice.action <> "off"
-        if not MatchInteger(choice.input_index,0,65535) then return
-        if not PlayerTrackSelectable(choice) then return
-        if m.trackKind = "subtitles" and m.subtitlesSupported <> true then return
-    end if
-    choosePlayerTrack(choice)
-end sub
-
-sub playerTrackSelected(event as object)
-    if not playerDialogEventMatches(event) then return
-    index = event.getData()
-    if index < 0 or index >= m.trackChoices.count() then return
-    choice = m.trackChoices[index]
-    closePlayerTracks()
-    if m.trackDialogOwner <> TrackOwner(m.playItem) or m.trackDialogSession <> m.session then return
-    if choice.action = "back" then return
-    if choice.action = "next"
-        showPlayerTracks(m.trackKind,m.trackPage + 5)
-        return
-    else if choice.action = "previous"
-        showPlayerTracks(m.trackKind,m.trackPage - 5)
-        return
-    end if
     if choice.action <> "off"
         if not MatchInteger(choice.input_index,0,65535) then return
         if not PlayerTrackSelectable(choice) then return

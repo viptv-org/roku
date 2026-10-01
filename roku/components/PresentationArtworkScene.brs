@@ -49,30 +49,8 @@ sub uiHomeArtwork(id as string, mediaType as string, uri as string)
             end if
         end for
     end for
-    ' Warm the full-quality hero texture behind hidden posters so focus swaps
-    ' straight to the sharp image instead of a blurry upscale.
     ' The visible HeroPanel owns its sharp texture; shelf hydration must not
-    ' allocate four extra full-screen textures.
-end sub
-
-sub prefetchHeroBackdrop(backdrop as string)
-    if backdrop = "" then return
-    hiRes = ImageUrl(backdrop,1280,720,true)
-    if hiRes = "" then return
-    if m.heroPrefetchLast = invalid then m.heroPrefetchLast = ["","","",""]
-    for each pending in m.heroPrefetchLast
-        if pending = hiRes then return
-    end for
-    if m.heroPrefetchIndex = invalid then m.heroPrefetchIndex = 0
-    slot = m.heroPrefetchIndex mod 4
-    node = m.top.findNode("heroPf" + slot.toStr())
-    m.heroPrefetchLast[slot] = hiRes
-    m.heroPrefetchIndex++
-    if node <> invalid
-        node.loadWidth = 1280
-        node.loadHeight = 720
-        node.uri = hiRes
-    end if
+    ' allocate extra full-screen textures.
 end sub
 
 ' Measure natural wrapped text rather than reserving four lines for every synopsis.

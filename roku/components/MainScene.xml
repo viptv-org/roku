@@ -99,12 +99,6 @@
   <Label id="description" translation="[778,402]" width="424" height="208" numLines="7" wrap="true" color="#DAD8D3" visible="false">
    <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
   </Label>
-  <Group id="heroPrefetch" translation="[-4000,-4000]">
-   <Poster id="heroPf0" width="8" height="8" loadDisplayMode="scaleToZoom" visible="false" />
-   <Poster id="heroPf1" width="8" height="8" loadDisplayMode="scaleToZoom" visible="false" />
-   <Poster id="heroPf2" width="8" height="8" loadDisplayMode="scaleToZoom" visible="false" />
-   <Poster id="heroPf3" width="8" height="8" loadDisplayMode="scaleToZoom" visible="false" />
-  </Group>
   <Group id="pairPanel" visible="false">
    <Label id="pairInstruction" translation="[96,260]" width="640" height="84" wrap="true" numLines="2" text="Scan the QR code with your phone." color="#B6B4AF">
     <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="19" />

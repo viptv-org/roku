@@ -271,8 +271,8 @@
       "source": "roku/components/MainScene.xml",
       "destination": "roku/components/MainScene.xml",
       "sha256": "683ee2541fb021de8402c8fc590ed211abc043d423c6f7cbc3a4b5b75626063c",
-      "extracted_sha256": "6194decc4af4f9761dbbf9ecc01428098df2ab7da43e277a088fc58ea4451756",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained."
+      "extracted_sha256": "693a066cbdd5353fbc735983ece3db6402954c06e4108b6ee537faa733001fba",
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. Removed unreferenced nextPlayerDialogId, playerDialogEventMatches, playerTrackSelected and prefetchHeroBackdrop, plus the heroPrefetch posters only the latter used."
     },
     {
       "source": "roku/components/NavIcon.brs",
@@ -299,8 +299,8 @@
       "source": "roku/components/PlaybackScene.brs",
       "destination": "roku/components/PlaybackScene.brs",
       "sha256": "2895f449c1c79ce16987253c68728b4e2baca7539ca6e10e47955947e7ee09b3",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
-      "extracted_sha256": "0b833264a9089e60c14db5d796d0b43530f3d354e07c32e4e33b46095790cf83"
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. Removed unreferenced nextPlayerDialogId, playerDialogEventMatches, playerTrackSelected and prefetchHeroBackdrop, plus the heroPrefetch posters only the latter used.",
+      "extracted_sha256": "c5cb45498172e0a936abac0df7052e42350ef81e65db678938ce78b7370a9661"
     },
     {
       "source": "roku/components/PlayerOverlay.brs",
@@ -320,8 +320,8 @@
       "source": "roku/components/PresentationArtworkScene.brs",
       "destination": "roku/components/PresentationArtworkScene.brs",
       "sha256": "f4d9ae9fe9239a1e967f152906115bdf69810611933fe0cf64b4e7b6448f671e",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership.",
-      "extracted_sha256": "cf527c644d474e4e5e4a9f24b4a068b6ca3876e19d8b8247fe7d8f16f1b33b21"
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. Removed unreferenced nextPlayerDialogId, playerDialogEventMatches, playerTrackSelected and prefetchHeroBackdrop, plus the heroPrefetch posters only the latter used.",
+      "extracted_sha256": "13d16aa9effd45c2051ec2b1bc146dbf660fb881ea64680d73c106d62a24c036"
     },
     {
       "source": "roku/components/PresentationDetailsScene.brs",
