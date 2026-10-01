@@ -51,7 +51,7 @@ The overlay remains visible with `Seeking…` and the absolute target. One OK co
 
 - `tests/player-overlay.brs`: scrub preview, acceleration, clamping, single commit, visible seeking status, options and pause controls.
 - `tests/lifecycle.brs`: native pause identity; old-frame retention; failed replacement rollback; successful atomic swap and old-session cleanup; direct seek; explicit track preservation.
-- `tests/fallback.brs`: only exact stable resume source may auto-start; stale/missing preferences remain manual.
+- `tests/fallback.brs`: only the exact stable (addon + fingerprint) resume source may auto-start through v2 playback; `tests/explicit_resume_runtime.py` covers stale preferences reopening the explicit picker.
 - `tests/schema.brs`: language-policy responses are not classified into client consent flows.
 - `tests/playback_static.py`: production source has no automatic fallback/language-consent routines and contains both replacement Video/timer nodes and swap ordering.
 

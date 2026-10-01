@@ -44,12 +44,12 @@ The account integration is complete:
 
 ## Tests
 
-Focused test inputs:
+Focused tests (run one with `python3 scripts/run-tests.py --group brs -k <name>`; the runner lists each test's production script inputs):
 
-- `account-policy.brs`, `locked-config.brs`, `schema.brs`: `Util.brs`, `AccountPolicy.brs`, `ApiTask.brs`, then the test.
-- `account-flow.brs`: `Util.brs`, `AccountPolicy.brs`, `AccountScene.brs`, then the test.
-- `request-propagation.brs`: run `Util.brs`, `AccountPolicy.brs`, `AccountScene.brs`, `MainScene.brs`, and the test; it executes the real queue builder, blank-bearer refresh request, and queued credential rotation.
-- `transport.brs`: run the trusted loopback `mock_api.py`, then `Util.brs`, `AccountPolicy.brs`, `ApiTask.brs`, and the test; it proves `ApiTask` consumes that canonical field as the bearer credential.
+- `account-policy.brs`, `locked-config.brs`, `schema.brs`: the `ApiTask` scripts, then the test.
+- `pairing-preload.brs`: `Util.brs`, `AccountPolicy.brs`, `AccountScene.brs`, then the test.
+- `request-propagation.brs`: the `MainScene` scripts and the test; it executes the real queue builder, blank-bearer refresh request, and queued credential rotation.
+- `transport.brs`: the runner starts the trusted loopback `mock_api.py`, then runs the `ApiTask` scripts and the test; it proves `ApiTask` consumes that canonical field as the bearer credential.
 - `branding_contract.py`: verifies declared Roku artwork and that `ProfileCard` has no packaged avatar dependency.
 
 These tests establish closed serialization, MainScene-to-ApiTask access-field propagation, origin-only migration, QR/profile state behavior, and remote-avatar fallback. They do not establish backend account isolation, a real browser confirmation, DiceBear uptime, or physical Roku behavior; those require end-to-end and device validation before release.

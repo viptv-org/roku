@@ -1,3 +1,29 @@
+# Test runner, stale BrightScript tests and dead code — 2026-09-30
+
+`python3 scripts/run-tests.py` now runs the seven static contracts, all 33
+runtime harnesses and 27 BrightScript unit tests; each `.brs` test passes only
+on a clean interpreter exit plus its marker. The interpreter resolves from
+`VIPTV_BRS_CLI`, `brs-cli` on `PATH`, or `npx brs-node@2.5.3` (no machine-specific
+fallback). Twelve `.brs` tests had been failing since extraction or the v2
+migration: their fixtures lacked production init state, or they asserted v1
+playback/live/search, retired capability caps or the pre-redesign SourceCard
+and guide menu. They now assert the v2 contract. `home.brs` (pre-redesign Home,
+never green after extraction) is retired. EpgGrid navigation runs in a
+disposable SceneGraph app.
+
+One real defect: next-transition cleanup could pass an invalid session identity
+to the typed `PlaybackSessionPath` (a device type-mismatch crash); it is now
+normalized with `Txt()`. Unreferenced player-dialog and hero-prefetch code and
+its off-screen posters were removed.
+
+Passed locally: 67/67 runner checks (brs-node 2.5.3 via npx), design integrity,
+migration inventory, BrighterScript 0.73.1 compile/staging and both runtime ZIP
+flavors (`artifacts/roku4-audit/`): private
+`6db099f4672ae46aa6656d854dfe761fe0cacfc0449f0e9cd3262036d21ffc5e`, public
+`64fa3afd6e6b98ed13115062f8ce279259ebb39d980f5236799c13528bdb0909`. Interpreter
+and compile fixtures only; no device install, store submission or production
+change occurred.
+
 # BE-002 retired quality preference — 2026-09-30
 
 Roku no longer requires or publishes the retired profile `quality` preference.

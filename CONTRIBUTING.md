@@ -6,7 +6,7 @@ Thanks for your interest. VIPTV is a multi-repository product; this repository o
 
 1. Read the pinned `DESIGN_REF` commit and [SPEC.md](SPEC.md) before changing behavior. This client preserves Roku action meaning, the 700ms hold, focus restoration and the Jellyfin attribution notices.
 2. Search this repository's GitHub Issues before opening a new one; use the needs-triage, needs-info, ready-for-agent, ready-for-human and wontfix labels.
-3. Validate the affected interface using the repository CI commands (BrighterScript compile and the migration checks); report actual results separately from device-level checks that were not run on real hardware.
+3. Validate the affected interface with the local checks in [README.md](README.md#local-checks) (`python3 scripts/run-tests.py`, the BrighterScript compile, design-sync and migration checks); report actual results separately from device-level checks that were not run on real hardware. Pull requests have no CI gate; the build workflow runs only on `main` pushes and manual dispatch.
 4. The installable ZIP is a runtime package only; keep this source repository available when distributing it (see [README.md](README.md)).
 5. Never commit credentials, device values or screenshots; Roku device values belong in the private root `.env` of the workspace.
 

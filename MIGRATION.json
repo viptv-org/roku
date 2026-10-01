@@ -5,21 +5,23 @@
     {
       "source": "roku/ACCOUNT-UX.md",
       "destination": "roku/ACCOUNT-UX.md",
-      "sha256": "1a6d5ac458fd02c8f3e61767aea484c7a3c91bfd187c21e727c8ff281ca0a753"
+      "sha256": "1a6d5ac458fd02c8f3e61767aea484c7a3c91bfd187c21e727c8ff281ca0a753",
+      "extracted_sha256": "2d99661a2ce27aa62f4906ef32293984751b38fd0c5fec5886ea9b6e143a91c8",
+      "reason": "Local checks documented through scripts/run-tests.py; retired Settings quality row and DSH-only commands removed."
     },
     {
       "source": "roku/PLAYBACK.md",
       "destination": "roku/PLAYBACK.md",
       "sha256": "ba9ec93b77d0e3bd6440e1a2d45a7de90cad51646a1d861e94602086d521d6e5",
-      "extracted_sha256": "10017d1e11b98a37597d86925c19931833a8c2dd9e58cee295d62b7d091c8065",
-      "reason": " BE-002 v2 playback contract and validation record; original extraction hash retained."
+      "extracted_sha256": "86a48ff242a455f6b3574ddc7a19e1977d4cd70f89b6a655927480a0b2981163",
+      "reason": "BE-002 v2 playback contract and validation record; original extraction hash retained. Local checks documented through scripts/run-tests.py; retired Settings quality row and DSH-only commands removed."
     },
     {
       "source": "roku/README.md",
       "destination": "roku/README.md",
       "sha256": "d910b07caec23d4dfbe5b62162da43c21a0b1c2123205bf5cba91c634b84de17",
-      "extracted_sha256": "1bb303fe3a7b6a20d17caa81c23889d8176ae4d846a7d755fd4151b603ba9b7d",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "f4dcaaa50715fedee0635c48bb228d6375b719aae8c909afd3d8fb2f9cef90ec",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. Local checks documented through scripts/run-tests.py; retired Settings quality row and DSH-only commands removed."
     },
     {
       "source": "roku/bsconfig.json",
