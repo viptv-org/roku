@@ -1,4 +1,5 @@
 """Actual startup handlers: Home never waits for metadata/artwork or reopens a cover."""
+from brs_cli import brs_command
 from pathlib import Path
 import os, subprocess, tempfile
 root=Path(__file__).resolve().parents[1]
@@ -38,6 +39,6 @@ end sub
 '''
 with tempfile.TemporaryDirectory() as folder:
  p=Path(folder)/'startup.brs';p.write_text(production+'\n'+fixture)
- r=subprocess.run([os.environ.get('VIPTV_BRS_CLI','brs'),str(p),str(root/'source/Util.brs')],capture_output=True,text=True,timeout=30)
+ r=subprocess.run([*brs_command(),str(p),str(root/'source/Util.brs')],capture_output=True,text=True,timeout=30)
  print(r.stdout);print(r.stderr)
  if r.returncode or 'STARTUP_READY_OK' not in r.stdout:raise SystemExit(1)

@@ -1,4 +1,5 @@
 """Bounded episode pages and explicit watched/progress correction at native handlers."""
+from brs_cli import brs_command
 from pathlib import Path
 import os,subprocess,tempfile
 root=Path(__file__).resolve().parents[1]
@@ -59,6 +60,6 @@ end function
 '''
 with tempfile.TemporaryDirectory() as temp:
  path=Path(temp)/'episodes.brs';path.write_text('\n'.join(routine(n) for n in ['showEpisodes','applyEpisodeProgress'])+ '\n'+response_handler+'\n'+fixture)
- p=subprocess.run([os.environ.get('VIPTV_BRS_CLI','/home/node/air-roku/node_modules/.bin/brs-cli'),str(path),str(root/'source/Util.brs'),str(root/'source/PresentationPolicy.brs')],capture_output=True,text=True,timeout=40)
+ p=subprocess.run([*brs_command(),str(path),str(root/'source/Util.brs'),str(root/'source/PresentationPolicy.brs')],capture_output=True,text=True,timeout=40)
  print(p.stdout,p.stderr)
  if p.returncode or 'EPISODE_LIBRARY_OK' not in p.stdout:raise SystemExit(1)

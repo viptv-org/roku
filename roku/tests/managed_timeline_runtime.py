@@ -1,4 +1,5 @@
 """Managed pause uses title coordinates, never the moving native HLS window."""
+from brs_cli import brs_command
 from pathlib import Path
 import os
 import subprocess
@@ -42,7 +43,7 @@ end sub
 with tempfile.TemporaryDirectory(prefix='viptv-roku-timeline-') as directory:
     runner = Path(directory)/'runner.brs'
     runner.write_text(source+'\n'+fixture)
-    result = subprocess.run([os.environ.get('VIPTV_BRS_CLI','brs'),str(runner),str(root/'source/Util.brs'),str(root/'source/SourceLabels.brs')],capture_output=True,text=True,timeout=30,cwd=directory)
+    result = subprocess.run([*brs_command(),str(runner),str(root/'source/Util.brs'),str(root/'source/SourceLabels.brs')],capture_output=True,text=True,timeout=30,cwd=directory)
     print(result.stdout)
     print(result.stderr)
     assert result.returncode == 0 and 'MANAGED_TIMELINE_RUNTIME_OK' in result.stdout

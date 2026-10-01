@@ -1,4 +1,5 @@
 """Actual scheduling, seek preparation, no-op and cancellation behavior."""
+from brs_cli import brs_command
 from pathlib import Path
 import os, subprocess, tempfile
 root=Path(__file__).resolve().parents[1]
@@ -84,7 +85,7 @@ with tempfile.TemporaryDirectory(prefix='viptv-seek-latency-') as folder:
     failed=[]
     for name,code in cases.items():
         path=Path(folder)/(name+'.brs');path.write_text(code)
-        result=subprocess.run([os.environ.get('VIPTV_BRS_CLI','/home/node/air-roku/node_modules/.bin/brs-cli'),str(path),str(root/'source/Util.brs')],capture_output=True,text=True,timeout=30)
+        result=subprocess.run([*brs_command(),str(path),str(root/'source/Util.brs')],capture_output=True,text=True,timeout=30)
         print(result.stdout,result.stderr)
         if result.returncode or '_OK' not in result.stdout:failed.append(name)
     if failed:raise SystemExit('Failed: '+', '.join(failed))

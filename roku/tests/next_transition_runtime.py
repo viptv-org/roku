@@ -1,4 +1,5 @@
 """Next-episode transition must keep the player on screen (no tear-down, no stop)."""
+from brs_cli import brs_command
 from pathlib import Path
 import subprocess, tempfile, os
 root = Path(__file__).resolve().parents[1]
@@ -82,7 +83,7 @@ with tempfile.TemporaryDirectory(prefix='viptv-next-transition-') as directory:
         path = Path(directory) / (name + '.brs')
         path.write_text(code)
         r = subprocess.run([
-            os.environ.get('VIPTV_BRS_CLI', '/home/node/air-roku/node_modules/.bin/brs-cli'),
+            *brs_command(),
             str(path),
             str(root/'source'/'Util.brs'),
             str(root/'source'/'ContinuationPolicy.brs'),

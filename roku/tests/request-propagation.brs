@@ -5,6 +5,7 @@ sub Main()
     m.generation = 4
     m.requestSequence = 0
     m.accountEpoch = 9
+    m.top = {findNode:PropagationNoNode}
     request("GET","/api/profiles",invalid,"propagation")
     entry = m.queue[0]
     propagationAssert(entry.base = m.config.base and entry.access_token = "fixture-access","MainScene propagates canonical access token")
@@ -35,3 +36,7 @@ sub propagationAssert(condition as boolean, label as string)
         stop
     end if
 end sub
+
+function PropagationNoNode(id as string) as dynamic
+    return invalid
+end function

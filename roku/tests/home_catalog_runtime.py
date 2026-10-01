@@ -1,4 +1,5 @@
 """Exercise actual lazy catalog ownership, bounded concurrency and cursor termination."""
+from brs_cli import brs_command
 from pathlib import Path
 import os, subprocess, tempfile
 root=Path(__file__).resolve().parents[1]
@@ -64,6 +65,6 @@ end sub
 '''
 with tempfile.TemporaryDirectory() as folder:
  p=Path(folder)/'catalog.brs';p.write_text(source+'\n'+fixture)
- r=subprocess.run([os.environ['VIPTV_BRS_CLI'],str(p),str(root/'source/Util.brs'),str(root/'source/BrowsePolicy.brs')],capture_output=True,text=True,timeout=40)
+ r=subprocess.run([*brs_command(),str(p),str(root/'source/Util.brs'),str(root/'source/BrowsePolicy.brs')],capture_output=True,text=True,timeout=40)
  print(r.stdout,r.stderr)
  assert r.returncode==0 and 'HOME_CATALOG_RUNTIME_OK' in r.stdout

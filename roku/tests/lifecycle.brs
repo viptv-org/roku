@@ -3,6 +3,9 @@ sub Main()
     m.config = {base:"https://a.example",access_token:"a",last_profile_id:"1",account_id:"account-a",capabilities:{max_width:1280,max_height:720}}
     m.queue = []
     m.tasks = []
+    m.cache = {}
+    m.cacheKeys = []
+    m.homeActions = {itemFocused:0}
     m.generation = 1
     m.poll = {control:""}
     m.status = {text:""}
@@ -46,7 +49,8 @@ sub Main()
     m.duration = 3600
     findStreams({id:"tt123:2:5",type:"series",name:"Next episode"})
     assertThat(m.position = 0 and m.duration = 0,"new episode resets progress")
-    assertThat(m.queue[0].body.id = "tt123:2:5","episode ID retained")
+    discovery = m.queue[m.queue.count()-1]
+    assertThat(discovery.path = "/api/v2/streams" and discovery.body.id = "tt123:2:5","episode ID retained through v2 discovery")
     m.queue = []
     m.playItem = {id:"tt1",type:"movie",stream_id:"s1",name:"Movie"}
     beginPlayback(false)
@@ -57,8 +61,8 @@ sub Main()
     request("GET","/api/meta/movie/tt1",invalid,"meta")
     request("PUT","/api/profiles/1/progress",{position:5},"sideprogress")
     cancelBrowse()
-    assertThat(m.queue.count() = 2,"cancel retains progress and explicit startup cleanup")
-    assertThat(m.queue[0].tag = "sideprogress|" + (m.generation-1).toStr() and left(m.queue[1].tag,14) = "cleanupstartup","cancel removes queued playback and releases server work")
+    assertThat(m.queue.count() = 1,"cancel retains progress and drops the unsent v2 admission")
+    assertThat(m.queue[0].tag = "sideprogress|" + (m.generation-1).toStr() and Txt(m.pendingStartupId) = "" and not m.pendingPlayback,"cancel removes queued playback; an in-flight v2 admission releases itself in ApiTask")
     m.pendingPlayback = false
     m.queue = []
     beginPlayback(true)
@@ -85,7 +89,7 @@ sub Main()
     m.forced = true
     seekRestart(60)
     entry = m.queue[m.queue.count()-1]
-    assertThat(entry.path = "/api/playback" and entry.body.position = 685,"FF replacement prepares at absolute offset")
+    assertThat(entry.path = "/api/v2/playback" and entry.body.position = 685 and entry.body.managed_only = true,"FF replacement prepares a managed v2 timeline at absolute offset")
     assertThat(entry.body.force_transcode,"seek preserves forced mode")
     assertThat(not entry.body.DoesExist("profile_id"),"seek replacement cannot override authenticated profile")
     assertThat(m.video.visible and m.video.control = "pause" and m.session = "seek-session","seek keeps old visible session paused while replacement prepares")
@@ -106,7 +110,7 @@ sub Main()
     m.session = "paused-session"
     m.pendingPlayback = false
     m.heartbeat.control = "start"
-    m.top = {setFocus:NoopFocus,dialog:invalid}
+    m.top = {setFocus:NoopFocus,dialog:invalid,findNode:NoNode}
     pauseVOD()
     assertThat(m.pausedVOD and m.playing and m.session = "paused-session","pause preserves active backend session")
     assertThat(m.video.visible and m.video.control = "pause","pause preserves the current frame and native Video content")
@@ -125,7 +129,14 @@ sub Main()
     m.playItem = {type:"live",id:"channel",name:"Live"}
     m.position = 120
     beginPlayback(false)
-    assertThat(m.queue[m.queue.count()-1].body.position = 0,"live request never seeks")
+    assertThat(m.queue[m.queue.count()-1].path = "/api/v2/iptv/live/channel/source","live first resolves its exact opaque source")
+    m.queue = []
+    m.pendingPlayback = false
+    m.liveSourcePending = false
+    m.playItem.stream_id = "live-source"
+    m.position = 120
+    beginPlayback(false)
+    assertThat(m.queue[m.queue.count()-1].body.position = 0 and m.queue[m.queue.count()-1].body.stream_id = "live-source","live request never seeks")
     m.queue = []
     m.mode = "episodes"
     m.selected = {id:"tt999",name:"Canonical Series",releaseInfo:"2022"}
@@ -135,79 +146,53 @@ sub Main()
     assertThat(m.playItem.name = "Canonical Series","actual episode selection keeps canonical name")
     assertThat(m.playItem.displayName = "Canonical Series — Decorated Episode","actual episode selection keeps separate display name")
     assertThat(m.queue[m.queue.count()-1].body.name = "Canonical Series" and m.queue[m.queue.count()-1].body.year = 2022,"actual selection request matches canonical series and year")
+    ' Catalog-driven global search: searchable catalogs plus raw Live TV, three requests in flight.
     m.queue = []
-    m.heading = {text:""}
-    m.art = {uri:""}
-    m.detailTitle = {text:""}
-    m.detailInfo = {text:""}
-    m.description = {text:""}
-    m.list.itemFocused = 0
-    focusCounter = {value:0}
-    m.focusCounter = focusCounter
-    m.list.focusCounter = focusCounter
-    m.list.setFocus = CaptureFocus
-    m.top.dialog = {close:false}
+    m.top.dialog = invalid
     m.video.visible = false
     m.pausedVOD = false
+    m.mode = "searchall"
+    m.searchScope = ""
+    m.searchCatalog = invalid
+    m.searchPanel = {results:invalid,status:"",selected:invalid}
     m.search = "shared query"
     searchEverything()
-    m.searchFocusGeneration = m.generation
-    assertThat(m.queue.count() = 3 and focusCounter.value = 0,"global query enqueues every scope without fighting the open keyboard")
-    m.top.dialog = invalid
-    for each pending in m.queue
-        assertThat(instr(1,pending.path,"search=shared%20query") > 0,"one encoded query shared across types")
-    end for
+    assertThat(m.queue.count() = 1 and m.queue[0].path = "/api/catalogs","global search first reads searchable catalogs")
+    m.queue = []
     currentGeneration = m.generation
-    event = {data:{tag:"searchall:series|" + currentGeneration.toStr(),ok:true,data:{metas:[{id:"shared-id",name:"Series match"}]}},node:{request:m.config},getData:FakeGetData,getRoSGNode:FakeGetNode}
+    event = {data:{tag:"searchcatalogs|" + currentGeneration.toStr(),ok:true,data:[{id:"top",addon_id:"a1",addon_name:"Addon",name:"Top",type:"movie",supports_search:true},{id:"shows",addon_id:"a1",addon_name:"Addon",name:"Shows",type:"series",supports_search:true},{id:"plain",addon_id:"a1",name:"Plain",type:"movie",supports_search:false},{id:"tv",addon_id:"a2",addon_name:"Other",name:"TV",type:"tv",supports_search:true}]},node:{request:m.config},getData:FakeGetData,getRoSGNode:FakeGetNode}
     response(event)
-    assertThat(m.items.count() = 1 and m.items[0].type = "series","first global batch renders early with type")
-    assertThat(focusCounter.value = 1 and m.searchFocusGeneration = invalid,"first poster batch receives the deferred keyboard focus exactly once")
-    event.data = {tag:"searchall:live|" + currentGeneration.toStr(),ok:true,data:{channels:[{id:"shared-id",name:"Live match"}]}}
-    response(event)
-    assertThat(m.items.count() = 2 and m.items[1].type = "live","live appends without overwriting series")
+    assertThat(m.searchSections.count() = 3 and m.searchSections[2].kind = "live","only searchable movie/series catalogs plus Live TV become sections")
+    assertThat(m.queue.count() = 3 and m.searchInFlight = 3,"at most three section requests are in flight")
+    for each pending in m.queue
+        assertThat(instr(1,pending.path,"search=shared%20query") > 0,"one encoded query shared across sections")
+    end for
+    assertThat(m.queue[2].path = "/api/v2/iptv/live/channels?limit=80&search=shared%20query","live search uses the raw v2 channel route")
     movies = []
-    for i = 1 to 205
+    for i = 1 to 30
         movies.push({id:"movie" + i.toStr(),name:"Movie match"})
     end for
-    event.data = {tag:"searchall:movie|" + currentGeneration.toStr(),ok:true,data:{metas:movies}}
+    movies.push({id:"movie1",name:"Duplicate"})
+    event.data = {tag:"searchall:0|" + currentGeneration.toStr(),ok:true,data:{metas:movies}}
     response(event)
-    assertThat(m.items.count() = 202 and m.searchPending = 0,"global search exposes the complete bounded API result rather than first30")
-    assertThat(left(m.items[0].displayName,7) = "[movie]" and left(m.items[200].displayName,8) = "[series]" and left(m.items[201].displayName,6) = "[live]","typed sections remain deterministic regardless of response order")
-    ' Earlier synthetic beginPlayback calls intentionally never deliver a response.
-    ' Settle their pending flag before testing a fresh user selection; production
-    ' clears it in the playback response handler, not in cancelBrowse.
+    assertThat(m.searchSections[0].items.count() = 24 and m.searchSections[0].items[0].type = "movie","section results are typed and bounded")
+    event.data = {tag:"searchall:0|" + currentGeneration.toStr(),ok:true,data:{metas:[{id:"late",name:"Late"}]}}
+    response(event)
+    assertThat(m.searchSections[0].items.count() = 24 and m.searchPending = 2,"a repeated section response cannot append twice")
+    event.data = {tag:"searchall:2|" + currentGeneration.toStr(),ok:true,data:{items:[{id:"shared-id",name:"Live match",now:{title:"News"}}]}}
+    response(event)
+    assertThat(m.searchSections[2].items[0].type = "live" and m.searchSections[2].items[0].releaseInfo = "ON NOW · News","live result appends typed with what is on now")
+    event.data = {tag:"searchall:1|" + currentGeneration.toStr(),ok:false,error:"HTTP 503"}
+    response(event)
+    assertThat(m.searchErrors = 1 and m.searchPending = 0 and instr(1,m.searchPanel.status,"Some sources couldn't load") > 0,"failed section leaves other results and reports partial failure")
+    assertThat(m.searchRowKeys.count() = 2 and m.searchRowKeys[1] = 2,"empty and failed sections render no row")
     m.pendingPlayback = false
     m.queue = []
-    m.list.itemSelected = 201
-    selected()
-    assertThat(m.queue.count() = 1,"global live selection enqueues one playback request")
-    liveRequest = m.queue[0]
-    assertThat(liveRequest.method = "POST" and liveRequest.path = "/api/playback","global live selection directly starts playback, not guide")
-    assertThat(liveRequest.body.channel_id = "shared-id" and liveRequest.body.position = 0,"live playback preserves opaque channel ID and never seeks")
-    assertThat(liveRequest.body.allow_unknown_audio = invalid,"global live selection carries no language policy")
-    previousHeading = m.heading.text
-    event.data = {tag:"searchall:movie|" + currentGeneration.toStr(),ok:true,data:{metas:[{id:"stale",name:"Stale"}]}}
-    response(event)
-    assertThat(m.heading.text = previousHeading and m.selected.type = "live","stale global result cannot replace navigation")
-    m.search = "partial"
-    searchEverything()
-    event.data = {tag:"searchall:movie|" + m.generation.toStr(),ok:false,error:"HTTP 503"}
-    response(event)
-    assertThat(m.searchErrors = 1 and m.searchPending = 2,"failed type leaves other global searches active")
-    m.queue = []
-    m.mediaType = "movie"
-    m.catalog = {id:"catalog-id",addon_id:7}
-    m.search = ""
-    browse("movie",0)
-    assertThat(instr(1,m.queue[0].path,"search=") = 0 and instr(1,m.queue[0].path,"catalog=catalog-id") > 0,"ordinary catalog browsing omits empty search semantics")
-    m.queue = []
-    m.search = "two words"
-    browse("movie",0)
-    assertThat(instr(1,m.queue[0].path,"search=two%20words") > 0,"nonempty scoped search remains encoded")
+    ' Discover catalog routing renders the full page; see browse-policy.brs and home_catalog_runtime.py.
     m.queue = []
     findStreams({id:"numeric-year-movie",type:"movie",name:"Movie",year:2023,imdb_id:"tt7654321",tmdb_id:"54321"})
-    assertThat(m.queue[0].body.year = 2023,"numeric year works without release info")
-    assertThat(m.queue[0].body.imdb_id = "tt7654321" and m.queue[0].body.tmdb_id = "54321","stream request includes alternate IDs")
+    assertThat(LifecycleDiscovery().body.year = 2023,"numeric year works without release info")
+    assertThat(LifecycleDiscovery().body.imdb_id = "tt7654321" and LifecycleDiscovery().body.tmdb_id = "54321","stream request includes alternate IDs")
     assertThat(StreamContext({year:2023,releaseInfo:"2020"}).year = 2023,"numeric year takes precedence over release info")
     m.selected = {id:"canonical-parent",name:"Canonical parent",year:2022,releaseInfo:"2021–",imdb_id:"tt9876543",tmdb_id:"4321"}
     m.mode = "episodes"
@@ -215,7 +200,7 @@ sub Main()
     m.list.itemSelected = 0
     m.queue = []
     selected()
-    body = m.queue[0].body
+    body = LifecycleDiscovery().body
     assertThat(body.id = "opaque-video-A" and body.series_id = "canonical-parent","episode keeps opaque ID and separate parent identity")
     assertThat(body.name = "Canonical parent" and body.season = 3 and body.episode = 4,"opaque episode request retains canonical name and coordinates")
     assertThat(body.year = 2022 and body.imdb_id = "tt9876543" and body.tmdb_id = "4321","episode inherits parent year and alternate IDs")
@@ -233,7 +218,7 @@ sub Main()
     assertThat(saved.imdb_id = "tt9876543" and saved.tmdb_id = "4321","progress persists alternate IDs")
     m.queue = []
     findStreams(saved)
-    assertThat(m.position = 540 and m.queue[0].body.id = "opaque-video-A" and m.queue[0].body.episode = 4,"saved opaque episode resumes without ID rewriting")
+    assertThat(m.position = 540 and LifecycleDiscovery().body.id = "opaque-video-A" and LifecycleDiscovery().body.episode = 4,"saved opaque episode resumes without ID rewriting")
     suffix = StreamContext({id:"tt123:2:9",type:"series"})
     assertThat(suffix.series_id = "tt123" and suffix.season = 2 and suffix.episode = 9,"canonical numeric suffix fills missing matching context")
     suffix = StreamContext({id:"tt123:2:9",type:"series",series_id:"explicit",season:4,episode:5})
@@ -425,18 +410,17 @@ sub testEpisodeOrderingAndTitles()
     m.selected = invalid
     m.playing = false
     m.pendingPlayback = false
-    showMetadata({meta:{id:"canonical-bb",type:"series",name:"Breaking Bad",year:2008,videos:videos}})
-    assertThat(m.items[1].id = "opaque-pilot" and m.items[1].displayName = "S1 E1  Pilot","production picker renders name-only Pilot first")
-    assertThat(m.items[2].id = "opaque-six" and m.items[4].id = "opaque-seven","production picker orders six before seven")
-    assertThat(m.status.text = "Select an episode","picker does not expose technical retention count")
-    showEpisodes(0)
-    assertThat(m.items[1].displayName = "S1 E1  Pilot" and videos[2].name = "Pilot","rendering twice does not decorate or erase source name")
+    ' Episode cards render through the page layout; selection keeps canonical parent matching.
+    m.selected = {id:"canonical-bb",type:"series",name:"Breaking Bad",year:2008}
+    m.mode = "episodes"
+    m.items = sorted
     m.queue = []
-    m.list.itemSelected = 1
+    m.list.itemSelected = 0
     selected()
-    body = m.queue[m.queue.count()-1].body
+    body = LifecycleDiscovery().body
     assertThat(body.id = "opaque-pilot" and body.name = "Breaking Bad" and body.series_id = "canonical-bb" and body.year = 2008,"Pilot display fallback preserves opaque ID and canonical parent matching")
     assertThat(body.season = 1 and body.episode = 1 and m.playItem.displayName = "Breaking Bad — Pilot","selected episode coordinates and human title remain correct")
+    assertThat(videos[2].name = "Pilot" and videos[2].title = "","selection never decorates or erases source metadata")
     many = []
     for i = 0 to 2000
         many.push({id:i.toStr()})
@@ -466,3 +450,12 @@ sub assertThat(condition as boolean, name as string)
         stop
     end if
 end sub
+function NoNode(id as string) as dynamic
+    return invalid
+end function
+function LifecycleDiscovery() as dynamic
+    for i = m.queue.count()-1 to 0 step -1
+        if m.queue[i].path = "/api/v2/streams" then return m.queue[i]
+    end for
+    return invalid
+end function

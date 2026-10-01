@@ -28,7 +28,8 @@ sub runChecks()
     epgGuide()
     epgCheck(m.cache.demo1.programs.count()=old.count(),"failed refresh preserves previous schedule")
     m.menuFocus = true
-    onKeyEvent("down",true)
+    m.menu = 0
+    onKeyEvent("right",true)
     onKeyEvent("OK",true)
     epgCheck(m.top.route.filter.id="favorites","My channels requests profile favorites")
     epgCheck(m.channels.count()=0,"filter change cannot display old channel rows")

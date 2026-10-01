@@ -1,4 +1,5 @@
 """Real render-thread lease callbacks, with only SceneGraph/effect boundaries stubbed."""
+from brs_cli import brs_command
 from pathlib import Path
 import os
 import subprocess
@@ -61,7 +62,7 @@ end function
 with tempfile.TemporaryDirectory(prefix='viptv-roku-lease-') as directory:
     runner = Path(directory)/'runner.brs'
     runner.write_text((root/'components/PlaybackLeaseScene.brs').read_text()+'\n'+request+'\n'+fixture)
-    result = subprocess.run([os.environ.get('VIPTV_BRS_CLI','brs'),str(runner),str(root/'source/Util.brs'),str(root/'source/SourceLabels.brs')], capture_output=True,text=True,timeout=30,cwd=directory)
+    result = subprocess.run([*brs_command(),str(runner),str(root/'source/Util.brs'),str(root/'source/SourceLabels.brs')], capture_output=True,text=True,timeout=30,cwd=directory)
     print(result.stdout)
     print(result.stderr)
     assert result.returncode == 0 and 'PLAYBACK_LEASE_RUNTIME_OK' in result.stdout

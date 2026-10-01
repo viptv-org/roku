@@ -1,4 +1,5 @@
 """Run the native rail input handler: bounded rows and release-only activation."""
+from brs_cli import brs_command
 from pathlib import Path
 import os, subprocess, tempfile
 
@@ -30,6 +31,6 @@ end sub
 with tempfile.TemporaryDirectory() as temp:
     path=Path(temp)/"rail.brs"
     path.write_text(handler + fixture)
-    result=subprocess.run([os.environ["VIPTV_BRS_CLI"],str(path)],text=True,capture_output=True,timeout=30)
+    result=subprocess.run([*brs_command(),str(path)],text=True,capture_output=True,timeout=30)
     print(result.stdout, result.stderr)
     assert result.returncode == 0 and "ROKU_DESIGN_RAIL_OK" in result.stdout

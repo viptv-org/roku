@@ -1,4 +1,5 @@
 """Actual Home handlers: a remote move must beat a pending restore callback."""
+from brs_cli import brs_command
 from pathlib import Path
 import os, subprocess, tempfile
 root=Path(__file__).resolve().parents[1]
@@ -68,6 +69,6 @@ end sub
 with tempfile.TemporaryDirectory(prefix='viptv-home-return-') as directory:
  path=Path(directory)/'test.brs'
  path.write_text(key_handler+'\n'+'\n'.join(routine(n) for n in ['homeRestore','homeRestoreSettled','homeNavigation','homeFocused'])+fixture)
- p=subprocess.run([os.environ.get('VIPTV_BRS_CLI','/home/node/air-roku/node_modules/.bin/brs-cli'),str(path)],capture_output=True,text=True,timeout=30)
+ p=subprocess.run([*brs_command(),str(path)],capture_output=True,text=True,timeout=30)
  print(p.stdout);print(p.stderr)
  if p.returncode or 'HOME_RETURN_NAVIGATION_OK' not in p.stdout:raise SystemExit(1)

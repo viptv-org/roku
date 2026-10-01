@@ -1,4 +1,5 @@
 """Track UI exposes one complete right-panel list and rejects stale selections."""
+from brs_cli import brs_command
 from pathlib import Path
 import os,subprocess,tempfile
 root=Path(__file__).resolve().parents[1]
@@ -36,6 +37,6 @@ end sub
 '''
 with tempfile.TemporaryDirectory() as temp:
  p=Path(temp)/'tracks.brs';p.write_text(routine('showPlayerTracks')+'\n'+routine('uiPlayerTrackChosen')+'\n'+fixture)
- r=subprocess.run([os.environ['VIPTV_BRS_CLI'],str(p),str(root/'source/Util.brs')],capture_output=True,text=True,timeout=30)
+ r=subprocess.run([*brs_command(),str(p),str(root/'source/Util.brs')],capture_output=True,text=True,timeout=30)
  print(r.stdout,r.stderr)
  assert r.returncode==0 and 'PLAYER_TRACKS_PANEL_OK' in r.stdout

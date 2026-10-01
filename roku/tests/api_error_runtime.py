@@ -1,4 +1,5 @@
 """Run the production error decoder without registry/network device emulation."""
+from brs_cli import brs_command
 from pathlib import Path
 import os, subprocess, tempfile
 root=Path(__file__).resolve().parents[1]
@@ -24,7 +25,7 @@ end sub
 '''
 with tempfile.TemporaryDirectory() as directory:
     script=Path(directory)/'errors.brs';script.write_text(production+'\n'+fixture)
-    result=subprocess.run([os.environ.get('VIPTV_BRS_CLI','brs'),str(script)],capture_output=True,text=True,timeout=30,cwd=directory)
+    result=subprocess.run([*brs_command(),str(script)],capture_output=True,text=True,timeout=30,cwd=directory)
     print(result.stdout);print(result.stderr)
     assert result.returncode==0 and 'API_ERROR_RUNTIME_OK' in result.stdout
     assert 'synthetic-private' not in result.stdout+result.stderr

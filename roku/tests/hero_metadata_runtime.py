@@ -1,4 +1,5 @@
 """Actual hero metadata projection and inline layout, including the lost-title path."""
+from brs_cli import brs_command
 from pathlib import Path
 import os,subprocess,tempfile
 root=Path(__file__).resolve().parents[1]
@@ -87,6 +88,6 @@ end function
 '''
 with tempfile.TemporaryDirectory() as folder:
  p=Path(folder)/'hero.brs';p.write_text(layout+'\n'+flow+'\n'+fixture)
- r=subprocess.run([os.environ['VIPTV_BRS_CLI'],str(p),str(root/'source/PresentationPolicy.brs'),str(root/'source/Util.brs'),str(root/'source/SourceLabels.brs')],capture_output=True,text=True,timeout=40)
+ r=subprocess.run([*brs_command(),str(p),str(root/'source/PresentationPolicy.brs'),str(root/'source/Util.brs'),str(root/'source/SourceLabels.brs')],capture_output=True,text=True,timeout=40)
  print(r.stdout,r.stderr)
  assert r.returncode==0 and 'HERO_METADATA_RUNTIME_OK' in r.stdout

@@ -4034,8 +4034,8 @@
       "source": "roku/tests/continuation_runtime.py",
       "destination": "roku/tests/continuation_runtime.py",
       "sha256": "394a43339bb44fb2003cfc6e99b961aa6a2318ecb6cc2c40a19c1567ec31b0f7",
-      "extracted_sha256": "bd822f94b583db44a85590590745bbd8c36154ec4349a1e3542de5ffd597c0f4",
-      "reason": "Split follow-up: videoState extraction moved to components/PlaybackScene.brs."
+      "extracted_sha256": "a32a107934183f6a8c3c2f9267fee29a84aa32ce290b750cbf68b2854b792fb6",
+      "reason": "Split follow-up: videoState extraction moved to components/PlaybackScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/direct-policy.brs",
@@ -4048,13 +4048,15 @@
       "source": "roku/tests/direct_runtime.py",
       "destination": "roku/tests/direct_runtime.py",
       "sha256": "0ccf30f6b493b792435f182646262bc05f8d750cae8a317159bb5b90fcb38ff8",
-      "extracted_sha256": "0d3604580a8d8e81d02c51c4884a50e049bb6b09ae4d4bde29f910618d7678fb",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership."
+      "extracted_sha256": "c76bf06196c44954eda4c2ffdd85d414329d935effb67f556f1787a6224b963f",
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/epg_navigation.brs",
       "destination": "roku/tests/epg_navigation.brs",
-      "sha256": "1f398e98941ec0016842d30f61b18fc7ff01567c70cb553bb7b432f59b7694aa"
+      "sha256": "1f398e98941ec0016842d30f61b18fc7ff01567c70cb553bb7b432f59b7694aa",
+      "extracted_sha256": "07d508d4333735d3d51cfec9d620f7907b43df55954a3835eda49e05984866df",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/epg_policy.brs",
@@ -4077,34 +4079,36 @@
       "source": "roku/tests/episode_image_runtime.py",
       "destination": "roku/tests/episode_image_runtime.py",
       "sha256": "01e259cf2366c0ba38e25da3a532bfbca95dbacdcb57e876b6de81f169f65352",
-      "extracted_sha256": "3f7320e12d407758d2369f498e1bfdd71b4e04c97a7c2a0bb57503647422b2ef",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "7417e6046996ed741d15a29333ed0024d49d1085439827c56a802090ba035820",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/episode_library_runtime.py",
       "destination": "roku/tests/episode_library_runtime.py",
       "sha256": "e080002b80a7459cd476bd1f5ce47bbc5cce7056650f8fbc603883bd9b951563",
-      "extracted_sha256": "0a57becb2fe0180933b8abedb7d2f3a025c4289792c972a55cb43b16f434a962",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
+      "extracted_sha256": "d26cf2f76ab1ac5553b5d4a378f9d36940e4656d1011bdb6d355ae25bc930180",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/episode_mask_runtime.py",
       "destination": "roku/tests/episode_mask_runtime.py",
       "sha256": "83def601960d98e328fe74a112e7d35286ccb0d925f4e011626de9e8a81bb888",
-      "extracted_sha256": "ead2b0b096d64fadf709f5c310dbffe13026f20e77725ad05e7eba25c08ac210",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "5fd30db135f880d218520874c7b0c768eb938a37a7da0f32e561e1844f28ac04",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/explicit_resume_runtime.py",
       "destination": "roku/tests/explicit_resume_runtime.py",
       "sha256": "644eaabe542f6a042010560e0e1b9200b6f80bdf98211b3b9d7f25720aa1fdfc",
-      "extracted_sha256": "b7f51ad7b3c23fa7d66ed681b385a2b21affd3cef1824bbc3634c16ede8078d2",
-      "reason": "Split follow-up: extractions moved to NavigationScene.brs and SourcesScene.brs."
+      "extracted_sha256": "7d4cb0c642abec4124bb406a40be4bfddbfb6a183b5a8b000830d8f7d31e745c",
+      "reason": "Split follow-up: extractions moved to NavigationScene.brs and SourcesScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/fallback.brs",
       "destination": "roku/tests/fallback.brs",
-      "sha256": "5dff70afb83354760aaa96a0909948645ae6ed540fa2ffcb60d367f8845b9f1c"
+      "sha256": "5dff70afb83354760aaa96a0909948645ae6ed540fa2ffcb60d367f8845b9f1c",
+      "extracted_sha256": "9f34b298b64f503e1fcf53e49f3785af121ab7b53339974dfb755d49c0818c86",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/family-startup.brs",
@@ -4187,15 +4191,16 @@
       "source": "roku/tests/guide_boundary_runtime.py",
       "destination": "roku/tests/guide_boundary_runtime.py",
       "sha256": "f1917f22326cdf0305c8c46c9d166cfd0955a9844d6e46189f5b82ed4a44b919",
-      "extracted_sha256": "0db9685d4c4e91b8021b1493eb5b2a0eaae563c489714bbd8a47d355655084ae",
-      "reason": "ROK-043 guide audit: preserve true programme bounds when cells clip to the time window; readable detail panel."
+      "extracted_sha256": "d13f38717c856daacfaa66c897ad49c4afeec0f1c90243569ac811dbcc47db8d",
+      "reason": "ROK-043 guide audit: preserve true programme bounds when cells clip to the time window; readable detail panel. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/home.brs",
       "destination": "roku/tests/home.brs",
       "sha256": "9b289f6bc705523ed0ef3c70eb53a1381e6ba8bd3b2a06ca3fcad76ce3e336a1",
-      "extracted_sha256": "3e8e2c688ec711316b7b88985ddec6d7822281943d2ef4d60a0aacb2eb054c9f",
-      "reason": "Rework: decomposed Main() into named scenario subs in execution order (statement stream preserved; the shared items local became m.homeItems), removed the guide-suffix data asserts duplicated by tests/source-policy.brs (kept one handleResponse wiring assert) and removed the profile-chooser focus-guard scenario duplicated by Main."
+      "extracted_sha256": null,
+      "reason": "Retired: pre-redesign Home handler suite. It never passed after extraction (it fails its first assertion at the extraction commit and at its own last edit), asserts the replaced fixed-shelf Home and v1 /api/streams contract, and only 1 of its 24 subtests passed in isolation; the redesigned Home is covered by home_catalog_runtime, home_return_runtime, hero_metadata_runtime, horizontal_strip_runtime, design_rail_runtime and startup_ready_runtime.",
+      "removed": true
     },
     {
       "source": "roku/tests/home_fixture.py",
@@ -4206,8 +4211,8 @@
       "source": "roku/tests/home_return_runtime.py",
       "destination": "roku/tests/home_return_runtime.py",
       "sha256": "233e5dfb486190bb99797dad12918788dd82a5ffd68a9f67bdf194e27d1a4c99",
-      "extracted_sha256": "5598e7fc5f2c781cf193ff724412e71274bc3268c3ac1b5ef9a8e0bdf0a0484f",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
+      "extracted_sha256": "13cec8b71db56f27c5bd49e6fce4460d8bc8c80d221b3822c04821268520b505",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/image-policy.brs",
@@ -4224,17 +4229,23 @@
     {
       "source": "roku/tests/library_runtime.py",
       "destination": "roku/tests/library_runtime.py",
-      "sha256": "7476eafbdd4843e6fd44424cc4b57a10b82f71c5c2f254eacca91b3c5a1882fa"
+      "sha256": "7476eafbdd4843e6fd44424cc4b57a10b82f71c5c2f254eacca91b3c5a1882fa",
+      "extracted_sha256": "410befb9f760e7a4b935ec124cc1d4bb84e0752c9b204682e866ef6118985e9d",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/lifecycle.brs",
       "destination": "roku/tests/lifecycle.brs",
-      "sha256": "2ebc9c49d5fde0d2ddbe8bb34fe44448ed29a6ffc396adb471919966c5e2c339"
+      "sha256": "2ebc9c49d5fde0d2ddbe8bb34fe44448ed29a6ffc396adb471919966c5e2c339",
+      "extracted_sha256": "b166ac28a25bb222a844988a9ae7496ee671cd1d69bb3e93f934b8506f6a5272",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/live-ux.brs",
       "destination": "roku/tests/live-ux.brs",
-      "sha256": "68f6c575f3d70627ce7976cba2a3466b040c64f61e1af6b0c61124235653d5ed"
+      "sha256": "68f6c575f3d70627ce7976cba2a3466b040c64f61e1af6b0c61124235653d5ed",
+      "extracted_sha256": "094f3447d4610e0fa8ec1f974362e000d30558336e07049449e3abe032d688f6",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/locked-config.brs",
@@ -4262,20 +4273,22 @@
       "source": "roku/tests/movie_detail_runtime.py",
       "destination": "roku/tests/movie_detail_runtime.py",
       "sha256": "7bc1a87c88169be062ef351fd1119dce7a0a0df6e4741c999b25454c058a36d7",
-      "extracted_sha256": "3e6353079f26b4532373fa976ebe9a67b3f428c808bca75e899e76e7ef0f9c1c",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "a3bd83ea3dad64f31eea73e2ca710a312999dbbbbd0c5d69fbfe8ad8f086c88a",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/next_episode_runtime.py",
       "destination": "roku/tests/next_episode_runtime.py",
       "sha256": "ea32323bf96ac6d26a74874f394aa1174491a1851fd71c89b2d3412fa1ad44da",
-      "extracted_sha256": "6f99df0ce545ab99683e85a14c1ae598d7c7a5f9b4cc138a860fb9b3aaefd517",
-      "reason": "Split follow-up: extractions moved to SourcesScene.brs, PlaybackScene.brs, NavigationScene.brs and PresentationArtworkScene.brs."
+      "extracted_sha256": "78e72ed4f58bda59e64329e76e2dcce021d721ebdd9b6bce3806ce5694fa9c81",
+      "reason": "Split follow-up: extractions moved to SourcesScene.brs, PlaybackScene.brs, NavigationScene.brs and PresentationArtworkScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/next_transition_runtime.py",
       "destination": "roku/tests/next_transition_runtime.py",
-      "sha256": "230dc1a6cd52311f5ce72f0f8bf7d1f1c45033a8a812dd5f11369403da323602"
+      "sha256": "230dc1a6cd52311f5ce72f0f8bf7d1f1c45033a8a812dd5f11369403da323602",
+      "extracted_sha256": "c14c6ce8c197d0bb33504c4b84f5e6e6fdccac7fb55acda3ec63c41cd7d4ecf9",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/pairing-preload.brs",
@@ -4286,8 +4299,8 @@
       "source": "roku/tests/parent_pin_runtime.py",
       "destination": "roku/tests/parent_pin_runtime.py",
       "sha256": "c33a28ea0288280997930c4f8ae485658e123d6ceb9e88b7821ca83ae2be9f91",
-      "extracted_sha256": "d2d32cc1eff6c842d6b5dad9777736da17ec5d88fd188123c33655581c4b9e95",
-      "reason": "Split follow-up: accountSubmitParentPin and accountSignOut extractions moved to components/AccountProfilesScene.brs."
+      "extracted_sha256": "70f690437449d94569fa1153675b7bc427cdf55c6e1d4eca4a6b2f51953a8ee1",
+      "reason": "Split follow-up: accountSubmitParentPin and accountSignOut extractions moved to components/AccountProfilesScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/playback_static.py",
@@ -4316,33 +4329,37 @@
     {
       "source": "roku/tests/profile-selection-runtime.brs",
       "destination": "roku/tests/profile-selection-runtime.brs",
-      "sha256": "2afcae37d26e1ff99f1aa4091504f16e7add6a42b8b83e451e5191fe0039ec63"
+      "sha256": "2afcae37d26e1ff99f1aa4091504f16e7add6a42b8b83e451e5191fe0039ec63",
+      "extracted_sha256": "59c76683d3eda8d4fe13cb9db9a876fe9f55bbc3430d058898721d5c467c90c1",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/profile_management_runtime.py",
       "destination": "roku/tests/profile_management_runtime.py",
       "sha256": "a3950dc5d052a70653a8b82d98e29799dc9a8caa24789f765a8459e47f2b616a",
-      "extracted_sha256": "72b70aa024cf3755fa9a92807d6b3b63113e3fb9b7cd58f4b5a9263dddaf148f",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "e9daf87f15949b85668a844da632fed783df2ce5e6cc151a400e73fa0e518a92",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/profile_preferences_runtime.py",
       "destination": "roku/tests/profile_preferences_runtime.py",
       "sha256": "de7a0ef4cc50e5e868b873ca708bdace8bccd6a2a0b714d406626471ee685786",
-      "extracted_sha256": "a75d855f7f8cfe6e8fd455e6f278651069bd20e941a7fcc2af3475c83dd22a1c",
-      "reason": "Split follow-up: showPlaybackPreferences from HomeScene.brs, selectItem from NavigationScene.brs, ProfilePreferencesWire from ApiTaskSanitize.brs. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained."
+      "extracted_sha256": "505a468d2f9c768f6394ee3ab94c9823511d9fe4a1c52dcb52de03e38dd178bf",
+      "reason": "Split follow-up: showPlaybackPreferences from HomeScene.brs, selectItem from NavigationScene.brs, ProfilePreferencesWire from ApiTaskSanitize.brs. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/request-propagation.brs",
       "destination": "roku/tests/request-propagation.brs",
-      "sha256": "4a7cf3bad18ed761ae7601b8c5dfce725053fc9fa1f1d5ce5b32cd6ee911cce9"
+      "sha256": "4a7cf3bad18ed761ae7601b8c5dfce725053fc9fa1f1d5ce5b32cd6ee911cce9",
+      "extracted_sha256": "6c980d878d6944795eafa3c02e486b38beff40321c5273fa30bbc34961daace8",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/resume_controls_runtime.py",
       "destination": "roku/tests/resume_controls_runtime.py",
       "sha256": "b42e4e85f58d4c8b8845cdc073198fd7e5aecf5dd053fb04e70e2a56173eda61",
-      "extracted_sha256": "5dba9a35a0e89d8841fa0c64ff12571e70c162d0bf227d3eeab0b98c437441d2",
-      "reason": "Split follow-up: cancelAutomaticResume extraction moved to components/HomeScene.brs."
+      "extracted_sha256": "445d8c07c9308de44fbc15824c8e9e6d86d42e0aa3c984cbdbcbdda5c280e4be",
+      "reason": "Split follow-up: cancelAutomaticResume extraction moved to components/HomeScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/scenegraph_ux_contract.py",
@@ -4355,22 +4372,22 @@
       "source": "roku/tests/schema.brs",
       "destination": "roku/tests/schema.brs",
       "sha256": "83b876c1ab04e1f24985d24bf66991b4b68d8d9067711859251086b859794d54",
-      "extracted_sha256": "9a9eca0fd6b3b15299d873e84959100b22f4704cea39f267df996df4d6a92033",
-      "reason": " Record existing committed 8e24931 artwork-gate/font/error changes; no new runtime change in this entry."
+      "extracted_sha256": "04a8d9ed3aeab2b3656a2524b911a2471c3562b01d25d727ffc7c8d3342d7408",
+      "reason": "Record existing committed 8e24931 artwork-gate/font/error changes; no new runtime change in this entry. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/seek_latency_runtime.py",
       "destination": "roku/tests/seek_latency_runtime.py",
       "sha256": "0dac2bacf453fedd2ce21e0cd214eb2cf20d9407a083faf8a89169167db9b694",
-      "extracted_sha256": "13d742ffecc8bc2af75038f5c0241136505252a5e8f4e4f933ab5dc2a8959262",
-      "reason": "Split follow-up: prepareSeekReplacement extraction moved to components/SeekScene.brs."
+      "extracted_sha256": "bad7a0e61d1bf466aa702700d25a8ba544923fb4a702922bde9aef30ef420b46",
+      "reason": "Split follow-up: prepareSeekReplacement extraction moved to components/SeekScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/seek_rollback_runtime.py",
       "destination": "roku/tests/seek_rollback_runtime.py",
       "sha256": "097b5976ba7095873cd1b51e2b7e559fb5f287e91928248b8b8288067e937f48",
-      "extracted_sha256": "0d39e55a82b551fd1fc63ce21c324df164ebc51acb607f73557c72a764d187b4",
-      "reason": "Split follow-up: seek-transaction extractions moved to components/SeekScene.brs."
+      "extracted_sha256": "3c132df8af01a8c1f21d1fedc5e25d154fa68192e8545846456eeaa39a9bf319",
+      "reason": "Split follow-up: seek-transaction extractions moved to components/SeekScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/sgnode-identity.brs",
@@ -4387,12 +4404,16 @@
     {
       "source": "roku/tests/smoke.brs",
       "destination": "roku/tests/smoke.brs",
-      "sha256": "4fa982dff5a8e82d6d11ac2d7186133fa3016f9aa79147e0cf454410e8828e19"
+      "sha256": "4fa982dff5a8e82d6d11ac2d7186133fa3016f9aa79147e0cf454410e8828e19",
+      "extracted_sha256": "c76a158a782ed4999127cc842d6baaccc424d8bd1a2965b12e43ccc5cc3ad635",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/source-cards.brs",
       "destination": "roku/tests/source-cards.brs",
-      "sha256": "144879d713b70e6d27b820646aefbbc953156b0c7e637911f7cd778c7da6c550"
+      "sha256": "144879d713b70e6d27b820646aefbbc953156b0c7e637911f7cd778c7da6c550",
+      "extracted_sha256": "3676b0d4a8316ce2db60aee59409dafd3ade07ed175e28873f2f2885cbed8f8e",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/source-policy.brs",
@@ -4403,13 +4424,15 @@
       "source": "roku/tests/startup_ready_runtime.py",
       "destination": "roku/tests/startup_ready_runtime.py",
       "sha256": "a228d66af0c75ee47212b775d213d284e8d46a942d91329f83e3beb66d0fa1c9",
-      "extracted_sha256": "56f7cb883bfa846d93331103e530c0140f8f859ec20518981e44b579dea564aa",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. Record existing committed 8e24931 artwork-gate/font/error changes; no new runtime change in this entry."
+      "extracted_sha256": "40d2ab7024a480b764f29ef7210d0a3dbc2e3a53c53634ed673bdfb16b396905",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. Record existing committed 8e24931 artwork-gate/font/error changes; no new runtime change in this entry. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/transport.brs",
       "destination": "roku/tests/transport.brs",
-      "sha256": "d0d376c5008111a99c1ff1bd4428da1cedc60421375ea50cbedbba0d8cf3fdce"
+      "sha256": "d0d376c5008111a99c1ff1bd4428da1cedc60421375ea50cbedbba0d8cf3fdce",
+      "extracted_sha256": "49658f29afcb8427c9902527474a325afea7374ea3dead4fca014376643dfbf6",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/ux_preview.brs",
@@ -4453,8 +4476,8 @@
     {
       "destination": "roku/tests/direct_runtime.py",
       "source_sha256": "0ccf30f6b493b792435f182646262bc05f8d750cae8a317159bb5b90fcb38ff8",
-      "extracted_sha256": "7ba6b780fe8b69918579d020c98e645926fd1dd9f65a624dde6137111f58a2ea",
-      "reason": "Runtime fixture imports the current ContinuationPolicy helper and initializes next-transition state required by acceptPlayback; production Roku source is unchanged."
+      "extracted_sha256": "c76bf06196c44954eda4c2ffdd85d414329d935effb67f556f1787a6224b963f",
+      "reason": "Runtime fixture imports the current ContinuationPolicy helper and initializes next-transition state required by acceptPlayback; production Roku source is unchanged. Interpreter now resolved through tests/brs_cli.py."
     }
   ]
 }

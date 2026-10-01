@@ -1,4 +1,5 @@
 """Run the actual movie action builder for fresh and resumable titles."""
+from brs_cli import brs_command
 from pathlib import Path
 import os
 import subprocess
@@ -44,7 +45,7 @@ end sub
 with tempfile.TemporaryDirectory(prefix='viptv-movie-actions-') as directory:
     path = Path(directory) / 'actions.brs'
     path.write_text(routine + fixture)
-    result = subprocess.run([os.environ.get('VIPTV_BRS_CLI', '/home/node/air-roku/node_modules/.bin/brs-cli'), str(path)], capture_output=True, text=True, timeout=30)
+    result = subprocess.run([*brs_command(), str(path)], capture_output=True, text=True, timeout=30)
     print(result.stdout)
     print(result.stderr)
     if result.returncode or 'MOVIE_DETAIL_ACTIONS_OK' not in result.stdout:

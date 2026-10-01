@@ -18,24 +18,29 @@ sub Main()
     ensure(SourceCardTitle({name:"Cinema Archive 2160p",title:"Film.2160p"}) = "Cinema Archive 2160p","visible provider resolution is not duplicated")
     ensure(SourceCardTitle({name:"Cinema 1080P HEVC",title:"Film.1080p.HEVC"}) = "Cinema 1080P HEVC","visible quality tokens are deduplicated case insensitively")
     ensure(SourceCardTitle({name:"Cinema Archive Premium 2160p",title:"Film.2160p"}) = "Cinema Archive Premiu… · 2160p","quality truncated out of provider is restored as suffix")
-    m.provider = {}
-    m.badges = {}
-    m.badgeSurface = {}
-    m.languages = {}
-    m.surface = {}
-    m.focusOutline = {}
-    m.top = {itemContent:{title:title,description:"Reported languages · " + SourceReportedLanguages(source)},focusPercent:1}
+    ' SourceCard handlers with node-field fakes (interpreter-independent; no SceneGraph runtime).
+    nodes = {}
+    for each id in ["provider","description","badges","surface","quality","qualitySurface","playIcon"]
+        nodes[id] = {text:"",uri:"",color:"",blendColor:"",focused:false,font:{size:0}}
+    end for
+    m.top = {nodes:nodes,findNode:SourceCardFakeFind,listHasFocus:false,focusPercent:0}
+    init()
+    m.top.itemContent = {title:title,description:"Reported languages · " + SourceReportedLanguages(source),sourceBadges:"BEST MATCH · LAST PLAYED",hasField:SourceCardFakeHasField,observeField:SourceCardFakeObserve,unobserveField:SourceCardFakeObserve}
     contentChanged()
+    ensure(nodes.quality.text = "2160p","quality chip shows the reported resolution")
+    ensure(nodes.provider.text <> "" and instr(1,nodes.provider.text,"2160p") = 0,"provider line does not repeat the quality chip")
+    ensure(nodes.description.text = "Reported languages · English / Italian +1","language information stays on its own line")
+    ensure(nodes.badges.text = "BEST MATCH · LAST PLAYED","source badges remain separately visible")
+    m.top.listHasFocus = true
+    m.top.focusPercent = 1
     focusChanged()
-    ensure(m.provider.text <> "" and instr(1,m.badges.text,"2160p") > 0 and instr(1,m.badges.text,"HEVC") > 0,"provider and source badges remain separately visible")
-    ensure(m.languages.text = "Reported languages · English / Italian +1","language information stays on its own line")
-    ensure(m.focusOutline.opacity = 1 and m.surface.color = "#292C39","focus has rounded outline and contrast cues")
+    ensure(nodes.surface.focused and nodes.playIcon.uri = "pkg:/images/lucide/play-focus.png","focus uses the stable ring and focused play icon")
     m.top.focusPercent = 0
     focusChanged()
-    ensure(m.focusOutline.opacity = 0,"recycled unfocused card resets cue")
-    m.top.itemContent = invalid
+    ensure(not nodes.surface.focused and nodes.playIcon.uri = "pkg:/images/lucide/play-primary.png","recycled unfocused card resets cue")
+    m.top.itemContent = {title:"Provider",description:"",hasField:SourceCardFakeHasField,observeField:SourceCardFakeObserve,unobserveField:SourceCardFakeObserve}
     contentChanged()
-    ensure(m.provider.text = "" and m.badges.text = "" and m.languages.text = "","recycled empty card clears every line")
+    ensure(nodes.quality.text = "Auto" and nodes.badges.text = "","recycled card without badges clears stale badges")
     print "ROKU_SOURCE_CARDS_OK"
 end sub
 sub ensure(value as boolean, message as string)
@@ -43,4 +48,13 @@ sub ensure(value as boolean, message as string)
         print "FAIL ";message
         stop
     end if
+end sub
+
+function SourceCardFakeFind(id as string) as dynamic
+    return m.nodes[id]
+end function
+function SourceCardFakeHasField(name as string) as boolean
+    return m.DoesExist(name)
+end function
+sub SourceCardFakeObserve(field as string, handler = "" as string)
 end sub

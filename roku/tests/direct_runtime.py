@@ -1,4 +1,5 @@
 """Actual discovery, recovery and seek handlers for original-media delivery."""
+from brs_cli import brs_command
 from pathlib import Path
 import os,subprocess,tempfile
 root=Path(__file__).resolve().parents[1]
@@ -82,6 +83,6 @@ end sub
 '''
 with tempfile.TemporaryDirectory() as directory:
  p=Path(directory)/'direct.brs';p.write_text(fixture)
- result=subprocess.run([os.environ.get('VIPTV_BRS_CLI','brs-cli'),str(p)],capture_output=True,text=True,timeout=30,cwd=directory)
+ result=subprocess.run([*brs_command(),str(p)],capture_output=True,text=True,timeout=30,cwd=directory)
  print(result.stdout,end='');print(result.stderr,end='')
  if result.returncode or 'DIRECT_RUNTIME_OK' not in result.stdout:raise SystemExit(1)

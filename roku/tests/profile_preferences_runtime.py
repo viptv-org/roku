@@ -1,4 +1,5 @@
 """Exercise actual native settings, caption, transport and track override boundaries."""
+from brs_cli import brs_command
 from pathlib import Path
 import os, subprocess, tempfile
 root=Path(__file__).resolve().parents[1]
@@ -53,6 +54,6 @@ end function
 '''
 with tempfile.TemporaryDirectory() as directory:
     fixture=Path(directory)/'preferences.brs';fixture.write_text(source)
-    result=subprocess.run([os.environ.get('VIPTV_BRS_CLI','brs-cli'),str(fixture)],text=True,capture_output=True,cwd=directory,timeout=30)
+    result=subprocess.run([*brs_command(),str(fixture)],text=True,capture_output=True,cwd=directory,timeout=30)
     print(result.stdout,end='');print(result.stderr,end='')
     if result.returncode or 'PROFILE_PREFERENCES_RUNTIME_OK' not in result.stdout:raise SystemExit(1)

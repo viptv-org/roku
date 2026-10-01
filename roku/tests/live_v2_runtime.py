@@ -1,4 +1,5 @@
 """Exercise production raw guide cursor routing and live-source transport boundaries."""
+from brs_cli import brs_command
 from pathlib import Path
 import os, subprocess, tempfile
 root = Path(__file__).resolve().parents[1]
@@ -162,7 +163,7 @@ end sub
 with tempfile.TemporaryDirectory(prefix='roku-live-v2-') as directory:
     runner = Path(directory)/'live.brs'
     runner.write_text(production+'\n'+fixture)
-    result = subprocess.run([os.environ.get('VIPTV_BRS_CLI','brs'),str(runner),
+    result = subprocess.run([*brs_command(),str(runner),
         str(root/'components/ApiTaskSanitize.brs'),str(root/'source/Util.brs'),
         str(root/'source/SourceLabels.brs'),str(root/'source/AccountPolicy.brs')],
         capture_output=True,text=True,timeout=30,cwd=directory)

@@ -1,4 +1,5 @@
 """Actual seek transaction: primary decoder, pause intent, rollback and cleanup."""
+from brs_cli import brs_command
 from pathlib import Path
 import subprocess,os,tempfile
 root=Path(__file__).resolve().parents[1]
@@ -53,6 +54,6 @@ end sub
 '''
 with tempfile.TemporaryDirectory() as folder:
  p=Path(folder)/'seek.brs';p.write_text(code)
- r=subprocess.run([os.environ.get('VIPTV_BRS_CLI','/home/node/air-roku/node_modules/.bin/brs-cli'),str(p),str(root/'source/Util.brs')],capture_output=True,text=True,timeout=30)
+ r=subprocess.run([*brs_command(),str(p),str(root/'source/Util.brs')],capture_output=True,text=True,timeout=30)
  print(r.stdout,r.stderr)
  if r.returncode or 'SEEK_ROLLBACK_OK' not in r.stdout:raise SystemExit(1)

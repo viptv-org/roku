@@ -1,4 +1,5 @@
 """Execute actual Task orchestration with only transport/device boundaries replaced."""
+from brs_cli import brs_command
 from pathlib import Path
 import os
 import subprocess
@@ -77,7 +78,7 @@ with tempfile.TemporaryDirectory(prefix='viptv-roku-v2-') as directory:
     runner = Path(directory) / 'runner.brs'
     runner.write_text(production + '\n' + fixture)
     result = subprocess.run([
-        os.environ.get('VIPTV_BRS_CLI', 'brs'), str(runner),
+        *brs_command(), str(runner),
         str(root/'components/ApiPlaybackV2Policy.brs'), str(root/'components/ApiTaskSanitize.brs'),
         str(root/'source/Util.brs'), str(root/'source/SourceLabels.brs'), str(root/'source/AccountPolicy.brs'),
     ], capture_output=True, text=True, timeout=30, cwd=directory)

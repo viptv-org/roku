@@ -1,4 +1,5 @@
 """Exercise actual source entry and resume handlers; browsing never starts playback."""
+from brs_cli import brs_command
 from pathlib import Path
 import os, subprocess, tempfile
 
@@ -72,6 +73,33 @@ sub uiBusy(active)
 end sub
 '''
 }
+cases['stale'] = routine('tryResumeSource') + '''
+sub Main()
+ m.pendingPlayback=false:m.playing=false:m.manualSources=false
+ m.streams=[{id:"other"}]:m.resumeSourcePreference={source_fingerprint:"missing"}
+ m.mode="resuming":m.discoveryDone=false
+ tryResumeSource()
+ if m.started<>invalid or m.manualSources then throw "unfinished discovery abandoned the saved source"
+ m.discoveryDone=true
+ tryResumeSource()
+ if m.started<>invalid then throw "stale resume preference started another source"
+ if not m.manualSources or m.mode<>"streams" or m.resumeSourcePreference<>invalid then throw "stale resume did not reopen the explicit picker"
+ print "EXPLICIT_RESUME_STALE_OK"
+end sub
+function SourceMatchesPreference(source,preference)
+ return false
+end function
+sub playSource(source)
+ m.started=source.id
+end sub
+sub uiSourceHeader()
+end sub
+sub rows(title,items,mode,subtitle="",enter=true)
+ m.mode=mode
+end sub
+sub uiBusy(active)
+end sub
+'''
 cases['transient_route']=routine('saveView')+'''
 sub Main()
  m.mode="resuming":m.views=[]:m.list={itemFocused:0}:m.homeActions={itemFocused:0}
@@ -88,7 +116,7 @@ with tempfile.TemporaryDirectory(prefix='viptv-explicit-resume-') as folder:
     for name, code in cases.items():
         path = Path(folder) / (name + '.brs')
         path.write_text(code + '\nfunction Txt(value, fallback="")\n if value=invalid then return fallback\n return value.toStr()\nend function\n')
-        result = subprocess.run([os.environ.get('VIPTV_BRS_CLI', '/home/node/air-roku/node_modules/.bin/brs-cli'), str(path)], capture_output=True, text=True, timeout=30)
+        result = subprocess.run([*brs_command(), str(path)], capture_output=True, text=True, timeout=30)
         print(result.stdout, result.stderr)
         if result.returncode or '_OK' not in result.stdout:
             failures.append(name)

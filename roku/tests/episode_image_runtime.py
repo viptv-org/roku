@@ -1,4 +1,5 @@
 """Render actual episode cards with Roku's render-thread component restriction."""
+from brs_cli import brs_command
 from pathlib import Path
 import os, subprocess, tempfile
 root = Path(__file__).resolve().parents[1]
@@ -44,6 +45,6 @@ end sub
 '''
 with tempfile.TemporaryDirectory() as temp:
  p=Path(temp)/'episode-image.brs';p.write_text(render+'\n'+policy+'\n'+fixture)
- result=subprocess.run([os.environ.get('VIPTV_BRS_CLI','/home/node/air-roku/node_modules/.bin/brs-cli'),str(p),str(root/'source/Util.brs')],capture_output=True,text=True,timeout=30)
+ result=subprocess.run([*brs_command(),str(p),str(root/'source/Util.brs')],capture_output=True,text=True,timeout=30)
  print(result.stdout,result.stderr)
  if result.returncode or 'EPISODE_IMAGE_RENDER_OK' not in result.stdout:raise SystemExit(1)

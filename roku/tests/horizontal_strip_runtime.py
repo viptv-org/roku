@@ -1,4 +1,5 @@
 """Exercise the real virtual strip across both edges with more than eight episodes."""
+from brs_cli import brs_command
 from pathlib import Path
 import os, subprocess, tempfile
 root=Path(__file__).resolve().parents[1]
@@ -49,6 +50,6 @@ end function
 '''
 with tempfile.TemporaryDirectory() as folder:
  p=Path(folder)/'strip.brs';p.write_text(source+'\n'+fixture)
- r=subprocess.run([os.environ['VIPTV_BRS_CLI'],str(p)],capture_output=True,text=True,timeout=30)
+ r=subprocess.run([*brs_command(),str(p)],capture_output=True,text=True,timeout=30)
  print(r.stdout,r.stderr)
  assert r.returncode==0 and 'HORIZONTAL_STRIP_RUNTIME_OK' in r.stdout

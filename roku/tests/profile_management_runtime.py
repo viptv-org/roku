@@ -1,4 +1,5 @@
 """Run the real native profile editor and account mutation handlers."""
+from brs_cli import brs_command
 from pathlib import Path
 import os, subprocess, tempfile
 root=Path(__file__).resolve().parents[1]
@@ -78,7 +79,7 @@ end sub
 '''
 with tempfile.TemporaryDirectory() as directory:
  fixture=Path(directory)/'profiles.brs';fixture.write_text(source)
- result=subprocess.run([os.environ.get('VIPTV_BRS_CLI','brs-cli'),str(fixture)],capture_output=True,text=True,timeout=30)
+ result=subprocess.run([*brs_command(),str(fixture)],capture_output=True,text=True,timeout=30)
  print(result.stdout,end='');print(result.stderr,end='')
  if result.returncode or 'PROFILE_MANAGEMENT_RUNTIME_OK' not in result.stdout:raise SystemExit(1)
 
@@ -108,7 +109,7 @@ end function
 '''
 with tempfile.TemporaryDirectory() as directory:
  fixture=Path(directory)/'editor.brs';fixture.write_text(editor)
- result=subprocess.run([os.environ.get('VIPTV_BRS_CLI','brs-cli'),str(fixture)],capture_output=True,text=True,timeout=30)
+ result=subprocess.run([*brs_command(),str(fixture)],capture_output=True,text=True,timeout=30)
  print(result.stdout,end='');print(result.stderr,end='')
  if result.returncode or 'PROFILE_EDITOR_RUNTIME_OK' not in result.stdout:raise SystemExit(1)
 
@@ -189,6 +190,6 @@ end sub
 '''
 with tempfile.TemporaryDirectory() as directory:
  fixture=Path(directory)/'layout.brs';fixture.write_text(layout)
- result=subprocess.run([os.environ.get('VIPTV_BRS_CLI','brs-cli'),str(fixture)],capture_output=True,text=True,timeout=30)
+ result=subprocess.run([*brs_command(),str(fixture)],capture_output=True,text=True,timeout=30)
  print(result.stdout,end='');print(result.stderr,end='')
  if result.returncode or 'PROFILE_LAYOUT_RUNTIME_OK' not in result.stdout:raise SystemExit(1)
