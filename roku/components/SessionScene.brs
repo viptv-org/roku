@@ -2,9 +2,10 @@ sub acceptPlayback(data as object,origin as object)
         if Txt(data.delivery_kind) = "gateway" then registerRokuPlaybackLease(data,origin)
         uiBusy(false)
         m.session = Txt(data.id)
-        if m.nextPrepping = true or m.nextTransitionSession <> ""
-            if m.nextTransitionSession <> "" and m.nextTransitionSession <> m.session
-                request("DELETE",PlaybackSessionPath(m.nextTransitionConnection,m.nextTransitionSession),invalid,"cleanup",m.nextTransitionConnection)
+        transitionSession = Txt(m.nextTransitionSession)
+        if m.nextPrepping = true or transitionSession <> ""
+            if transitionSession <> "" and transitionSession <> m.session
+                request("DELETE",PlaybackSessionPath(m.nextTransitionConnection,transitionSession),invalid,"cleanup",m.nextTransitionConnection)
             end if
             m.nextTransitionSession = ""
             m.nextTransitionConnection = invalid

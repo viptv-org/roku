@@ -128,8 +128,8 @@
       "source": "roku/components/ContinuationScene.brs",
       "destination": "roku/components/ContinuationScene.brs",
       "sha256": "1026bd34038e8a0897f256fb93069b9ab464c600f91159af99964eb698baac28",
-      "extracted_sha256": "06620fd3837f4435724172ca7d0685a46900d36876585314fe4a9471c302005c",
-      "reason": "Cleanup: removed unreferenced continuationDialogSelected() and the write-only m.continuationAutomatic."
+      "extracted_sha256": "306b5d547f077b505d85873ebe07c130a6e2f7730e3f864618e17875b5985d4a",
+      "reason": "Cleanup: removed unreferenced continuationDialogSelected() and the write-only m.continuationAutomatic. Next-transition cleanup normalizes an unset session identity with Txt() before the typed PlaybackSessionPath call."
     },
     {
       "source": "roku/components/DiscoverScene.brs",
@@ -404,15 +404,15 @@
       "source": "roku/components/SeekScene.brs",
       "destination": "roku/components/SeekScene.brs",
       "sha256": "f0598482ad4cead37a554455f68f67ae05297a80eb8714575ce88f8b93dcd752",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
-      "extracted_sha256": "b093b6c9c4c3288c9064f5b0765771a3f87c938e3cb7abfd4d504ac153bbba98"
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. Next-transition cleanup normalizes an unset session identity with Txt() before the typed PlaybackSessionPath call.",
+      "extracted_sha256": "60263b59a7bee7ccd98acc3cb8246f733269dc9b5b8be823a896bc38d1523658"
     },
     {
       "source": "roku/components/SessionScene.brs",
       "destination": "roku/components/SessionScene.brs",
       "sha256": "2245b7415d0385e882a9d49aa32c6b42fcca79b0f56b36776eab1727530332f2",
-      "reason": "New file split from MainScene.brs: playback session acceptance and managed-live recovery moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained.",
-      "extracted_sha256": "fefc7adaf2f51007ae5b01519d89d0f1b73f7cbdd6f9232cd2c1c2755325003b"
+      "reason": "New file split from MainScene.brs: playback session acceptance and managed-live recovery moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. Next-transition cleanup normalizes an unset session identity with Txt() before the typed PlaybackSessionPath call.",
+      "extracted_sha256": "ddf4e992840d658f92f9f36636efd3c2dc05c09261c0615b67096ceb1f8b43f5"
     },
     {
       "source": "roku/components/SourceCard.brs",

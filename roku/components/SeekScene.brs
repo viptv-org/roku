@@ -2,8 +2,10 @@ sub stopPlayback(restore = true as boolean)
     m.playerTitleOwner = invalid
     saveProgress()
     ' Retire a still-pending next-episode transition before restoring the view.
-    if m.nextPrepping = true or m.nextTransitionSession <> ""
-        if m.nextTransitionSession <> "" then request("DELETE",PlaybackSessionPath(m.nextTransitionConnection,m.nextTransitionSession),invalid,"cleanup",m.nextTransitionConnection)
+    ' Txt() keeps an uninitialized/invalid transition identity from reaching the typed path builder.
+    transitionSession = Txt(m.nextTransitionSession)
+    if m.nextPrepping = true or transitionSession <> ""
+        if transitionSession <> "" then request("DELETE",PlaybackSessionPath(m.nextTransitionConnection,transitionSession),invalid,"cleanup",m.nextTransitionConnection)
         m.nextTransitionSession = ""
         m.nextTransitionConnection = invalid
     end if

@@ -68,7 +68,7 @@ sub continuationBegin(automatic as boolean)
     ' cue instead of tearing down to Home behind a full-screen spinner. The
     ' outgoing session is retired when the replacement is accepted (acceptPlayback).
     saveProgress()
-    m.nextTransitionSession = m.session
+    m.nextTransitionSession = Txt(m.session)
     m.nextTransitionConnection = m.sessionConnection
     m.session = ""
     m.playing = false
