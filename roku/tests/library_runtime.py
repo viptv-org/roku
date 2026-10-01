@@ -1,4 +1,5 @@
 """Run production library navigation/mutation handlers against user actions."""
+from brs_cli import brs_command
 from pathlib import Path
 import os, subprocess, tempfile
 root=Path(__file__).resolve().parents[1]
@@ -48,6 +49,6 @@ def routine(name):
  start=source.index('sub '+name+'(');return source[start:source.index('end sub',start)+7]
 with tempfile.TemporaryDirectory() as temp:
  path=Path(temp)/'library.brs';path.write_text('\n'.join(routine(n) for n in ['openLibraryPage','libraryCorrect','retrySelectedPlayback'])+fixture)
- p=subprocess.run([os.environ.get('VIPTV_BRS_CLI','/home/node/air-roku/node_modules/.bin/brs-cli'),str(path),str(root/'source/Util.brs')],capture_output=True,text=True,timeout=40)
+ p=subprocess.run([*brs_command(),str(path),str(root/'source/Util.brs')],capture_output=True,text=True,timeout=40)
  print(p.stdout,p.stderr)
  if p.returncode or 'LIBRARY_RUNTIME_OK' not in p.stdout:raise SystemExit(1)

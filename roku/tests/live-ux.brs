@@ -11,7 +11,7 @@ sub Main()
     m.heading = {text:""}
     m.art = {uri:""}
     m.list = {itemFocused:0,itemSelected:0,itemSize:[],content:invalid,jumpToItem:0,setFocus:NoopFocus}
-    m.top = {dialog:invalid}
+    m.top = {dialog:invalid,findNode:LiveUxNoNode}
     m.liveEpgTimer = {control:""}
     m.liveEpgSequence = 0
     m.liveEpgBusy = ""
@@ -26,25 +26,22 @@ sub Main()
     m.playing = false
     m.search = ""
     m.views = []
-    selectItem({action:"live"})
-    check(m.queue.count() = 1 and m.queue[0].path = "/api/live/categories?limit=80&offset=0","Live opens categories before any all-channel request")
-    m.queue = []
-    m.items = channels
-    m.liveCategory = "category:World News"
-    m.search = "news"
-    selectItem({action:"liveclear"})
-    check(m.liveCategory = "" and m.search = "" and m.queue.count() = 1,"clear category and search explicitly")
-    m.mode = "browse"
-    values = LiveBrowseActions(m.items,"category:World News","")
-    check(values[0].action = "livefilter" and values[1].action = "liveclear" and values[3].id = "opaque/channel:A","filter controls preserve opaque channel IDs")
-    check(LiveBrowseActions(m.items,"","").count() = 4,"clear filter hidden when no filter")
+    m.homeActions = {itemFocused:0}
+    ' Live opens the raw guide (live_v2_runtime.py); channel lists keep the focused now/next panel.
+    values = LiveBrowseActions(m.items,"category:World News","news")
+    check(values.count() = 2 and values[0].id = "opaque/channel:A" and values[0].action = invalid,"filters live on a tab row and never take channel slots")
+    many = []
+    for i = 1 to 90
+        many.push({id:"channel:" + i.toStr(),type:"live"})
+    end for
+    check(LiveBrowseActions(many,"","").count() = 82,"channel rows stay bounded")
     m.queue = []
     queueLiveEpg(m.items[0])
     check(m.queue.count() = 0 and m.liveEpgTimer.control = "start","focus is debounced, never requests immediately")
     m.list.itemFocused = 1
     queueLiveEpg(m.items[1])
     fetchFocusedLiveEpg()
-    check(m.queue.count() = 1 and instr(1,m.queue[0].path,"opaque%2Fchannel%3AB") > 0,"rapid focus requests only latest channel")
+    check(m.queue.count() = 1 and m.queue[0].path = "/api/v2/iptv/guide/opaque%2Fchannel%3AB","rapid focus requests only latest channel through v2")
     tagB = m.liveEpgBusy
     m.list.itemFocused = 0
     queueLiveEpg(m.items[0])
@@ -81,13 +78,8 @@ sub Main()
     m.queue = []
     m.liveEpgPending = invalid
     check(openFocusedLiveGuide(),"Info explicitly opens selected channel guide")
-    check(m.queue.count() = 1 and left(m.queue[0].path,11) = "/api/guide/","Info requests guide, not playback")
+    check(m.queue.count() = 1 and m.queue[0].path = "/api/v2/iptv/guide/opaque%2Fchannel%3AA","Info requests the v2 guide, not playback")
     check(m.views[m.views.count()-1].index = 0,"guide return retains exact channel focus snapshot")
-    m.queue = []
-    selectItem(m.items[0])
-    check(m.queue.count() = 1 and m.queue[0].path = "/api/playback" and m.queue[0].method = "POST","channel Select directly plays without guide maze")
-    body = m.queue[0].body
-    check(body.channel_id = "opaque/channel:A" and body.position = 0 and body.allow_unknown_audio = invalid,"direct live preserves opaque ID without language gating")
     print "ROKU_LIVE_UX_OK"
 end sub
 sub NoopFocus(value as boolean)
@@ -98,3 +90,6 @@ sub check(condition as boolean, message as string)
         stop
     end if
 end sub
+function LiveUxNoNode(id as string) as dynamic
+    return invalid
+end function

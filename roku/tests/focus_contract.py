@@ -12,9 +12,9 @@ class FocusContract(unittest.TestCase):
     def test_fixed_position_collections(self):
         root = ET.parse(Path(__file__).resolve().parents[1] / "components/MainScene.xml").getroot()
         expected = {
-            "sidebar": ("MarkupList", "[21,108]", "7", "NavIcon"),
-            "sourceList": ("MarkupList", "[100,234]", "2", "SourceCard"),
-            "posterGrid": ("HoldGrid", "[100,248]", "2", "HomeCard"),
+
+            "sourceList": ("MarkupList", "[776,172]", "5", "SourceCard"),
+            "posterGrid": ("HoldGrid", "[128,180]", "2", "HomeCard"),
         }
         for node_id, (tag, translation, rows, component) in expected.items():
             with self.subTest(node=node_id):
@@ -26,6 +26,7 @@ class FocusContract(unittest.TestCase):
                 self.assertEqual(node.get("translation"), translation)
                 self.assertEqual(node.get("numRows"), rows)
                 self.assertEqual(node.get("itemComponentName"), component)
+        self.assertEqual(root.find(".//*[@id='sidebar']").tag, "DesignRail")
         self.assertEqual(root.find(".//*[@id='posterGrid']").get("numColumns"), "4")
         base = ET.parse(Path(__file__).resolve().parents[1] / "components/HoldGrid.xml").getroot()
         self.assertEqual(base.get("extends"), "MarkupGrid")

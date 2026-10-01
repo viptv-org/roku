@@ -2,24 +2,7 @@ sub homeResponse(kind as string, result as object)
     if m.mode <> "home" or m.homeData = invalid then return
     if m.homeKeyValue <> m.config.base + "|" + Txt(m.config.account_id) + "|" + m.profile then return
     if kind = "catalogs"
-        for each media in ["movie","series"]
-            if not m.homeDone.doesExist(media)
-                chosen = invalid
-                if result.ok
-                    for each catalog in Bounded(result.data,100)
-                        if catalog.type = media
-                            chosen = catalog
-                            exit for
-                        end if
-                    end for
-                end if
-                if chosen <> invalid
-                    request("GET","/api/discover?type=" + media + "&addon_id=" + Enc(Txt(chosen.addon_id)) + "&catalog=" + Enc(Txt(chosen.id)) + "&skip=0",invalid,"home:" + media)
-                else
-                    homeResponse(media,{ok:false})
-                end if
-            end if
-        end for
+        homeUseCatalogs(result)
         return
     end if
     slots = {progress:0,movie:1,series:2,live:3,favorites:4,livefavorites:5,recent:6}
@@ -37,16 +20,16 @@ sub homeResponse(kind as string, result as object)
         if kind = "favorites"
             if GetInterface(incoming,"ifAssociativeArray") <> invalid then incoming = incoming.items
             m.liveFavoriteItems = Bounded(incoming,40)
-            request("GET","/api/live?view=us&collection=favorites&limit=24",invalid,"home:livefavorites")
+            request("GET","/api/v2/iptv/live/channels?collection=favorites&limit=24",invalid,"home:livefavorites")
         end if
         if kind = "progress"
             if GetInterface(incoming,"ifAssociativeArray") <> invalid then incoming = incoming.items
             incoming = ContinueWatchingItems(incoming)
         end if
-        if kind = "recent" or kind = "livefavorites" then incoming = result.data.channels
+        if kind = "recent" or kind = "livefavorites" then incoming = result.data.items
         if kind = "favorites" then incoming = OnDemandItems(incoming)
         if kind = "movie" or kind = "series" then incoming = result.data.metas
-        if kind = "live" then incoming = result.data.channels
+        if kind = "live" then incoming = result.data.items
         values = []
         for each item in Bounded(incoming,12)
             if type(item) = "roAssociativeArray"
@@ -118,20 +101,21 @@ sub homeResponse(kind as string, result as object)
     end if
     if m.homeRowKeys.count() = 0
         m.status.text = "Loading…"
-        if m.homeDone.count() >= 7 then m.status.text = "No titles yet. Search or try again."
+        if m.homeDone.count() >= 6 then m.status.text = "No titles yet. Search or try again."
     else
         m.status.text = ""
     end if
     homeDefaultShelf()
     homeRestore()
     homeHero()
+    homeCatalogPump()
 end sub
 
 function homeCurrent() as dynamic
     if m.homeData = invalid then return invalid
     r = m.homePosition[0]
     c = m.homePosition[1]
-    if r < 0 or r > 6 then return invalid
+    if r < 0 or r >= m.homeData.count() then return invalid
     values = homeValues(r)
     if c < 0 or c >= values.count() then return invalid
     return values[c]
@@ -154,6 +138,7 @@ sub homeFocused()
     ' Update the hero immediately on focus, rather than after the artwork timer.
     homeHero()
     uiQueueCardArtwork()
+    homeCatalogPump(true)
 end sub
 
 sub retryHome()
@@ -168,7 +153,7 @@ sub homeHero()
         for each flag in m.homeFailed
             if flag then failed = true
         end for
-        empty = m.homeRowKeys.count() = 0 and m.homeDone.count() >= 7
+        empty = m.homeRowKeys.count() = 0 and m.homeDone.count() >= 6
         m.homeRetry.visible = failed or empty or m.homeRetry.hasFocus()
         m.homeRetry.translation = [1030,64]
         if empty
@@ -193,12 +178,14 @@ sub homeHero()
     if m.homeHeroPanel <> invalid
         hero = {}
         hero.append(item)
+        hero.episodeTitle = HeroEpisodeTitle(item)
         path = "/api/meta/" + Enc(Txt(item.type,"movie")) + "/" + Enc(PresentationMetadataId(item))
         cached = m.cache[path]
         if cached <> invalid
             meta = cached.data.meta
             if meta <> invalid
-                for each field in ["background","backdrop","description","overview","genres","runtime","releaseInfo"]
+                if hero.episodeTitle = "" then hero.episodeTitle = HeroEpisodeTitle(item,meta)
+                for each field in ["background","backdrop","description","overview","genres","runtime","releaseInfo","logo","imdbRating"]
                     if hero[field] = invalid or Txt(hero[field]) = ""
                         if meta[field] <> invalid then hero[field] = meta[field]
                     end if
@@ -206,14 +193,21 @@ sub homeHero()
             end if
         end if
         if m.uiHeroMetadata <> invalid and m.uiHeroMetadata[path] <> invalid
-            for each field in ["background","backdrop","description","overview","genres","runtime","releaseInfo"]
+            if hero.episodeTitle = "" then hero.episodeTitle = HeroEpisodeTitle(item,m.uiHeroMetadata[path])
+            for each field in ["background","backdrop","description","overview","genres","runtime","releaseInfo","logo","imdbRating"]
                 if hero[field] = invalid or Txt(hero[field]) = ""
                     if m.uiHeroMetadata[path][field] <> invalid then hero[field] = m.uiHeroMetadata[path][field]
                 end if
             end for
         end if
         hero.name = m.homeTitle.text
-        hero.context = PresentationContext(item)
+        hero.context = HeroContext(hero)
+        if hero.type = "series" and hero.duration <> invalid and hero.duration > 0 then hero.runtime = int((hero.duration+30)/60).toStr()+" min"
+        hero.elapsed = ""
+        if item.position <> invalid and (item.position > 0 or (item.duration <> invalid and item.duration > 0))
+            hero.elapsed = PlayerTime(item.position)
+            if item.duration <> invalid and item.duration > 0 then hero.elapsed += " of " + int((item.duration+30)/60).toStr() + " min"
+        end if
         hero.background = PresentationBackdrop(hero)
         if hero.background = "" and m.uiLandscapeCache[path] <> invalid then hero.background = m.uiLandscapeCache[path]
         hero.backdrop = hero.background
@@ -251,6 +245,7 @@ sub navSelected()
     index = m.sidebar.itemSelected
     if index < 0 or index >= m.navItems.count() then return
     if m.navItems[index].action <> "home" then saveView()
+    m.sidebar.setFocus(false)
     m.top.setFocus(true)
     selectItem(m.navItems[index])
     uiFocusChanged()

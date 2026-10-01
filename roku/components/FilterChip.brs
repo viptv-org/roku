@@ -10,27 +10,32 @@ sub render()
     end if
     label = m.top.findNode("label")
     label.text = Txt(item.title,Txt(item.name,"All"))
-    label.font.size = 21
+    label.font.size = 15
     chevron = m.top.findNode("chevron")
     chevron.visible = item.dropdown = true
-    chevron.blendColor = "#A6A8AAFF"
-    label.maxWidth = 216
-    if chevron.visible then label.maxWidth = 192
+    chevron.blendColor = "#B6B4AFFF"
+    width = 240
+    if item.hasField("uiWidth") then width = item.uiWidth
+    m.top.findNode("surface").width = width
+    chevron.translation = [width-26,11]
+    label.maxWidth = width-32
+    if chevron.visible then label.maxWidth = width-54
     selected = item.selected = true
     owner = m.top.gridHasFocus
     active = owner and m.top.focusPercent > 0.5
+    m.top.findNode("surface").focused = active
     surface = m.top.findNode("surface")
-    surface.blendColor = "#202224FF"
-    label.color = "#A6A8AA"
+    surface.blendColor = "#212124FF"
+    label.color = "#B6B4AF"
     label.repeatCount = 0
     if selected
-        surface.blendColor = "#303234FF"
-        label.color = "#F5F5F5"
+        surface.blendColor = "#34343AFF"
+        label.color = "#F4F2EE"
     end if
     if active
-        surface.blendColor = "#F5F5F5FF"
-        label.color = "#101112"
-        chevron.blendColor = "#101112FF"
+        surface.blendColor = "#F4F2EEFF"
+        label.color = "#0B0B0C"
+        chevron.blendColor = "#0B0B0CFF"
         label.repeatCount = -1
     end if
 end sub

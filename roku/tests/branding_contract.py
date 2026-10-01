@@ -1,6 +1,7 @@
-"""Offline contract for Roku branding and remote-only profile avatars."""
+"""Offline contract for Roku branding and validated profile avatar sources."""
 from pathlib import Path
 import re
+import json
 
 ROOT = Path(__file__).resolve().parents[1]
 manifest = dict(
@@ -19,7 +20,17 @@ profile_xml = (ROOT / "components/ProfileCard.xml").read_text()
 profile_brs = (ROOT / "components/ProfileCard.brs").read_text()
 assert 'id="avatar"' in profile_xml and 'id="avatarFallback"' in profile_xml
 assert "item.avatar_url" in profile_brs
-assert not re.search(r'pkg:/images/[^"\n]*avatar', profile_xml + profile_brs, re.I)
+assert 'AccountAvatarStyle(item.avatar_style)' in profile_brs
+assert 'choice >= 1 and choice <= 48' in profile_brs
+# Render-thread components cannot construct roFileSystem on physical Roku.
+assert 'roFileSystem' not in profile_brs
+catalog = json.loads((ROOT / "data/avatar-catalog.json").read_text())
+for category in catalog["categories"]:
+    paths = [item["local"] for item in category["items"]] if "items" in category else [
+        f"pkg:/images/avatar-catalog/{category['style']}-{choice}.png" for choice in range(1,49)
+    ]
+    for uri in paths:
+        assert (ROOT / uri.removeprefix("pkg:/")).is_file(), uri
 assert 'loadStatus' in profile_brs and 'm.initial.visible = not loaded' in profile_brs
 hero_xml = (ROOT / "components/HeroPanel.xml").read_text()
 hero_brs = (ROOT / "components/HeroPanel.brs").read_text()

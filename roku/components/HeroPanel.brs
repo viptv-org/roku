@@ -1,7 +1,19 @@
 sub init()
     m.top.findNode("backdrop").observeField("loadStatus","heroArtLoaded")
+    m.top.findNode("titleLogo").observeField("loadStatus","logoLoaded")
+    m.top.findNode("metadataLayoutTimer").observeField("fire","layoutMetadata")
 end sub
-
+sub logoLoaded()
+    logo = m.top.findNode("titleLogo")
+    ready = logo.uri <> "" and logo.loadStatus = "ready"
+    if ready and logo.bitmapHeight > 0
+        width = 79.0*logo.bitmapWidth/logo.bitmapHeight
+        if width > 400 then width = 400
+        logo.width = width
+    end if
+    logo.visible = ready
+    m.top.findNode("title").visible = not ready
+end sub
 sub heroArtLoaded()
     art = m.top.findNode("backdrop")
     if art.loadStatus = "failed" and art.uri <> m.artOriginal and m.artRetried <> true
@@ -12,27 +24,17 @@ sub heroArtLoaded()
     end if
     m.top.artState = art.loadStatus
     art.visible = art.uri <> "" and art.loadStatus = "ready"
-    instant = m.top.findNode("backdropInstant")
-    if instant <> invalid then instant.visible = instant.uri <> "" and not art.visible
+    ambient = m.top.findNode("backdropInstant")
+    ambient.visible = ambient.uri <> ""
 end sub
-
 sub render()
     item = m.top.model
     if item = invalid then return
-    compact = m.top.compact
-    height = 720
-    if compact then height = 336
-    m.top.clippingRect = [0,0,1280,height]
-    for each id in ["base","gradientLeft","gradientBottom"]
-        m.top.findNode(id).height = height
-    end for
-    ' Keep the same image framing when the shelf moves up; clip, do not zoom.
-    m.top.findNode("backdrop").height = 720
-    portrait = Txt(item.poster)
+    m.top.clippingRect = [0,0,1280,633]
     backdrop = ""
     for each field in ["backdrop","background"]
         uri = Txt(item[field])
-        if uri <> "" and uri <> portrait
+        if uri <> "" and uri <> Txt(item.poster)
             backdrop = uri
             exit for
         end if
@@ -40,73 +42,75 @@ sub render()
     art = m.top.findNode("backdrop")
     if m.artOriginal <> backdrop then m.artRetried = false
     m.artOriginal = backdrop
-    ' Show the shelf's already-decoded card image instantly while the hi-res loads.
-    instant = m.top.findNode("backdropInstant")
-    instantUri = ""
-    if backdrop <> "" then instantUri = ImageUrl(backdrop,256,144,false)
-    if instant.uri <> instantUri then instant.uri = instantUri
-    instant.loadWidth = ImagePixels(256)
-    instant.loadHeight = ImagePixels(144)
-    uri = ImageUrl(backdrop,1280,720,true)
+    uri = ImageUrl(backdrop,1120,720,true)
     if m.artRetried = true then uri = backdrop
-    art.loadWidth = ImagePixels(1280)
-    art.loadHeight = ImagePixels(720)
-    if art.uri <> uri
-        m.top.artState = "loading"
-        art.uri = uri
-    end if
+    if art.uri <> uri then art.uri = uri
+    ambient = m.top.findNode("backdropInstant")
+    low = ImageUrl(backdrop,80,45,false)
+    if ambient.uri <> low then ambient.uri = low
     heroArtLoaded()
-    fallback = m.top.findNode("portrait")
-    fallback.uri = ""
-    fallback.visible = false
-    fallback.translation = [938,102]
-    fallback.width = 252
-    fallback.height = 378
-    m.top.findNode("gradientLeft").visible = backdrop <> ""
-    m.top.findNode("gradientBottom").visible = backdrop <> ""
+    m.top.findNode("portrait").visible = false
     eyebrow = m.top.findNode("eyebrow")
     eyebrow.font.size = 14
     eyebrow.text = "FEATURED " + ucase(Txt(item.type))
     if Txt(item.type) = "live" then eyebrow.text = "LIVE NOW"
-    if item.progressFraction <> invalid
-        if item.progressFraction >= 0 then eyebrow.text = "CONTINUE WATCHING"
-    end if
+    if item.progressFraction <> invalid and item.progressFraction >= 0 then eyebrow.text = "CONTINUE WATCHING"
     if Txt(item.type) = "" then eyebrow.text = ""
     title = m.top.findNode("title")
-    title.font.size = 44
-    if title.text <> Txt(item.name,"VIPTV") then title.text = Txt(item.name,"VIPTV")
+    title.font.size = 37
+    title.text = Txt(item.name,"VIPTV")
+    if len(title.text) > 30 then title.font.size = 32
+    logo = m.top.findNode("titleLogo")
+    logoUri = ImageUrl(Txt(item.logo),410,118,false,true)
+    if logo.uri <> logoUri then logo.uri = logoUri
+    logoLoaded()
+    context = m.top.findNode("episode")
+    context.font.size = 16
+    context.text = Txt(item.context)
+    context.visible = context.text <> ""
+    fraction = -1.0
+    if item.progressFraction <> invalid then fraction = item.progressFraction
+    if fraction > 1 then fraction = 1
+    m.top.findNode("progressTrack").visible = fraction >= 0
+    m.top.findNode("progressFill").visible = fraction > 0
+    m.top.findNode("progressFill").width = 120*fraction
+    if fraction < 0 then m.top.findNode("progressFill").width = 0
+    elapsed = m.top.findNode("elapsed")
+    elapsed.text = Txt(item.elapsed)
+    elapsed.visible = elapsed.text <> ""
+    layoutMetadata()
+    m.top.findNode("metadataLayoutTimer").control = "start"
     facts = []
-    year = Txt(item.year,Txt(item.releaseInfo))
-    if year <> "" then facts.push(year)
-    runtime = Txt(item.runtime)
-    if runtime <> "" then facts.push(runtime)
-    genres = []
-    for each genre in Bounded(item.genres,2)
-        if Txt(genre) <> "" then genres.push(Txt(genre))
+    if Txt(item.year,Txt(item.releaseInfo)) <> "" then facts.push(Txt(item.year,Txt(item.releaseInfo)))
+    if Txt(item.imdbRating) <> "" then facts.push("IMDb " + Txt(item.imdbRating))
+    if Txt(item.runtime) <> "" then facts.push(Txt(item.runtime))
+    for each genre in Bounded(item.genres,3)
+        facts.push(Txt(genre))
     end for
-    if genres.count() > 0 then facts.push(genres.join(" / "))
-    if Txt(item.context) <> "" then facts.push(item.context)
+    factsY = 262
+    if not context.visible and fraction < 0 and not elapsed.visible then factsY = 228
     factLabel = m.top.findNode("facts")
-    factText = facts.join("  ·  ")
-    if factLabel.text <> factText then factLabel.text = factText
-    factLabel.font.size = 18
+    factLabel.text = facts.join(" · ")
+    factLabel.font.size = 15
+    factLabel.translation = [128,factsY]
     summary = m.top.findNode("summary")
-    description = Txt(item.description)
-    if description = "" then description = Txt(item.overview)
-    summary.text = description
-    summary.font.size = 20
-    eyebrow.translation = [100,128]
-    title.translation = [100,166]
-    summary.translation = [100,228]
-    factLabel.translation = [100,322]
-    if compact
-        eyebrow.translation = [100,44]
-        title.translation = [100,76]
-        title.font.size = 38
-        factLabel.translation = [100,138]
-        summary.translation = [100,178]
-        fallback.translation = [1010,28]
-        fallback.width = 176
-        fallback.height = 264
-    end if
+    summary.text = Txt(item.description,Txt(item.overview))
+    summary.font.size = 17
+    summary.translation = [128,factsY+36]
+end sub
+
+sub layoutMetadata()
+    context = m.top.findNode("episode")
+    context.width = 0
+    contextWidth = 0
+    if context.visible then contextWidth = context.localBoundingRect().width
+    if contextWidth > 340 then contextWidth = 340
+    context.width = contextWidth
+    nextX = 128
+    if context.visible then nextX += contextWidth+12
+    track = m.top.findNode("progressTrack")
+    track.translation = [nextX,238]
+    m.top.findNode("progressFill").translation = track.translation
+    if track.visible then nextX += 120+12
+    m.top.findNode("elapsed").translation = [nextX,228]
 end sub

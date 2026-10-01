@@ -1,4 +1,5 @@
 """Run the real guide key handler with rendering isolated from navigation state."""
+from brs_cli import brs_command
 from pathlib import Path
 import subprocess, tempfile, os
 root = Path(__file__).resolve().parents[1]
@@ -6,6 +7,9 @@ source = (root/'components/EpgGrid.brs').read_text()
 def extract(start, end):
     return source[source.index(start):source.index(end, source.index(start))+len(end)]
 checks = '''sub Main()
+ clipped={start:1800,end:3600,programme:{start:0,end:7200}}
+ if EpgActualStart(clipped)<>0 or EpgActualEnd(clipped)<>7200 then throw "clipped cell changed programme time"
+
     m.top = {visible:true,query:"",route:{filter:{id:"all"},search:""}}
     m.details = {visible:false}
     m.channels = [{id:"one"},{id:"two"}]
@@ -35,6 +39,6 @@ end sub
 with tempfile.TemporaryDirectory(prefix='viptv-guide-test-') as d:
     f = Path(d)/'test.brs'
     f.write_text(checks+'\n'+extract('function onKeyEvent(', 'end function')+'\n'+extract('sub epgRoute(', 'end sub'))
-    r = subprocess.run([os.environ.get('VIPTV_BRS_CLI','/home/node/air-roku/node_modules/.bin/brs-cli'),str(f),str(root/'source/Util.brs'),str(root/'source/EpgPolicy.brs')],text=True,capture_output=True,timeout=30)
+    r = subprocess.run([*brs_command(),str(f),str(root/'source/Util.brs'),str(root/'source/EpgPolicy.brs')],text=True,capture_output=True,timeout=30)
     print(r.stdout); print(r.stderr)
     raise SystemExit(0 if r.returncode == 0 and 'FAIL:' not in r.stdout and r.stdout.count('PASS:') == 2 else 1)

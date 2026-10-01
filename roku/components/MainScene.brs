@@ -7,6 +7,8 @@ sub init()
     m.posterGrid = m.top.findNode("posterGrid")
     m.sourceList = m.top.findNode("sourceList")
     m.discoverFilters = m.top.findNode("discoverFilters")
+    m.discoverTypes = m.top.findNode("discoverTypes")
+    m.discoverTypes.observeField("itemSelected","uiDiscoverTypeSelected")
     m.profileGrid = m.top.findNode("profileGrid")
     m.homeHeroPanel = m.top.findNode("homeHeroPanel")
     for each node in [m.standardList,m.posterGrid,m.sourceList]
@@ -31,6 +33,9 @@ sub init()
     m.seekTimer = m.top.findNode("seekTimer")
     m.seekTimer.observeField("fire","seekReplacementFailed")
     m.heartbeat.observeField("fire", "heartbeat")
+    m.playbackLeases = {}
+    m.leaseTick = m.top.findNode("leaseTick")
+    m.leaseTick.observeField("fire","rokuPlaybackLeaseTick")
     m.tasks = []
     m.queue = []
     m.pendingPlayback = false
@@ -54,6 +59,7 @@ sub init()
     m.nextTransitionSession = ""
     m.nextTransitionConnection = invalid
     m.playerReturnDetail = invalid
+    m.playerTitleOwner = invalid
     m.position = 0
     m.duration = 0
     m.cache = {}
@@ -74,6 +80,10 @@ end sub
 
 sub request(method as string, path as string, body as dynamic, tag as string, connection = invalid as dynamic)
     if connection = invalid then connection = m.config
+    if method = "DELETE" and Left(path,17) = "/api/v2/playback/" and m.playbackLeases <> invalid
+        identity = Mid(path,18)
+        m.playbackLeases.delete(identity)
+    end if
     if tag = "home:progress" or tag = "home:favorites" then tag += ":" + homeRevision(mid(tag,6)).toStr()
     if tag = "home:recent" then tag += ":" + homeRevision("progress").toStr()
     if tag = "home:livefavorites" then tag += ":" + homeRevision("favorites").toStr()
@@ -110,6 +120,11 @@ sub request(method as string, path as string, body as dynamic, tag as string, co
         end for
     end if
     if m.queue.count() >= 24 and left(tag,4) <> "side" and tag <> "cleanup"
+        if tag = "livesource"
+            m.pendingPlayback = false
+            m.liveSourcePending = false
+            sourceExhausted("Network queue is busy. Wait a moment and try again.")
+        end if
         if tag = "playback" then m.pendingPlayback = false
         if tag = "favorited" then m.favoriteBusy = false
         m.status.text = "Network queue is busy. Wait a moment and try again."
@@ -157,9 +172,13 @@ sub startRequest(entry as object)
 end sub
 
 sub cancelBrowse()
+    if m.liveSourcePending = true
+        m.liveSourcePending = false
+        m.pendingPlayback = false
+    end if
     m.resumeSourcePreference = invalid
     if Txt(m.pendingStartupId) <> ""
-        request("DELETE","/api/playback/startups/" + Enc(m.pendingStartupId),invalid,"cleanupstartup",m.pendingStartupConnection)
+        if Left(Txt(m.pendingStartupConnection.path),16) <> "/api/v2/playback" then request("DELETE","/api/playback/startups/" + Enc(m.pendingStartupId),invalid,"cleanupstartup",m.pendingStartupConnection)
         m.pendingStartupId = ""
         m.pendingPlayback = false
     end if
@@ -191,7 +210,7 @@ sub cancelBrowse()
         cancellableStartup = false
         if entry.body <> invalid then cancellableStartup = Txt(entry.body.startup_id) <> ""
         if not cancellableStartup
-            if left(tag,5) = "auth:" or left(tag,4) = "side" or left(tag,7) = "cleanup" or left(tag,8) = "playback" or left(tag,12) = "seekplayback" or left(tag,9) = "favorited" or left(tag,16) = "librarycorrected" then retained.push(entry)
+            if left(tag,5) = "auth:" or left(tag,4) = "side" or left(tag,7) = "cleanup" or left(tag,8) = "playback" or left(tag,12) = "seekplayback" or left(tag,9) = "favorited" or left(tag,16) = "librarycorrected" or playerTitleOwnsTag(tag) then retained.push(entry)
         end if
     end for
     m.queue = retained
@@ -200,7 +219,7 @@ sub cancelBrowse()
         if task.request.body <> invalid
             if Txt(task.request.body.startup_id) <> "" then task.cancel = true
         end if
-        if left(tag,5) <> "auth:" and left(tag,4) <> "side" and left(tag,7) <> "cleanup" and left(tag,8) <> "playback" and left(tag,12) <> "seekplayback" and left(tag,9) <> "favorited" and left(tag,16) <> "librarycorrected" then task.cancel = true
+        if left(tag,5) <> "auth:" and left(tag,4) <> "side" and left(tag,7) <> "cleanup" and left(tag,8) <> "playback" and left(tag,12) <> "seekplayback" and left(tag,9) <> "favorited" and left(tag,16) <> "librarycorrected" and not playerTitleOwnsTag(tag) then task.cancel = true
     end for
 end sub
 
@@ -246,7 +265,7 @@ sub home()
         showSettings()
         return
     end if
-    if m.sidebar <> invalid then m.sidebar.jumpToItem = 1
+    if m.sidebar <> invalid then m.sidebar.jumpToItem = 2
     showHome()
 end sub
 

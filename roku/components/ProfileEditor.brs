@@ -2,7 +2,9 @@ sub init()
     for each id in ["form","picker","avatar","name","actions","categories","avatars","pages","page"]
         m[id] = m.top.findNode(id)
     end for
-    m.top.findNode("title").font.size = 42
+    m.top.findNode("title").font.size = 37
+    m.actions.itemSize = [150,48]
+    m.name.itemSize = [576,60]
     m.catalog = ParseJson(ReadAsciiFile("pkg:/data/avatar-catalog.json"))
     m.actions.content = buttons(["Continue","Cancel"],240,56)
     m.pages.content = buttons(["Previous","Next"],180,40)
@@ -49,13 +51,14 @@ sub refresh()
         if draft.editing = true and draft.profile.is_primary <> true then titles.push("Delete profile")
     end if
     m.actions.numColumns = titles.count()
-    m.actions.content = buttons(titles,240,56)
+    m.actions.content = buttons(titles,150,48)
     label = draft.name
     if label = "" then label = "Enter a name"
-    m.name.content = buttons([label],560,64)
+    m.name.content = buttons([label],576,60)
+    m.name.content.getChild(0).addFields({uiField:true})
     root = CreateObject("roSGNode","ContentNode")
     item = root.createChild("ContentNode")
-    item.addFields({uiSize:176})
+    item.addFields({uiSize:174})
     item.hdPosterUrl = draft.avatar_url
     m.avatar.content = root
 end sub

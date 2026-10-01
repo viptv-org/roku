@@ -63,25 +63,30 @@ sub accountRenderProfilePage()
     page = AccountProfilePage(m.accountProfiles,m.profilePage)
     m.profilePage = page.index
     values = page.items
+    hasAdd = false
+    for each value in values
+        if Txt(value.action) = "newprofile" then hasAdd = true
+    end for
+    if m.canCreateProfile = true and m.accountProfiles.count() < 12 and not hasAdd then values.push({name:"Add profile",action:"newprofile",presentation_complete:true})
     title = "Who's watching?"
     if m.managingProfiles = true then title = "Manage profiles"
     rows(title,values,"profiles","")
-    m.heading.translation = [100,146]
-    m.heading.width = 1080
+    m.heading.translation = [128,154]
+    m.heading.width = 1024
     m.heading.horizAlign = "center"
-    m.heading.font.size = 44
+    m.heading.font.size = 40
     if m.profileGrid = invalid then return
     content = CreateObject("roSGNode","ContentNode")
     for each value in values
         child = content.createChild("ContentNode")
         child.addFields(value)
-        child.addFields({uiOwnerFocused:false})
+        child.addFields({uiOwnerFocused:false,managing:m.managingProfiles = true})
     end for
     columns = values.count()
     if columns < 1 then columns = 1
-    gridWidth = columns * 178 + (columns - 1) * 34
+    gridWidth = columns * 146 + (columns - 1) * 43
     m.profileGrid.numColumns = columns
-    m.profileGrid.translation = [int((1280 - gridWidth) / 2),252]
+    m.profileGrid.translation = [int((1280 - gridWidth) / 2),265]
     m.profileGrid.content = content
     m.profileGrid.visible = values.count() > 0
     m.profileGrid.jumpToItem = 0
@@ -91,8 +96,13 @@ sub accountRenderProfilePage()
         end for
     end if
     m.profileButtons = AccountProfileButtons(m.accountProfiles.count(),m.canCreateProfile = true,m.managingProfiles = true)
-    accountFillProfileButtons(m.profileActions,m.profileButtons,240,56,530)
-    accountFillProfileButtons(m.profilePages,[{name:"Previous",action:"previous"},{name:"Next",action:"next"}],180,40,612)
+    actions = []
+    for each button in m.profileButtons
+        if button.action <> "newprofile" then actions.push(button)
+    end for
+    m.profileButtons = actions
+    accountFillProfileButtons(m.profileActions,m.profileButtons,176,40,508)
+    accountFillProfileButtons(m.profilePages,[{name:"Previous",action:"previous"},{name:"Next",action:"next"}],140,36,580)
     m.profilePages.visible = page.count > 1
     m.profilePageLabel.visible = page.count > 1
     m.profilePageLabel.text = (page.index+1).toStr() + " / " + page.count.toStr()
@@ -112,6 +122,7 @@ sub accountFillProfileButtons(grid as object,items as object,width as integer,he
         child.addFields({uiWidth:width,uiHeight:height,uiOwnerFocused:false})
     end for
     count = items.count()
+    grid.itemSize = [width,height]
     grid.content = content
     grid.visible = count > 0
     if count = 0 then return

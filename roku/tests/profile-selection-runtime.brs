@@ -26,6 +26,7 @@ sub Main()
     m.profileDraft = invalid
     m.searchFocusPending = false
     m.profile = ""
+    m.top = CreateObject("roSGNode","Group")
 
     ' Use a real native ContentNode whose transport fields deliberately disagree with
     ' the canonical model. Roku OS field population differs from the simulator, so

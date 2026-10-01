@@ -1,4 +1,5 @@
 """Headless production handlers: next intent, end trigger and previous-episode actions."""
+from brs_cli import brs_command
 from pathlib import Path
 import os, subprocess, tempfile
 root=Path(__file__).resolve().parents[1]
@@ -151,6 +152,6 @@ end sub
 with tempfile.TemporaryDirectory(prefix='viptv-next-') as folder:
     for name,code in cases.items():
         path=Path(folder)/(name+'.brs');path.write_text(code)
-        result=subprocess.run([os.environ.get('VIPTV_BRS_CLI','/home/node/air-roku/node_modules/.bin/brs-cli'),str(path),*[str(root/'source'/f) for f in ['Util.brs','PresentationPolicy.brs','ContinuationPolicy.brs']]],capture_output=True,text=True,timeout=30)
+        result=subprocess.run([*brs_command(),str(path),*[str(root/'source'/f) for f in ['Util.brs','PresentationPolicy.brs','ContinuationPolicy.brs']]],capture_output=True,text=True,timeout=30)
         print(result.stdout,result.stderr)
         if result.returncode or '_OK' not in result.stdout or 'Error' in result.stdout:raise SystemExit(1)

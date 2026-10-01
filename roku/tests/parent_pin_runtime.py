@@ -1,4 +1,5 @@
 """Exercise actual PIN entry masking/cancellation and profile-unlock handoff."""
+from brs_cli import brs_command
 from pathlib import Path
 import os,subprocess,tempfile
 root=Path(__file__).resolve().parents[1]
@@ -68,6 +69,6 @@ end function
 source=source.replace('m.top={secret:true,value:"1234",findNode:findLabel}', 'm.top={secret:true,value:"1234",findNode:findLabel,label:m.label}')
 with tempfile.TemporaryDirectory() as directory:
  fixture=Path(directory)/'parent.brs';fixture.write_text(source)
- result=subprocess.run([os.environ.get('VIPTV_BRS_CLI','brs-cli'),str(fixture)],capture_output=True,text=True,timeout=30)
+ result=subprocess.run([*brs_command(),str(fixture)],capture_output=True,text=True,timeout=30)
  print(result.stdout,end='');print(result.stderr,end='')
  if result.returncode or 'PARENT_PIN_RUNTIME_OK' not in result.stdout:raise SystemExit(1)

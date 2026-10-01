@@ -1,62 +1,99 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version='1.0' encoding='utf-8'?>
 <component name="PlayerOverlay" extends="Group">
  <interface>
-  <field id="model" type="assocarray" onChange="render"/>
-  <field id="command" type="assocarray" alwaysNotify="true"/>
-  <field id="opened" type="boolean" value="true" onChange="openedChanged"/>
+  <field id="model" type="assocarray" onChange="render" />
+  <field id="command" type="assocarray" alwaysNotify="true" />
+  <field id="opened" type="boolean" value="true" onChange="openedChanged" />
  </interface>
- <script type="text/brightscript" uri="pkg:/source/Util.brs"/>
- <script type="text/brightscript" uri="pkg:/source/SourceLabels.brs"/>
- <script type="text/brightscript" uri="pkg:/components/PlayerOverlay.brs"/>
+ <script type="text/brightscript" uri="pkg:/source/Util.brs" />
+ <script type="text/brightscript" uri="pkg:/source/SourceLabels.brs" />
+ <script type="text/brightscript" uri="pkg:/components/PlayerOverlay.brs" />
  <children>
-  <Poster id="bottomGradient" translation="[0,382]" width="1280" height="338" uri="pkg:/images/player-gradient-bottom.png"/>
-  <Poster id="topGradient" width="1280" height="210" uri="pkg:/images/player-gradient-top.png"/>
+  <Poster id="bottomGradient" translation="[0,382]" width="1280" height="338" uri="pkg:/images/player-gradient-bottom.png" />
+  <Poster id="topGradient" width="1280" height="210" uri="pkg:/images/player-gradient-top.png" />
   <Group id="branding">
-   <Poster id="brandMark" translation="[64,40]" width="36" height="32" uri="pkg:/images/viptv-mark.png"/>
-   <Label id="brandWordmark" translation="[112,36]" width="700" height="40" vertAlign="center" text="" font="font:MediumBoldSystemFont" color="#F5F5F5"/>
-   <Label id="playbackStatus" translation="[1048,36]" width="168" height="40" horizAlign="right" vertAlign="center" font="font:SmallBoldSystemFont" text="PLAYING"/>
+   <Poster id="brandMark" translation="[64,40]" width="36" height="32" uri="pkg:/images/viptv-mark.png" visible="false" />
+   <Label id="brandWordmark" translation="[64,48]" width="900" height="26" vertAlign="center" text="" color="#F4F2EE">
+    <Font role="font" uri="pkg:/fonts/onest_700.ttf" size="19" />
+   </Label>
+   <Label id="playbackStatus" translation="[1048,36]" width="168" height="40" horizAlign="right" vertAlign="center" text="PLAYING">
+    <Font role="font" uri="pkg:/fonts/onest_700.ttf" size="15" />
+   </Label>
   </Group>
   <Group id="channelIdentity" visible="false">
-   <Poster id="channelLogoSurface" translation="[64,34]" width="84" height="56" uri="pkg:/images/ui-round-fill.9.png" blendColor="#242628E8"/>
-   <Poster id="channelLogo" translation="[72,40]" width="68" height="48" loadDisplayMode="scaleToFit"/>
-   <Label id="channelName" translation="[164,42]" width="1018" height="36" font="font:MediumBoldSystemFont"/>
+   <Poster id="channelLogoSurface" translation="[64,34]" width="84" height="56" uri="pkg:/images/ui-round-fill.9.png" blendColor="#2A2A2EE8" />
+   <Poster id="channelLogo" translation="[72,40]" width="68" height="48" loadDisplayMode="scaleToFit" />
+   <Label id="channelName" translation="[164,42]" width="1018" height="36">
+    <Font role="font" uri="pkg:/fonts/onest_700.ttf" size="19" />
+   </Label>
   </Group>
-  <Label id="eyebrow" translation="[64,460]" width="1100" height="26" color="#C5C6C7"><Font role="font" size="18"/></Label>
-  <Group id="programmeProgress" visible="false" translation="[64,572]">
-   <Poster width="1152" height="6" uri="pkg:/images/ui-progress-pill.9.png" blendColor="#5A5C5EFF"/>
-   <Poster id="programmeFill" width="1" height="6" uri="pkg:/images/ui-progress-pill.9.png" blendColor="#F5F5F5FF"/>
+  <Label id="eyebrow" translation="[64,440]" width="1100" height="20" color="#DAD8D3">
+   <Font role="font" size="18" uri="pkg:/fonts/onest_400.ttf" />
+  </Label>
+  <Group id="programmeProgress" visible="false" translation="[64,562]">
+   <Poster width="1152" height="6" uri="pkg:/images/ui-progress-pill.9.png" blendColor="#5A5C5EFF" />
+   <Poster id="programmeFill" width="1" height="6" uri="pkg:/images/ui-progress-pill.9.png" blendColor="#F5C542FF" />
   </Group>
-  <ScrollingLabel id="title" translation="[64,486]" maxWidth="1090" color="#F5F5F5" scrollSpeed="48"><Font role="font" size="32"/></ScrollingLabel>
-  <Label id="context" translation="[64,524]" width="1152" height="30" color="#BFC1C3"><Font role="font" size="20"/></Label>
-  <BusySpinner id="spinner" translation="[610,330]" spinInterval="1.1" control="stop" visible="false"/>
-  <Group id="seekRow" translation="[64,572]">
-   <Poster id="seekTrack" width="1152" height="6" uri="pkg:/images/ui-progress-pill.9.png" blendColor="#5A5C5EFF"/>
-   <Poster id="seekFill" width="0" height="6" uri="pkg:/images/ui-progress-pill.9.png" blendColor="#F5F5F5FF"/>
-   <Rectangle id="seekPreviewMarker" width="3" height="10" color="#A6A8AA" visible="false"/>
-   <Poster id="seekThumb" width="16" height="16" uri="pkg:/images/player-circle.png" blendColor="#F5F5F5FF" visible="false"/>
+  <ScrollingLabel id="title" translation="[64,498]" maxWidth="1088" color="#F4F2EE" scrollSpeed="48">
+   <Font role="font" size="37" uri="pkg:/fonts/bricolage_grotesque_700.ttf" />
+  </ScrollingLabel>
+  <Label id="context" translation="[64,464]" width="1152" height="24" color="#B6B4AF">
+   <Font role="font" size="20" uri="pkg:/fonts/onest_400.ttf" />
+  </Label>
+  <BusySpinner id="spinner" translation="[610,330]" spinInterval="1.1" control="stop" visible="false" />
+  <Group id="seekRow" translation="[64,562]">
+   <Poster id="seekTrack" width="1152" height="6" uri="pkg:/images/ui-progress-pill.9.png" blendColor="#5A5C5EFF" />
+   <Poster id="seekFill" width="0" height="6" uri="pkg:/images/ui-progress-pill.9.png" blendColor="#F5C542FF" />
+   <Rectangle id="seekPreviewMarker" width="3" height="10" color="#B6B4AF" visible="false" />
+   <Poster id="seekThumb" width="16" height="16" uri="pkg:/images/player-circle.png" blendColor="#F4F2EEFF" visible="false" />
   </Group>
-  <Label id="timeLeft" translation="[64,584]" width="576" height="32" font="font:SmallSystemFont" color="#F5F5F5"/>
-  <Label id="timeRight" translation="[640,584]" width="576" height="32" horizAlign="right" font="font:SmallSystemFont" color="#A6A8AA"/>
-  <Group id="controlRow" translation="[398,604]">
-   <Poster id="controlSurface" width="484" height="64" uri="pkg:/images/ui-round-fill.9.png" blendColor="#242628C8"/>
-   <Poster id="focusPill" width="64" height="64" uri="pkg:/images/ui-round-fill.9.png" blendColor="#F5F5F5FF" visible="false"/>
-   <Poster id="btnRewindIcon" translation="[18,18]" width="28" height="28" uri="pkg:/images/ui-nav-player-rewind.png"/>
-   <Label id="btnRewindLabel" translation="[42,0]" width="110" height="56" text="−10 sec" horizAlign="center" vertAlign="center" font="font:SmallBoldSystemFont" color="#F5F5F5"/>
-   <Poster id="btnPauseIcon" translation="[102,18]" width="28" height="28" uri="pkg:/images/ui-nav-player-pause.png"/>
-   <Label id="btnPauseLabel" translation="[218,0]" width="110" height="56" text="Pause" horizAlign="center" vertAlign="center" font="font:SmallBoldSystemFont" color="#F5F5F5"/>
-   <Poster id="btnForwardIcon" translation="[186,18]" width="28" height="28" uri="pkg:/images/ui-nav-player-forward.png"/>
-   <Label id="btnForwardLabel" translation="[394,0]" width="110" height="56" text="+30 sec" horizAlign="center" vertAlign="center" font="font:SmallBoldSystemFont" color="#F5F5F5"/>
-   <Poster id="btnAudioIcon" translation="[270,18]" width="28" height="28" uri="pkg:/images/ui-nav-player-audio.png"/>
-   <Label id="btnAudioLabel" translation="[570,0]" width="110" height="56" text="Audio" horizAlign="center" vertAlign="center" font="font:SmallBoldSystemFont" color="#F5F5F5"/>
-   <Poster id="btnSubtitlesIcon" translation="[354,18]" width="28" height="28" uri="pkg:/images/ui-nav-player-captions.png"/>
-   <Label id="btnSubtitlesLabel" translation="[746,0]" width="110" height="56" text="Captions" horizAlign="center" vertAlign="center" font="font:SmallBoldSystemFont" color="#F5F5F5"/>
-   <Poster id="btnNextIcon" width="28" height="28" uri="pkg:/images/ui-nav-player-forward.png"/>
-   <Label id="btnNextLabel" text="Next episode" visible="false"/>
-   <Poster id="btnExitIcon" translation="[438,18]" width="28" height="28" uri="pkg:/images/ui-nav-player-exit.png"/>
-   <Label id="btnExitLabel" translation="[922,0]" width="110" height="56" text="Exit" horizAlign="center" vertAlign="center" font="font:SmallBoldSystemFont" color="#F5F5F5"/>
+  <Label id="timeLeft" translation="[64,575]" width="576" height="32" color="#F4F2EE">
+   <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
+  </Label>
+  <Label id="timeRight" translation="[640,575]" width="576" height="32" horizAlign="right" color="#B6B4AF">
+   <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
+  </Label>
+  <Group id="controlRow" translation="[64,617]">
+   <DesignSurface id="btnRewindSurface" width="48" height="48" blendColor="#2A2A2EFF" />
+   <DesignSurface id="btnPauseSurface" width="48" height="48" blendColor="#2A2A2EFF" />
+   <DesignSurface id="btnForwardSurface" width="48" height="48" blendColor="#2A2A2EFF" />
+   <DesignSurface id="btnAudioSurface" width="48" height="48" blendColor="#2A2A2EFF" />
+   <DesignSurface id="btnSubtitlesSurface" width="48" height="48" blendColor="#2A2A2EFF" />
+   <DesignSurface id="btnExitSurface" width="48" height="48" blendColor="#2A2A2EFF" />
+   <DesignSurface id="btnNextSurface" width="48" height="48" blendColor="#2A2A2EFF" />
+   <Poster id="controlSurface" width="484" height="64" uri="pkg:/images/ui-round-fill.9.png" blendColor="#2A2A2EC8" />
+   <DesignSurface focused="true" id="focusPill" width="48" height="48" blendColor="#F4F2EEFF" visible="false" />
+   <Poster id="btnRewindIcon" translation="[18,18]" width="20" height="20" uri="pkg:/images/lucide/back10-primary.png" />
+   <Label id="btnRewindLabel" translation="[42,0]" width="110" height="56" text="−10 sec" horizAlign="center" vertAlign="center" color="#F4F2EE">
+    <Font role="font" uri="pkg:/fonts/onest_700.ttf" size="15" />
+   </Label>
+   <Poster id="btnPauseIcon" translation="[102,18]" width="20" height="20" uri="pkg:/images/lucide/pause-primary.png" />
+   <Label id="btnPauseLabel" translation="[218,0]" width="110" height="56" text="Pause" horizAlign="center" vertAlign="center" color="#F4F2EE">
+    <Font role="font" uri="pkg:/fonts/onest_700.ttf" size="15" />
+   </Label>
+   <Poster id="btnForwardIcon" translation="[186,18]" width="20" height="20" uri="pkg:/images/lucide/forward30-primary.png" />
+   <Label id="btnForwardLabel" translation="[394,0]" width="110" height="56" text="+30 sec" horizAlign="center" vertAlign="center" color="#F4F2EE">
+    <Font role="font" uri="pkg:/fonts/onest_700.ttf" size="15" />
+   </Label>
+   <Poster id="btnAudioIcon" translation="[270,18]" width="20" height="20" uri="pkg:/images/lucide/audio-primary.png" />
+   <Label id="btnAudioLabel" translation="[570,0]" width="110" height="56" text="Audio" horizAlign="center" vertAlign="center" color="#F4F2EE">
+    <Font role="font" uri="pkg:/fonts/onest_700.ttf" size="15" />
+   </Label>
+   <Poster id="btnSubtitlesIcon" translation="[354,18]" width="20" height="20" uri="pkg:/images/lucide/captions-primary.png" />
+   <Label id="btnSubtitlesLabel" translation="[746,0]" width="110" height="56" text="Captions" horizAlign="center" vertAlign="center" color="#F4F2EE">
+    <Font role="font" uri="pkg:/fonts/onest_700.ttf" size="15" />
+   </Label>
+   <Poster id="btnNextIcon" width="20" height="20" uri="pkg:/images/lucide/next-primary.png" />
+   <Label id="btnNextLabel" text="Next episode" visible="false" />
+   <Poster id="btnExitIcon" translation="[438,18]" width="20" height="20" uri="pkg:/images/lucide/exit-primary.png" />
+   <Label id="btnExitLabel" translation="[922,0]" width="110" height="56" text="Exit" horizAlign="center" vertAlign="center" color="#F4F2EE">
+    <Font role="font" uri="pkg:/fonts/onest_700.ttf" size="15" />
+   </Label>
   </Group>
-  <Label id="hint" translation="[64,672]" width="1152" height="28" horizAlign="center" font="font:SmallSystemFont" color="#A6A8AA"/>
-  <Timer id="seekDebounceTimer" duration="0.8" repeat="false"/>
-  <Timer id="hideTimer" duration="7" repeat="false"/>
+  <Label id="hint" translation="[64,672]" width="1152" height="28" horizAlign="center" color="#B6B4AF">
+   <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
+  </Label>
+  <Timer id="seekDebounceTimer" duration="0.8" repeat="false" />
+  <Timer id="hideTimer" duration="5" repeat="false" />
  </children>
 </component>

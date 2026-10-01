@@ -19,6 +19,7 @@ sub initAccount()
     m.profilePages.observeField("itemSelected","accountProfilePageSelected")
     m.authLoading = m.top.findNode("authLoading")
     m.authLoadingSpinner = m.top.findNode("authLoadingSpinner")
+    m.authLoadingSpinner.poster.uri = "pkg:/images/design/spinner.png"
     m.authLoadingSpinner.poster.width = 60
     m.authLoadingSpinner.poster.height = 60
     m.pairQrTimer = m.top.findNode("pairQrTimer")

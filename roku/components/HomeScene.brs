@@ -21,7 +21,7 @@ sub homeMutation(origin as object, completed as boolean)
         if kind = "progress"
             request("GET",prefix + "continue/page?limit=13",invalid,"home:progress")
             m.homeDone.delete("recent")
-            request("GET","/api/live?view=us&collection=recent&limit=24",invalid,"home:recent")
+            request("GET","/api/v2/iptv/live/channels?collection=recent&limit=24",invalid,"home:recent")
         else
             m.homeDone.delete("livefavorites")
             request("GET",prefix + "favorites/page?limit=13&exclude_live=true",invalid,"home:" + kind)
@@ -61,7 +61,7 @@ end sub
 sub initHome()
     m.footer = m.top.findNode("footer")
     m.homeRows = m.top.findNode("homeRows")
-    m.homeRows.rowLabelFont.size = 18
+    m.homeRows.rowLabelFont.size = 21
     m.homePanel = m.top.findNode("homePanel")
     m.sidebar = m.top.findNode("sidebar")
     m.homeTitle = m.top.findNode("homeTitle")
@@ -75,7 +75,7 @@ sub initHome()
     m.homeExpanded = true
     m.homeKeyValue = ""
     m.homeDirty = false
-    m.navItems = [{name:"Profile",action:"profiles"},{name:"Home",action:"home"},{name:"Discover",action:"discover"},{name:"Live TV",action:"live"},{name:"My List",action:"favorites"},{name:"Search",action:"search"},{name:"Settings",action:"settings"}]
+    m.navItems = [{name:"Profile",action:"profiles"},{name:"Search",action:"search"},{name:"Home",action:"home"},{name:"Discover",action:"discover"},{name:"Live TV",action:"live"},{name:"My List",action:"favorites"},{name:"Settings",action:"settings"}]
     rebuildNavigation()
     if m.sidebar <> invalid then m.sidebar.observeField("itemSelected","navSelected")
     if m.homeRows <> invalid
@@ -86,6 +86,7 @@ sub initHome()
 end sub
 
 sub homeVisible(visible as boolean)
+    if not visible and m.homeRows <> invalid then m.homeRows.content = invalid
     if visible
         accountHideQr()
         accountLayout(false)
@@ -109,9 +110,17 @@ end sub
 sub clearHomeCache()
     m.homeKeyValue = ""
     m.liveFavoriteItems = invalid
+    m.uiArtworkTried = {}
+    m.uiArtworkOrder = []
+    m.uiLandscapeCache = {}
+    m.uiLandscapeOrder = []
+    m.uiHeroMetadata = {}
     m.uiHeroTried = {}
     m.uiHeroTriedOrder = []
     m.uiHomeActionKey = ""
+    m.homeCatalogWindowEnd = invalid
+    m.homeCatalogs = invalid
+    m.homeCatalogPending = {}
     m.homeData = invalid
     m.cache = {}
     m.cacheKeys = []
@@ -131,6 +140,8 @@ sub showHome()
         ' Back/return must never choose a different shelf.
         m.homeAutoPick = false
     end if
+    m.homeCatalogPending = {}
+    m.homeCatalogWindowEnd = invalid
     cold = m.homeData = invalid
     refresh = cold
     if not refresh then refresh = now - m.homeTime > 120 or m.homeDirty = true
@@ -170,24 +181,27 @@ sub showHome()
         end for
         m.homeRows.content = root
     end if
+    if m.homeRows.content = invalid then m.homeRows.content = m.homeRoot
     homeRestore()
     homeHero()
     if acknowledgementMayFocus() then uiHomeFocus()
     if not m.homeDone.doesExist("progress") then request("GET","/api/profiles/" + Enc(m.profile) + "/continue/page?limit=13",invalid,"home:progress")
     if not m.homeDone.doesExist("favorites") then request("GET","/api/profiles/" + Enc(m.profile) + "/favorites/page?limit=13&exclude_live=true",invalid,"home:favorites")
-    if not m.homeDone.doesExist("recent") then request("GET","/api/live?view=us&collection=recent&limit=24",invalid,"home:recent")
-    if not m.homeDone.doesExist("live") then request("GET","/api/live?view=us&offset=0&limit=12&search=",invalid,"home:live")
-    if not m.homeDone.doesExist("movie") or not m.homeDone.doesExist("series") then request("GET","/api/catalogs",invalid,"home:catalogs")
+    if not m.homeDone.doesExist("recent") then request("GET","/api/v2/iptv/live/channels?collection=recent&limit=24",invalid,"home:recent")
+    if not m.homeDone.doesExist("live") then request("GET","/api/v2/iptv/live/channels?limit=12&search=",invalid,"home:live")
+    if m.homeCatalogs = invalid then request("GET","/api/catalogs",invalid,"home:catalogs")
+    homeCatalogPump()
 end sub
 
 function homeValues(index as integer) as object
+    if index < 0 or index >= m.homeData.count() then return []
     return m.homeData[index]
 end function
 
 function homeRow(index as integer) as object
     titles = ["Continue Watching","Trending Movies","Popular Series","Live Now","My List","Favorite Channels","Recently Watched Live TV"]
     row = CreateObject("roSGNode","ContentNode")
-    row.title = ucase(titles[index])
+    if index < 7 then row.title = titles[index] else row.title = m.homeCatalogs[index-7].title
     for each item in homeValues(index)
         node = row.createChild("ContentNode")
         UiCardContent(node,item)
@@ -208,7 +222,7 @@ sub homeRestore()
     m.homeRestoring = true
     r = m.homePosition[0]
     c = m.homePosition[1]
-    if r < 0 or r > 6 then r = 0
+    if r < 0 or r >= m.homeData.count() then r = 0
     if c < 0 then c = 0
     displayRow = -1
     if m.homeRowKeys <> invalid
@@ -263,7 +277,9 @@ sub homeDefaultShelf()
             earlierPending = false
             for each j in HomeShelfOrder()
                 if j = i then exit for
-                if not m.homeDone.doesExist(kinds[j]) then earlierPending = true
+                if j < 7
+                    if not m.homeDone.doesExist(kinds[j]) then earlierPending = true
+                end if
             end for
             m.homeAutoPick = earlierPending
             return
@@ -271,14 +287,21 @@ sub homeDefaultShelf()
     end for
 end sub
 function HomeShelfOrder() as object
-    return [0,6,1,2,3,4,5]
+    order = [0,4,6,5,3]
+    if m.homeCatalogs <> invalid
+        for i = 0 to m.homeCatalogs.count()-1
+            order.push(i+7)
+        end for
+    end if
+    return order
 end function
 
 function HomeShelfRank(key as integer) as integer
-    for i = 0 to 6
-        if HomeShelfOrder()[i] = key then return i
+    order = HomeShelfOrder()
+    for i = 0 to order.count()-1
+        if order[i] = key then return i
     end for
-    return 7
+    return order.count()
 end function
 sub applyEpisodeProgress(result as object, preserveNavigation = false as boolean)
     if m.selected = invalid or m.episodes = invalid then return
@@ -364,6 +387,8 @@ sub applyEpisodeProgress(result as object, preserveNavigation = false as boolean
             end if
         end for
     end if
+    uiSeriesActions()
+    if acknowledgementMayFocus() then m.detailActions.setFocus(true)
 end sub
 
 sub cancelAutomaticResume()
@@ -394,8 +419,7 @@ sub showPlaybackPreferences(prefs as object)
         {name:"Preferred subtitles",key:"subtitle_language",options:languages},
         {name:"Start with subtitles",key:"subtitles_enabled",options:switches},
         {name:"Subtitle size",key:"subtitle_size",options:[{name:"Small",value:"small"},{name:"System default",value:"normal"},{name:"Large",value:"large"}]},
-        {name:"Subtitle appearance",key:"subtitle_style",options:[{name:"System default",value:"system"},{name:"Text with shadow",value:"shadow"},{name:"White text on black",value:"opaque"}]},
-        {name:"Maximum quality",key:"quality",options:[{name:"Auto",value:"auto"},{name:"1080p",value:"1080p"},{name:"720p",value:"720p"},{name:"480p",value:"480p"}]}
+        {name:"Subtitle appearance",key:"subtitle_style",options:[{name:"System default",value:"system"},{name:"Text with shadow",value:"shadow"},{name:"White text on black",value:"opaque"}]}
     ]
     values = []
     for each definition in definitions

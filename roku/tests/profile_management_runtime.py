@@ -1,4 +1,5 @@
 """Run the real native profile editor and account mutation handlers."""
+from brs_cli import brs_command
 from pathlib import Path
 import os, subprocess, tempfile
 root=Path(__file__).resolve().parents[1]
@@ -78,7 +79,7 @@ end sub
 '''
 with tempfile.TemporaryDirectory() as directory:
  fixture=Path(directory)/'profiles.brs';fixture.write_text(source)
- result=subprocess.run([os.environ.get('VIPTV_BRS_CLI','brs-cli'),str(fixture)],capture_output=True,text=True,timeout=30)
+ result=subprocess.run([*brs_command(),str(fixture)],capture_output=True,text=True,timeout=30)
  print(result.stdout,end='');print(result.stderr,end='')
  if result.returncode or 'PROFILE_MANAGEMENT_RUNTIME_OK' not in result.stdout:raise SystemExit(1)
 
@@ -108,7 +109,7 @@ end function
 '''
 with tempfile.TemporaryDirectory() as directory:
  fixture=Path(directory)/'editor.brs';fixture.write_text(editor)
- result=subprocess.run([os.environ.get('VIPTV_BRS_CLI','brs-cli'),str(fixture)],capture_output=True,text=True,timeout=30)
+ result=subprocess.run([*brs_command(),str(fixture)],capture_output=True,text=True,timeout=30)
  print(result.stdout,end='');print(result.stderr,end='')
  if result.returncode or 'PROFILE_EDITOR_RUNTIME_OK' not in result.stdout:raise SystemExit(1)
 
@@ -155,12 +156,12 @@ sub Main()
  accountShowProfileGrid(profiles)
  if m.profilePage<>2 or m.profileGrid.jumpToItem<>1 or m.profileFocusId<>"12" then throw "action return lost exact third-page person"
  accountShowProfileGrid([profiles[0],profiles[1]])
- if m.profileButtons.count()<>2 or m.profileButtons[0].action<>"newprofile" or m.profileButtons[1].action<>"profilesdone" then throw "separate management buttons wrong"
+ if m.profileButtons.count()<>1 or m.profileButtons[0].action<>"profilesdone" or m.items[2].action<>"newprofile" then throw "separate management buttons wrong"
  if m.profilePages.visible then throw "unneeded pager visible"
- m.profileActions.itemSelected=0:accountProfileButtonSelected()
- if m.action<>"newprofile" then throw "Add button unreachable"
+ accountProfileAction(m.items[2])
+ if m.action<>"newprofile" then throw "Add tile unreachable"
  m.managingProfiles=false:accountRenderProfilePage()
- if m.profileButtons[1].action<>"manageprofiles" then throw "chooser lacks normal Manage button"
+ if m.profileButtons[0].action<>"manageprofiles" then throw "chooser lacks normal Manage button"
  m.profileGrid.focused=true:m.profileActions.focused=false
  if not accountProfileKey("down") or m.profileActions.focused<>true then throw "Down cannot reach buttons"
  m.profileGrid.focused=false
@@ -189,6 +190,6 @@ end sub
 '''
 with tempfile.TemporaryDirectory() as directory:
  fixture=Path(directory)/'layout.brs';fixture.write_text(layout)
- result=subprocess.run([os.environ.get('VIPTV_BRS_CLI','brs-cli'),str(fixture)],capture_output=True,text=True,timeout=30)
+ result=subprocess.run([*brs_command(),str(fixture)],capture_output=True,text=True,timeout=30)
  print(result.stdout,end='');print(result.stderr,end='')
  if result.returncode or 'PROFILE_LAYOUT_RUNTIME_OK' not in result.stdout:raise SystemExit(1)

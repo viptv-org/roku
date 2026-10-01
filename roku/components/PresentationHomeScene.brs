@@ -1,10 +1,25 @@
 sub uiDiscoverFilters()
     if m.discoverFilters = invalid then return
-    name = DiscoverTypeName(m.discoverType)
-    values = [{name:name,action:"dtype",selected:true}]
-    catalogName = "Choose catalog"
-    if m.catalog <> invalid then catalogName = Txt(m.catalog.name,Txt(m.catalog.id))
-    values.push({name:catalogName,action:"dcat",selected:false})
+    typeRoot = CreateObject("roSGNode","ContentNode")
+    m.discoverTypeItems = ["movie","series","anime","other"]
+    for each kind in m.discoverTypeItems
+        node = typeRoot.createChild("ContentNode")
+        node.title = DiscoverGroupLabel(kind)
+        node.addFields({uiWidth:146,selected:DiscoverTypeGroup(m.discoverType) = kind,dropdown:false,uiOwnerFocused:false})
+    end for
+    m.discoverTypes.content = typeRoot
+    m.discoverTypes.visible = m.mode = "browse" and m.discoverActive = true
+    values = []
+    for i = 0 to m.discoverCatalogs.count()-1
+        catalog = m.discoverCatalogs[i]
+        if DiscoverTypeMatches(Txt(catalog.type),m.discoverType)
+            chosen = false
+            if m.catalog <> invalid then chosen = Txt(catalog.id) = Txt(m.catalog.id) and Txt(catalog.addon_id) = Txt(m.catalog.addon_id)
+            label = Txt(catalog.name,Txt(catalog.id))
+            if Txt(catalog.addon_name) <> "" then label = Txt(catalog.addon_name)+" · "+label
+            values.push({name:label,action:"catalog",catalogIndex:i,selected:chosen})
+        end if
+    end for
     if m.catalog <> invalid
         genres = Bounded(m.catalog.genres,256)
         if genres.count() > 0
@@ -31,7 +46,7 @@ sub uiDiscoverFilters()
     for each value in values
         node = root.createChild("ContentNode")
         node.title = value.name
-        node.addFields({selected:value.selected,dropdown:value.action <> "dsearch",uiOwnerFocused:false})
+        node.addFields({selected:value.selected,dropdown:value.action <> "dsearch" and value.action <> "catalog",uiOwnerFocused:false})
     end for
     m.discoverFilters.content = root
     m.discoverFilters.visible = m.mode = "browse" and m.discoverActive = true
@@ -41,7 +56,14 @@ sub uiDiscoverFilterSelected()
     index = m.discoverFilters.itemSelected
     if index < 0 or index >= m.discoverFilterItems.count() then return
     item = m.discoverFilterItems[index]
-    if item.action = "dtype"
+    if item.action = "catalog"
+        m.catalog = m.discoverCatalogs[item.catalogIndex]
+        m.discoverGenre = ""
+        m.discoverExtras = {}
+        m.search = ""
+        uiRequiredGenre()
+        browse(m.discoverType,0)
+    else if item.action = "dtype"
         values = []
         seen = {}
         for each group in ["movie","series","anime","other"]
@@ -117,11 +139,17 @@ sub uiHomeLayout()
     m.homeHeroPanel.compact = false
     m.homeActions.visible = expanded and m.mode = "home" and homeCurrent() <> invalid
     if expanded
-        m.homeShelves.translation = [92,466]
-        m.homeShelves.clippingRect = [0,0,1188,254]
+        m.homeRows.itemSize = [1088,237]
+        m.homeRows.numRows = 1
+        m.homeShelves.translation = [120,466]
+        m.homeShelves.clippingRect = [0,0,1096,218]
     else
-        m.homeShelves.translation = [92,100]
-        m.homeShelves.clippingRect = [0,0,1188,620]
+        m.homeHeroPanel.model = {name:"",type:""}
+        m.uiHeroFingerprint = ""
+        m.homeRows.itemSize = [1088,214]
+        m.homeRows.numRows = 3
+        m.homeShelves.translation = [120,36]
+        m.homeShelves.clippingRect = [0,0,1096,648]
     end if
 end sub
 
@@ -136,6 +164,9 @@ sub uiHomeFocus()
 end sub
 
 sub uiHomeActions(item as object)
+    actionY = 366
+    if PresentationContext(item) = "" and UiProgressFraction(item) <= 0 then actionY = 332
+    m.homeActions.translation = [128,actionY]
     label = "Play"
     context = StreamContext(item)
     if item.type = "series" and context.episode = invalid then label = "Episodes"
@@ -148,18 +179,31 @@ sub uiHomeActions(item as object)
         label = "Watch live"
         secondary = "Guide"
     end if
-    key = label + "|" + secondary
+    if item.action <> invalid then label = Txt(item.name,"View all")
+    saved = UiIsFavorite(item)
+    key = label + "|" + secondary + "|" + Txt(saved)
     if key <> Txt(m.uiHomeActionKey)
         m.uiHomeActionKey = key
-        width = 144
+        width = 152
         if item.queue_status = "next" then width = 236
-        m.homeActions.itemSize = [width,50]
+        m.homeActions.itemSize = [width,48]
         root = CreateObject("roSGNode","ContentNode")
-        for each name in [label,secondary]
+        names = [label,secondary]
+        if item.action <> invalid then names = [label]
+        for each name in names
             node = root.createChild("ContentNode")
             node.title = name
-            node.addFields({uiWidth:width,uiHeight:50,uiOwnerFocused:false})
+            node.addFields({uiWidth:width,uiHeight:48,uiOwnerFocused:false})
         end for
+        m.homeActions.numColumns = names.count()
+        if item.type <> "live" and item.action = invalid
+            m.homeActions.numColumns = 3
+            icon = "plus"
+            if saved then icon = "check"
+            node = root.createChild("ContentNode")
+            node.title = ""
+            node.addFields({uiWidth:48,uiHeight:48,uiIcon:icon,uiOwnerFocused:false})
+        end if
         m.homeActions.content = root
     end if
     uiHomeLayout()
@@ -169,6 +213,10 @@ sub uiHomeActionSelected()
     item = homeCurrent()
     if item = invalid then return
     m.homeAutoPick = false
+    if m.homeActions.itemFocused = 2
+        toggleFavorite()
+        return
+    end if
     if m.homeActions.itemFocused = 0
         if item.queue_status = "next"
             m.nextScope = m.profile
@@ -185,7 +233,7 @@ sub uiHomeActionSelected()
         saveView()
         m.selected = item
         cancelBrowse()
-        request("GET","/api/guide/" + Enc(Txt(item.id)),invalid,"guide")
+        request("GET","/api/v2/iptv/guide/" + Enc(Txt(item.id)),invalid,"guide")
         m.status.text = "Loading guide…"
     else
         details = {}
@@ -222,3 +270,17 @@ function uiHomeKey(key as string) as boolean
     end if
     return false
 end function
+
+sub uiDiscoverTypeSelected()
+    index = m.discoverTypes.itemSelected
+    if index < 0 or index >= m.discoverTypeItems.count() then return
+    m.discoverType = m.discoverTypeItems[index]
+    m.discoverGenre = ""
+    m.discoverExtras = {}
+    m.search = ""
+    discoverChooseDefaultCatalog()
+    browse(m.discoverType,0)
+    m.discoverTypes.jumpToItem = index
+    m.discoverFilters.setFocus(true)
+    uiFocusChanged()
+end sub

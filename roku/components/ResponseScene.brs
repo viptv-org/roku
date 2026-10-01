@@ -24,7 +24,7 @@ sub handleResponse(event as object)
     end if
     if (tag = "playback" or tag = "seekplayback") and val(parts[1]) <> m.generation
         if result.ok and result.data <> invalid
-            request("DELETE", "/api/playback/" + Enc(Txt(result.data.id)), invalid, "cleanup", origin)
+            request("DELETE", PlaybackSessionPath(origin,Txt(result.data.id)), invalid, "cleanup", origin)
         end if
         return
     end if
@@ -33,6 +33,10 @@ sub handleResponse(event as object)
     ' Account responses validate account_epoch before changing any profile/UI state.
     if accountResponse(tag,result,origin) then return
     if origin.account_epoch <> m.accountEpoch then return
+    if tag = "sideheartbeat" and Left(Txt(origin.path),17) = "/api/v2/playback/"
+        rokuPlaybackHeartbeatResponse(result,origin)
+        return
+    end if
     if result.status = 403 and (result.auth_code = "profile_required" or result.auth_code = "profile_policy_changed")
         stopPlayback()
         accountClearRememberedProfile()
@@ -64,7 +68,22 @@ sub handleResponse(event as object)
         liveEpgResponse(tag,result,val(parts[1]))
         return
     end if
+    if left(tag,12) = "playertitle:"
+        playerTitleResponse(tag,result,origin)
+        return
+    end if
     if val(parts[1]) <> m.generation then return
+    if tag = "livesource"
+        m.pendingPlayback = false
+        m.liveSourcePending = false
+        if result.ok and result.data.source <> invalid
+            m.playItem.stream_id = result.data.source.id
+            beginPlayback(false)
+        else
+            sourceExhausted(Txt(result.error,"This channel is unavailable."))
+        end if
+        return
+    end if
     if left(tag,4) = "epg:"
         epgResponse(tag,result)
         return
@@ -103,6 +122,10 @@ sub handleResponse(event as object)
         uiHeroArtResponse(tag,result)
         return
     end if
+    if left(tag,12) = "homecatalog:"
+        homeCatalogResponse(tag,result)
+        return
+    end if
     if left(tag,5) = "home:"
         homeParts = tag.split(":")
         if homeParts.count() > 2
@@ -131,14 +154,14 @@ sub handleResponse(event as object)
         if tag = "config" then showSettings()
         m.status.text = Txt(result.error,"Unable to reach server. Check Settings and try again.")
         if tag = "discovercatalogs"
-            rows("Discover",[{name:"Try again",action:"discover"}],"discovererror","Catalogs are unavailable. Check your addons or try again.")
+            rows("Discover",[{name:"Try again",action:"discover"}],"discovererror",Txt(result.error,"Catalogs are unavailable. Check your addons or try again."))
         end if
         if tag = "streamstart" or tag = "streampoll"
             m.discoveryDone = true
-            sourceExhausted("Sources unavailable. Try again.")
+            sourceExhausted(Txt(result.error,"Sources unavailable. Try again."))
         end if
         if tag = "seekplayback"
-            seekReplacementFailed("Seek failed. Playback resumed at the prior position.")
+            seekReplacementFailed(Txt(result.error,"Seek failed.") + " Playback resumed at the prior position.")
         else if tag = "playback"
             ' Family channels exhaust verified server candidates under one startup budget.
             print "VIPTV playback request failed: "; result.status; " "; Txt(result.error)
@@ -146,7 +169,7 @@ sub handleResponse(event as object)
                 sourceExhausted(Txt(result.error,"No working stream is available for this channel. Try again later."))
             else
                 if retryContinuationSource() then return
-                sourceExhausted("Selected source unavailable (" + Txt(result.error,"request failed") + "). Choose another source.")
+                sourceExhausted(Txt(result.error,"Selected source unavailable. Choose another source."))
             end if
         end if
         return
@@ -306,6 +329,7 @@ sub handleResponse(event as object)
     else if tag = "streampoll"
         for each entry in Bounded(data.events,100)
             if entry.seq > m.cursor then m.cursor = entry.seq
+            if Txt(entry.error) <> "" then m.discoveryError = Txt(entry.error)
             m.streams = AppendDistinctSources(m.streams,Bounded(entry.streams,1000),320)
         end for
         m.discoveryDone = data.done or m.pollCount >= 80
@@ -322,7 +346,7 @@ sub handleResponse(event as object)
         end if
         if not m.discoveryDone then m.poll.control = "start"
         if not m.manualSources then tryResumeSource()
-        if m.discoveryDone and m.streams.count() = 0 then sourceExhausted("No sources available.")
+        if m.discoveryDone and m.streams.count() = 0 then sourceExhausted(Txt(m.discoveryError,"No sources available."))
     else if tag = "playback"
         acceptPlayback(data,origin)
     end if
@@ -371,14 +395,14 @@ sub showMetadata(data as object)
             showEpisodes(0)
         end if
     else
-        label = "Choose source"
+        label = "Play"
         if meta.position <> invalid
-            if meta.position > 0 then label = "Resume at " + PlayerTime(meta.position)
+            if meta.position > 0 then label = "Resume"
         end if
         action = "play"
-        if label <> "Choose source" then action = "resume"
+        if label = "Resume" then action = "resume"
         actions = [{name:label,action:action}]
-        if label <> "Choose source" then actions.push({name:"Choose source",action:"sources"})
+        if label = "Resume" then actions.push({name:"Choose source",action:"sources"})
         actions.push({name:favoriteLabel(meta),action:"favorite"})
         actions.push({name:"More info",action:"moreinfo"})
         rows(Txt(meta.name),actions,"detail","")
@@ -401,4 +425,5 @@ sub showEpisodes(offset as integer, enter = true as boolean)
     if count > m.episodeOffset + 80 then values.push({name:"More episodes",title:"More episodes",action:"episodesnext"})
     rows(Txt(m.selected.name),values,"episodes","*  Episode options",enter)
     showDetail(m.selected)
+    if enter and acknowledgementMayFocus() then m.detailActions.setFocus(true)
 end sub

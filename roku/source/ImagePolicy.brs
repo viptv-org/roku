@@ -2,12 +2,12 @@
 function ImagePixels(size as integer) as integer
     if m.imageScale = invalid
         m.imageScale = 1.0
-        display = CreateObject("roDeviceInfo").getDisplaySize()
+        display = CreateObject("roDeviceInfo").getUIResolution()
         if display <> invalid
-            if display.w >= 1920 then m.imageScale = 1.5
+            if display.width >= 1920 then m.imageScale = 1.5
         end if
     end if
-    return int(size*m.imageScale)
+    return int(size*m.imageScale+0.5)
 end function
 
 function ImageUrl(uri as string, width as integer, height as integer, large = false as boolean, logo = false as boolean) as string
@@ -40,7 +40,7 @@ function ImageUrl(uri as string, width as integer, height as integer, large = fa
         if w > 1280 then bucket = "original"
         uri = tmdb.replace(uri,"https://image.tmdb.org/t/p/"+bucket+"/")
     end if
-    quality = "85"
+    quality = "95"
     if large then quality = "95"
     format = "jpg"
     fit = "cover"

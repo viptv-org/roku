@@ -49,29 +49,8 @@ sub uiHomeArtwork(id as string, mediaType as string, uri as string)
             end if
         end for
     end for
-    ' Warm the full-quality hero texture behind hidden posters so focus swaps
-    ' straight to the sharp image instead of a blurry upscale.
-    prefetchHeroBackdrop(uri)
-end sub
-
-sub prefetchHeroBackdrop(backdrop as string)
-    if backdrop = "" then return
-    hiRes = ImageUrl(backdrop,1280,720,true)
-    if hiRes = "" then return
-    if m.heroPrefetchLast = invalid then m.heroPrefetchLast = ["","","",""]
-    for each pending in m.heroPrefetchLast
-        if pending = hiRes then return
-    end for
-    if m.heroPrefetchIndex = invalid then m.heroPrefetchIndex = 0
-    slot = m.heroPrefetchIndex mod 4
-    node = m.top.findNode("heroPf" + slot.toStr())
-    m.heroPrefetchLast[slot] = hiRes
-    m.heroPrefetchIndex++
-    if node <> invalid
-        node.loadWidth = ImagePixels(1280)
-        node.loadHeight = ImagePixels(720)
-        node.uri = hiRes
-    end if
+    ' The visible HeroPanel owns its sharp texture; shelf hydration must not
+    ' allocate extra full-screen textures.
 end sub
 
 ' Measure natural wrapped text rather than reserving four lines for every synopsis.
@@ -81,13 +60,13 @@ sub uiLayoutDetailActions()
         m.standardList.translation = [380,360+bounds.height+32]
         return
     end if
-    if m.mode <> "detail" then return
+    if m.mode <> "detail" and m.mode <> "episodes" then return
     bounds = m.description.localBoundingRect()
     height = bounds.height
     if m.description.text = "" then height = 0
-    if height > 128 then height = 128
-    m.detailActions.translation = [380,276+height+28]
-    m.detailCredits.translation = [380,276+height+108]
+    if height > 52 then height = 52
+    m.detailActions.translation = [128,178+height+16]
+    m.detailCredits.translation = [128,178+height+80]
 end sub
 
 ' Only visible cards plus one lookahead column request metadata, one at a time.
@@ -152,7 +131,28 @@ sub uiLoadCardArtwork()
             if m.mode = "home" and m.homeExpanded = true
                 current = homeCurrent()
                 if current <> invalid
-                    if PresentationMetadataId(current) = node.metadataId and Txt(current.type) = node.mediaType then needsMetadata = true
+                    if PresentationMetadataId(current) = node.metadataId and Txt(current.type) = node.mediaType
+                        needsMetadata = true
+                        key = HeroEpisodeKey(current)
+                        if key <> "" and HeroEpisodeTitle(current) = ""
+                            if m.uiHeroMetadata = invalid then m.uiHeroMetadata = {}
+                            details = m.uiHeroMetadata[path]
+                            if details = invalid then details = {id:node.metadataId,episodeTitles:{}}
+                            if details.episodeTitles = invalid then details.episodeTitles = {}
+                            if not details.episodeTitles.doesExist(key)
+                                ' A new episode in a cached series needs a new lookup. Mark the
+                                ' attempt before dispatch so failures do not loop each timer tick.
+                                if details.episodeTitles.count() >= 16 then details.episodeTitles = {}
+                                details.episodeTitles[key] = ""
+                                m.uiHeroMetadata[path] = details
+                                pending = false
+                                for each pendingTag in m.uiArtworkInflight
+                                    if m.uiArtworkInflight[pendingTag].path = path then pending = true
+                                end for
+                                if not pending then m.uiArtworkTried.delete(path)
+                            end if
+                        end if
+                    end if
                 end if
             end if
             if needsMetadata and not m.uiArtworkTried.doesExist(path)
@@ -180,11 +180,17 @@ sub uiCardArtworkResponse(tag as string,result as object)
         if Txt(meta.id) = owner.id
             if m.uiHeroMetadata = invalid then m.uiHeroMetadata = {}
             if m.uiLandscapeOrder.count() >= 96 then m.uiHeroMetadata.delete(m.uiLandscapeOrder[0])
-            details = {}
-            for each field in ["background","backdrop","description","overview","genres","runtime","releaseInfo"]
-                if meta[field] <> invalid then details[field] = meta[field]
-            end for
+            contexts = []
+            if m.homeData <> invalid
+                for each item in Bounded(m.homeData[0],14)
+                    if PresentationMetadataId(item) = owner.id then contexts.push(item)
+                end for
+                current = homeCurrent()
+                if current <> invalid and PresentationMetadataId(current) = owner.id then contexts.push(current)
+            end if
+            details = HeroMetadataProjection(meta,contexts)
             m.uiHeroMetadata[owner.path] = details
+            uiHomeEpisodeMetadata(owner.id,details)
             if m.uiLandscapeOrder.count() >= 96 then m.uiLandscapeCache.delete(m.uiLandscapeOrder.shift())
             m.uiLandscapeOrder.push(owner.path)
             m.uiLandscapeCache[owner.path] = uri
@@ -321,7 +327,7 @@ sub uiUpdateSources(values as object, reset = false as boolean)
         node = root.createChild("ContentNode")
         node.title = CreateObject("roRegex",chr(10),"").replaceAll(ReadableSourceText(OriginalSourceName(item))," · ")
         node.description = SourceCardText(item)
-        node.addFields({sourceBadges:SourceBadges(item,m.playItem),uiWidth:1096,uiHeight:216,uiOwnerFocused:m.sourceList.hasFocus()})
+        node.addFields({sourceBadges:SourceBadges(item,m.playItem),uiWidth:440,uiHeight:82,uiOwnerFocused:m.sourceList.hasFocus()})
     end for
     m.items = filtered
     if not samePrefix
@@ -355,6 +361,10 @@ sub uiResumeAction(event as object)
             uiHomeActionSelected()
         end if
     else if m.detailActions.hasFocus()
+        if m.mode = "episodes"
+            uiSeriesActionSelected(held)
+            return
+        end if
         index = m.detailActions.itemFocused
         if index < 0 or index >= m.items.count() then return
         if held and m.items[index].action = "play"
@@ -363,4 +373,25 @@ sub uiResumeAction(event as object)
             selectItem(m.items[index])
         end if
     end if
+end sub
+
+sub uiHomeEpisodeMetadata(id as string, details as object)
+    if m.homeData = invalid then return
+    for column = 0 to m.homeData[0].count()-1
+        item = m.homeData[0][column]
+        if PresentationMetadataId(item) = id and Txt(item.type) = "series"
+            title = HeroEpisodeTitle(item,details)
+            if title <> ""
+                item.episodeTitle = title
+                if m.homeRowKeys <> invalid and m.homeRoot <> invalid
+                    for rowIndex = 0 to m.homeRowKeys.count()-1
+                        if m.homeRowKeys[rowIndex] = 0
+                            node = m.homeRoot.getChild(rowIndex).getChild(column)
+                            if node <> invalid then node.subtitle = HomeCardContext(item)
+                        end if
+                    end for
+                end if
+            end if
+        end if
+    end for
 end sub

@@ -1,4 +1,5 @@
 """Exercise production transition handlers with network/decoder edges recorded."""
+from brs_cli import brs_command
 from pathlib import Path
 import subprocess, tempfile, os
 root=Path(__file__).resolve().parents[1]
@@ -71,6 +72,6 @@ end function
 with tempfile.TemporaryDirectory(prefix='viptv-continuation-runtime-') as directory:
  for name,production,fixture in tests:
   path=Path(directory)/(name+'.brs');path.write_text(production+'\n'+fixture)
-  r=subprocess.run([os.environ.get('VIPTV_BRS_CLI','/home/node/air-roku/node_modules/.bin/brs-cli'),str(path),str(root/'source/Util.brs'),str(root/'source/ContinuationPolicy.brs')],capture_output=True,text=True,timeout=30)
+  r=subprocess.run([*brs_command(),str(path),str(root/'source/Util.brs'),str(root/'source/ContinuationPolicy.brs')],capture_output=True,text=True,timeout=30)
   print(r.stdout);print(r.stderr)
   if r.returncode or '_OK' not in r.stdout or 'Error' in r.stdout: raise SystemExit(1)

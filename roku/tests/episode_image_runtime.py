@@ -1,4 +1,5 @@
 """Render actual episode cards with Roku's render-thread component restriction."""
+from brs_cli import brs_command
 from pathlib import Path
 import os, subprocess, tempfile
 root = Path(__file__).resolve().parents[1]
@@ -16,7 +17,7 @@ sub Main()
  item={HDPosterUrl:"https://wsrv.nl/?url=https%3A%2F%2Fartworks.thetvdb.com%2Fbanners%2Fepisode%2Ftest.jpg&w=500",title:"Pilot",description:"Episode one",hasField:HasField}
  m.top={itemContent:item,findNode:FindNode,nodes:m.nodes}
  render()
- if instr(1,m.thumbnail.uri,"&w=256&h=144")=0 then throw "episode did not finish rendering a resized thumbnail"
+ if instr(1,m.thumbnail.uri,"&w=240&h=135")=0 then throw "episode did not finish rendering a resized thumbnail"
  if instr(1,m.thumbnail.uri,"wsrv.nl%2F")>0 then throw "episode nested the image proxy"
  if m.nodes.title.text<>"Pilot" then throw "episode title never rendered"
  for each uri in ["", "https://wsrv.nl/?url=%ZZ", "https://private.invalid/image.jpg?token=private"]
@@ -44,6 +45,6 @@ end sub
 '''
 with tempfile.TemporaryDirectory() as temp:
  p=Path(temp)/'episode-image.brs';p.write_text(render+'\n'+policy+'\n'+fixture)
- result=subprocess.run([os.environ.get('VIPTV_BRS_CLI','/home/node/air-roku/node_modules/.bin/brs-cli'),str(p),str(root/'source/Util.brs')],capture_output=True,text=True,timeout=30)
+ result=subprocess.run([*brs_command(),str(p),str(root/'source/Util.brs')],capture_output=True,text=True,timeout=30)
  print(result.stdout,result.stderr)
  if result.returncode or 'EPISODE_IMAGE_RENDER_OK' not in result.stdout:raise SystemExit(1)

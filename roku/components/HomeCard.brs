@@ -3,18 +3,20 @@ sub init()
         m[id] = m.top.findNode(id)
     end for
     m.poster.observeField("loadStatus","artLoaded")
-    m.title.font.size = 21
-    m.subtitle.font.size = 17
+    m.title.font.size = 16
+    m.subtitle.font.size = 13
+    if m.top.itemContent <> invalid then contentChanged()
 end sub
 
 sub contentChanged()
+    if m.poster = invalid or m.artworkMask = invalid then return
     item = m.top.itemContent
     if item = invalid then return
     changed = true
     if m.observedItem <> invalid then changed = not m.observedItem.isSameNode(item)
     if changed
         if m.observedItem <> invalid
-            for each field in ["uiOwnerFocused","HDPosterUrl","artworkKind"]
+            for each field in ["uiOwnerFocused","HDPosterUrl","artworkKind","subtitle"]
                 m.observedItem.unobserveField(field)
             end for
         end if
@@ -22,7 +24,36 @@ sub contentChanged()
         item.observeField("uiOwnerFocused","focusChanged")
         item.observeField("HDPosterUrl","contentChanged")
         item.observeField("artworkKind","contentChanged")
+        item.observeField("subtitle","contentChanged")
     end if
+    w = 213
+    h = 120
+    if item.hasField("uiWidth") and item.uiWidth = 240
+        w = 240
+        h = 135
+    end if
+    shape = "card"
+    if w = 240 then shape = "episode"
+    m.artworkMask.uri = "pkg:/images/design/"+shape+"-corners.png"
+    m.focusFrame.uri = "pkg:/images/design/"+shape+"-focus.png"
+    for each id in ["surface","artworkMask","focusFrame"]
+        m[id].width = w
+        m[id].height = h
+    end for
+    m.title.translation = [0,h+12]
+    m.subtitle.translation = [0,h+34]
+    m.title.maxWidth = w
+    m.subtitle.maxWidth = w
+    m.fallback.width = w-20
+    m.fallback.height = h-20
+    m.progressTrack.translation = [9,h-12]
+    m.progressFill.translation = [9,h-12]
+    m.progressTrack.width = w-18
+    skeleton = item.hasField("uiSkeleton") and item.uiSkeleton
+    m.top.findNode("skeletonTitle").visible = skeleton
+    m.top.findNode("skeletonMeta").visible = skeleton
+    m.title.visible = not skeleton
+    m.subtitle.visible = not skeleton
     m.title.text = item.title
     m.subtitle.text = item.subtitle
     if not item.hasField("artState") then item.addFields({artState:"none"})
@@ -30,23 +61,23 @@ sub contentChanged()
     m.fallback.text = item.title
     m.fallback.visible = true
     m.poster.translation = [0,0]
-    m.poster.width = 256
-    m.poster.height = 144
+    m.poster.width = w
+    m.poster.height = h
     m.poster.loadDisplayMode = "scaleToZoom"
-    m.poster.loadWidth = ImagePixels(256)
-    m.poster.loadHeight = ImagePixels(144)
+    m.poster.loadWidth = w
+    m.poster.loadHeight = h
     if item.artworkKind = "portrait"
         ' Preserve the source aspect ratio, then crop rather than stretch.
         ' The complete poster remains available on the detail page.
-        m.poster.loadWidth = ImagePixels(256)
-        m.poster.loadHeight = ImagePixels(384)
+        m.poster.loadWidth = w
+        m.poster.loadHeight = int(w*1.5)
     else if item.artworkKind = "logo"
-        m.poster.translation = [40,22]
-        m.poster.width = 176
-        m.poster.height = 100
+        m.poster.translation = [27,13]
+        m.poster.width = 159
+        m.poster.height = 94
         m.poster.loadDisplayMode = "scaleToFit"
-        m.poster.loadWidth = ImagePixels(176)
-        m.poster.loadHeight = ImagePixels(100)
+        m.poster.loadWidth = 176
+        m.poster.loadHeight = 100
     end if
     uri = ImageUrl(item.HDPosterUrl,int(m.poster.width),int(m.poster.height),false,item.artworkKind = "logo")
     if m.artOriginal <> item.HDPosterUrl then m.artRetried = false
@@ -63,7 +94,7 @@ sub contentChanged()
     m.progressFill.visible = fraction > 0
     if fraction > 1 then fraction = 1
     if fraction < 0 then fraction = 0
-    fillWidth = 240*fraction
+    fillWidth = (w-18)*fraction
     ' Keep a rounded dot visible for very small nonzero progress.
     if fillWidth < 6 then fillWidth = 6
     m.progressFill.width = fillWidth
@@ -78,9 +109,11 @@ sub focusChanged()
     m.focusFrame.visible = active
     m.title.repeatCount = 0
     m.subtitle.repeatCount = 0
+    m.title.color = "#F4F2EE"
+    m.subtitle.color = "#B6B4AF"
     if active
-        m.title.repeatCount = -1
-        m.subtitle.repeatCount = -1
+        m.title.color = "#FFFFFF"
+        m.subtitle.color = "#DAD8D3"
     end if
 end sub
 
@@ -98,5 +131,5 @@ sub artLoaded()
     item.artState = state
     ready = state = "ready" and m.poster.uri <> ""
     m.poster.visible = ready
-    m.fallback.visible = not ready
+    m.fallback.visible = not ready and not (item.hasField("uiSkeleton") and item.uiSkeleton)
 end sub

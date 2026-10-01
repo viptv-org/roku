@@ -1,4 +1,5 @@
 """Run the actual movie action builder for fresh and resumable titles."""
+from brs_cli import brs_command
 from pathlib import Path
 import os
 import subprocess
@@ -13,12 +14,12 @@ sub Main()
  m.selected=invalid
  showMetadata({meta:{id:"fresh",type:"movie",name:"Fresh"}})
  if m.actions.count()<>3 then throw "fresh movie has duplicate source controls"
- if m.actions[0].name<>"Choose source" or m.actions[0].action<>"play" then throw "fresh primary behavior changed"
+ if m.actions[0].name<>"Play" or m.actions[0].action<>"play" then throw "fresh primary behavior changed"
  if m.actions[1].action<>"favorite" then throw "fresh movie actions out of order"
  m.selected=invalid
  showMetadata({meta:{id:"resume",type:"movie",name:"Resume",position:60}})
  if m.actions.count()<>4 then throw "resume lost explicit source choice"
- if m.actions[0].action<>"resume" or m.actions[0].name<>"Resume at 1:00" then throw "resume primary changed"
+ if m.actions[0].action<>"resume" or m.actions[0].name<>"Resume" then throw "resume primary changed"
  if m.actions[1].action<>"sources" or m.actions[1].name<>"Choose source" then throw "resume source override changed"
  print "MOVIE_DETAIL_ACTIONS_OK"
 end sub
@@ -44,7 +45,7 @@ end sub
 with tempfile.TemporaryDirectory(prefix='viptv-movie-actions-') as directory:
     path = Path(directory) / 'actions.brs'
     path.write_text(routine + fixture)
-    result = subprocess.run([os.environ.get('VIPTV_BRS_CLI', '/home/node/air-roku/node_modules/.bin/brs-cli'), str(path)], capture_output=True, text=True, timeout=30)
+    result = subprocess.run([*brs_command(), str(path)], capture_output=True, text=True, timeout=30)
     print(result.stdout)
     print(result.stderr)
     if result.returncode or 'MOVIE_DETAIL_ACTIONS_OK' not in result.stdout:

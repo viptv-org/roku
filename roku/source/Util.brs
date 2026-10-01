@@ -1,4 +1,11 @@
 ' Pure, render-thread-safe helpers; no network, registry or device queries.
+function PlaybackSessionPath(connection as dynamic, identity as string) as string
+    if GetInterface(connection,"ifAssociativeArray") <> invalid
+        if Left(Txt(connection.path),16) = "/api/v2/playback" then return "/api/v2/playback/" + Enc(identity)
+    end if
+    return "/api/playback/" + Enc(identity)
+end function
+
 function TrackOwner(item as object) as string
     if Txt(item.type) = "live" then return "live:" + Txt(item.id)
     return "source:" + Txt(item.stream_id,Txt(item.id))
@@ -75,7 +82,7 @@ end function
 
 function LiveChannelPath(category as string, search as string, offset as integer) as string
     if offset < 0 then offset = 0
-    return "/api/live?limit=80&offset=" + offset.toStr() + "&search=" + Enc(search) + "&category=" + Enc(category)
+    return "/api/v2/iptv/live/channels?limit=80&search=" + Enc(search) + "&category_id=" + Enc(category)
 end function
 
 function PlayerTime(value as dynamic) as string
@@ -206,7 +213,7 @@ function PlaybackBody(item as object, profile as dynamic, capabilities as dynami
     body = { capabilities: caps, position: seconds, force_transcode: force }
     ' The authenticated session owns the selected profile; playback carries no profile override.
     if Txt(item.type) = "live"
-        body.channel_id = Txt(item.id)
+        body.stream_id = Txt(item.stream_id)
     else
         body.stream_id = Txt(item.stream_id, Txt(item.id))
     end if

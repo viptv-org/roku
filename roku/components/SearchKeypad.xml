@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="SearchKeypad" extends="Group">
+ <interface>
+  <field id="text" type="string" onChange="textChanged" />
+  <field id="textEditBox" type="node" />
+  <field id="active" type="boolean" onChange="paint" />
+ </interface>
+ <script type="text/brightscript" uri="pkg:/source/KeyboardInput.brs" />
+ <script type="text/brightscript" uri="pkg:/components/SearchKeypad.brs" />
+ <children><TextEditBox id="edit" visible="false" maxTextLength="256" /><Group id="keys" /></children>
+</component>

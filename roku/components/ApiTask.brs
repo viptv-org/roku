@@ -153,6 +153,25 @@ function DeviceCapabilities() as object
 end function
 
 function HttpRequest(request as object, result as object, method as string) as object
+    if Left(Txt(request.path),8) = "/api/v2/" and LCase(Left(Txt(request.base),8)) <> "https://"
+        result.error = "This server connection requires HTTPS. Update the server address in Settings."
+        return result
+    end if
+    if request.path = "/api/v2/playback" and method = "POST" then return RokuPlaybackV2Start(request,result)
+    if Left(Txt(request.path),17) = "/api/v2/playback/"
+        raw = HttpRequestRaw(request,result,method,false)
+        if not raw.ok then return raw
+        if method = "DELETE"
+            raw.data = {ok:true}
+            return raw
+        end if
+        identity = Mid(Txt(request.path),18).split("/")[0]
+        return RokuPlaybackV2Result(raw,identity,true)
+    end if
+    return HttpRequestRaw(request,result,method,true)
+end function
+
+function HttpRequestRaw(request as object, result as object, method as string, sanitize as boolean) as object
     ' API servers are origins only; /api paths never inherit a proxy mount.
     ' Never attach the server credential to an absolute URL supplied by a caller.
     path = Txt(request.path)
@@ -206,6 +225,7 @@ function HttpRequest(request as object, result as object, method as string) as o
         deadline = 70000
         if MatchInteger(request.timeout_ms,1,70000) then deadline = request.timeout_ms
     end if
+    if MatchInteger(request.timeout_ms,1,70000) then deadline = request.timeout_ms
     if method = "GET"
         started = transfer.AsyncGetToFile(responseFile)
     else
@@ -232,7 +252,7 @@ function HttpRequest(request as object, result as object, method as string) as o
         result.error = "Could not start HTTP request"
     else
         while true
-            if m.top.cancel
+            if m.top.cancel and request.cleanup <> true
                 result.error = "Cancelled"
                 exit while
             end if
@@ -251,7 +271,7 @@ function HttpRequest(request as object, result as object, method as string) as o
             if type(event) = "roUrlEvent"
                 if event.GetSourceIdentity() = transfer.GetIdentity()
                     result.status = event.GetResponseCode()
-                    if m.top.cancel
+                    if m.top.cancel and request.cleanup <> true
                         result.error = "Cancelled"
                     else if timer.TotalMilliseconds() >= deadline
                         result.error = "Request timed out"
@@ -270,7 +290,7 @@ function HttpRequest(request as object, result as object, method as string) as o
                             end if
                         end if
                         result = ReadResponse(responseFile, result, maxBytes)
-                        if result.ok
+                        if result.ok and sanitize
                             clean = SanitizeApiResponse(path, method, result.data)
                             result.ok = clean.ok
                             result.data = clean.data
@@ -305,8 +325,16 @@ function ReadResponse(path as string, result as object, maxBytes as integer) as 
     if result.status >= 400
         info = CreateObject("roFileSystem").Stat(path)
         if info <> invalid
-            if ApiIsNumber(info.size) and info.size <= 4096 then result.auth_code = AccountErrorCode(ReadAsciiFile(path))
+            if ApiIsNumber(info.size) and info.size <= 4096
+                text = ReadAsciiFile(path)
+                result.auth_code = AccountErrorCode(text)
+                if (result.status = 400 or result.status = 404 or result.status = 410) and ApiSourceExpired(text) then result.sourceExpired = true
+                result.error = ApiDisplayError(text, result.status)
+                return result
+            end if
         end if
+        result.error = ApiDisplayError("", result.status)
+        return result
     end if
     if result.status = 422
         result.error = "HTTP 422"
@@ -372,7 +400,51 @@ function ReadResponse(path as string, result as object, maxBytes as integer) as 
     return result
 end function
 
+function ApiDisplayError(text as string, status as integer) as string
+    ' ParseJSON can print malformed input. Extract only simple bounded strings;
+    ' escaped/complex responses fall back without logging response bodies.
+    message = ApiErrorField(text, "error")
+    code = ApiErrorField(text, "error_code")
+    if code = "provider_connection_limit" or message = "Provider connection limit reached" or message = "All available connections are busy. Try this channel again shortly." then return "This IPTV provider has reached its connection limit. Stop another stream or choose another provider."
+    if code = "playback_capacity" or message = "Playback capacity reached" then return "The server has reached its playback limit. Stop another stream or try again later."
+    if code = "source_expired" or message = "Stream expired; discover again" then return "This stream has expired. Refresh the sources and choose it again."
+    if code = "source_access_denied" then return "The provider rejected access to this stream. Check the provider account or choose another source."
+    if code = "source_unavailable" then return "The provider could not be reached. Try again or choose another source."
+    if code = "delivery_unsupported" then return "This source cannot be played with the current playback configuration. Choose another source."
+    if code = "gateway_required" or code = "gateway_unavailable" then return "This device needs an authorized playback gateway. Configure one for this account or ask the account owner."
+    if code = "gateway_capacity" or code = "gateway_overloaded" then return "The playback gateway is busy. Stop another stream or try again shortly."
+    if code = "playback_expired" then return "Playback authorization expired. Start playback again."
+    if code = "client_update_required" then return "Update VIPTV on this device to use this server."
+    if code = "provider_rate_limited" then return "The IPTV provider is limiting requests. Wait before trying again."
+    if code = "provider_credentials_rejected" then return "The IPTV provider rejected access. Check its credentials, subscription or access restrictions."
+    if code = "provider_timeout" or code = "provider_refresh_timeout" then return "The IPTV provider took too long to respond. Try again later."
+    if code = "provider_protocol_invalid" or code = "provider_response_too_large" then return "The IPTV provider returned an invalid or oversized response. Try another source."
+    if code = "provider_discovery_failed" or code = "provider_unavailable" or code = "provider_dns_unavailable" or code = "provider_response_interrupted" then return "This IPTV provider could not return sources. Try again or choose another provider."
+    if code = "source_not_found" or code = "playback_not_found" or code = "source_configuration_changed" then return "This source is unavailable or its configuration changed. Refresh the sources."
+    if code = "addon_timeout" then return "The addon took too long to respond. Try again or choose another addon."
+    if code = "addon_access_denied" then return "The addon rejected access. Check its configuration or choose another addon."
+    if code = "addon_rate_limited" then return "The addon is limiting requests. Wait before trying again."
+    unsafe = CreateObject("roRegex", "://|bearer |authorization|cookie|password|token[=:]|secret=|[<>]|[\x00-\x1f]|traceback|stack trace", "i")
+    if len(message) > 0 and len(message) <= 240 and instr(1,message,chr(92)) = 0 and not unsafe.isMatch(message) then return message
+    if status = 401 then return "Your session has expired. Pair this device again."
+    if status = 403 then return "VIPTV refused this request. Check your profile permissions."
+    if status = 404 or status = 410 then return "This item or stream is no longer available. Refresh and try again."
+    if status = 429 then return "Too many requests. Wait a moment and try again."
+    if status >= 500 then return "The server or provider is temporarily unavailable. Try again or choose another source."
+    return "VIPTV could not complete this request. Try again."
+end function
+
+function ApiErrorField(text as string, field as string) as string
+    if len(text) > 4096 then return ""
+    q = chr(34)
+    pattern = q + field + q + "\s*:\s*" + q + "([^" + q + "]{0,240})" + q
+    values = CreateObject("roRegex", pattern, "").match(text)
+    if values.count() > 1 then return values[1]
+    return ""
+end function
+
 function ApiSourceExpired(text as string) as boolean
+    if ApiErrorField(text, "error_code") = "source_expired" then return true
     ' Rust Axum ApiError is {"error":...}, not a FastAPI detail envelope.
     ' Recognize only the exact safe JSON shape. ParseJSON can log malformed raw bodies.
     if len(text) > 4096 then return false

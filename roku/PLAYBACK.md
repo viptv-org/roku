@@ -1,4 +1,27 @@
-# Explicit sources and seamless Roku playback
+# BE-002 current VOD transport — 2026-09-29
+
+Movies/exact episodes use account-scoped v2 discovery and playback leases. Roku
+requires authorized HTTPS gateway delivery regardless of its direct-file codec
+support; no gateway yields an actionable error rather than a native attempt.
+The first start uses a unique idempotency body, polls under a 45-second bound,
+and reconciles ambiguous/cancelled admissions before release under an independent
+five-second bound. V2 control stays on the configured HTTPS backend.
+
+Delivery kind and processing mode are separate: gateway `mode: direct` still
+starts at native zero with its title offset. Managed Pause freezes title time;
+Resume replaces delivery at that anchor. Seek/track replacements retain the
+single decoder, old lease and rollback position until success. Active/paused/
+transition leases renew individually. Refusal/expiry stops playback; network
+retries cannot extend expiry and late renewals cannot restore released leases.
+
+Healthy provider sources survive another provider's failure. Empty discovery
+shows its safe cause; raw provider messages never become displayed error text.
+Profiles, history, exact-source selection and viewing geometry are unchanged.
+Live remains on the legacy path until raw catalog migration. Device/network/
+codec qualification and retired-path cleanup remain required; host tests alone
+do not establish them.
+
+# Historical explicit sources and playback record
 
 ## Source ownership
 
@@ -28,7 +51,7 @@ The overlay remains visible with `Seeking…` and the absolute target. One OK co
 
 - `tests/player-overlay.brs`: scrub preview, acceleration, clamping, single commit, visible seeking status, options and pause controls.
 - `tests/lifecycle.brs`: native pause identity; old-frame retention; failed replacement rollback; successful atomic swap and old-session cleanup; direct seek; explicit track preservation.
-- `tests/fallback.brs`: only exact stable resume source may auto-start; stale/missing preferences remain manual.
+- `tests/fallback.brs`: only the exact stable (addon + fingerprint) resume source may auto-start through v2 playback; `tests/explicit_resume_runtime.py` covers stale preferences reopening the explicit picker.
 - `tests/schema.brs`: language-policy responses are not classified into client consent flows.
 - `tests/playback_static.py`: production source has no automatic fallback/language-consent routines and contains both replacement Video/timer nodes and swap ordering.
 

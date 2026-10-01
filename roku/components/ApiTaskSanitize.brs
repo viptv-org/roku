@@ -21,6 +21,15 @@ function ApiIsNumber(value as dynamic) as boolean
     return GetInterface(value, "ifInt") <> invalid or GetInterface(value, "ifLongInt") <> invalid or GetInterface(value, "ifFloat") <> invalid or GetInterface(value, "ifDouble") <> invalid
 end function
 
+' Raw live snapshot identities are JSON integers, not floating-point quantities.
+' Preserve the exact native 64-bit value; never narrow it through Int()/Val().
+' Float/Double are outside this integer-identity wire contract and fail closed.
+function ApiLiveMetadataInteger(value as dynamic, positive as boolean) as boolean
+    if GetInterface(value,"ifInt") = invalid and GetInterface(value,"ifLongInt") = invalid then return false
+    if positive then return value > 0
+    return value >= 0
+end function
+
 ' Whitelist shallow primitives: never forward arbitrary nested addon payloads.
 ' Optional bad numeric fields are omitted; display strings always have safe types.
 function ApiItem(value as object) as object
@@ -185,6 +194,62 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
         end if
         if ApiIsNumber(data.max_catalogs) then output.max_catalogs = data.max_catalogs
         if ApiIsNumber(data.max_results) then output.max_results = data.max_results
+    else if route = "/api/v2/iptv/live/channels" or route = "/api/v2/iptv/live/categories"
+        for each field in ["catalog_id","generation","items","next_cursor","previous_cursor"]
+            if not data.DoesExist(field) then return failure
+        end for
+        if not ApiIsArray(data.items) or data.items.count() > 200 then return failure
+        limitMatch = CreateObject("roRegex","[?&]limit=([0-9]+)","").Match(path)
+        if limitMatch.count() > 1
+            if data.items.count() > Val(limitMatch[1]) then return failure
+        end if
+        known = {}
+        for each item in data.items
+            if not AccountIsObject(item) then return failure
+            if GetInterface(item.id,"ifString") = invalid or GetInterface(item.name,"ifString") = invalid then return failure
+            if Len(item.id) < 1 or Len(item.id) > 256 or Len(item.name) > 512 then return failure
+            if CreateObject("roRegex","[\x00-\x1f\x7f]","").IsMatch(item.id) then return failure
+            if known.DoesExist(item.id) then return failure
+            known[item.id] = true
+        end for
+        output = {items:ApiItems(data.items,200),next_cursor:Txt(data.next_cursor),previous_cursor:Txt(data.previous_cursor),catalog_id:data.catalog_id,generation:data.generation}
+        for each field in ["next_cursor","previous_cursor"]
+            if data[field] <> invalid and GetInterface(data[field],"ifString") = invalid then return failure
+            if data[field] <> invalid
+                if not CreateObject("roRegex","^[A-Za-z0-9_-]{1,4096}$","").IsMatch(data[field]) then return failure
+            end if
+        end for
+        if data.catalog_id <> invalid
+            if not ApiLiveMetadataInteger(data.catalog_id,true) then return failure
+        end if
+        if data.generation <> invalid
+            if not ApiLiveMetadataInteger(data.generation,false) then return failure
+        end if
+        if (data.catalog_id = invalid) <> (data.generation = invalid) then return failure
+        if data.catalog_id = invalid
+            if data.items.count() > 0 or data.next_cursor <> invalid or data.previous_cursor <> invalid then return failure
+        end if
+        if route = "/api/v2/iptv/live/channels"
+            for each item in output.items
+                item.type = "live"
+            end for
+        end if
+    else if Left(route,18) = "/api/v2/iptv/live/" and Right(route,7) = "/source"
+        if not AccountIsObject(data.source) then return failure
+        if GetInterface(data.source.id,"ifString") = invalid then return failure
+        if not CreateObject("roRegex","^[A-Za-z0-9_-]{1,128}$","").IsMatch(data.source.id) then return failure
+        provider = Txt(data.source.source)
+        if not CreateObject("roRegex","^iptv:[1-9][0-9]*$","").IsMatch(provider) then return failure
+        if provider <> Txt(data.source.source_addon_id) then return failure
+        prefix = Enc(provider)+"%3A"
+        if Left(Mid(route,19),Len(prefix)) <> prefix then return failure
+        for each field in ["url","headers","authorization","integration_key","gateway_key"]
+            if data.source.DoesExist(field) then return failure
+        end for
+        output = {source:{id:Txt(data.source.id)}}
+        for each field in ["source","source_addon_id","name","title","source_fingerprint"]
+            output.source[field] = Left(Txt(data.source[field]),256)
+        end for
     else if route = "/api/live/categories"
         if not ApiIsArray(data.categories) or not ApiIsNumber(data.total) then return failure
         if data.total < 0 then return failure
@@ -193,7 +258,7 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
         if not ApiIsArray(data.channels) or not ApiIsNumber(data.total) then return failure
         if data.total < 0 then return failure
         output = { channels: ApiItems(data.channels, 100), total: data.total }
-    else if Left(route, 11) = "/api/guide/"
+    else if Left(route, 11) = "/api/guide/" or Left(route,19) = "/api/v2/iptv/guide/"
         if not ApiIsArray(data.programs) then return failure
         programs = []
         for each program in data.programs
@@ -216,10 +281,10 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
             meta.videos = ApiItems(data.meta.videos, 2000)
         end if
         output = { meta: meta }
-    else if route = "/api/streams" and method = "POST"
+    else if (route = "/api/streams" or route = "/api/v2/streams") and method = "POST"
         if output.id = "" then return failure
         output = { id: output.id }
-    else if Left(route, 13) = "/api/streams/" and method = "GET"
+    else if (Left(route, 13) = "/api/streams/" or Left(route,16) = "/api/v2/streams/") and method = "GET"
         if not ApiIsArray(data.events) or GetInterface(data.done, "ifBoolean") = invalid then return failure
         events = []
         for each entry in data.events
@@ -228,6 +293,10 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
                 if not ApiIsNumber(entry.seq) or not ApiIsArray(entry.streams) then return failure
                 if entry.seq < 0 or entry.seq > 2147483647 then return failure
                 cleaned = ApiItem(entry)
+                if Left(route,16) = "/api/v2/streams/" and Txt(entry.error_code) <> ""
+                    cleaned.error_code = left(Txt(entry.error_code),80)
+                    cleaned.error = ApiDisplayError(FormatJson({error_code:cleaned.error_code}),502)
+                end if
                 candidates = ApiItems(entry.streams, 1000)
                 for each candidate in candidates
                     if Txt(candidate.source) = "" then candidate.source = Txt(cleaned.source,"unknown")
@@ -289,7 +358,7 @@ end function
 function ProfilePreferencesWire(data as dynamic) as object
     if not AccountIsObject(data) then return {ok:false,data:invalid}
     output = {}
-    for each key in ["audio_language","subtitle_language","subtitle_size","subtitle_style","quality"]
+    for each key in ["audio_language","subtitle_language","subtitle_size","subtitle_style"]
         value = Txt(data[key])
         if value = "" or len(value) > 16 then return {ok:false,data:invalid}
         output[key] = value

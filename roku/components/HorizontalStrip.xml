@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="HorizontalStrip" extends="Group">
+ <interface>
+  <field id="content" type="node" onChange="contentChanged" />
+  <field id="itemComponentName" type="string" value="EpisodeCard" />
+  <field id="itemSize" type="vector2d" value="[240,220]" onChange="render" />
+  <field id="itemSpacing" type="vector2d" value="[24,0]" />
+  <field id="viewportWidth" type="float" value="1088" onChange="render" />
+  <field id="itemFocused" type="integer" value="0" alwaysNotify="true" />
+  <field id="itemSelected" type="integer" value="-1" alwaysNotify="true" />
+  <field id="jumpToItem" type="integer" onChange="jump" />
+  <field id="active" type="boolean" onChange="render" />
+ </interface>
+ <script type="text/brightscript" uri="pkg:/components/HorizontalStrip.brs" />
+ <children><Group id="items" /></children>
+</component>

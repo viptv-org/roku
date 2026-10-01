@@ -374,7 +374,7 @@ function ViptvTokens() as object
         size_player_overlay_top_tv: 150
         size_player_bottom_tv: 130
         size_player_seek_room_tv: 52
-        focus_tv_caption_shift: 8
-        focus_tv_caption_shift_profile: 10
+        focus_tv_caption_shift: 0
+        focus_tv_caption_shift_profile: 0
     }
 end function

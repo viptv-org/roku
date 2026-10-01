@@ -4,7 +4,9 @@ sub selectItem(item as object)
     end if
     if item.action <> invalid
         action = item.action
-        if action = "librarypage"
+        if left(action,11) = "homecatalog"
+            homeCatalogAction(item)
+        else if action = "librarypage"
             openLibraryPage(item.offset)
         else if action = "libraryremove"
             m.favoriteItem = m.libraryItem
@@ -41,6 +43,7 @@ sub selectItem(item as object)
             rows("Playback preferences",[{name:"Loading…",action:"waiting"}],"preferences","")
             request("GET","/api/profiles/"+Enc(m.profile)+"/preferences",invalid,"profilepreferences")
         else if action = "preferencechoice"
+            if Txt(item.preferenceKey) = "quality" then return
             m.preferenceKey = item.preferenceKey
             choices = []
             for each option in item.options
@@ -48,6 +51,7 @@ sub selectItem(item as object)
             end for
             uiOpenChoice("preferences",item.name,choices)
         else if action = "preferencesave"
+            if Txt(m.preferenceKey) = "quality" then return
             body = {}
             body[m.preferenceKey] = item.value
             request("PUT","/api/profiles/"+Enc(m.profile)+"/preferences",body,"profilepreferences")
@@ -222,7 +226,7 @@ sub selectItem(item as object)
         cancelBrowse()
         if item.type = "live"
             resetAttempts()
-            m.playItem = item
+            m.playItem = CopyRouteData(item)
             m.position = 0
             beginPlayback(false)
         else
@@ -266,7 +270,7 @@ end sub
 
 function favoriteLabel(item as object) as string
     if UiIsFavorite(item) then return "Remove from My List"
-    return "+ My List"
+    return "My List"
 end function
 
 sub toggleFavorite()

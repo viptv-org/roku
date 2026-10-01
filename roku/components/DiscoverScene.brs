@@ -63,6 +63,10 @@ sub discoverFilterSelected()
 end sub
 
 sub browse(kind as string, offset as integer)
+    if kind = "live"
+        openEpg(false)
+        return
+    end if
     cancelBrowse()
     m.mediaType = kind
     m.offset = offset
@@ -72,7 +76,7 @@ sub browse(kind as string, offset as integer)
     if m.discoverActive = true and kind <> "live"
         discoverBuildFilters()
         if m.catalog = invalid
-            uiEmpty("No catalogs yet","Add a movie or series catalog in your account settings.")
+            uiEmpty("No catalogs are available","Add or enable a catalog addon in Settings.")
             return
         end if
         missing = DiscoverMissingOption(m.catalog,m.search,m.discoverGenre,m.discoverExtras)

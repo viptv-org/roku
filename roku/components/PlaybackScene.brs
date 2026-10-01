@@ -1,4 +1,14 @@
 sub findStreams(item as object, manual = true as boolean, preferredSource = invalid as dynamic, automatic = false as boolean)
+    if Txt(item.type) = "live"
+        saveView()
+        cancelBrowse()
+        resetAttempts()
+        m.playItem = CopyRouteData(item)
+        m.playItem.stream_id = ""
+        m.position = 0
+        beginPlayback(false)
+        return
+    end if
     ' Home-shelf playback returns to the title's detail page on Back. A running
     ' next-episode transition keeps its already-chosen return target.
     if m.nextPrepping <> true
@@ -6,6 +16,7 @@ sub findStreams(item as object, manual = true as boolean, preferredSource = inva
         if m.mode <> "home" then m.playerReturnDetail = invalid
     end if
     saveView()
+    m.playerTitleOwner = invalid
     cancelBrowse()
     if Txt(m.sourcePreferencesProfile) <> m.profile or m.sourcePreferences = invalid
         m.sourcePreferencesProfile = m.profile
@@ -25,6 +36,7 @@ sub findStreams(item as object, manual = true as boolean, preferredSource = inva
     m.sourceHintCache = {}
     m.playItem = {}
     m.playItem.append(item)
+    playerTitleBegin(item)
     m.streams = []
     m.discoveryDone = false
     m.position = 0
@@ -42,7 +54,11 @@ sub findStreams(item as object, manual = true as boolean, preferredSource = inva
             body.only_addons = true
         end if
     end if
-    request("POST","/api/streams",body,"streamstart")
+    m.discoveryV2 = true
+    m.discoveryError = ""
+    path = "/api/streams"
+    if m.discoveryV2 then path = "/api/v2/streams"
+    request("POST",path,body,"streamstart")
     if not m.manualSources
         ' Resume is an explicit operation, never a timer attached to the picker.
         m.mode = "resuming"
@@ -57,10 +73,20 @@ end sub
 
 sub pollStreams()
     m.pollCount++
-    request("GET","/api/streams/" + Enc(m.job) + "?after=" + m.cursor.toStr(),invalid,"streampoll")
+    path = "/api/streams/"
+    if m.discoveryV2 = true then path = "/api/v2/streams/"
+    request("GET",path + Enc(m.job) + "?after=" + m.cursor.toStr(),invalid,"streampoll")
 end sub
 
 sub beginPlayback(force as boolean)
+    if m.playItem.type = "live" and Txt(m.playItem.stream_id) = ""
+        if m.pendingPlayback then return
+        m.pendingPlayback = true
+        m.liveSourcePending = true
+        uiBusy(true)
+        request("POST","/api/v2/iptv/live/" + Enc(Txt(m.playItem.id)) + "/source",{},"livesource")
+        return
+    end if
     if m.pendingPlayback
         m.status.text = "Playback is already preparing. Please wait."
         return
@@ -98,7 +124,8 @@ sub beginPlayback(force as boolean)
     if m.directRetryUsed = true then body.managed_only = true
     body.append(TrackRequestFields(m.playItem,m.trackPreferences))
     if Txt(m.playItem.audio_language) <> "" then body.audio_language = m.playItem.audio_language
-    request("POST","/api/playback",body,"playback")
+    path = "/api/v2/playback"
+    request("POST",path,body,"playback")
     if m.pendingPlayback then m.pendingRequestId = m.generation.toStr() + "-" + m.requestSequence.toStr()
 end sub
 
@@ -182,7 +209,7 @@ sub retryPlayback(reason as string)
     category = ""
     if m.video.state = "error" and GetInterface(m.video.errorInfo,"ifAssociativeArray") <> invalid then category = lcase(Txt(m.video.errorInfo.category))
     originFailure = category = "http" or category = "drm"
-    if m.playbackMode = "direct" and m.directRetryUsed <> true and not originFailure
+    if m.playbackMode = "direct" and m.playbackDeliveryKind <> "gateway" and m.directRetryUsed <> true and not originFailure
         saveProgress()
         stopPlayback(false)
         m.directRetryUsed = true
@@ -206,6 +233,10 @@ end sub
 
 sub heartbeat()
     if m.session = "" then return
+    if m.playbackDeliveryKind = "gateway"
+        saveProgress()
+        return
+    end if
     request("POST","/api/playback/" + Enc(m.session) + "/heartbeat",{},"sideheartbeat")
     saveProgress()
 end sub
@@ -219,8 +250,12 @@ sub saveProgress()
         m.homeDirty = true
         return
     end if
-    if m.video.position > 0 then m.position = m.timelineOffset + m.video.position
-    if m.playbackMode = "direct" and m.video.duration > 0
+    if m.pausedVOD = true and m.playbackDeliveryKind = "gateway" and m.managedPausePosition <> invalid
+        m.position = m.managedPausePosition
+    else if m.video.position > 0
+        m.position = m.timelineOffset + m.video.position
+    end if
+    if m.playbackMode = "direct" and m.playbackDeliveryKind <> "gateway" and m.video.duration > 0
         if m.duration <= 0 or m.video.duration > m.duration then m.duration = m.video.duration
     end if
     ' Duration 0 honestly means unknown, never the rolling HLS window length.
@@ -282,87 +317,48 @@ sub playerCommand(event as object)
     updatePlayer()
 end sub
 
-function nextPlayerDialogId() as string
-    if m.playerDialogSequence = invalid then m.playerDialogSequence = 0
-    m.playerDialogSequence++
-    return "player:" + m.playerDialogSequence.toStr()
-end function
-
-function playerDialogEventMatches(event as object) as boolean
-    if m.top.dialog = invalid then return false
-    node = event.getRoSGNode()
-    if node = invalid then return false
-    return left(Txt(node.id),7) = "player:" and Txt(node.id) = Txt(m.top.dialog.id)
-end function
-
 sub showPlayerTracks(kind as string, page = 0 as integer)
     m.trackKind = kind
-    m.trackPage = page
     m.trackDialogSession = m.session
     m.trackDialogOwner = TrackOwner(m.playItem)
     m.trackChoices = []
-    buttons = []
     tracks = Bounded(m.audioTracks,32)
-    title = "Audio tracks"
-    message = "Choose any available audio track. Language labels are informational."
+    title = "Audio"
+    message = "Choose an audio track."
     if kind = "subtitles"
         tracks = Bounded(m.subtitleTracks,32)
         title = "Subtitles"
-        message = "Select a supported text track. Image subtitles cannot be displayed."
-        if m.subtitlesSupported <> true then message = "Subtitles are unavailable for this output. Listed tracks cannot currently be displayed."
-        if m.subtitlesSupported = true
-            buttons.push("Off")
-            m.trackChoices.push({action:"off"})
-        end if
+        message = "Choose a subtitle track."
+        if m.subtitlesSupported = true then m.trackChoices.push({action:"off",name:"Off"})
     end if
-    for index = page to page + 4
-        if index >= tracks.count() then exit for
-        track = tracks[index]
+    selectedIndex = 0
+    for each track in tracks
         label = PlayerTrackLabel(track)
-        if track.selected = true then label = "Playing · " + label
-        if not PlayerTrackSelectable(track) or (kind = "subtitles" and m.subtitlesSupported <> true) then label = "Unavailable · " + label
-        buttons.push(left(label,100))
-        m.trackChoices.push(track)
+        if track.selected = true
+            selectedIndex = m.trackChoices.count()
+            label += " · Current"
+        end if
+        if not PlayerTrackSelectable(track) or (kind = "subtitles" and m.subtitlesSupported <> true) then label += " · unavailable"
+        choice = CopyRouteData(track)
+        choice.name = label
+        m.trackChoices.push(choice)
     end for
-    if page + 5 < tracks.count()
-        buttons.push("More tracks")
-        m.trackChoices.push({action:"next"})
-    end if
-    if page > 0
-        buttons.push("Previous tracks")
-        m.trackChoices.push({action:"previous"})
-    end if
     if tracks.count() = 0
-        message = "This stream supplies no selectable audio tracks."
-        if kind = "subtitles" then message = "This stream supplies no selectable subtitles."
+        message = "This stream has no selectable audio tracks."
+        if kind = "subtitles" then message = "This stream has no selectable subtitles."
     end if
-    buttons.push("Back to player")
-    m.trackChoices.push({action:"back"})
-    dialog = CreateObject("roSGNode","Dialog")
-    dialog.id = nextPlayerDialogId()
-    dialog.title = title
-    dialog.message = message
-    dialog.buttons = buttons
-    dialog.observeField("buttonSelected","playerTrackSelected")
-    dialog.observeField("wasClosed","playerDialogClosed")
-    m.top.dialog = dialog
+    m.trackChoices.push({action:"back",name:"Back to player"})
+    m.choiceKind = "playerTracks"
+    m.choiceGeneration = m.generation
+    m.choicePanel.model = {title:title,description:message,items:m.trackChoices,index:selectedIndex}
 end sub
 
-sub playerTrackSelected(event as object)
-    if not playerDialogEventMatches(event) then return
-    index = event.getData()
+sub uiPlayerTrackChosen(index as integer)
     if index < 0 or index >= m.trackChoices.count() then return
     choice = m.trackChoices[index]
     closePlayerTracks()
     if m.trackDialogOwner <> TrackOwner(m.playItem) or m.trackDialogSession <> m.session then return
     if choice.action = "back" then return
-    if choice.action = "next"
-        showPlayerTracks(m.trackKind,m.trackPage + 5)
-        return
-    else if choice.action = "previous"
-        showPlayerTracks(m.trackKind,m.trackPage - 5)
-        return
-    end if
     if choice.action <> "off"
         if not MatchInteger(choice.input_index,0,65535) then return
         if not PlayerTrackSelectable(choice) then return
@@ -431,6 +427,7 @@ sub playerDialogClosed(event = invalid as dynamic)
 end sub
 
 sub closePlayerTracks()
+    if m.choiceKind = "playerTracks" then m.choicePanel.visible = false
     if m.top.dialog <> invalid then m.top.dialog.close = true
     if m.playerOverlay <> invalid
         m.playerOverlay.opened = true

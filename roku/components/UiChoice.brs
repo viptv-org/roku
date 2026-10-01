@@ -12,17 +12,19 @@ sub render()
     for each item in m.items
         node = root.createChild("ContentNode")
         node.title = Txt(item.name)
-        node.addFields({uiWidth:792,uiHeight:52})
+        node.addFields({uiWidth:440,uiHeight:54})
     end for
     count = m.items.count()
     if count < 1 then count = 1
     if count > 7 then count = 7
-    panelHeight = 146 + count*62
-    panelTop = int((720-panelHeight)/2)
-    m.top.findNode("surface").translation = [200,panelTop]
+    panelHeight = 720
+    panelTop = 0
+    m.top.findNode("surface").translation = [733,0]
     m.top.findNode("surface").height = panelHeight
-    m.top.findNode("title").translation = [244,panelTop+32]
-    m.choices.translation = [244,panelTop+94]
+    m.top.findNode("title").translation = [776,43]
+    m.top.findNode("description").text = Txt(model.description)
+    m.choices.translation = [776,130]
+    if Txt(model.description) <> "" then m.choices.translation = [776,190]
     m.choices.numRows = count
     m.choices.content = root
     m.top.visible = true

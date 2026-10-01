@@ -5,6 +5,7 @@
     "source/**/*",
     "components/**/*",
     "images/**/*",
+    "fonts/**/*",
     "data/**/*"
   ],
   "createPackage": false,

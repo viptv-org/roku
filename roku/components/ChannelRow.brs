@@ -8,20 +8,20 @@ sub render()
     saved = false
     if item.hasField("saved") then saved = item.saved
     m.top.findNode("favorite").visible = saved
-    m.top.findNode("favorite").text = "♥"
     renderFocus()
 end sub
 
 sub renderFocus()
     active = m.top.listHasFocus and m.top.focusPercent > 0.5
-    m.top.findNode("surface").blendColor = "#191B1DFF"
-    m.top.findNode("title").color = "#F5F5F5"
-    m.top.findNode("favorite").color = "#F5F5F5"
+    m.top.findNode("surface").focused = active
+    m.top.findNode("surface").blendColor = "#161618FF"
+    m.top.findNode("title").color = "#F4F2EE"
+    m.top.findNode("favorite").uri = "pkg:/images/lucide/check-primary.png"
     m.top.findNode("title").repeatCount = 0
     if active
-        m.top.findNode("surface").blendColor = "#F5F5F5FF"
-        m.top.findNode("title").color = "#101112"
-        m.top.findNode("favorite").color = "#101112"
+        m.top.findNode("surface").blendColor = "#F4F2EEFF"
+        m.top.findNode("title").color = "#0B0B0C"
+        m.top.findNode("favorite").uri = "pkg:/images/lucide/check-focus.png"
         m.top.findNode("title").repeatCount = -1
     end if
 end sub

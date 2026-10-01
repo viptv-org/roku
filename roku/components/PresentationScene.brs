@@ -1,7 +1,7 @@
 ' Presentation-only screen ownership, geometry and remote-focus coordination.
 ' Authentication, HTTP scheduling, playback sessions and Video replacement stay in MainScene.
 sub initPresentation()
-    ids = ["pageCaption","detailAtmosphere","detailBackdrop","detailActions","episodeList","seasonList","seasonHeading","episodesHeading","liveTabs","channelList","liveListHeading","sourceFilters","detailCredits","sourceContext","sourceState","sourceHelp","sourceSpinner","emptyState","emptyTitle","emptyMessage","busyPanel","busySpinner","busyMessage","busyShade","noticePanel","noticeText","noticeTimer","choicePanel","fullTextPanel","fullTextTitle","fullTextBody","railSurface","railShade","homeActions","homeShelves","heroArtTimer"]
+    ids = ["libraryTabs","pageCaption","detailAtmosphere","detailBackdrop","detailAmbient","detailActions","episodeList","seasonList","seasonHeading","episodesHeading","liveTabs","channelList","liveListHeading","sourceFilters","detailCredits","sourceHeading","sourceContext","sourceState","sourceHelp","sourceSpinner","sourcePanelGround","sourcePanelScrim","emptyState","emptyTitle","emptyMessage","busyPanel","busySpinner","busyMessage","busyShade","noticePanel","noticeText","noticeTimer","choicePanel","fullTextPanel","fullTextTitle","fullTextBody","fullTextClose","railSurface","railShade","homeActions","homeShelves","heroArtTimer"]
     for each id in ids
         m[id] = m.top.findNode(id)
     end for
@@ -17,15 +17,22 @@ sub initPresentation()
     m.sourceFilters.observeField("itemSelected","uiSourceFilterSelected")
     m.seasonList.observeField("itemSelected","uiSeasonSelected")
     m.liveTabs.observeField("itemSelected","uiLiveTabSelected")
+    m.libraryTabs.observeField("itemSelected","uiLibraryTabSelected")
     m.choicePanel.observeField("selection","uiChoiceSelected")
     m.choicePanel.observeField("dismissed","uiChoiceDismissed")
     m.status.observeField("text","uiStatusChanged")
     m.noticeTimer.observeField("fire","uiHideNotice")
     m.top.observeField("focusedChild","uiFocusChanged")
-    m.busySpinner.poster.uri = "pkg:/images/ui-spinner.png"
-    m.sourceSpinner.poster.uri = "pkg:/images/ui-spinner.png"
-    m.busySpinner.poster.width = 60
-    m.busySpinner.poster.height = 60
+    closeRoot = CreateObject("roSGNode","ContentNode")
+    closeItem = closeRoot.createChild("ContentNode")
+    closeItem.title = "Close"
+    closeItem.addFields({uiWidth:160,uiHeight:48})
+    m.fullTextClose.content = closeRoot
+    m.fullTextClose.observeField("itemSelected","uiCloseFullText")
+    m.busySpinner.poster.uri = "pkg:/images/design/spinner.png"
+    m.sourceSpinner.poster.uri = "pkg:/images/design/spinner.png"
+    m.busySpinner.poster.width = 38
+    m.busySpinner.poster.height = 38
     m.sourceSpinner.poster.width = 26
     m.sourceSpinner.poster.height = 26
     m.homeActions.observeField("activation","uiResumeAction")
@@ -40,6 +47,7 @@ sub initPresentation()
     m.uiHeroTriedOrder = []
     m.detailLayoutTimer = m.top.findNode("detailLayoutTimer")
     m.detailLayoutTimer.observeField("fire","uiLayoutDetailActions")
+    m.art.observeField("loadStatus","uiTitleLogoLoaded")
     m.uiLandscapeCache = {}
     m.uiLandscapeOrder = []
     m.uiArtworkTried = {}
@@ -76,7 +84,7 @@ sub uiBusy(active as boolean, message = "Loading" as string)
         end if
     end if
     m.busyMessage.text = message
-    m.busyMessage.font.size = 22
+    m.busyMessage.font.size = 20
     m.busyPanel.visible = active
     if active then m.busySpinner.control = "start" else m.busySpinner.control = "stop"
 end sub
@@ -115,7 +123,7 @@ sub uiHidePageExtras()
     if m.searchPanel <> invalid then m.searchPanel.visible = false
     if m.searchDelay <> invalid then m.searchDelay.control = "stop"
     if m.uiReady <> true then return
-    for each id in ["detailAtmosphere","detailActions","episodeList","seasonList","seasonHeading","episodesHeading","liveTabs","channelList","liveListHeading","sourceFilters","detailCredits","sourceContext","sourceState","sourceHelp","sourceSpinner","emptyState","pageCaption","discoverFilters"]
+    for each id in ["detailAtmosphere","detailActions","episodeList","seasonList","seasonHeading","episodesHeading","liveTabs","channelList","liveListHeading","sourceFilters","detailCredits","sourceHeading","sourceContext","sourceState","sourceHelp","sourceSpinner","sourcePanelGround","sourcePanelScrim","emptyState","pageCaption","discoverFilters","discoverTypes","libraryTabs"]
         m[id].visible = false
     end for
     m.sourceSpinner.control = "stop"
@@ -224,6 +232,8 @@ sub uiRows(title as string, values as object, mode as string, subtitle as string
     if m.items.count() = 0 and mode <> "profiles" and mode <> "loading" and mode <> "streams" and mode <> "pairing"
         uiEmpty("Nothing here yet","Choose another filter, or come back later.")
         if mode = "livefavorites" then uiEmpty("Your favorite channels","Press * on a channel and choose Add to favorites.")
+        if mode = "collection" and m.collection = "progress" then uiEmpty("Nothing in progress","Titles you start watching appear here.")
+        if mode = "collection" and m.collection = "favorites" then uiEmpty("Your list is empty","Add titles with the + button.")
         if mode = "episodes" then uiEmpty("No episodes available","Try another season.")
         ' Empty lists are hidden: keep keyboard focus on an actual visible control.
         target = invalid
@@ -234,6 +244,8 @@ sub uiRows(title as string, values as object, mode as string, subtitle as string
             target = m.discoverFilters
         else if m.seasonList.visible
             target = m.seasonList
+        else if m.libraryTabs.visible
+            target = m.libraryTabs
         end if
         if target <> invalid and acknowledgementMayFocus()
             m.listFocusTimer.control = "stop"
@@ -275,34 +287,70 @@ sub uiLayoutPage(mode as string, subtitle = "" as string)
         m.footer.visible = false
         return
     end if
-    m.heading.translation = [100,54]
+    m.heading.translation = [128,36]
     m.heading.width = 1096
     m.heading.height = 62
     m.heading.wrap = false
-    m.heading.font.size = 42
+    m.heading.font.size = 37
     m.heading.visible = true
-    m.pageCaption.translation = [100,126]
+    m.pageCaption.translation = [128,90]
     m.pageCaption.maxWidth = 1096
     m.pageCaption.text = subtitle
     m.pageCaption.visible = subtitle <> ""
-    m.standardList.translation = [100,176]
-    if subtitle = "" then m.standardList.translation = [100,144]
-    m.standardList.itemSize = [536,56]
+    m.standardList.translation = [128,128]
+    if subtitle = "" then m.standardList.translation = [128,96]
+    m.standardList.itemSize = [480,54]
     m.standardList.numRows = 7
-    m.posterGrid.translation = [100,198]
+    m.posterGrid.translation = [128,138]
     for each id in ["art","detailTitle","detailInfo","description"]
         m[id].visible = false
     end for
     if m.discoverActive = true and mode = "browse" and m.mediaType <> "live"
         m.discoverFilters.visible = true
-        m.posterGrid.translation = [100,248]
+        m.discoverTypes.visible = true
+        m.pageCaption.visible = false
+        m.posterGrid.translation = [128,216]
+    end if
+    if mode = "collection" and (m.collection = "favorites" or m.collection = "progress")
+        uiLibraryTabs()
+        m.heading.text = "My List"
+        m.pageCaption.visible = false
+        m.posterGrid.translation = [128,164]
+        if m.items.count() = 0 then m.libraryTabs.setFocus(true)
     end if
     if mode = "streams"
+        m.sourceHeading.visible = true
+        m.heading.visible = false
         m.heading.text = "Choose a source"
+        m.heading.font.size = 29
+        m.heading.translation = [776,36]
+        m.heading.width = 440
+        m.sourcePanelGround.visible = true
+        m.sourcePanelScrim.visible = true
+        if m.selected <> invalid
+            backdrop = PresentationBackdrop(m.selected)
+            m.detailAtmosphere.visible = backdrop <> ""
+            m.detailBackdrop.uri = ImageUrl(backdrop,1120,720,true)
+            m.detailAmbient.uri = ImageUrl(backdrop,80,45,false)
+        end if
         m.pageCaption.visible = false
         m.sourceFilters.visible = true
         m.sourceContext.visible = true
         m.sourceState.visible = true
+        sameTitle = false
+        if m.selected <> invalid and m.playItem <> invalid then sameTitle = Txt(m.selected.id) = PresentationMetadataId(m.playItem)
+        if sameTitle
+            m.detailTitle.visible = m.art.uri = "" or m.art.loadStatus <> "ready"
+            m.art.visible = not m.detailTitle.visible
+            m.detailInfo.visible = true
+            m.description.visible = true
+            m.detailActions.visible = true
+            if m.selected.type = "series"
+                m.seasonList.visible = true
+                m.episodesHeading.visible = true
+                m.episodeList.visible = true
+            end if
+        end if
     else if mode = "episodes"
         m.pageCaption.visible = false
         m.seasonList.visible = true
@@ -323,6 +371,8 @@ sub uiLayoutPage(mode as string, subtitle = "" as string)
 end sub
 
 sub uiEmpty(title as string, message as string)
+    m.emptyTitle.width = 780
+    m.emptyMessage.width = 780
     m.emptyTitle.translation = [250,304]
     m.emptyMessage.translation = [250,360]
     m.emptyState.visible = true
@@ -336,6 +386,10 @@ sub uiOpenChoice(kind as string, title as string, values as object, index = 0 as
 end sub
 
 sub uiChoiceDismissed()
+    if m.choiceKind = "playerTracks"
+        closePlayerTracks()
+        return
+    end if
     if m.choiceKind = "sourceProvider" and m.mode = "streams"
         m.sourceFilters.setFocus(true)
         uiFocusChanged()
@@ -371,6 +425,10 @@ sub uiChoiceSelected(event as object)
         return
     end if
     kind = m.choiceKind
+    if kind = "playerTracks"
+        uiPlayerTrackChosen(event.getData().index)
+        return
+    end if
     uiRestoreFocus()
     if kind = "libraryManage" or kind = "queueManage" or kind = "queueUndo" or kind = "autoplay" or kind = "continuationUnavailable" or kind = "preferences" or kind = "profilehelp"
         selectItem(choice)

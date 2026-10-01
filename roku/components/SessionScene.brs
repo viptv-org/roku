@@ -1,9 +1,11 @@
 sub acceptPlayback(data as object,origin as object)
+        if Txt(data.delivery_kind) = "gateway" then registerRokuPlaybackLease(data,origin)
         uiBusy(false)
         m.session = Txt(data.id)
-        if m.nextPrepping = true or m.nextTransitionSession <> ""
-            if m.nextTransitionSession <> "" and m.nextTransitionSession <> m.session
-                request("DELETE","/api/playback/" + Enc(m.nextTransitionSession),invalid,"cleanup",m.nextTransitionConnection)
+        transitionSession = Txt(m.nextTransitionSession)
+        if m.nextPrepping = true or transitionSession <> ""
+            if transitionSession <> "" and transitionSession <> m.session
+                request("DELETE",PlaybackSessionPath(m.nextTransitionConnection,transitionSession),invalid,"cleanup",m.nextTransitionConnection)
             end if
             m.nextTransitionSession = ""
             m.nextTransitionConnection = invalid
@@ -25,6 +27,8 @@ sub acceptPlayback(data as object,origin as object)
             end if
         end for
         m.sessionConnection = origin
+        m.playbackDeliveryKind = Txt(data.delivery_kind)
+        m.managedPausePosition = invalid
         url = ResolveUrl(origin.base,Txt(data.url))
         if url = ""
             m.status.text = "Server returned an unsupported playback URL."
@@ -42,14 +46,16 @@ sub acceptPlayback(data as object,origin as object)
         ' starts. Waiting for availableSubtitleTracks can otherwise deadlock on Roku.
         if m.captionRestore = invalid then m.captionRestore = m.video.globalCaptionMode
         m.nativeCaptionName = ""
-        ApplyProfileCaptionStyle(m.video, data.preferences)
+        preferences = data.preferences
+        if m.playbackDeliveryKind = "gateway" and Txt(m.sourcePreferencesProfile) = m.profile then preferences = m.sourcePreferences
+        ApplyProfileCaptionStyle(m.video, preferences)
         PrepareNativeCaptions(m.video, data.selected_subtitle <> invalid)
         m.directSeekPause = false
         m.video.autoplayAfterSeek = true
         m.video.content = content
         m.timelineOffset = 0
         m.resumePosition = data.position
-        if Txt(data.mode) <> "direct"
+        if Txt(data.mode) <> "direct" or m.playbackDeliveryKind = "gateway"
             ' FFmpeg has already sought the input; generated HLS starts at zero.
             m.timelineOffset = data.position
             m.resumePosition = invalid

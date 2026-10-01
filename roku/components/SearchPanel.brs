@@ -6,8 +6,8 @@ sub init()
     m.keys.textEditBox.maxTextLength = 256
     m.keys.textEditBox.clearOnDownKey = false
     m.keys.textEditBox.hintText = "Search"
-    m.keys.textEditBox.hintTextColor = "#A6A8AA"
-    m.keys.textEditBox.textColor = "#F5F5F5"
+    m.keys.textEditBox.hintTextColor = "#B6B4AF"
+    m.keys.textEditBox.textColor = "#F4F2EE"
     m.keys.textEditBox.backgroundUri = "pkg:/images/ui-input.9.png"
     m.keys.textEditBox.translation = [12,0]
     m.keys.textEditBox.width = 366
@@ -23,10 +23,11 @@ sub open()
 end sub
 sub focusField()
     m.keys.setFocus(true)
+    m.keys.active = true
 end sub
 sub updateQueryLabel()
     value = m.keys.text
-    if value = "" then value = "Search movies and shows"
+    if value = "" then value = "Search movies and series"
     m.top.findNode("queryLabel").text = value
 end sub
 sub changed()
@@ -80,8 +81,13 @@ end sub
 sub focusResults(position = invalid as dynamic)
     if m.results.content <> invalid and m.results.content.getChildCount() > 0
         if position <> invalid and position.count() = 2 then m.results.jumpToRowItem = position
+        m.keys.active = false
         m.results.setFocus(true)
     else
         focusField()
     end if
+end sub
+
+sub syncFocus()
+    if m.keys <> invalid then m.keys.active = m.keys.hasFocus()
 end sub

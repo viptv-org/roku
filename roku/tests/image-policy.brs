@@ -4,7 +4,7 @@ sub Main()
     small = ImageUrl(url,256,144)
     check(instr(1,small,"&w=256&h=144")>0,"HD card size")
     check(instr(1,small,"w500")>0,"small source bucket")
-    check(instr(1,small,"&q=85")>0,"card quality")
+    check(instr(1,small,"&q=95")>0,"card quality")
     m.imageScale = 1.5
     hero = ImageUrl(url,1280,720,true)
     check(instr(1,hero,"&w=1920&h=1080")>0 and instr(1,hero,"&q=95")>0,"large high quality")

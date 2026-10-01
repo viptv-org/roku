@@ -9,10 +9,10 @@ sub Main()
     m.seekDebounceTimer = {}
     m.top = {nodes:{},opened:true,model:{title:"Show",episode:"S1 E3 · Pilot",position:650,duration:3600,live:false,paused:false,session:"A",state:"playing"},findNode:TestNode,hasFocus:TestFocus}
     render()
-    ensure(m.top.nodes.controlRow.translation[0]=64 and m.top.nodes.btnExitIcon.translation[0]=1106,"controls span seek bar edges")
+    ensure(m.top.nodes.controlRow.translation[0]=64 and m.top.nodes.btnExitIcon.translation[0]=1118,"controls span seek bar edges")
     ensure(not m.top.nodes.controlSurface.visible,"no enclosing control tray")
     ensure(m.top.nodes.timeLeft.text = "10:50","full original timeline")
-    ensure(m.top.nodes.brandWordmark.text = "S1 E3 · Pilot" and m.top.nodes.brandWordmark.visible = true and m.top.nodes.brandMark.visible = true,"VOD header surfaces the episode instead of VIPTV")
+    ensure(m.top.nodes.brandWordmark.text = "Show" and m.top.nodes.brandWordmark.visible = true and m.top.nodes.brandMark.visible = false,"VOD header identifies the title without the old brand mark")
     onKeyEvent("right",true)
     ensure(m.preview = 660 and m.top.command = invalid,"seek remains a preview")
     onKeyEvent("OK",true)
@@ -89,6 +89,8 @@ sub Main()
     ensure(m.top.command = invalid,"live cannot pause")
     ensure(m.top.nodes.btnPauseIcon.visible = false and m.top.nodes.btnAudioIcon.visible,"live only shows supported actions")
     m.top.opened = false
+    render()
+    ensure(not m.top.nodes.playbackStatus.visible,"hidden chrome leaves no status label")
     onKeyEvent("left",true)
     ensure(m.row = 1,"hidden live chrome reopens on icons")
     print "PASS: player icons, explicit seeking and live focus"

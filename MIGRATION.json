@@ -5,49 +5,58 @@
     {
       "source": "roku/ACCOUNT-UX.md",
       "destination": "roku/ACCOUNT-UX.md",
-      "sha256": "1a6d5ac458fd02c8f3e61767aea484c7a3c91bfd187c21e727c8ff281ca0a753"
+      "sha256": "1a6d5ac458fd02c8f3e61767aea484c7a3c91bfd187c21e727c8ff281ca0a753",
+      "extracted_sha256": "2d99661a2ce27aa62f4906ef32293984751b38fd0c5fec5886ea9b6e143a91c8",
+      "reason": "Local checks documented through scripts/run-tests.py; retired Settings quality row and DSH-only commands removed."
     },
     {
       "source": "roku/PLAYBACK.md",
       "destination": "roku/PLAYBACK.md",
-      "sha256": "ba9ec93b77d0e3bd6440e1a2d45a7de90cad51646a1d861e94602086d521d6e5"
+      "sha256": "ba9ec93b77d0e3bd6440e1a2d45a7de90cad51646a1d861e94602086d521d6e5",
+      "extracted_sha256": "86a48ff242a455f6b3574ddc7a19e1977d4cd70f89b6a655927480a0b2981163",
+      "reason": "BE-002 v2 playback contract and validation record; original extraction hash retained. Local checks documented through scripts/run-tests.py; retired Settings quality row and DSH-only commands removed."
     },
     {
       "source": "roku/README.md",
       "destination": "roku/README.md",
       "sha256": "d910b07caec23d4dfbe5b62162da43c21a0b1c2123205bf5cba91c634b84de17",
-      "extracted_sha256": "9369339accb4e3855f96faca4b9bc29e41c8d8a54acca7dfe5ba72ce0be70e60",
-      "reason": "Split follow-up plus the public build flavor: roku_test file lists name sibling script files, and the build documents the configurable server origin."
+      "extracted_sha256": "f4dcaaa50715fedee0635c48bb228d6375b719aae8c909afd3d8fb2f9cef90ec",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. Local checks documented through scripts/run-tests.py; retired Settings quality row and DSH-only commands removed."
     },
     {
       "source": "roku/bsconfig.json",
       "destination": "roku/bsconfig.json",
-      "sha256": "483022be77240fdc9644889ebd030b75d63d97707bb5839d1322dc0714b45e51"
+      "sha256": "483022be77240fdc9644889ebd030b75d63d97707bb5839d1322dc0714b45e51",
+      "extracted_sha256": "5eac7d21d91e9638d999bfffd016c94a91e0c084153886941fa5ccdb04ad986a",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/AccountProfilesScene.brs",
       "destination": "roku/components/AccountProfilesScene.brs",
       "sha256": "860aed3610fdb2ddd63b7a416c7fdd8edcb299d5bf743bdc056d31d2edef8896",
-      "reason": "New file split from AccountScene.brs: profile grid, key handler, setup/editor, PIN, sign-out and delete handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained.",
+      "extracted_sha256": "90026c4d243616a0701cfdd4780e484c1795673fce3b66838c115d2462acec9b"
     },
     {
       "source": "roku/components/AccountScene.brs",
       "destination": "roku/components/AccountScene.brs",
       "sha256": "0355e49291936914396ba1d02caeb002afa4105c4b45a56c0e12c81dc030ab17",
-      "extracted_sha256": "40d98a7bb6c0d9be1fe4ca1b04e1a69837fac9ee9a580b62ecf2b024ee7074fd",
-      "reason": "Cleanup 14a702c (write-only m.searchFocusPending) and split: pairing, credentials, QR reveal and accountResponse remain; profile grid, key handling, setup/editor, PIN, sign-out and delete handlers moved byte-identical into AccountProfilesScene.brs (merged MainScene component scope)."
+      "extracted_sha256": "e69c9ee3e54f7de510ef06ebc2afcacfadc2babbc3d956822d6a6ab06153dd23",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/ActionRow.brs",
       "destination": "roku/components/ActionRow.brs",
-      "sha256": "290b36676f8b03935d596f758d93903d891be9dd71fa81298fe179f580af33dd"
+      "sha256": "290b36676f8b03935d596f758d93903d891be9dd71fa81298fe179f580af33dd",
+      "extracted_sha256": "5d92bcd4c0cb41cfc5f715d311608c6237b4d5f67488eb0c054fbda772043c30",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/ActionRow.xml",
       "destination": "roku/components/ActionRow.xml",
       "sha256": "74dcd5feffbdcc94de82a12c2c9e47376e2dab7dc763d4e60f1c205fe3618858",
-      "extracted_sha256": "8c26628f71c3c19e6a4ac4e9c4032cff2d9feec4bb276587a8972a004c47aa1e",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "58c5b1fc236d83446c4e009a54d7e2189bc9c2a4eefad92a21213959ffc4a5f5",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/AddonScene.brs",
@@ -58,131 +67,155 @@
       "source": "roku/components/ApiTask.brs",
       "destination": "roku/components/ApiTask.brs",
       "sha256": "4e2eca9f8d0d16fc1402e769eeeae666a405eaa0bd526cc8c9e051cf45d28d64",
-      "extracted_sha256": "8ca73ffadfab90607cdb15f086e3d18b4725377640cc5063dbc483004f160228",
-      "reason": "Cleanup 14a702c (ApiIsObject consolidation) and split: task runner, config lock/transport and HTTP request loop remain; ApiOrigin and the pure response-sanitization functions moved byte-identical into ApiTaskSanitize.brs (merged ApiTask component scope via ApiTask.xml)."
+      "extracted_sha256": "bb91846ed05fdbdb2936c28eb03bbae660bf03db9caa3762cde4083ec0d59ba1",
+      "reason": "Cleanup 14a702c (ApiIsObject consolidation) and split: task runner, config lock/transport and HTTP request loop remain; ApiOrigin and the pure response-sanitization functions moved byte-identical into ApiTaskSanitize.brs (merged ApiTask component scope via ApiTask.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained."
     },
     {
       "source": "roku/components/ApiTask.xml",
       "destination": "roku/components/ApiTask.xml",
       "sha256": "515ea8f88a9dbf10356f68522238227d87b6b9a80ad32b2cdb6e31e0ce239c35",
-      "extracted_sha256": "f77645c49f86eaca921a58c2a539c20be0571324524ef46a3e06295fbe667276",
-      "reason": "Split: added script tags for ApiTaskSanitize.brs and pkg:/source/SourceLabels.brs beside the existing Util/AccountPolicy tags; merged Task component scope preserved."
+      "extracted_sha256": "69f647774e4e07fc6208f8f20ab54d7e9dc9f32998181439bb423e26a75c35c9",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained."
     },
     {
       "source": "roku/components/ApiTaskSanitize.brs",
       "destination": "roku/components/ApiTaskSanitize.brs",
       "sha256": "8798de2daef05dcdad6aa8f8279026366c41d520f8e4c8fcf59c00ead907513b",
-      "reason": "New file split from ApiTask.brs: ApiOrigin and the pure response-sanitization functions moved byte-identical into the merged ApiTask component scope (script tag in ApiTask.xml)."
+      "reason": "New file split from ApiTask.brs: ApiOrigin and the pure response-sanitization functions moved byte-identical into the merged ApiTask component scope (script tag in ApiTask.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. BE-002 review: implicit category boundary paging and fail-closed raw page/source validation; original hash retained. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained. Live v2 opaque cursor bound now4096 and exact integer/LongInteger snapshot validation; original extraction hash retained.",
+      "extracted_sha256": "0e2f2b2cdbe4a5926f8b7e7f6670d65e301ec4be59b407b2a14178b3703416ef"
     },
     {
       "source": "roku/components/AvatarTile.brs",
       "destination": "roku/components/AvatarTile.brs",
-      "sha256": "3becb5572d1c6e63a0cdfe64b2ee01aa487563e320459ef834610c7ce16b9804"
+      "sha256": "3becb5572d1c6e63a0cdfe64b2ee01aa487563e320459ef834610c7ce16b9804",
+      "extracted_sha256": "76c331b0523a743ab700efd2f7dad62cbc04a400db821bf1db758611341194ae",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/AvatarTile.xml",
       "destination": "roku/components/AvatarTile.xml",
-      "sha256": "e19c71a645a033bb4ec2435b7125aec16f35120dd8dc5b2d71d0d66e28c385ee"
+      "sha256": "e19c71a645a033bb4ec2435b7125aec16f35120dd8dc5b2d71d0d66e28c385ee",
+      "extracted_sha256": "cb300c4a7228c3e09fe2b40a51ea5394ae18fbd0e8d2ecf1dcaae10efad8a731",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/BrowsePoster.brs",
       "destination": "roku/components/BrowsePoster.brs",
-      "sha256": "de503a3286d1ade50f875e007a4c312c77c0a4b2de1f8886ff80134f1d173f6a"
+      "sha256": "de503a3286d1ade50f875e007a4c312c77c0a4b2de1f8886ff80134f1d173f6a",
+      "extracted_sha256": "2f683ca3840b114decaed4466fe3e1168c9e82eeb116fcf4cb4620e72445b6db",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/BrowsePoster.xml",
       "destination": "roku/components/BrowsePoster.xml",
-      "sha256": "db5c57122d2123f96d733cf2fe016cb42c723a9b9410baedbcbb970a3bce6cc8"
+      "sha256": "db5c57122d2123f96d733cf2fe016cb42c723a9b9410baedbcbb970a3bce6cc8",
+      "extracted_sha256": "fba762647b7b156185c2ed755e055328700d9998b0c6c3b1a7918b2fd71b37d0",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/ChannelRow.brs",
       "destination": "roku/components/ChannelRow.brs",
-      "sha256": "7eeefa73395748984806b1d654465b4ae3a801bd40d7eb80cf91da9292b17eff"
+      "sha256": "7eeefa73395748984806b1d654465b4ae3a801bd40d7eb80cf91da9292b17eff",
+      "extracted_sha256": "2b7534ca94fa9c79b139408ff10c7bdb2aa7604cd1a818088018aef065e4dbbb",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/ChannelRow.xml",
       "destination": "roku/components/ChannelRow.xml",
       "sha256": "e7ed26306c02e3d5837e65c121686158f773f2bdde7706a2c48e6f1c338c5f8c",
-      "extracted_sha256": "a7f754989e0a4bbf8df5816dcc0b675f1daa57cbbea3e661d372b2b6cfc7437d",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "745e02a470d08ca9fc8df089ac035702ef04579fb49f70ef5762a0fd1fae8de5",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/ContinuationScene.brs",
       "destination": "roku/components/ContinuationScene.brs",
       "sha256": "1026bd34038e8a0897f256fb93069b9ab464c600f91159af99964eb698baac28",
-      "extracted_sha256": "06620fd3837f4435724172ca7d0685a46900d36876585314fe4a9471c302005c",
-      "reason": "Cleanup: removed unreferenced continuationDialogSelected() and the write-only m.continuationAutomatic."
+      "extracted_sha256": "306b5d547f077b505d85873ebe07c130a6e2f7730e3f864618e17875b5985d4a",
+      "reason": "Cleanup: removed unreferenced continuationDialogSelected() and the write-only m.continuationAutomatic. Next-transition cleanup normalizes an unset session identity with Txt() before the typed PlaybackSessionPath call."
     },
     {
       "source": "roku/components/DiscoverScene.brs",
       "destination": "roku/components/DiscoverScene.brs",
       "sha256": "d389426f5f252714c53698bbb12bc148f40fbb9f20c2cc8ca9c3b91626e8140c",
-      "reason": "New file split from MainScene.brs: discover catalog/filter and browse handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
+      "extracted_sha256": "a56880d5495cbd3b3a7a3e6e5d9c7f0151f061ae70102663b79e06b66dcf06cb"
     },
     {
       "source": "roku/components/EpgGrid.brs",
       "destination": "roku/components/EpgGrid.brs",
       "sha256": "1a942f3bb3db967b9fe079d176bd20e3cabacb1b7c3c0e5f9ca6f88716895a42",
-      "extracted_sha256": "ea98ea4d2085c999982dd061b32891f0746e6f01f0f458e338a12edf50afba73",
-      "reason": "Cleanup: removed both write-only m.zone assignments."
+      "extracted_sha256": "462dbe8254ca3b20e6159d4249f602918c3b5d5c237dc007fd0fa2b2edfc548a",
+      "reason": "ROK-043 guide audit: preserve true programme bounds when cells clip to the time window; readable detail panel. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. BE-002 review: implicit category boundary paging and fail-closed raw page/source validation; original hash retained."
     },
     {
       "source": "roku/components/EpgGrid.xml",
       "destination": "roku/components/EpgGrid.xml",
       "sha256": "72782188dbdb7913581205a071c90598d61ac6eaa35d415492bee05703e3ea24",
-      "extracted_sha256": "f78b7061a357d7d94daf36960892750418ef746df26f1bae479ad31fd7d76571",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "c4522d5d8dfbd9a047871c3169defd83790dcd8dcf99dd22b8da00a9691096dd",
+      "reason": "ROK-043 guide audit: preserve true programme bounds when cells clip to the time window; readable detail panel. BE-002 review: implicit category boundary paging and fail-closed raw page/source validation; original hash retained."
     },
     {
       "source": "roku/components/EpgScene.brs",
       "destination": "roku/components/EpgScene.brs",
-      "sha256": "48d8740b0898fbc1e38ac7cac2919a83d2a6a14a2864ca8bef18168b37fd8382"
+      "sha256": "48d8740b0898fbc1e38ac7cac2919a83d2a6a14a2864ca8bef18168b37fd8382",
+      "extracted_sha256": "ee4fc2802aa965b53979f1f0c531dd9548c098d90642fc883f94bae389cafb2f",
+      "reason": " BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. BE-002 review: implicit category boundary paging and fail-closed raw page/source validation; original hash retained."
     },
     {
       "source": "roku/components/EpisodeCard.brs",
       "destination": "roku/components/EpisodeCard.brs",
-      "sha256": "d35f1732b06008778b8f9c1289d8e9a19e8c1c6ad40c4bbc9d981e0ac8eabae4"
+      "sha256": "d35f1732b06008778b8f9c1289d8e9a19e8c1c6ad40c4bbc9d981e0ac8eabae4",
+      "extracted_sha256": "5014ebdb7d4fc4d9d20ae1ad38ccd8b504cef0800190882203b545e52d79a1be",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/EpisodeCard.xml",
       "destination": "roku/components/EpisodeCard.xml",
       "sha256": "4ccffbb9cfa679b9885a5c488532a63e747333bad366c21bd6edbfb810c07c57",
-      "extracted_sha256": "231e673e25f03e704fc2e071bfa6fe2bb61adfcb584d98d6c3b781f22e7318a9",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "55ba577a6df9ae6653c4fc8d7b0f09c228a70e41736a7927c2e27907546d33a4",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/FilterChip.brs",
       "destination": "roku/components/FilterChip.brs",
-      "sha256": "b9881061cd1c82d35e38c6792f8752352fa642a7b0e02f2df8ec6ed31a75dcf0"
+      "sha256": "b9881061cd1c82d35e38c6792f8752352fa642a7b0e02f2df8ec6ed31a75dcf0",
+      "extracted_sha256": "d04f836c8583e4937dd5ede908d17c5474df4f485cbf65670bd231d6487a9d65",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/FilterChip.xml",
       "destination": "roku/components/FilterChip.xml",
       "sha256": "2693b4770fb44cf830247efc14174ebebea09896f546bb7d4dfddb4b604c05db",
-      "extracted_sha256": "a4df71f4e70b228821f23e58d916fa23e66518c05c39d045f77884cbfe647bd4",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "ebc5b901002a7a17a834e94ec7ea9a9fdaff98a50d815d29ec26da1a984ca649",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/HeroPanel.brs",
       "destination": "roku/components/HeroPanel.brs",
-      "sha256": "9bff2f788e73de7bfd7b8af2671884a5d093e20928c036a077790e89b878e137"
+      "sha256": "9bff2f788e73de7bfd7b8af2671884a5d093e20928c036a077790e89b878e137",
+      "extracted_sha256": "935596b1852c118a1c2fe6fd00f850d0f2871fbdebbacde16a803ab5e1878a56",
+      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset."
     },
     {
       "source": "roku/components/HeroPanel.xml",
       "destination": "roku/components/HeroPanel.xml",
       "sha256": "ee72fe82f207f083a9c673a84a1a74027331f65f01cc969e8e91eee2599ef790",
-      "extracted_sha256": "7fde6de876e76b66740bcbb25fa051845716535d85fa849e7d846b44ed1e301e",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "142158a45fb72049d796340db6a7f2353f3175d86cae8ef008eff9200c008e38",
+      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset."
     },
     {
       "source": "roku/components/HoldGrid.xml",
       "destination": "roku/components/HoldGrid.xml",
-      "sha256": "7311d3a202b0dbfbe1db2660b967a58687d54cd402f67a259f7a8b5859699e8d"
+      "sha256": "7311d3a202b0dbfbe1db2660b967a58687d54cd402f67a259f7a8b5859699e8d",
+      "extracted_sha256": "2fec3dfc06fc057cb0f618a40b085dbe8d4363f932f5aa3a7a0aee77e590fec0",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/HoldRowList.xml",
       "destination": "roku/components/HoldRowList.xml",
-      "sha256": "a75086f2cb567a0e744b4926675813f98819d277b385a23a51675e2be8653353"
+      "sha256": "a75086f2cb567a0e744b4926675813f98819d277b385a23a51675e2be8653353",
+      "extracted_sha256": "6ff19fa91f12b574d64d59f7a501836620ae4c0bb9c348c5a6225c7a674b0911",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/HoldSelect.brs",
@@ -192,26 +225,30 @@
     {
       "source": "roku/components/HomeCard.brs",
       "destination": "roku/components/HomeCard.brs",
-      "sha256": "5373dda84e661fc0dd62f33e8bd49683918a807ce14acf4426d1a6612cba7285"
+      "sha256": "5373dda84e661fc0dd62f33e8bd49683918a807ce14acf4426d1a6612cba7285",
+      "extracted_sha256": "eaaf93cf35d06467abb51625ae3347a6161020d11ed83acf5c5bc62a9714a61a",
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership."
     },
     {
       "source": "roku/components/HomeCard.xml",
       "destination": "roku/components/HomeCard.xml",
       "sha256": "e0d64773fb09a3b6b2fb820a724a43fc76d53773780a6b98aa4b0d9f21c68223",
-      "extracted_sha256": "fb5138dd0ae9aad62d89da584f5a7a8a77856498f442f2ffae22ce0dffeb151b",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "923beba63362b53712fd8832e804405281884d881375ef8f86e0f41f54674325",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/HomeFeedScene.brs",
       "destination": "roku/components/HomeFeedScene.brs",
       "sha256": "d637da6fe6b503b790bee68ba35c939273d080e912071772f32029300d294c9a",
-      "reason": "New file split from MainScene.brs: home shelf responses, hero and remote-key handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
+      "extracted_sha256": "ed56ad7d38d4fc9633502eae65b67ba2b099470cdb9e621f8b3a93ca2b0f8f8f"
     },
     {
       "source": "roku/components/HomeScene.brs",
       "destination": "roku/components/HomeScene.brs",
       "sha256": "98eff40f139b55c320c4eb4901c04061833c7e6223cc1afe7eb93e91e4f0d166",
-      "reason": "New file split from MainScene.brs: home shelves, navigation chrome, episode progress and playback-preferences handlers moved byte-identically into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained.",
+      "extracted_sha256": "098dc051b25f809d775e77258b62b79d6c2c2d5a9509be51683a6a9649c5050f"
     },
     {
       "source": "roku/components/LibraryScene.brs",
@@ -222,161 +259,190 @@
       "source": "roku/components/LiveScene.brs",
       "destination": "roku/components/LiveScene.brs",
       "sha256": "8dac25bfd390c145138c1250168b26c5dd9435aa4b5f7f7c144da77676d1226e",
-      "reason": "New file split from MainScene.brs: live UX, focused-channel guide and now/next handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "New file split from MainScene.brs: live UX, focused-channel guide and now/next handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml). BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
+      "extracted_sha256": "cdd06a1e86e625977cfc66c4ce07a209eccf98847158da870cd710dadbf171ce"
     },
     {
       "source": "roku/components/MainScene.brs",
       "destination": "roku/components/MainScene.brs",
       "sha256": "86b18096942ced4d58c9408fe81598e2b7f648dde69c90ead66d376734d3b1b8",
-      "extracted_sha256": "617e611d9d19750e89912257b458d86c026a47c459df47d2cacccbf469692930",
-      "reason": "Public build flavor: the server origin becomes a packaging-time input, adding the Server settings row and origin validation."
+      "extracted_sha256": "bc4ee221225eabbebd81a12ae985c65515c419fb399e17d046d2894396a45af0",
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved."
     },
     {
       "source": "roku/components/MainScene.xml",
       "destination": "roku/components/MainScene.xml",
       "sha256": "683ee2541fb021de8402c8fc590ed211abc043d423c6f7cbc3a4b5b75626063c",
-      "extracted_sha256": "cefd1416d55cfe9e1ad048dc908cd460e8a818714a3c4fc1250162567b62e185",
-      "reason": "Split: added script tags for the MainScene, Presentation and Account sibling files and pkg:/source/SourceLabels.brs; merged component scope and declaration order preserved."
+      "extracted_sha256": "693a066cbdd5353fbc735983ece3db6402954c06e4108b6ee537faa733001fba",
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. Removed unreferenced nextPlayerDialogId, playerDialogEventMatches, playerTrackSelected and prefetchHeroBackdrop, plus the heroPrefetch posters only the latter used."
     },
     {
       "source": "roku/components/NavIcon.brs",
       "destination": "roku/components/NavIcon.brs",
-      "sha256": "7cea2a3386c95d5afd060eee3789894a94f59c06b10d113d2c27e0611d9d875d"
+      "sha256": "7cea2a3386c95d5afd060eee3789894a94f59c06b10d113d2c27e0611d9d875d",
+      "extracted_sha256": "abfe941d6e4d98f95692d8dc0bd322bc1dfcf506a5288e1cefd64f3e35dcfda6",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/NavIcon.xml",
       "destination": "roku/components/NavIcon.xml",
       "sha256": "5c8b1f3d36f18170c8050915db890a0e5977cb9e3514964eb1a4bce6f08b7049",
-      "extracted_sha256": "7f6d24d2919571706b833b8c2c0a1493a104e62fc8809cf9947000d5401cbfe8",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "afd283e52038242415df9a10f63199b9f4efd58bd703209c285141efd0b5c200",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/NavigationScene.brs",
       "destination": "roku/components/NavigationScene.brs",
       "sha256": "11dd77e46308cf597fdd2b7dbcdcf8c99be17f640ad0ba48b153191d86bccc8c",
-      "reason": "Public build flavor: the server origin becomes a packaging-time input, adding the Server settings row and origin validation.",
-      "extracted_sha256": "6fc7da6db82722628ec5f1898f7b89bf61917623572d3f97606830dc7082e2d3"
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained.",
+      "extracted_sha256": "1a45afdf6f4099075912ddca308d8066fede55db86f2ec7fc181dfb556643ece"
     },
     {
       "source": "roku/components/PlaybackScene.brs",
       "destination": "roku/components/PlaybackScene.brs",
       "sha256": "2895f449c1c79ce16987253c68728b4e2baca7539ca6e10e47955947e7ee09b3",
-      "reason": "New file split from MainScene.brs: stream discovery, playback start, player state and track dialog handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. Removed unreferenced nextPlayerDialogId, playerDialogEventMatches, playerTrackSelected and prefetchHeroBackdrop, plus the heroPrefetch posters only the latter used.",
+      "extracted_sha256": "c5cb45498172e0a936abac0df7052e42350ef81e65db678938ce78b7370a9661"
     },
     {
       "source": "roku/components/PlayerOverlay.brs",
       "destination": "roku/components/PlayerOverlay.brs",
-      "sha256": "64efc6b5afe1443bcc4751a7f09a80a5b8f5ab28f6f0a6b1a25f612cf931899b"
+      "sha256": "64efc6b5afe1443bcc4751a7f09a80a5b8f5ab28f6f0a6b1a25f612cf931899b",
+      "extracted_sha256": "596679d1b0ac887f5ac243af850ba1538a28b6d70144eda0fb8a9afcdc9a3f4f",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/PlayerOverlay.xml",
       "destination": "roku/components/PlayerOverlay.xml",
       "sha256": "eb62b131591468cfe845857a2c172989dd887612555bf4c53ea3cd05971ec3e9",
-      "extracted_sha256": "29d78b11caa095424013148d765fbc2e632daabc597baa581d5d91cf3d534451",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "fabfc343d3448b96908b74a56aa6601275491da6cb56b1629a9c4cd071d1212c",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. Record existing committed 8e24931 artwork-gate/font/error changes; no new runtime change in this entry."
     },
     {
       "source": "roku/components/PresentationArtworkScene.brs",
       "destination": "roku/components/PresentationArtworkScene.brs",
       "sha256": "f4d9ae9fe9239a1e967f152906115bdf69810611933fe0cf64b4e7b6448f671e",
-      "reason": "New file split from PresentationScene.brs: hero/card artwork and source list/filter UI moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. Removed unreferenced nextPlayerDialogId, playerDialogEventMatches, playerTrackSelected and prefetchHeroBackdrop, plus the heroPrefetch posters only the latter used.",
+      "extracted_sha256": "13d16aa9effd45c2051ec2b1bc146dbf660fb881ea64680d73c106d62a24c036"
     },
     {
       "source": "roku/components/PresentationDetailsScene.brs",
       "destination": "roku/components/PresentationDetailsScene.brs",
       "sha256": "b946dbeeb415cd49b7fe9a2a0fab0849adbd2a8c6dfa241ab20e08191f65c9b9",
-      "reason": "New file split from PresentationScene.brs: detail, season and source-header renderers plus full-text/key handling moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434.",
+      "extracted_sha256": "a990a1caf1331a4ef2b7ef910d1ae0690228b30eee7214afd076246af8d3c606"
     },
     {
       "source": "roku/components/PresentationHomeScene.brs",
       "destination": "roku/components/PresentationHomeScene.brs",
       "sha256": "2bfb69990dfc3f24cd494e35c0c6ab440a5582dcf930e61bdd06019b17e67e76",
-      "reason": "New file split from PresentationScene.brs: discover filters, favorite acknowledgement and home action UI moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
+      "extracted_sha256": "094c19e41e1c7d6d7d275795882cd6a2062825d1d28f6d413c82ed6fde3f4bea"
     },
     {
       "source": "roku/components/PresentationScene.brs",
       "destination": "roku/components/PresentationScene.brs",
       "sha256": "21e2793fd82e785b1baa933c7d7e62c9e072cc0f990d0a213ed53f0aef8dda32",
-      "extracted_sha256": "59e0b3b93ce46a4776c7af3a3264fd9f54713948db820494261351496e673542",
-      "reason": "Cleanup 14a702c (removed uiQueueHeroArt) and split: chrome, row layout and choice-panel handlers remain; detail, discover-filter, home and artwork/source-list handlers moved byte-identical into PresentationDetailsScene.brs, PresentationHomeScene.brs and PresentationArtworkScene.brs (merged MainScene component scope)."
+      "extracted_sha256": "cd8bfdf3bd2b9d9c3fed8844f836e7d369f38c5d881787cc47bcfa13d82ed5a6",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/ProfileCard.brs",
       "destination": "roku/components/ProfileCard.brs",
-      "sha256": "db427417dbe1bf328656127c52aa949ec3cd7b181b83292a77d4dffc92ef38e6"
+      "sha256": "db427417dbe1bf328656127c52aa949ec3cd7b181b83292a77d4dffc92ef38e6",
+      "extracted_sha256": "225770d3c2fdf05059422423ef7c6c79bda2a39a6e7ba719f84db74e0570e051",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry, navigation handoff and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/ProfileCard.xml",
       "destination": "roku/components/ProfileCard.xml",
       "sha256": "1a85ec923168c6f166bd7fb021b57ba21eb781f622e8931aed7dad41c7ede9f4",
-      "extracted_sha256": "20f87b1dd798bdfa3f77d5be6030ae44380028033f4e5a2549a8b62ad86b1c0c",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "94793ed324a681285c91c345efe40d12e24bd8312a7c2a3d787479286b09a6c3",
+      "reason": "ROK-042 physical Roku UI corrections: fixed focus contours, label/card geometry and render-thread-safe profile avatars; design 6e56136."
     },
     {
       "source": "roku/components/ProfileEditor.brs",
       "destination": "roku/components/ProfileEditor.brs",
-      "sha256": "234c91c7f246c18e11e2da98620c2f6e82ab897a1ba82b800249264c8c9e7924"
+      "sha256": "234c91c7f246c18e11e2da98620c2f6e82ab897a1ba82b800249264c8c9e7924",
+      "extracted_sha256": "7b653af40556484581e90476a0502cc5f373b114197d8470dfff6261829b55c9",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/ProfileEditor.xml",
       "destination": "roku/components/ProfileEditor.xml",
-      "sha256": "25b144add29909f4f2c7f6a69c3a5724d386d10caf5d32fac2cc8d0b23a6d74a"
+      "sha256": "25b144add29909f4f2c7f6a69c3a5724d386d10caf5d32fac2cc8d0b23a6d74a",
+      "extracted_sha256": "689b7a00c9cd860e1dd9099eac5429d6b93ef680fbe25ad6943d375feaf99b4f",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/ResponseScene.brs",
       "destination": "roku/components/ResponseScene.brs",
       "sha256": "582c565e78ae88fd170b1c873e7253fb1906865b62dc647d5987ecac9e77f9f5",
-      "reason": "New file split from MainScene.brs: response dispatch, metadata and episode handlers moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
+      "extracted_sha256": "44911daf2d0940cd15549ca64b654df50a1110377de4a7def5b375a425f077e6"
     },
     {
       "source": "roku/components/SearchPanel.brs",
       "destination": "roku/components/SearchPanel.brs",
-      "sha256": "3a3e1e5c3037b3b083f5d46badb1a70c54d1abc59c5eb502138a7086b0967dc8"
+      "sha256": "3a3e1e5c3037b3b083f5d46badb1a70c54d1abc59c5eb502138a7086b0967dc8",
+      "extracted_sha256": "c22b2a3f76a937a65cc28e2eba0d50683d9d35ae7b8a7f8528407e51e98fbfc9",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/SearchPanel.xml",
       "destination": "roku/components/SearchPanel.xml",
-      "sha256": "e7b3d24081ed20fa9b7ea5dbaf30a8b4587cd3460c458ac6429bd975d2785576"
+      "sha256": "e7b3d24081ed20fa9b7ea5dbaf30a8b4587cd3460c458ac6429bd975d2785576",
+      "extracted_sha256": "88c79e27ffbbb9a615fb03d4e36a52c755a55cc3373f66422cb21185610bb54f",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/SearchScene.brs",
       "destination": "roku/components/SearchScene.brs",
       "sha256": "7dd943ac418c54be97d1d5f2ea611d4d1e73390b4a90dde21c6403a3f87c45d5",
-      "extracted_sha256": "c138b1a6aa6f33cac2afbc7b4b2e4adb072ebf7fdcbe8af6aea20efa34d501eb",
-      "reason": "Cleanup: removed the write-only m.searchItems assignment."
+      "extracted_sha256": "e5a631501083d8860214c0e29860bcdb6abaa324d2f7316a5013e88184f8f2b2",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved."
     },
     {
       "source": "roku/components/SeekScene.brs",
       "destination": "roku/components/SeekScene.brs",
       "sha256": "f0598482ad4cead37a554455f68f67ae05297a80eb8714575ce88f8b93dcd752",
-      "reason": "New file split from MainScene.brs: stop/pause and the atomic seek-replacement transaction moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. Next-transition cleanup normalizes an unset session identity with Txt() before the typed PlaybackSessionPath call.",
+      "extracted_sha256": "60263b59a7bee7ccd98acc3cb8246f733269dc9b5b8be823a896bc38d1523658"
     },
     {
       "source": "roku/components/SessionScene.brs",
       "destination": "roku/components/SessionScene.brs",
       "sha256": "2245b7415d0385e882a9d49aa32c6b42fcca79b0f56b36776eab1727530332f2",
-      "reason": "New file split from MainScene.brs: playback session acceptance and managed-live recovery moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "New file split from MainScene.brs: playback session acceptance and managed-live recovery moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. Next-transition cleanup normalizes an unset session identity with Txt() before the typed PlaybackSessionPath call.",
+      "extracted_sha256": "ddf4e992840d658f92f9f36636efd3c2dc05c09261c0615b67096ceb1f8b43f5"
     },
     {
       "source": "roku/components/SourceCard.brs",
       "destination": "roku/components/SourceCard.brs",
-      "sha256": "b8d09c20b83441efa319dd96f067c86eaf2b4d50a48f06aee934dabe9e7745fb"
+      "sha256": "b8d09c20b83441efa319dd96f067c86eaf2b4d50a48f06aee934dabe9e7745fb",
+      "extracted_sha256": "8c0150433496149443656240c82b44c033eeaabe8528fc040a25d30925bc3b4b",
+      "reason": "ROK-043 complete TV audit corrections and acceptance checks; design 3b6e434."
     },
     {
       "source": "roku/components/SourceCard.xml",
       "destination": "roku/components/SourceCard.xml",
-      "sha256": "f23fffbb1a71ffc0f552a15b359812a632f300b4c6746e94144b09c988f4e1b5"
+      "sha256": "f23fffbb1a71ffc0f552a15b359812a632f300b4c6746e94144b09c988f4e1b5",
+      "extracted_sha256": "d7de3a9d79758539fb32f9f8a27cefa185dcb77621afb887ef9b11cb6d91414b",
+      "reason": "ROK-043 complete TV audit corrections and acceptance checks; design 3b6e434."
     },
     {
       "source": "roku/components/SourcesScene.brs",
       "destination": "roku/components/SourcesScene.brs",
       "sha256": "0524426eb7f1436536cddfa79ec3e10f424ccddfddfbb125fb69c144643aaf09",
-      "reason": "New file split from MainScene.brs: source discovery lifecycle, attempt state and view save/restore moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml)."
+      "reason": "New file split from MainScene.brs: source discovery lifecycle, attempt state and view save/restore moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained.",
+      "extracted_sha256": "3031ebd1d07a74a100d161de1ddcefa9628ed39896296a63e622180c4f41c7ad"
     },
     {
       "source": "roku/components/StartupScene.brs",
       "destination": "roku/components/StartupScene.brs",
-      "sha256": "13ae6e14156384227c60429ef32e78964c4338c5fce233c9e8248288c1acdd02"
+      "sha256": "13ae6e14156384227c60429ef32e78964c4338c5fce233c9e8248288c1acdd02",
+      "extracted_sha256": "05e7ca5b9be4484aa66e78bcf9f34ed556b08334868dfbf12d7d210c1bfb72b5",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. Record existing committed 8e24931 artwork-gate/font/error changes; no new runtime change in this entry."
     },
     {
       "source": "roku/components/TextEntry.brs",
@@ -386,19 +452,23 @@
     {
       "source": "roku/components/TextEntry.xml",
       "destination": "roku/components/TextEntry.xml",
-      "sha256": "85d2514bf172aa655ec28ff462963097dc10558a092fe74d4f4c8c92bbe4a942"
+      "sha256": "85d2514bf172aa655ec28ff462963097dc10558a092fe74d4f4c8c92bbe4a942",
+      "extracted_sha256": "92bd1142c683948810f570373efe8794f017bf10fbaf05d69ecd07eae2a40dba",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/components/UiChoice.brs",
       "destination": "roku/components/UiChoice.brs",
-      "sha256": "637bd94aac40af9c6b2b4e5f3500f5371a33018dc6345d0d725436897f887b87"
+      "sha256": "637bd94aac40af9c6b2b4e5f3500f5371a33018dc6345d0d725436897f887b87",
+      "extracted_sha256": "fcf7b114cb00c05f61cefe24435a972ef6fadb64abf95aa3544de7136157c2a9",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/components/UiChoice.xml",
       "destination": "roku/components/UiChoice.xml",
       "sha256": "8a075f9f786f46ef7371fefb225eff47a311ce8f50104083935a80c7d8c9d07d",
-      "extracted_sha256": "ae0c1542163e7548bc0926935cb9ac63cbbaeef4415e29591ad04a3dcc6fb7d0",
-      "reason": "Split: added the pkg:/source/SourceLabels.brs script tag beside pkg:/source/Util.brs (Util.brs calls SourceGroup from SourceLabels.brs); merged component scope otherwise unchanged."
+      "extracted_sha256": "033dd4006fa2ea3e4f90fb1c14e718f2e88bf3bc46775e60cca0ccdbbd0a6cb1",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/data/BSLIB-LICENSE.txt",
@@ -3843,7 +3913,9 @@
     {
       "source": "roku/manifest",
       "destination": "roku/manifest",
-      "sha256": "e3ec6e7a1150fbd14f500736f2b28550b8a7a4bf08832546fc29b208b22dee58"
+      "sha256": "e3ec6e7a1150fbd14f500736f2b28550b8a7a4bf08832546fc29b208b22dee58",
+      "extracted_sha256": "4c495ea4a07f0883aac6d84fffb693a8f261d5007ceaa5ea023aac50f671f87a",
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership."
     },
     {
       "source": "roku/source/AccountPolicy.brs",
@@ -3865,12 +3937,16 @@
     {
       "source": "roku/source/EpgPolicy.brs",
       "destination": "roku/source/EpgPolicy.brs",
-      "sha256": "1ab584eb4ceea9662009d2cc44dcf675f407f914cbbd172afc6d4e83a68efe96"
+      "sha256": "1ab584eb4ceea9662009d2cc44dcf675f407f914cbbd172afc6d4e83a68efe96",
+      "extracted_sha256": "8bbc9804c4422d06383c46b777a4937eeb8299758520e8f1a0bd9b6827648994",
+      "reason": "ROK-043 guide audit: preserve true programme bounds when cells clip to the time window; readable detail panel."
     },
     {
       "source": "roku/source/ImagePolicy.brs",
       "destination": "roku/source/ImagePolicy.brs",
-      "sha256": "cb9ba53488b8a2659ec0e7c227e5c1b5fc2299cc6eec684404a150455347b5ea"
+      "sha256": "cb9ba53488b8a2659ec0e7c227e5c1b5fc2299cc6eec684404a150455347b5ea",
+      "extracted_sha256": "3046760adac883676bb8baa9a51641c9c568ca2502e65cdaad11a465ae91bdd5",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/source/JellyfinCaptionPolicy.brs",
@@ -3886,8 +3962,8 @@
       "source": "roku/source/PresentationPolicy.brs",
       "destination": "roku/source/PresentationPolicy.brs",
       "sha256": "fd2f4800cf57b02088852fe0c4147487ba5bd9dbb9cb5ac82052e8b805b296d2",
-      "extracted_sha256": "660b916accba377cabdb5ade5381d9293f30c5b8ef58ad80c01d2a5dc6b62c2c",
-      "reason": "Cleanup: removed duplicated helper SourceProviderKey (byte-identical to Util.brs SourceGroup); callers now use SourceGroup."
+      "extracted_sha256": "bc17af4c4e4ee4c1ffc26bff93fc80220fc914799a0d7ebe625ecdc5d584ea36",
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained."
     },
     {
       "source": "roku/source/SourceLabels.brs",
@@ -3899,8 +3975,8 @@
       "source": "roku/source/Util.brs",
       "destination": "roku/source/Util.brs",
       "sha256": "35e9bf7a05399ae8a14d783b159b65436c1f2906b0ee56333c800f93b6169f0d",
-      "extracted_sha256": "0a9bb28ccf781fd79bcb58a8a103bc4346cc28e062c6ec2172e8fc9179e590f9",
-      "reason": "Split: the m-free source-label cluster (SourceFullDetails, DistinctSourceLabels, SourceGroup, FairSources, SourceCardTitle, SourceAudioStatus, SourceReportedLanguages) moved byte-identical into source/SourceLabels.brs; SourceScore, CleanSourceLabel and SourceDisplayLabel stay because they cache compiled patterns in m."
+      "extracted_sha256": "2ec3baef3c1d09f53d80c3431d089bfe7bf023f613f9abbb9cb46f369dc4f0fc",
+      "reason": "Split: the m-free source-label cluster (SourceFullDetails, DistinctSourceLabels, SourceGroup, FairSources, SourceCardTitle, SourceAudioStatus, SourceReportedLanguages) moved byte-identical into source/SourceLabels.brs; SourceScore, CleanSourceLabel and SourceDisplayLabel stay because they cache compiled patterns in m. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved."
     },
     {
       "source": "roku/source/main.brs",
@@ -3935,7 +4011,9 @@
     {
       "source": "roku/tests/branding_contract.py",
       "destination": "roku/tests/branding_contract.py",
-      "sha256": "56f5dd474cf933f299238037251129543f3dda54c40fe75a80e1973523ad3eb7"
+      "sha256": "56f5dd474cf933f299238037251129543f3dda54c40fe75a80e1973523ad3eb7",
+      "extracted_sha256": "2035b15434712b61df89d9cd922623a9d0182045028c6847f12c4c65c447e303",
+      "reason": "ROK-042 hardware UI corrections: consistent outlines, bounded text/card geometry and render-thread-safe avatar lookup with bundled-catalog validation; design 6e56136."
     },
     {
       "source": "roku/tests/browse-policy.brs",
@@ -3958,25 +4036,29 @@
       "source": "roku/tests/continuation_runtime.py",
       "destination": "roku/tests/continuation_runtime.py",
       "sha256": "394a43339bb44fb2003cfc6e99b961aa6a2318ecb6cc2c40a19c1567ec31b0f7",
-      "extracted_sha256": "bd822f94b583db44a85590590745bbd8c36154ec4349a1e3542de5ffd597c0f4",
-      "reason": "Split follow-up: videoState extraction moved to components/PlaybackScene.brs."
+      "extracted_sha256": "a32a107934183f6a8c3c2f9267fee29a84aa32ce290b750cbf68b2854b792fb6",
+      "reason": "Split follow-up: videoState extraction moved to components/PlaybackScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/direct-policy.brs",
       "destination": "roku/tests/direct-policy.brs",
-      "sha256": "f642895c969643b7a2ad48421b7b4380fbc99fca13b159b9c275613c3172ef3b"
+      "sha256": "f642895c969643b7a2ad48421b7b4380fbc99fca13b159b9c275613c3172ef3b",
+      "extracted_sha256": "7557bc2e6e33b845d2b625d93aa39aca71f89e56f12dfcc414d3c323123cf007",
+      "reason": " BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained."
     },
     {
       "source": "roku/tests/direct_runtime.py",
       "destination": "roku/tests/direct_runtime.py",
       "sha256": "0ccf30f6b493b792435f182646262bc05f8d750cae8a317159bb5b90fcb38ff8",
-      "extracted_sha256": "485be8a262e0ab6d38e585e0bffdc1e6f06c6a9e1ce55189362c64c531e001ae",
-      "reason": "Split follow-up: extractions moved to PlaybackScene.brs, SeekScene.brs and SessionScene.brs."
+      "extracted_sha256": "c76bf06196c44954eda4c2ffdd85d414329d935effb67f556f1787a6224b963f",
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/epg_navigation.brs",
       "destination": "roku/tests/epg_navigation.brs",
-      "sha256": "1f398e98941ec0016842d30f61b18fc7ff01567c70cb553bb7b432f59b7694aa"
+      "sha256": "1f398e98941ec0016842d30f61b18fc7ff01567c70cb553bb7b432f59b7694aa",
+      "extracted_sha256": "07d508d4333735d3d51cfec9d620f7907b43df55954a3835eda49e05984866df",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/epg_policy.brs",
@@ -3991,36 +4073,44 @@
     {
       "source": "roku/tests/epg_transport.brs",
       "destination": "roku/tests/epg_transport.brs",
-      "sha256": "24bbb11be42ee0b7732c6342d322254bb046fd9af7dce6ae6880328da2f0f28b"
+      "sha256": "24bbb11be42ee0b7732c6342d322254bb046fd9af7dce6ae6880328da2f0f28b",
+      "extracted_sha256": "0a325441167697e04a3594d15f621c029431c7bf47b36dc68b8c6326fa897e17",
+      "reason": " BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved."
     },
     {
       "source": "roku/tests/episode_image_runtime.py",
       "destination": "roku/tests/episode_image_runtime.py",
-      "sha256": "01e259cf2366c0ba38e25da3a532bfbca95dbacdcb57e876b6de81f169f65352"
+      "sha256": "01e259cf2366c0ba38e25da3a532bfbca95dbacdcb57e876b6de81f169f65352",
+      "extracted_sha256": "7417e6046996ed741d15a29333ed0024d49d1085439827c56a802090ba035820",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/episode_library_runtime.py",
       "destination": "roku/tests/episode_library_runtime.py",
       "sha256": "e080002b80a7459cd476bd1f5ce47bbc5cce7056650f8fbc603883bd9b951563",
-      "extracted_sha256": "1a395ea91de186c233b1236590b71b594dc44d117b0bf8daf83d18dc518a6c23",
-      "reason": "Split follow-up: showEpisodes from ResponseScene.brs and applyEpisodeProgress from HomeScene.brs."
+      "extracted_sha256": "d26cf2f76ab1ac5553b5d4a378f9d36940e4656d1011bdb6d355ae25bc930180",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/episode_mask_runtime.py",
       "destination": "roku/tests/episode_mask_runtime.py",
-      "sha256": "83def601960d98e328fe74a112e7d35286ccb0d925f4e011626de9e8a81bb888"
+      "sha256": "83def601960d98e328fe74a112e7d35286ccb0d925f4e011626de9e8a81bb888",
+      "extracted_sha256": "5fd30db135f880d218520874c7b0c768eb938a37a7da0f32e561e1844f28ac04",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/explicit_resume_runtime.py",
       "destination": "roku/tests/explicit_resume_runtime.py",
       "sha256": "644eaabe542f6a042010560e0e1b9200b6f80bdf98211b3b9d7f25720aa1fdfc",
-      "extracted_sha256": "b7f51ad7b3c23fa7d66ed681b385a2b21affd3cef1824bbc3634c16ede8078d2",
-      "reason": "Split follow-up: extractions moved to NavigationScene.brs and SourcesScene.brs."
+      "extracted_sha256": "7d4cb0c642abec4124bb406a40be4bfddbfb6a183b5a8b000830d8f7d31e745c",
+      "reason": "Split follow-up: extractions moved to NavigationScene.brs and SourcesScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/fallback.brs",
       "destination": "roku/tests/fallback.brs",
-      "sha256": "5dff70afb83354760aaa96a0909948645ae6ed540fa2ffcb60d367f8845b9f1c"
+      "sha256": "5dff70afb83354760aaa96a0909948645ae6ed540fa2ffcb60d367f8845b9f1c",
+      "extracted_sha256": "9f34b298b64f503e1fcf53e49f3785af121ab7b53339974dfb755d49c0818c86",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/family-startup.brs",
@@ -4096,20 +4186,23 @@
       "source": "roku/tests/focus_contract.py",
       "destination": "roku/tests/focus_contract.py",
       "sha256": "e5e127d932cc85f2e60305eaf3ee7a637d72ee135707969ec92fb8bad2d49714",
-      "extracted_sha256": "8b2f1e040c270f4d79b554fc7b28c6443aa281d473a48d36743c89926db25a37",
-      "reason": "Split follow-up: route-handler slices now read the split sibling files."
+      "extracted_sha256": "0b53dd30b05d58c4ce90e4068c497d880d6288465429cae557a7ac0dc2ee28d0",
+      "reason": "ROK-043 complete TV audit corrections and acceptance checks; design 3b6e434."
     },
     {
       "source": "roku/tests/guide_boundary_runtime.py",
       "destination": "roku/tests/guide_boundary_runtime.py",
-      "sha256": "f1917f22326cdf0305c8c46c9d166cfd0955a9844d6e46189f5b82ed4a44b919"
+      "sha256": "f1917f22326cdf0305c8c46c9d166cfd0955a9844d6e46189f5b82ed4a44b919",
+      "extracted_sha256": "d13f38717c856daacfaa66c897ad49c4afeec0f1c90243569ac811dbcc47db8d",
+      "reason": "ROK-043 guide audit: preserve true programme bounds when cells clip to the time window; readable detail panel. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/home.brs",
       "destination": "roku/tests/home.brs",
       "sha256": "9b289f6bc705523ed0ef3c70eb53a1381e6ba8bd3b2a06ca3fcad76ce3e336a1",
-      "extracted_sha256": "3e8e2c688ec711316b7b88985ddec6d7822281943d2ef4d60a0aacb2eb054c9f",
-      "reason": "Rework: decomposed Main() into named scenario subs in execution order (statement stream preserved; the shared items local became m.homeItems), removed the guide-suffix data asserts duplicated by tests/source-policy.brs (kept one handleResponse wiring assert) and removed the profile-chooser focus-guard scenario duplicated by Main."
+      "extracted_sha256": null,
+      "reason": "Retired: pre-redesign Home handler suite. It never passed after extraction (it fails its first assertion at the extraction commit and at its own last edit), asserts the replaced fixed-shelf Home and v1 /api/streams contract, and only 1 of its 24 subtests passed in isolation; the redesigned Home is covered by home_catalog_runtime, home_return_runtime, hero_metadata_runtime, horizontal_strip_runtime, design_rail_runtime and startup_ready_runtime.",
+      "removed": true
     },
     {
       "source": "roku/tests/home_fixture.py",
@@ -4120,13 +4213,15 @@
       "source": "roku/tests/home_return_runtime.py",
       "destination": "roku/tests/home_return_runtime.py",
       "sha256": "233e5dfb486190bb99797dad12918788dd82a5ffd68a9f67bdf194e27d1a4c99",
-      "extracted_sha256": "4a5bc3292319240b5fb79cf7f1d4c7c0e8e274f677eb6bb014cd2c9903611330",
-      "reason": "Split follow-up: home handlers extracted from HomeScene.brs and HomeFeedScene.brs."
+      "extracted_sha256": "13cec8b71db56f27c5bd49e6fce4460d8bc8c80d221b3822c04821268520b505",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/image-policy.brs",
       "destination": "roku/tests/image-policy.brs",
-      "sha256": "f56a56ce6784fabdbef0d092b9a31de63502c39484c4c1be146599011c1cf699"
+      "sha256": "f56a56ce6784fabdbef0d092b9a31de63502c39484c4c1be146599011c1cf699",
+      "extracted_sha256": "788265320938e2e4b6e91f8ffe0f205e7cc5f76aebf13f0c8b33da2c2595a98f",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
     },
     {
       "source": "roku/tests/keyboard-input.brs",
@@ -4136,17 +4231,23 @@
     {
       "source": "roku/tests/library_runtime.py",
       "destination": "roku/tests/library_runtime.py",
-      "sha256": "7476eafbdd4843e6fd44424cc4b57a10b82f71c5c2f254eacca91b3c5a1882fa"
+      "sha256": "7476eafbdd4843e6fd44424cc4b57a10b82f71c5c2f254eacca91b3c5a1882fa",
+      "extracted_sha256": "410befb9f760e7a4b935ec124cc1d4bb84e0752c9b204682e866ef6118985e9d",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/lifecycle.brs",
       "destination": "roku/tests/lifecycle.brs",
-      "sha256": "2ebc9c49d5fde0d2ddbe8bb34fe44448ed29a6ffc396adb471919966c5e2c339"
+      "sha256": "2ebc9c49d5fde0d2ddbe8bb34fe44448ed29a6ffc396adb471919966c5e2c339",
+      "extracted_sha256": "b166ac28a25bb222a844988a9ae7496ee671cd1d69bb3e93f934b8506f6a5272",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/live-ux.brs",
       "destination": "roku/tests/live-ux.brs",
-      "sha256": "68f6c575f3d70627ce7976cba2a3466b040c64f61e1af6b0c61124235653d5ed"
+      "sha256": "68f6c575f3d70627ce7976cba2a3466b040c64f61e1af6b0c61124235653d5ed",
+      "extracted_sha256": "094f3447d4610e0fa8ec1f974362e000d30558336e07049449e3abe032d688f6",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/locked-config.brs",
@@ -4161,7 +4262,9 @@
     {
       "source": "roku/tests/make_ux_preview.py",
       "destination": "roku/tests/make_ux_preview.py",
-      "sha256": "15c88f46d4513d6e1e4eb5f162be06657c5a306f6ded0843e54fff8456268086"
+      "sha256": "15c88f46d4513d6e1e4eb5f162be06657c5a306f6ded0843e54fff8456268086",
+      "extracted_sha256": "db59a0d3d0b013f53869a318fdfc8602e5e5b67a886d7ac5fe4a029875b08910",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/tests/mock_api.py",
@@ -4172,20 +4275,22 @@
       "source": "roku/tests/movie_detail_runtime.py",
       "destination": "roku/tests/movie_detail_runtime.py",
       "sha256": "7bc1a87c88169be062ef351fd1119dce7a0a0df6e4741c999b25454c058a36d7",
-      "extracted_sha256": "34666b57627b315b16cf37ad5e50d49f7bbf5d5c12bcad20279acde74c81df04",
-      "reason": "Split follow-up: showMetadata extraction moved to components/ResponseScene.brs."
+      "extracted_sha256": "a3bd83ea3dad64f31eea73e2ca710a312999dbbbbd0c5d69fbfe8ad8f086c88a",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/next_episode_runtime.py",
       "destination": "roku/tests/next_episode_runtime.py",
       "sha256": "ea32323bf96ac6d26a74874f394aa1174491a1851fd71c89b2d3412fa1ad44da",
-      "extracted_sha256": "6f99df0ce545ab99683e85a14c1ae598d7c7a5f9b4cc138a860fb9b3aaefd517",
-      "reason": "Split follow-up: extractions moved to SourcesScene.brs, PlaybackScene.brs, NavigationScene.brs and PresentationArtworkScene.brs."
+      "extracted_sha256": "78e72ed4f58bda59e64329e76e2dcce021d721ebdd9b6bce3806ce5694fa9c81",
+      "reason": "Split follow-up: extractions moved to SourcesScene.brs, PlaybackScene.brs, NavigationScene.brs and PresentationArtworkScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/next_transition_runtime.py",
       "destination": "roku/tests/next_transition_runtime.py",
-      "sha256": "230dc1a6cd52311f5ce72f0f8bf7d1f1c45033a8a812dd5f11369403da323602"
+      "sha256": "230dc1a6cd52311f5ce72f0f8bf7d1f1c45033a8a812dd5f11369403da323602",
+      "extracted_sha256": "c14c6ce8c197d0bb33504c4b84f5e6e6fdccac7fb55acda3ec63c41cd7d4ecf9",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/pairing-preload.brs",
@@ -4196,20 +4301,22 @@
       "source": "roku/tests/parent_pin_runtime.py",
       "destination": "roku/tests/parent_pin_runtime.py",
       "sha256": "c33a28ea0288280997930c4f8ae485658e123d6ceb9e88b7821ca83ae2be9f91",
-      "extracted_sha256": "d2d32cc1eff6c842d6b5dad9777736da17ec5d88fd188123c33655581c4b9e95",
-      "reason": "Split follow-up: accountSubmitParentPin and accountSignOut extractions moved to components/AccountProfilesScene.brs."
+      "extracted_sha256": "70f690437449d94569fa1153675b7bc427cdf55c6e1d4eca4a6b2f51953a8ee1",
+      "reason": "Split follow-up: accountSubmitParentPin and accountSignOut extractions moved to components/AccountProfilesScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/playback_static.py",
       "destination": "roku/tests/playback_static.py",
       "sha256": "79f62a2d61f19eeb8d4b08fbe3cfe9a1d6d2c27c9e53708ad4aca9cd7141c3f7",
-      "extracted_sha256": "52422e1d3dd5f7e7d951e22342493a1a6575a3fbca547df0722900fa4267eae8",
-      "reason": "Split follow-up: scene/api/util now read the merged component scope: the split sibling files."
+      "extracted_sha256": "67085c3a647f5b7edf03019758f627dd32ed01824453971671901decc7dfc9f8",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/tests/player-overlay.brs",
       "destination": "roku/tests/player-overlay.brs",
-      "sha256": "3478078f0de5168fbfbcf651544b8e5f0ef0ea980696c25fddddb37855a3a5fb"
+      "sha256": "3478078f0de5168fbfbcf651544b8e5f0ef0ea980696c25fddddb37855a3a5fb",
+      "extracted_sha256": "78d43a06d127879585ab0814904e061289b364e9ad901ee62d46e1381c582ca2",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/tests/presentation_policy_test.brs",
@@ -4224,59 +4331,65 @@
     {
       "source": "roku/tests/profile-selection-runtime.brs",
       "destination": "roku/tests/profile-selection-runtime.brs",
-      "sha256": "2afcae37d26e1ff99f1aa4091504f16e7add6a42b8b83e451e5191fe0039ec63"
+      "sha256": "2afcae37d26e1ff99f1aa4091504f16e7add6a42b8b83e451e5191fe0039ec63",
+      "extracted_sha256": "59c76683d3eda8d4fe13cb9db9a876fe9f55bbc3430d058898721d5c467c90c1",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/profile_management_runtime.py",
       "destination": "roku/tests/profile_management_runtime.py",
       "sha256": "a3950dc5d052a70653a8b82d98e29799dc9a8caa24789f765a8459e47f2b616a",
-      "extracted_sha256": "cb0bf6f7567be8406c1475dc512554dae5e19e245cf24d02032d516dad8fe556",
-      "reason": "Split follow-up: profile-management extractions moved to components/AccountProfilesScene.brs (accountResponse stays in AccountScene.brs)."
+      "extracted_sha256": "e9daf87f15949b85668a844da632fed783df2ce5e6cc151a400e73fa0e518a92",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/profile_preferences_runtime.py",
       "destination": "roku/tests/profile_preferences_runtime.py",
       "sha256": "de7a0ef4cc50e5e868b873ca708bdace8bccd6a2a0b714d406626471ee685786",
-      "extracted_sha256": "9bbcd3f977b21c7533dcaba7b1cf481be922c0f408b4ba4dd0ad4a1474375afc",
-      "reason": "Split follow-up: showPlaybackPreferences from HomeScene.brs, selectItem from NavigationScene.brs, ProfilePreferencesWire from ApiTaskSanitize.brs."
+      "extracted_sha256": "505a468d2f9c768f6394ee3ab94c9823511d9fe4a1c52dcb52de03e38dd178bf",
+      "reason": "Split follow-up: showPlaybackPreferences from HomeScene.brs, selectItem from NavigationScene.brs, ProfilePreferencesWire from ApiTaskSanitize.brs. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/request-propagation.brs",
       "destination": "roku/tests/request-propagation.brs",
-      "sha256": "4a7cf3bad18ed761ae7601b8c5dfce725053fc9fa1f1d5ce5b32cd6ee911cce9"
+      "sha256": "4a7cf3bad18ed761ae7601b8c5dfce725053fc9fa1f1d5ce5b32cd6ee911cce9",
+      "extracted_sha256": "6c980d878d6944795eafa3c02e486b38beff40321c5273fa30bbc34961daace8",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/resume_controls_runtime.py",
       "destination": "roku/tests/resume_controls_runtime.py",
       "sha256": "b42e4e85f58d4c8b8845cdc073198fd7e5aecf5dd053fb04e70e2a56173eda61",
-      "extracted_sha256": "5dba9a35a0e89d8841fa0c64ff12571e70c162d0bf227d3eeab0b98c437441d2",
-      "reason": "Split follow-up: cancelAutomaticResume extraction moved to components/HomeScene.brs."
+      "extracted_sha256": "445d8c07c9308de44fbc15824c8e9e6d86d42e0aa3c984cbdbcbdda5c280e4be",
+      "reason": "Split follow-up: cancelAutomaticResume extraction moved to components/HomeScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/scenegraph_ux_contract.py",
       "destination": "roku/tests/scenegraph_ux_contract.py",
       "sha256": "ae8ab75f453ff30c0431316d869465669edb5d5810a00640c90c8b3e13e93f36",
-      "extracted_sha256": "42687609037fe651555c6efc429f73e20a984d6755ae4f88cbf6b17c9e86b2dc",
-      "reason": "Split follow-up: scene now reads the merged MainScene component scope: the split sibling files."
+      "extracted_sha256": "c4508e1a1936539594561e13769c2cc962935c5372a18070db71c697e0b82c71",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained."
     },
     {
       "source": "roku/tests/schema.brs",
       "destination": "roku/tests/schema.brs",
-      "sha256": "83b876c1ab04e1f24985d24bf66991b4b68d8d9067711859251086b859794d54"
+      "sha256": "83b876c1ab04e1f24985d24bf66991b4b68d8d9067711859251086b859794d54",
+      "extracted_sha256": "04a8d9ed3aeab2b3656a2524b911a2471c3562b01d25d727ffc7c8d3342d7408",
+      "reason": "Record existing committed 8e24931 artwork-gate/font/error changes; no new runtime change in this entry. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/seek_latency_runtime.py",
       "destination": "roku/tests/seek_latency_runtime.py",
       "sha256": "0dac2bacf453fedd2ce21e0cd214eb2cf20d9407a083faf8a89169167db9b694",
-      "extracted_sha256": "13d742ffecc8bc2af75038f5c0241136505252a5e8f4e4f933ab5dc2a8959262",
-      "reason": "Split follow-up: prepareSeekReplacement extraction moved to components/SeekScene.brs."
+      "extracted_sha256": "bad7a0e61d1bf466aa702700d25a8ba544923fb4a702922bde9aef30ef420b46",
+      "reason": "Split follow-up: prepareSeekReplacement extraction moved to components/SeekScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/seek_rollback_runtime.py",
       "destination": "roku/tests/seek_rollback_runtime.py",
       "sha256": "097b5976ba7095873cd1b51e2b7e559fb5f287e91928248b8b8288067e937f48",
-      "extracted_sha256": "0d39e55a82b551fd1fc63ce21c324df164ebc51acb607f73557c72a764d187b4",
-      "reason": "Split follow-up: seek-transaction extractions moved to components/SeekScene.brs."
+      "extracted_sha256": "3c132df8af01a8c1f21d1fedc5e25d154fa68192e8545846456eeaa39a9bf319",
+      "reason": "Split follow-up: seek-transaction extractions moved to components/SeekScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/sgnode-identity.brs",
@@ -4293,12 +4406,16 @@
     {
       "source": "roku/tests/smoke.brs",
       "destination": "roku/tests/smoke.brs",
-      "sha256": "4fa982dff5a8e82d6d11ac2d7186133fa3016f9aa79147e0cf454410e8828e19"
+      "sha256": "4fa982dff5a8e82d6d11ac2d7186133fa3016f9aa79147e0cf454410e8828e19",
+      "extracted_sha256": "c76a158a782ed4999127cc842d6baaccc424d8bd1a2965b12e43ccc5cc3ad635",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/source-cards.brs",
       "destination": "roku/tests/source-cards.brs",
-      "sha256": "144879d713b70e6d27b820646aefbbc953156b0c7e637911f7cd778c7da6c550"
+      "sha256": "144879d713b70e6d27b820646aefbbc953156b0c7e637911f7cd778c7da6c550",
+      "extracted_sha256": "3676b0d4a8316ce2db60aee59409dafd3ade07ed175e28873f2f2885cbed8f8e",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/source-policy.brs",
@@ -4309,20 +4426,22 @@
       "source": "roku/tests/startup_ready_runtime.py",
       "destination": "roku/tests/startup_ready_runtime.py",
       "sha256": "a228d66af0c75ee47212b775d213d284e8d46a942d91329f83e3beb66d0fa1c9",
-      "extracted_sha256": "acd20bacd596fa2ea30ff7c1c92e971834ffa694479033a142e3d260ec56f261",
-      "reason": "Split follow-up: homeVisible extraction moved to components/HomeScene.brs."
+      "extracted_sha256": "40d2ab7024a480b764f29ef7210d0a3dbc2e3a53c53634ed673bdfb16b396905",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. Record existing committed 8e24931 artwork-gate/font/error changes; no new runtime change in this entry. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/transport.brs",
       "destination": "roku/tests/transport.brs",
-      "sha256": "d0d376c5008111a99c1ff1bd4428da1cedc60421375ea50cbedbba0d8cf3fdce"
+      "sha256": "d0d376c5008111a99c1ff1bd4428da1cedc60421375ea50cbedbba0d8cf3fdce",
+      "extracted_sha256": "49658f29afcb8427c9902527474a325afea7374ea3dead4fca014376643dfbf6",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
     },
     {
       "source": "roku/tests/ux_preview.brs",
       "destination": "roku/tests/ux_preview.brs",
       "sha256": "bfe358b15bfce9e359c42d3f25e53614d9c44fdde69554fb9eddf36f6fe93916",
-      "extracted_sha256": "bce144d415c0e2378147f345d5e86b6dd745812217a4c2cdbbe977532bf73ee4",
-      "reason": "Discover-browse alignment 3570c37, recorded post-hoc: updated the Discover heading expectation; unrelated to the file split."
+      "extracted_sha256": "e1d7c4fece3145edf18c082df90f35a5870be151a831b1b84ae381cdb8e4a8fa",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
     },
     {
       "source": "roku/tools/fetch_character_avatars.py",
@@ -4359,8 +4478,8 @@
     {
       "destination": "roku/tests/direct_runtime.py",
       "source_sha256": "0ccf30f6b493b792435f182646262bc05f8d750cae8a317159bb5b90fcb38ff8",
-      "extracted_sha256": "7ba6b780fe8b69918579d020c98e645926fd1dd9f65a624dde6137111f58a2ea",
-      "reason": "Runtime fixture imports the current ContinuationPolicy helper and initializes next-transition state required by acceptPlayback; production Roku source is unchanged."
+      "extracted_sha256": "c76bf06196c44954eda4c2ffdd85d414329d935effb67f556f1787a6224b963f",
+      "reason": "Runtime fixture imports the current ContinuationPolicy helper and initializes next-transition state required by acceptPlayback; production Roku source is unchanged. Interpreter now resolved through tests/brs_cli.py."
     }
   ]
 }
