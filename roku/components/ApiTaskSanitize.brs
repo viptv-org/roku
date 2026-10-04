@@ -250,15 +250,7 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
         for each field in ["source","source_addon_id","name","title","source_fingerprint"]
             output.source[field] = Left(Txt(data.source[field]),256)
         end for
-    else if route = "/api/live/categories"
-        if not ApiIsArray(data.categories) or not ApiIsNumber(data.total) then return failure
-        if data.total < 0 then return failure
-        output = {categories:ApiItems(data.categories,100),total:data.total}
-    else if route = "/api/live"
-        if not ApiIsArray(data.channels) or not ApiIsNumber(data.total) then return failure
-        if data.total < 0 then return failure
-        output = { channels: ApiItems(data.channels, 100), total: data.total }
-    else if Left(route, 11) = "/api/guide/" or Left(route,19) = "/api/v2/iptv/guide/"
+    else if Left(route,19) = "/api/v2/iptv/guide/"
         if not ApiIsArray(data.programs) then return failure
         programs = []
         for each program in data.programs
@@ -281,10 +273,10 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
             meta.videos = ApiItems(data.meta.videos, 2000)
         end if
         output = { meta: meta }
-    else if (route = "/api/streams" or route = "/api/v2/streams") and method = "POST"
+    else if route = "/api/v2/streams" and method = "POST"
         if output.id = "" then return failure
         output = { id: output.id }
-    else if (Left(route, 13) = "/api/streams/" or Left(route,16) = "/api/v2/streams/") and method = "GET"
+    else if Left(route,16) = "/api/v2/streams/" and method = "GET"
         if not ApiIsArray(data.events) or GetInterface(data.done, "ifBoolean") = invalid then return failure
         events = []
         for each entry in data.events
@@ -293,7 +285,7 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
                 if not ApiIsNumber(entry.seq) or not ApiIsArray(entry.streams) then return failure
                 if entry.seq < 0 or entry.seq > 2147483647 then return failure
                 cleaned = ApiItem(entry)
-                if Left(route,16) = "/api/v2/streams/" and Txt(entry.error_code) <> ""
+                if Txt(entry.error_code) <> ""
                     cleaned.error_code = left(Txt(entry.error_code),80)
                     cleaned.error = ApiDisplayError(FormatJson({error_code:cleaned.error_code}),502)
                 end if
@@ -309,22 +301,6 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
             end if
         end for
         output = { events: events, done: data.done }
-    else if route = "/api/playback" and method = "POST"
-        if data.managed_live = true
-            if not MatchInteger(data.generation,1,1000) or Txt(data.channel_id) = "" then return failure
-        end if
-        if output.id = "" or Txt(output.url) = "" or not ApiIsNumber(data.position) then return failure
-        if data.position < 0 or data.position > 604800 then return failure
-        if output.format <> "hls" and output.format <> "mp4" then return failure
-        if output.mode <> "direct" and output.mode <> "remux" and output.mode <> "transcode" then return failure
-        preferences = ProfilePreferencesWire(data.preferences)
-        if preferences.ok then output.preferences = preferences.data
-        output.audio_tracks = []
-        output.subtitle_tracks = []
-        if ApiIsArray(data.audio_tracks) then output.audio_tracks = ApiItems(data.audio_tracks,32)
-        if ApiIsArray(data.subtitle_tracks) then output.subtitle_tracks = ApiItems(data.subtitle_tracks,32)
-        if AccountIsObject(data.selected_audio) then output.selected_audio = ApiItem(data.selected_audio)
-        if AccountIsObject(data.selected_subtitle) then output.selected_subtitle = ApiItem(data.selected_subtitle)
     else if route = "/api/profiles" and method = "POST"
         profile = AccountProfileRow(data)
         if profile = invalid or profile.name = "" then return failure
@@ -333,22 +309,7 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
         profile = AccountProfileRow(data)
         if profile = invalid or profile.name = "" then return failure
         output = profile
-    else if Left(route,14) = "/api/playback/" and method = "POST" and data.managed_live = true
-        if data.state <> "playing" and data.state <> "recovering" and data.state <> "failed" then return failure
-        if not MatchInteger(data.generation,1,1000) then return failure
-        output = {ok:true,managed_live:true,state:data.state,generation:data.generation}
-        reason = Txt(data.reason)
-        for each allowed in ["recovery_budget_exhausted","recovery_deadline_exceeded","connections_busy","no_playable_backup","media_stalled","input_ended","player_failed"]
-            if reason = allowed then output.reason = reason
-        end for
-        if data.state = "playing"
-            if not AccountIsObject(data.playback) then return failure
-            playback = SanitizeApiResponse("/api/playback","POST",data.playback)
-            if not playback.ok then return failure
-            if playback.data.generation <> data.generation then return failure
-            output.playback = playback.data
-        end if
-    else if method = "PUT" or method = "DELETE" or (Left(route, 14) = "/api/playback/" and method = "POST")
+    else if method = "PUT" or method = "DELETE"
         if GetInterface(data.ok, "ifBoolean") = invalid then return failure
         output = { ok: data.ok }
     end if

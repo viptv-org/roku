@@ -109,15 +109,15 @@ def run(port=18770, scenario='populated'):
                 if meta['type']=='series':
                     meta['videos'] = [dict(id=ident+f':1:{episode}', title=f'Chapter {episode}', season=1, episode=episode) for episode in range(1, 7)]
                 self.send({'meta': meta})
-            elif route=='/api/live':
+            elif route=='/api/v2/iptv/live/channels':
                 channels = [dict(id='iptv:fixture:1', name='Wild Coast Live', type='live', category='Nature', logo=f'{base}/posters/wildcoast.jpg')]
                 term = query.get('search', [''])[0].lower()
                 channels = [c for c in channels if term in c['name'].lower()]
-                self.send({'channels': channels, 'total': len(channels)})
-            elif route.startswith('/api/guide/'):
+                self.send({'catalog_id': 1, 'generation': 1, 'items': channels, 'next_cursor': None, 'previous_cursor': None})
+            elif route.startswith('/api/v2/iptv/guide/'):
                 now = int(time.time())
                 self.send({'programs': [dict(id='program1', title='Along the Wild Coast', description='A fictional guide entry for UI testing.', start=now-600, end=now+3000)]})
-            elif route.startswith('/api/streams/'):
+            elif route.startswith('/api/v2/streams/'):
                 self.send({'events': [{'seq': 1, 'source': 'fixture', 'streams': [{'id': 'fixture-stream', 'name': 'Preview source', 'title': 'UI fixture — no real media', 'source': 'fixture'}]}], 'done': True})
             else:
                 self.send({'error': 'Unknown fixture route'}, 404)
@@ -134,11 +134,9 @@ def run(port=18770, scenario='populated'):
                 self.send({'access_token': TOKEN, 'refresh_token': 'fixture-refresh', 'expires_in': 3600}); return
             if self.headers.get('Authorization')!='Bearer '+TOKEN:
                 self.send({}, 401); return
-            if route=='/api/streams':
+            if route=='/api/v2/streams':
                 state['last_stream_request'] = body
                 self.send({'id': 'fixture-job'})
-            elif route=='/api/playback':
-                self.send({'error': 'Playback intentionally disabled in UI fixtures'}, 503)
             elif route.startswith('/api/profiles/'):
                 parts = route.split('/')
                 who = parts[3]

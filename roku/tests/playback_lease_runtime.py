@@ -43,7 +43,7 @@ sub Main()
     rokuPlaybackHeartbeatResponse({ok:true,status:200,data:mismatched},origin)
     if instr(1,m.failure,"different playback") = 0 then throw "changed delivery accepted"
     if PlaybackSessionPath(connection,"x") <> "/api/v2/playback/x" then throw "v2 release route lost"
-    if PlaybackSessionPath({path:"/api/playback"},"x") <> "/api/playback/x" then throw "legacy live release changed"
+    if PlaybackSessionPath({path:"/api/not-playback"},"x") <> "/api/v2/playback/x" then throw "connection path affected v2 session route"
     print "PLAYBACK_LEASE_RUNTIME_OK"
 end sub
 sub cancelBrowse()

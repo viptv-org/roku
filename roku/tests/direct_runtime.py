@@ -11,12 +11,12 @@ sub Main()
  m.profile="2":m.requests=[]:m.heading=invalid
  findStreams({id:"movie1",type:"movie",name:"Movie"})
  if m.requests.count()<>2 or m.requests[0].tag<>"sourcepreferences:2" then throw "discovery cancelled or mis-scoped preference loading"
- m.playing=true:m.playbackMode="direct":m.managedLive=true:m.directRetryUsed=false:m.video={state:"error",errorInfo:{category:"mediaerror"}}
+ m.playing=true:m.playbackMode="direct":m.directRetryUsed=false:m.video={state:"error",errorInfo:{category:"mediaerror"}}
  retryPlayback("unsupported format")
  if m.directRetryUsed<>true or m.startedForce<>false or m.recovery<>invalid then throw "direct format failure must use managed delivery before provider failover"
- m.playing=true:m.playbackMode="direct":m.managedLive=true:m.directRetryUsed=false:m.video={state:"error",errorInfo:{category:"http"}}:m.startedForce=invalid
+ m.playing=true:m.playbackMode="direct":m.directRetryUsed=false:m.video={state:"error",errorInfo:{category:"http"}}:m.startedForce=invalid:m.exhausted=invalid:m.forced=false
  retryPlayback("origin 403")
- if m.recovery<>true or m.startedForce<>invalid then throw "origin error must not trigger transcoding"
+ if m.exhausted<>true or m.startedForce<>invalid then throw "origin error must not trigger transcoding"
  m.playing=true:m.playbackMode="direct":m.playItem={type:"movie"}:m.playbackLive=false:m.seeking=false:m.duration=600:m.pausedVOD=true:m.video={state:"paused"}
  playerCommand({getData:GetCommand,command:{kind:"seek",value:125}})
  if m.video.seek<>125 or m.video.autoplayAfterSeek<>false or m.directSeekPause<>true then throw "direct seek must preserve paused intent"
@@ -72,13 +72,11 @@ end sub
 sub beginPlayback(force)
  m.startedForce=force
 end sub
-sub requestLiveRecovery()
- m.recovery=true
-end sub
 function retryContinuationSource()
  return false
 end function
 sub sourceExhausted(message)
+ m.exhausted=true
 end sub
 '''
 with tempfile.TemporaryDirectory() as directory:

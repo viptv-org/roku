@@ -35,8 +35,6 @@ sub stopPlayback(restore = true as boolean)
         m.seekOldContent = invalid
     end if
     m.playing = false
-    m.managedLive = false
-    m.liveRecoveryRequested = false
     m.pausedVOD = false
     if m.playerOverlay <> invalid then m.playerOverlay.visible = false
     if m.playerBackdrop <> invalid then m.playerBackdrop.visible = false

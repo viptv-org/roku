@@ -56,9 +56,7 @@ sub findStreams(item as object, manual = true as boolean, preferredSource = inva
     end if
     m.discoveryV2 = true
     m.discoveryError = ""
-    path = "/api/streams"
-    if m.discoveryV2 then path = "/api/v2/streams"
-    request("POST",path,body,"streamstart")
+    request("POST","/api/v2/streams",body,"streamstart")
     if not m.manualSources
         ' Resume is an explicit operation, never a timer attached to the picker.
         m.mode = "resuming"
@@ -73,9 +71,7 @@ end sub
 
 sub pollStreams()
     m.pollCount++
-    path = "/api/streams/"
-    if m.discoveryV2 = true then path = "/api/v2/streams/"
-    request("GET",path + Enc(m.job) + "?after=" + m.cursor.toStr(),invalid,"streampoll")
+    request("GET","/api/v2/streams/" + Enc(m.job) + "?after=" + m.cursor.toStr(),invalid,"streampoll")
 end sub
 
 sub beginPlayback(force as boolean)
@@ -144,10 +140,6 @@ sub videoState()
     ' The old decoder is intentionally paused during atomic replacement.
     if m.seeking = true then return
     state = m.video.state
-    if m.managedLive = true and m.playing = true and (state = "error" or state = "finished")
-        requestLiveRecovery()
-        return
-    end if
     if m.directSeekPause = true
         pauseAgain = state = "playing"
         m.directSeekPause = DirectSeekPause(m.video,true)
@@ -216,10 +208,6 @@ sub retryPlayback(reason as string)
         beginPlayback(false)
         return
     end if
-    if m.managedLive = true
-        requestLiveRecovery()
-        return
-    end if
     force = not m.forced and m.codecRetryUsed <> true and not originFailure
     stopPlayback(false)
     if force
@@ -233,11 +221,6 @@ end sub
 
 sub heartbeat()
     if m.session = "" then return
-    if m.playbackDeliveryKind = "gateway"
-        saveProgress()
-        return
-    end if
-    request("POST","/api/playback/" + Enc(m.session) + "/heartbeat",{},"sideheartbeat")
     saveProgress()
 end sub
 

@@ -1,9 +1,6 @@
 ' Pure, render-thread-safe helpers; no network, registry or device queries.
 function PlaybackSessionPath(connection as dynamic, identity as string) as string
-    if GetInterface(connection,"ifAssociativeArray") <> invalid
-        if Left(Txt(connection.path),16) = "/api/v2/playback" then return "/api/v2/playback/" + Enc(identity)
-    end if
-    return "/api/playback/" + Enc(identity)
+    return "/api/v2/playback/" + Enc(identity)
 end function
 
 function TrackOwner(item as object) as string
@@ -512,7 +509,6 @@ function PlaybackRequestsConflict(a as object, b as object) as boolean
     if a.method = "GET" or b.method = "GET" then return false
     first = Txt(a.tag).split("|")[0]
     second = Txt(b.tag).split("|")[0]
-    if first = "cleanupstartup" or second = "cleanupstartup" then return false
     aPlayback = first = "playback" or first = "seekplayback" or first = "cleanup"
     bPlayback = second = "playback" or second = "seekplayback" or second = "cleanup"
     aProgress = first = "sideprogress" or first = "sideheartbeat" or first = "siderestorequeue"

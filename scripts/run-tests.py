@@ -54,7 +54,6 @@ BRS_TESTS = {
     "epg_policy.brs": (UTIL + ["source/EpgPolicy.brs"], "EPG_POLICY_OK"),
     "epg_transport.brs": (["source/Util.brs", "components/EpgScene.brs"], "EPG_TRANSPORT_OK"),
     "fallback.brs": (MAIN_SCENE, "ROKU_FALLBACK_OK"),
-    "family-startup.brs": (MAIN_SCENE, "ROKU_FAMILY_STARTUP_OK"),
     "image-policy.brs": (UTIL + ["source/ImagePolicy.brs"], "IMAGE_POLICY_OK"),
     "keyboard-input.brs": (["source/KeyboardInput.brs"], "KEYBOARD_INPUT_OK"),
     "lifecycle.brs": (MAIN_SCENE, "ROKU_LIFECYCLE_OK"),

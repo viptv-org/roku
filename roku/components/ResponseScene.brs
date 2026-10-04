@@ -59,10 +59,6 @@ sub handleResponse(event as object)
         end if
         return
     end if
-    if tag = "sideheartbeat" or tag = "sideliverecover"
-        if val(parts[1]) = m.generation then managedLiveResponse(result,origin)
-        return
-    end if
     if left(tag,4) = "side" then return
     if left(tag,8) = "liveepg:"
         liveEpgResponse(tag,result,val(parts[1]))

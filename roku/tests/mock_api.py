@@ -39,11 +39,11 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(200, {'metas': [{'id': 'shared', 'type': 'movie', 'name': 'Shared Movie'}]})
         elif self.path == '/api/discover?type=series&skip=0&search=shared%20query':
             self.send_json(200, {'metas': [{'id': 'shared', 'type': 'series', 'name': 'Shared Series'}]})
-        elif self.path == '/api/live?offset=0&limit=30&search=shared%20query':
-            self.send_json(200, {'channels': [{'id': 'shared', 'name': 'Shared Live'}], 'total': 1})
-        elif self.path == '/api/streams/job?after=0':
+        elif self.path == '/api/v2/iptv/live/channels?limit=30&search=shared%20query':
+            self.send_json(200, {'catalog_id': 1, 'generation': 1, 'items': [{'id': 'shared', 'name': 'Shared Live'}], 'next_cursor': None, 'previous_cursor': None})
+        elif self.path == '/api/v2/streams/job?after=0':
             self.send_json(200, {'events': [{'seq': 1, 'source': 'fixture', 'streams': [{'id': 's1', 'name': 'Playable'}]}], 'done': False})
-        elif self.path == '/api/streams/job?after=1':
+        elif self.path == '/api/v2/streams/job?after=1':
             self.send_json(200, {'events': [{'seq': 2, 'source': 'fixture', 'streams': [], 'error': 'secret URL'}], 'done': True})
         else:
             self.send_json(404, {'error': 'missing fixture'})

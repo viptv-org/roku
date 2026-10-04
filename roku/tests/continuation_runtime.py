@@ -35,8 +35,6 @@ sub beginPlayback(force as boolean)
 end sub
 sub retryPlayback(reason as string)
 end sub
-sub requestLiveRecovery()
-end sub
 sub prefetchContinuation()
 end sub
 '''),('next',routine('components/ContinuationScene.brs','sub continuationPlay()','end sub'),'''

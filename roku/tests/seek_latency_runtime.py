@@ -11,7 +11,7 @@ cases={
  'queue':routine('dispatchRequests')+'''
 sub Main()
  m.tasks=[{state:"run",request:{method:"POST",tag:"sideprogress|0"}}]
- m.queue=[{method:"POST",path:"/progress",tag:"sideprogress|0"},{method:"POST",path:"/api/playback",tag:"seekplayback|0"}]
+ m.queue=[{method:"POST",path:"/progress",tag:"sideprogress|0"},{method:"POST",path:"/api/v2/playback",tag:"seekplayback|0"}]
  dispatchRequests()
  if m.sent=invalid then throw "seek waited behind history"
  if m.sent.tag<>"seekplayback|0" then throw "history overtook seek"
@@ -19,7 +19,7 @@ sub Main()
  dispatchRequests()
  if m.sent<>invalid then throw "history writes lost serialization"
  m.tasks=[{state:"run",request:{method:"POST",tag:"auth:profile|0"}}]
- m.queue=[{method:"POST",path:"/api/playback",tag:"seekplayback|0"}]
+ m.queue=[{method:"POST",path:"/api/v2/playback",tag:"seekplayback|0"}]
  dispatchRequests()
  if m.sent<>invalid then throw "seek overtook an authentication mutation"
  print "SEEK_QUEUE_OK"
@@ -51,7 +51,7 @@ end sub
 sub Main()
  m.config={base:"https://fixture.invalid",access_token:"fixture",last_profile_id:"1"}
  m.queue=[]:m.generation=1:m.accountEpoch=1:m.prepSpent=0
- request("POST","/api/playback",{stream_id:"source",position:100},"seekplayback")
+ request("POST","/api/v2/playback",{stream_id:"source",position:100},"seekplayback")
  if Txt(m.queue[0].body.startup_id)="" then throw "VOD seek has no server cancellation identity"
  print "SEEK_CANCEL_OK"
 end sub

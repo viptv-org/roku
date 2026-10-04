@@ -178,7 +178,6 @@ sub cancelBrowse()
     end if
     m.resumeSourcePreference = invalid
     if Txt(m.pendingStartupId) <> ""
-        if Left(Txt(m.pendingStartupConnection.path),16) <> "/api/v2/playback" then request("DELETE","/api/playback/startups/" + Enc(m.pendingStartupId),invalid,"cleanupstartup",m.pendingStartupConnection)
         m.pendingStartupId = ""
         m.pendingPlayback = false
     end if

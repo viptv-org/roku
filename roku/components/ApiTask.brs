@@ -221,24 +221,13 @@ function HttpRequestRaw(request as object, result as object, method as string, s
     timer.Mark()
     deadline = 20000
     if method = "GET" and Left(request.path,13) = "/api/discover" then deadline = 35000
-    if method = "POST" and request.path = "/api/playback"
-        deadline = 70000
-        if MatchInteger(request.timeout_ms,1,70000) then deadline = request.timeout_ms
-    end if
     if MatchInteger(request.timeout_ms,1,70000) then deadline = request.timeout_ms
     if method = "GET"
         started = transfer.AsyncGetToFile(responseFile)
     else
         payload = ""
         if request.body <> invalid
-            body = request.body
-            if path = "/api/playback" and method = "POST"
-                ' Audio output/private listening may change between plays.
-                body = {}
-                body.append(request.body)
-                body.capabilities = DeviceCapabilities()
-            end if
-            payload = FormatJson(body)
+            payload = FormatJson(request.body)
         end if
         bytes = CreateObject("roByteArray")
         bytes.FromAsciiString(payload)

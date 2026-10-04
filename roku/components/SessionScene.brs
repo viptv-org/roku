@@ -11,11 +11,7 @@ sub acceptPlayback(data as object,origin as object)
             m.nextTransitionConnection = invalid
             m.nextPrepping = false
         end if
-        m.managedLive = data.managed_live = true
-        m.liveGeneration = data.generation
-        m.liveRecoveryRequested = false
-        m.liveHeartbeatFailures = 0
-        if m.managedLive then m.heartbeat.duration = 3 else m.heartbeat.duration = 15
+        m.heartbeat.duration = 15
         m.audioTracks = Bounded(data.audio_tracks,32)
         m.subtitleTracks = Bounded(data.subtitle_tracks,32)
         m.subtitlesSupported = data.subtitles_supported = true
@@ -81,47 +77,4 @@ sub acceptPlayback(data as object,origin as object)
         applyPlayerSubtitles()
         m.startup.control = "start"
         m.heartbeat.control = "start"
-end sub
-
-sub requestLiveRecovery()
-    if m.managedLive <> true or not m.playing or Txt(m.session) = "" or m.liveRecoveryRequested = true then return
-    m.liveRecoveryRequested = true
-    m.startup.control = "stop"
-    m.video.control = "stop"
-    m.status.text = "Reconnecting channel…"
-    uiBusy(true)
-    request("POST","/api/playback/" + Enc(m.session) + "/recover",{generation:m.liveGeneration},"sideliverecover",m.sessionConnection)
-end sub
-
-sub managedLiveResponse(result as object,origin as object)
-    if m.managedLive <> true or not m.playing or Txt(m.session) = "" then return
-    expected = "/api/playback/" + Enc(m.session)
-    if origin.path <> expected + "/heartbeat" and origin.path <> expected + "/recover" then return
-    if not result.ok
-        m.liveHeartbeatFailures++
-        if m.liveHeartbeatFailures >= 3
-            stopPlayback(false)
-            sourceExhausted("Connection to the server was lost. Try again.")
-        end if
-        return
-    end if
-    m.liveHeartbeatFailures = 0
-    data = result.data
-    if data.managed_live <> true then return
-    if data.state = "failed"
-        stopPlayback(false)
-        message = "No playable backup is available for this channel. Try again later."
-        if data.reason = "recovery_budget_exhausted" then message = "This channel reached its recovery limit. Try again later."
-        if data.reason = "recovery_deadline_exceeded" then message = "The backup took too long to start. Try again later."
-        if data.reason = "connections_busy" then message = "All backup connections are busy. Try again shortly."
-        sourceExhausted(message)
-    else if data.state = "recovering"
-        m.status.text = "Reconnecting channel…"
-        uiBusy(true)
-    else if data.state = "playing" and data.generation > m.liveGeneration
-        if Txt(data.playback.id) <> m.session then return
-        m.video.control = "stop"
-        acceptPlayback(data.playback,m.sessionConnection)
-        m.status.text = ""
-    end if
 end sub

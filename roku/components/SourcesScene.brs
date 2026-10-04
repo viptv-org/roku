@@ -54,11 +54,9 @@ sub refreshSourceIds(newEpoch = true as boolean)
     m.playItem.duration = m.duration
     body = {id:m.playItem.id,type:m.playItem.type,name:Txt(m.playItem.seriesName,m.playItem.name)}
     body.append(StreamContext(m.playItem))
-    m.discoveryV2 = Txt(m.playItem.type) <> "live"
+    m.discoveryV2 = true
     m.discoveryError = ""
-    path = "/api/streams"
-    if m.discoveryV2 then path = "/api/v2/streams"
-    request("POST",path,body,"streamstart")
+    request("POST","/api/v2/streams",body,"streamstart")
     if m.heading <> invalid
         rows("Choose a source",[],"streams","",false)
         uiSourceHeader()
