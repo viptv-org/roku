@@ -13,6 +13,8 @@ sub Main()
  expected="This IPTV provider has reached its connection limit. Stop another stream or choose another provider."
  if ApiDisplayError(FormatJson({error_code:"provider_connection_limit"}),429)<>expected then throw "coded limit lost"
  if ApiDisplayError(FormatJson({error:"Provider connection limit reached"}),429)<>expected then throw "legacy limit lost"
+ if ApiDisplayError(FormatJson({error_code:"gateway_unavailable"}),502)<>"The playback gateway could not be reached. Try again shortly or choose another source." then throw "gateway outage misreported as missing authorization"
+ if ApiDisplayError(FormatJson({error_code:"gateway_required"}),409)<>"This device needs an authorized playback gateway. Configure one for this account or ask the account owner." then throw "missing authorization lost"
  if ApiDisplayError("",429)<>"Too many requests. Wait a moment and try again." then throw "rate limit confused"
  if ApiDisplayError(FormatJson({error:"Provider name is required"}),400)<>"Provider name is required" then throw "safe validation lost"
  for each body in [FormatJson({error:"https://provider.test/synthetic-private"}),FormatJson({error:"Cookie: synthetic-private"}),"bad JSON https://provider.test/synthetic-private"]

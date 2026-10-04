@@ -67,8 +67,8 @@
       "source": "roku/components/ApiTask.brs",
       "destination": "roku/components/ApiTask.brs",
       "sha256": "4e2eca9f8d0d16fc1402e769eeeae666a405eaa0bd526cc8c9e051cf45d28d64",
-      "extracted_sha256": "580d7fe66c31501136a44edb68e0b981910d3fe997b203faa97286f4b839be5b",
-      "reason": "Cleanup 14a702c (ApiIsObject consolidation) and split: task runner, config lock/transport and HTTP request loop remain; ApiOrigin and the pure response-sanitization functions moved byte-identical into ApiTaskSanitize.brs (merged ApiTask component scope via ApiTask.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained."
+      "extracted_sha256": "dd358dc51a83f324a7360877e9741cf211fcad2f0ba34a7dfed84bfd2ff2eabc",
+      "reason": "Cleanup 14a702c (ApiIsObject consolidation) and split: task runner, config lock/transport and HTTP request loop remain; ApiOrigin and the pure response-sanitization functions moved byte-identical into ApiTaskSanitize.brs (merged ApiTask component scope via ApiTask.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained. Corrected gateway_unavailable copy separately from gateway_required; provider connection-limit mapping preserved; no ZIP redeployment."
     },
     {
       "source": "roku/components/ApiTask.xml",

@@ -29,6 +29,8 @@ elif len(sys.argv) == 4 and sys.argv[1] == "sync":
             mapping[path] = path.removeprefix("assets/roku/")
     for path in ["ROKU_DESIGN.md", "DESIGN_SYNC.md", "viptv-design-system/components.md", "viptv-design-system/copy.md", "viptv-design-system/decisions.md", "viptv-design-system/tokens/tokens.json"]:
         mapping[path] = "design-contract/" + path
+    if "PLAYBACK_ERROR_COPY.md" in paths:
+        mapping["PLAYBACK_ERROR_COPY.md"] = "design-contract/PLAYBACK_ERROR_COPY.md"
     files = {}
     for source, target in mapping.items():
         data = git("show", sha + ":" + source)
