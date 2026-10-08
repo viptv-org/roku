@@ -21,6 +21,13 @@ sub Main()
     rokuPlaybackHeartbeatResponse({ok:false,status:0,error:"Network request failed"},origin)
     if m.playbackLeases.lease.clock.TotalMilliseconds() <> 6000 then throw "network failure extended lease"
     if m.playbackLeases.lease.renew_after_seconds <> 2 then throw "retry interval lost"
+    for each status in [408,429,500,502,503,504]
+        m.stopped = false
+        rokuPlaybackHeartbeatResponse({ok:false,status:status,error:"Temporary gateway DNS failure"},origin)
+        if m.stopped or not m.playbackLeases.DoesExist("lease") then throw "transient renewal stopped authorized playback"
+        if m.playbackLeases.lease.clock.TotalMilliseconds() <> 6000 then throw "retry extended lease expiry"
+        if m.playbackLeases.lease.pending then throw "retry left renewal pending"
+    end for
     m.playbackLeases.lease.renew_after_seconds = 0
     rokuPlaybackLeaseTick()
     if m.queue.count() <> 1 or m.queue[0].path <> origin.path then throw "renewal used media origin"

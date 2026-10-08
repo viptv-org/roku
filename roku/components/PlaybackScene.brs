@@ -139,6 +139,7 @@ end sub
 sub videoState()
     ' The old decoder is intentionally paused during atomic replacement.
     if m.seeking = true then return
+    if checkManagedResume() then return
     state = m.video.state
     if m.directSeekPause = true
         pauseAgain = state = "playing"
@@ -252,6 +253,7 @@ sub saveProgress()
 end sub
 
 sub updatePlayer()
+    if checkManagedResume() then return
     if m.playerOverlay = invalid or m.playItem = invalid then return
     position = m.position
     if m.playing and m.video.position <> invalid

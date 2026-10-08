@@ -9,10 +9,14 @@ five-second bound. V2 control stays on the configured HTTPS backend.
 
 Delivery kind and processing mode are separate: gateway `mode: direct` still
 starts at native zero with its title offset. Managed Pause freezes title time;
-Resume replaces delivery at that anchor. Seek/track replacements retain the
+Resume first continues the same Video node and delivery, retaining its buffer
+and processing mode. Only native resume failure or eight seconds without clock
+progress requests same-source recovery at the frozen anchor. Seek/track replacements retain the
 single decoder, old lease and rollback position until success. Active/paused/
 transition leases renew individually. Refusal/expiry stops playback; network
 retries cannot extend expiry and late renewals cannot restore released leases.
+Transport failures, 408/429 and HTTP 5xx renewal responses retry while the existing
+lease remains valid; explicit authorization refusal and actual expiry stop playback.
 
 Healthy provider sources survive another provider's failure. Empty discovery
 shows its safe cause; raw provider messages never become displayed error text.
