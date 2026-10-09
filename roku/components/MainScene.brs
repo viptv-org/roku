@@ -283,13 +283,32 @@ sub keyboard(kind as string, title as string, value as string)
     if kind = "accountprofilename" then m.textEntry.limit = 80
     if kind = "epgsearch" then m.textEntry.limit = 128
     if kind = "addon" then m.textEntry.limit = 4096
+    uiKeyboardChrome(true)
     m.textEntry.callFunc("open")
+end sub
+
+' Text-entry surfaces sit above the app chrome in z-order; a full keyboard
+' must not show the expanded navigation rail behind it.
+sub uiKeyboardChrome(hidden as boolean)
+    chrome = m.top.findNode("appChrome")
+    if chrome = invalid then return
+    if hidden
+        if m.chromeHiddenByKeyboard <> true
+            m.chromeHiddenByKeyboard = true
+            m.chromeWasVisible = chrome.visible
+        end if
+        chrome.visible = false
+    else if m.chromeHiddenByKeyboard = true
+        m.chromeHiddenByKeyboard = false
+        chrome.visible = m.chromeWasVisible <> false
+    end if
 end sub
 
 sub keyboardDone()
     result = m.textEntry.result
     if result = invalid then return
     m.textEntry.visible = false
+    uiKeyboardChrome(false)
     if m.textEntry.secret then m.textEntry.result = invalid
     if m.keyboardAccountEpoch <> m.accountEpoch then return
     if m.keyboardKind = "parentpin"
@@ -364,6 +383,13 @@ sub profileGridSelected()
     accountProfileAction(item)
 end sub
 function onKeyEvent(key as string, press as boolean) as boolean
+    if press
+        ' Freeze diagnostics: if the remote appears dead during a stall, this
+        ' line answers whether events still reach the scene script at all.
+        focusedId = ""
+        if m.top.focusedChild <> invalid then focusedId = Txt(m.top.focusedChild.id)
+        print "VIPTV_KEY key=";key;" mode=";Txt(m.mode);" pending=";m.pendingPlayback;" playing=";m.playing;" focus=";focusedId
+    end if
     if m.homeInitialLoading = true then return true
     if not press then return false
     if key = "back" and m.parentUnlockPending = true and m.parentAction = "profilemutation"

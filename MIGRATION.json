@@ -13,8 +13,8 @@
       "source": "roku/PLAYBACK.md",
       "destination": "roku/PLAYBACK.md",
       "sha256": "ba9ec93b77d0e3bd6440e1a2d45a7de90cad51646a1d861e94602086d521d6e5",
-      "extracted_sha256": "86a48ff242a455f6b3574ddc7a19e1977d4cd70f89b6a655927480a0b2981163",
-      "reason": "BE-002 v2 playback contract and validation record; original extraction hash retained. Local checks documented through scripts/run-tests.py; retired Settings quality row and DSH-only commands removed."
+      "extracted_sha256": "c9a7b1625f3b76fe2c36ab78252e958bed1522417f7ce7c9bd1266b89accfa48",
+      "reason": "BE-002 v2 playback contract and validation; re-pinned to document the Roku buffered-TimeRanges platform limit and the honest REBUFFERING status. Native buffered resume and bounded transient lease renewal correction, 2026-10-08."
     },
     {
       "source": "roku/README.md",
@@ -144,8 +144,8 @@
       "source": "roku/components/EpgGrid.brs",
       "destination": "roku/components/EpgGrid.brs",
       "sha256": "1a942f3bb3db967b9fe079d176bd20e3cabacb1b7c3c0e5f9ca6f88716895a42",
-      "extracted_sha256": "462dbe8254ca3b20e6159d4249f602918c3b5d5c237dc007fd0fa2b2edfc548a",
-      "reason": "ROK-043 guide audit: preserve true programme bounds when cells clip to the time window; readable detail panel. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. BE-002 review: implicit category boundary paging and fail-closed raw page/source validation; original hash retained."
+      "extracted_sha256": "129b1b843a866c510df9e547edc801850cd245c65859d85c500cf90f2925ffbe",
+      "reason": "Bounds-guard channel-row access in epgDetails and epgWatchChannel (fresh-open Live TV freeze hardening)."
     },
     {
       "source": "roku/components/EpgGrid.xml",
@@ -226,8 +226,8 @@
       "source": "roku/components/HomeCard.brs",
       "destination": "roku/components/HomeCard.brs",
       "sha256": "5373dda84e661fc0dd62f33e8bd49683918a807ce14acf4426d1a6612cba7285",
-      "extracted_sha256": "eaaf93cf35d06467abb51625ae3347a6161020d11ed83acf5c5bc62a9714a61a",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership."
+      "extracted_sha256": "b839e963e36b8a05ac8d94ee39a9c1365ac90a33d281b432c4cedcb7ef9c4e1d",
+      "reason": "Artwork honors the grid cell height so labels stay inside the 176px My List rows."
     },
     {
       "source": "roku/components/HomeCard.xml",
@@ -266,15 +266,15 @@
       "source": "roku/components/MainScene.brs",
       "destination": "roku/components/MainScene.brs",
       "sha256": "86b18096942ced4d58c9408fe81598e2b7f648dde69c90ead66d376734d3b1b8",
-      "extracted_sha256": "ce5bc71da2c1915a3d3d9926eb5355c065038ff444aa74e52a2bf9ebb8241d5f",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained."
+      "extracted_sha256": "9535ebdb9496c25ed20214533effb78cdfed42024999d0684ececab0138627d1",
+      "reason": "Rail hides behind full-screen keyboards; key-path freeze diagnostics in onKeyEvent."
     },
     {
       "source": "roku/components/MainScene.xml",
       "destination": "roku/components/MainScene.xml",
       "sha256": "683ee2541fb021de8402c8fc590ed211abc043d423c6f7cbc3a4b5b75626063c",
-      "extracted_sha256": "693a066cbdd5353fbc735983ece3db6402954c06e4108b6ee537faa733001fba",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. Removed unreferenced nextPlayerDialogId, playerDialogEventMatches, playerTrackSelected and prefetchHeroBackdrop, plus the heroPrefetch posters only the latter used."
+      "extracted_sha256": "abeb31be9ee5b1cde6551e47fe52d818d5515fcbc2e3789b21eeb31edc6240ce",
+      "reason": "My List grid density (3 rows of 4), caption clearance above the segment tabs, and the player layout invariants."
     },
     {
       "source": "roku/components/NavIcon.brs",
@@ -301,15 +301,15 @@
       "source": "roku/components/PlaybackScene.brs",
       "destination": "roku/components/PlaybackScene.brs",
       "sha256": "2895f449c1c79ce16987253c68728b4e2baca7539ca6e10e47955947e7ee09b3",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. Removed unreferenced nextPlayerDialogId, playerDialogEventMatches, playerTrackSelected and prefetchHeroBackdrop, plus the heroPrefetch posters only the latter used. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained.",
-      "extracted_sha256": "2a82cc824fe6974756b5ee12a461b7d9ae7cd0dc28ae45b7dc68aa2351f2dec9"
+      "reason": "Overlay model carries delivery mode; VOD no longer puts poster art in the live logo slot. Native buffered resume and bounded transient lease renewal correction, 2026-10-08.",
+      "extracted_sha256": "c3f354d9e27f5ff6624a4ea6e5b7a68cfc66d14f1a0dae76246ad22fd39cf3fa"
     },
     {
       "source": "roku/components/PlayerOverlay.brs",
       "destination": "roku/components/PlayerOverlay.brs",
       "sha256": "64efc6b5afe1443bcc4751a7f09a80a5b8f5ab28f6f0a6b1a25f612cf931899b",
-      "extracted_sha256": "596679d1b0ac887f5ac243af850ba1538a28b6d70144eda0fb8a9afcdc9a3f4f",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "5e78ce7c2e1aba1634998885dd3adb535bc096f603e12baf53a4bcd7e5f0b6fb",
+      "reason": "Delivery-mode eyebrow badge, live logo load-status fallback, and the honest REBUFFERING status."
     },
     {
       "source": "roku/components/PlayerOverlay.xml",
@@ -343,8 +343,8 @@
       "source": "roku/components/PresentationScene.brs",
       "destination": "roku/components/PresentationScene.brs",
       "sha256": "21e2793fd82e785b1baa933c7d7e62c9e072cc0f990d0a213ed53f0aef8dda32",
-      "extracted_sha256": "cd8bfdf3bd2b9d9c3fed8844f836e7d369f38c5d881787cc47bcfa13d82ed5a6",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
+      "extracted_sha256": "2d3a521a9ff3842529c8f7a05619e8d99f0fdbd0217c3521cb0809c0ed6b00f1",
+      "reason": "Search chrome restore on page change; My List grid geometry."
     },
     {
       "source": "roku/components/ProfileCard.brs",
@@ -378,8 +378,8 @@
       "source": "roku/components/ResponseScene.brs",
       "destination": "roku/components/ResponseScene.brs",
       "sha256": "582c565e78ae88fd170b1c873e7253fb1906865b62dc647d5987ecac9e77f9f5",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained.",
-      "extracted_sha256": "96d194c193017a3311d0842a6920fd28990ac7b6fe1bfe5da7fe6f2e55d690aa"
+      "reason": "Stale live-source replies release pending admission flags instead of leaving a permanent spinner.",
+      "extracted_sha256": "01f9c25ad2b2816478b071153c05291b1a8c40087c1de10e70cb5af8acf4d9b8"
     },
     {
       "source": "roku/components/SearchPanel.brs",
@@ -399,22 +399,22 @@
       "source": "roku/components/SearchScene.brs",
       "destination": "roku/components/SearchScene.brs",
       "sha256": "7dd943ac418c54be97d1d5f2ea611d4d1e73390b4a90dde21c6403a3f87c45d5",
-      "extracted_sha256": "e5a631501083d8860214c0e29860bcdb6abaa324d2f7316a5013e88184f8f2b2",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved."
+      "extracted_sha256": "aed9d1581c45352dd16bd0b0f0329ee2f90f71ab806e3aa720104d22dae55ef7",
+      "reason": "Hide the navigation rail behind the search keypad."
     },
     {
       "source": "roku/components/SeekScene.brs",
       "destination": "roku/components/SeekScene.brs",
       "sha256": "f0598482ad4cead37a554455f68f67ae05297a80eb8714575ce88f8b93dcd752",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. Next-transition cleanup normalizes an unset session identity with Txt() before the typed PlaybackSessionPath call. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained.",
-      "extracted_sha256": "7864f29cc79046ae6114b62a284e409240d188b7e641b92a467f86473b375c58"
+      "reason": "Mirror delivery modes after a seek replacement. Native buffered resume and bounded transient lease renewal correction, 2026-10-08.",
+      "extracted_sha256": "884de509b92f71e15d58de2f22f1ba629db7df1020b3b6841fbfde1eac8d90d5"
     },
     {
       "source": "roku/components/SessionScene.brs",
       "destination": "roku/components/SessionScene.brs",
       "sha256": "2245b7415d0385e882a9d49aa32c6b42fcca79b0f56b36776eab1727530332f2",
-      "reason": "New file split from MainScene.brs: playback session acceptance and managed-live recovery moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. Next-transition cleanup normalizes an unset session identity with Txt() before the typed PlaybackSessionPath call. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained.",
-      "extracted_sha256": "79edd6fa7c06c5d7328fedeac14815ba789f5dc1b95f918f15dc1c0108e2af8b"
+      "reason": "Store video/audio delivery modes from the playback lease. Native buffered resume and bounded transient lease renewal correction, 2026-10-08. Native resume/renewal correction 2026-10-08; existing work retained.",
+      "extracted_sha256": "d7a90e0012bd6ad552b3eecbf71367000da133f7af69e35b5ca549700e591780"
     },
     {
       "source": "roku/components/SourceCard.brs",
@@ -3914,8 +3914,8 @@
       "source": "roku/manifest",
       "destination": "roku/manifest",
       "sha256": "e3ec6e7a1150fbd14f500736f2b28550b8a7a4bf08832546fc29b208b22dee58",
-      "extracted_sha256": "7e37d0b1a9d2c202d0f11f5f4d956afac8fc877d799cf77ae0d1ad6cc9db0b12",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained."
+      "extracted_sha256": "e8e63c81ea3541731fc4d524b771ee284562a439d15d4037a9c6ac2cc287dce6",
+      "reason": "ROK-044: compact episode card; re-pinned for build 5 (keyboard/rail, My List grid, delivery badge, freeze hardening). Native buffered resume and bounded transient lease renewal correction, 2026-10-08."
     },
     {
       "source": "roku/source/AccountPolicy.brs",
@@ -4036,8 +4036,8 @@
       "source": "roku/tests/continuation_runtime.py",
       "destination": "roku/tests/continuation_runtime.py",
       "sha256": "394a43339bb44fb2003cfc6e99b961aa6a2318ecb6cc2c40a19c1567ec31b0f7",
-      "extracted_sha256": "0d3f4acc7b9441219a0fa327526b2552c74b04698fab4f01aaa079d78eb9b74d",
-      "reason": "Split follow-up: videoState extraction moved to components/PlaybackScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained."
+      "extracted_sha256": "66bc1e7d3c31fec1d888ebb5eaaa8e1afb8fde959d15dc2f33325ddc01220adf",
+      "reason": "Split follow-up: videoState extraction moved to components/PlaybackScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained. Native buffered resume and bounded transient lease renewal correction, 2026-10-08."
     },
     {
       "source": "roku/tests/direct-policy.brs",
@@ -4050,8 +4050,8 @@
       "source": "roku/tests/direct_runtime.py",
       "destination": "roku/tests/direct_runtime.py",
       "sha256": "0ccf30f6b493b792435f182646262bc05f8d750cae8a317159bb5b90fcb38ff8",
-      "extracted_sha256": "29e06e60a41757f8e2e8cc6d4a338a5460ebca4905a7089f3be09c08bd5fe01c",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained."
+      "extracted_sha256": "e92175b145cee81447262b6ad0ba4709753b0952d41ff3e1edfdfa801b8cc3ec",
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained. Native buffered resume and bounded transient lease renewal correction, 2026-10-08."
     },
     {
       "source": "roku/tests/epg_navigation.brs",
@@ -4188,8 +4188,8 @@
       "source": "roku/tests/focus_contract.py",
       "destination": "roku/tests/focus_contract.py",
       "sha256": "e5e127d932cc85f2e60305eaf3ee7a637d72ee135707969ec92fb8bad2d49714",
-      "extracted_sha256": "0b53dd30b05d58c4ce90e4068c497d880d6288465429cae557a7ac0dc2ee28d0",
-      "reason": "ROK-043 complete TV audit corrections and acceptance checks; design 3b6e434."
+      "extracted_sha256": "d3fceda03666af0fb2f6da23419b2208f058719d0e34d9ad89fa4bd126793a00",
+      "reason": "My List grid geometry contract update."
     },
     {
       "source": "roku/tests/guide_boundary_runtime.py",
@@ -4288,8 +4288,8 @@
       "source": "roku/tests/next_episode_runtime.py",
       "destination": "roku/tests/next_episode_runtime.py",
       "sha256": "ea32323bf96ac6d26a74874f394aa1174491a1851fd71c89b2d3412fa1ad44da",
-      "extracted_sha256": "78e72ed4f58bda59e64329e76e2dcce021d721ebdd9b6bce3806ce5694fa9c81",
-      "reason": "Split follow-up: extractions moved to SourcesScene.brs, PlaybackScene.brs, NavigationScene.brs and PresentationArtworkScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
+      "extracted_sha256": "c1992239af832e67f55ee19d4f611022ab4991f75140c39e3c173a8d8de5270b",
+      "reason": "Split follow-up: extractions moved to SourcesScene.brs, PlaybackScene.brs, NavigationScene.brs and PresentationArtworkScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract. Native buffered resume and bounded transient lease renewal correction, 2026-10-08."
     },
     {
       "source": "roku/tests/next_transition_runtime.py",
@@ -4321,8 +4321,8 @@
       "source": "roku/tests/player-overlay.brs",
       "destination": "roku/tests/player-overlay.brs",
       "sha256": "3478078f0de5168fbfbcf651544b8e5f0ef0ea980696c25fddddb37855a3a5fb",
-      "extracted_sha256": "78d43a06d127879585ab0814904e061289b364e9ad901ee62d46e1381c582ca2",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "ed38bb6f8cf628afbf11e7967706533bcdf857cee66adcfab3a37b910bc2bf8f",
+      "reason": "Delivery-mode badge and rebuffering assertions."
     },
     {
       "source": "roku/tests/presentation_policy_test.brs",
@@ -4394,8 +4394,8 @@
       "source": "roku/tests/seek_rollback_runtime.py",
       "destination": "roku/tests/seek_rollback_runtime.py",
       "sha256": "097b5976ba7095873cd1b51e2b7e559fb5f287e91928248b8b8288067e937f48",
-      "extracted_sha256": "ac6b058a5604145d1fd45462d420a882a6db6a32fb6aca92759cc71c4a6ea8ee",
-      "reason": "Split follow-up: seek-transaction extractions moved to components/SeekScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained."
+      "extracted_sha256": "a8055d8c09581ef5fad8e1381900b1ab9e12f7681217a502d59aa16a6f5e7b38",
+      "reason": "Split follow-up: seek-transaction extractions moved to components/SeekScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained. Native buffered resume and bounded transient lease renewal correction, 2026-10-08."
     },
     {
       "source": "roku/tests/sgnode-identity.brs",

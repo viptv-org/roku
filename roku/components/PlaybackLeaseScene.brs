@@ -40,7 +40,7 @@ sub rokuPlaybackHeartbeatResponse(result as object, origin as object)
     end if
     if not result.ok
         ' Network outages cannot extend expiry. A definite refusal retires media.
-        if result.status = 0 or result.status = 408
+        if result.status = 0 or result.status = 408 or result.status = 429 or (result.status >= 500 and result.status < 600)
             lease.renew_after_seconds = 2
             lease.renew.mark()
             return

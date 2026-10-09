@@ -17,6 +17,7 @@ sub searchOpen(value as string)
     m.searchPanel.results = CreateObject("roSGNode","ContentNode")
     m.emptyState.visible = false
     m.searchPanel.status = "Find your next favorite."
+    uiKeyboardChrome(true)
     m.searchPanel.callFunc("open")
     m.searchOpening = false
     searchChanged()
@@ -159,6 +160,7 @@ sub searchRestore(state as dynamic)
     rows("Search",[],"searchall","")
     m.searchPanel.unobserveField("query")
     m.searchPanel.query = Txt(m.search)
+    uiKeyboardChrome(true)
     m.searchPanel.callFunc("open")
     m.searchPanel.observeField("query","searchChanged")
     m.searchSections = state.sections

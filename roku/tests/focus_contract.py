@@ -14,7 +14,9 @@ class FocusContract(unittest.TestCase):
         expected = {
 
             "sourceList": ("MarkupList", "[776,172]", "5", "SourceCard"),
-            "posterGrid": ("HoldGrid", "[128,180]", "2", "HomeCard"),
+            # My List / Continue Watching: three visible rows of four cards fill
+            # the page (see the My List density fix); 2 rows left a blank bottom.
+            "posterGrid": ("HoldGrid", "[128,162]", "3", "HomeCard"),
         }
         for node_id, (tag, translation, rows, component) in expected.items():
             with self.subTest(node=node_id):

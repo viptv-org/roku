@@ -120,6 +120,9 @@ end sub
 
 sub uiHidePageExtras()
     if m.epgGrid <> invalid then m.epgGrid.visible = false
+    if m.searchPanel <> invalid and m.searchPanel.visible = true
+        uiKeyboardChrome(false)
+    end if
     if m.searchPanel <> invalid then m.searchPanel.visible = false
     if m.searchDelay <> invalid then m.searchDelay.control = "stop"
     if m.uiReady <> true then return
@@ -293,7 +296,7 @@ sub uiLayoutPage(mode as string, subtitle = "" as string)
     m.heading.wrap = false
     m.heading.font.size = 37
     m.heading.visible = true
-    m.pageCaption.translation = [128,90]
+    m.pageCaption.translation = [128,86]
     m.pageCaption.maxWidth = 1096
     m.pageCaption.text = subtitle
     m.pageCaption.visible = subtitle <> ""
@@ -314,8 +317,9 @@ sub uiLayoutPage(mode as string, subtitle = "" as string)
     if mode = "collection" and (m.collection = "favorites" or m.collection = "progress")
         uiLibraryTabs()
         m.heading.text = "My List"
+        m.pageCaption.translation = [128,86]
         m.pageCaption.visible = false
-        m.posterGrid.translation = [128,164]
+        m.posterGrid.translation = [128,162]
         if m.items.count() = 0 then m.libraryTabs.setFocus(true)
     end if
     if mode = "streams"

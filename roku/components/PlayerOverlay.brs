@@ -77,17 +77,38 @@ sub render()
     m.top.findNode("channelName").text = Txt(data.title)
     logo = m.top.findNode("channelLogo")
     if logo.uri <> Txt(data.logo) then logo.uri = Txt(data.logo)
+    if logo.loadStatus = "failed" then logo.uri = ""
     m.top.findNode("channelName").translation = [164,42]
-    if Txt(data.logo) = "" then m.top.findNode("channelName").translation = [64,42]
-    logo.visible = Txt(data.logo) <> ""
+    if logo.uri = "" then m.top.findNode("channelName").translation = [64,42]
+    logo.visible = logo.uri <> ""
     m.top.findNode("channelLogoSurface").visible = logo.visible
     eyebrow = "NOW PLAYING"
     if data.live = true then eyebrow = "ON NOW  ·  LIVE TV"
+    ' Delivery mode is a per-session fact from the playback lease; a seek
+    ' replacement can change it, and the model refreshes every player tick.
+    if data.live <> true
+        delivery = Txt(data.mode)
+        if delivery = "direct"
+            eyebrow += "  ·  DIRECT STREAM"
+        else if delivery = "remux"
+            eyebrow += "  ·  REMUXING"
+        else if delivery = "transcode"
+            eyebrow += "  ·  TRANSCODING"
+            if Txt(data.video_mode) = "copy" and Txt(data.audio_mode) = "copy" then eyebrow += " (STREAM COPY)"
+        end if
+    end if
     m.top.findNode("eyebrow").text = eyebrow
     status = "PLAYING"
     if data.paused = true then status = "PAUSED"
     if data.live = true then status = "● LIVE"
-    if buffering then status = "LOADING"
+    if buffering
+        status = "LOADING"
+        ' Distinguish a mid-playback re-buffer from initial preparation: the
+        ' overlay has already been opened (playback reached the user) and a
+        ' position exists. Roku exposes no buffered TimeRanges, so this is an
+        ' honest state cue, never an invented buffer range.
+        if data.state = "buffering" and data.position > 0 and m.top.opened then status = "REBUFFERING"
+    end if
     m.top.findNode("playbackStatus").text = status
     m.top.findNode("playbackStatus").visible = shown
     m.top.findNode("programmeProgress").visible = shown and data.live = true and hasProgramme

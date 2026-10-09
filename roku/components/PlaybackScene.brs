@@ -139,6 +139,7 @@ end sub
 sub videoState()
     ' The old decoder is intentionally paused during atomic replacement.
     if m.seeking = true then return
+    if checkManagedResume() then return
     state = m.video.state
     if m.directSeekPause = true
         pauseAgain = state = "playing"
@@ -252,6 +253,7 @@ sub saveProgress()
 end sub
 
 sub updatePlayer()
+    if checkManagedResume() then return
     if m.playerOverlay = invalid or m.playItem = invalid then return
     position = m.position
     if m.playing and m.video.position <> invalid
@@ -278,7 +280,9 @@ sub updatePlayer()
             if episode <> "" then episode = episode + " · " + epName else episode = epName
         end if
     end if
-    m.playerOverlay.model = {session:m.session,state:state,title:Txt(m.playItem.seriesName,Txt(m.playItem.name)),episode:episode,context:PresentationContext(m.playItem),logo:Txt(m.playItem.logo,Txt(m.playItem.poster)),programme:m.playItem.now,position:position,duration:m.duration,live:m.playbackLive,paused:m.pausedVOD = true or m.video.state = "paused",seeking:m.seeking = true,seek_target:m.seekTarget,next_episode:m.playItem.type = "series" and m.playbackLive <> true}
+    logo = ""
+    if m.playbackLive = true then logo = Txt(m.playItem.logo)
+    m.playerOverlay.model = {session:m.session,state:state,title:Txt(m.playItem.seriesName,Txt(m.playItem.name)),episode:episode,context:PresentationContext(m.playItem),logo:logo,programme:m.playItem.now,position:position,duration:m.duration,live:m.playbackLive,paused:m.pausedVOD = true or m.video.state = "paused",seeking:m.seeking = true,seek_target:m.seekTarget,next_episode:m.playItem.type = "series" and m.playbackLive <> true,mode:Txt(m.playbackMode),video_mode:Txt(m.playbackVideoMode),audio_mode:Txt(m.playbackAudioMode)}
 end sub
 
 sub playerCommand(event as object)

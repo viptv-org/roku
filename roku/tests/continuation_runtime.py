@@ -69,7 +69,8 @@ end function
 '''))
 with tempfile.TemporaryDirectory(prefix='viptv-continuation-runtime-') as directory:
  for name,production,fixture in tests:
-  path=Path(directory)/(name+'.brs');path.write_text(production+'\n'+fixture)
+  helpers=routine('components/SeekScene.brs','sub clearManagedResume()','end sub')+'\n'+routine('components/SeekScene.brs','function checkManagedResume()','end function')
+  path=Path(directory)/(name+'.brs');path.write_text(production+'\n'+helpers+'\n'+fixture)
   r=subprocess.run([*brs_command(),str(path),str(root/'source/Util.brs'),str(root/'source/ContinuationPolicy.brs')],capture_output=True,text=True,timeout=30)
   print(r.stdout);print(r.stderr)
   if r.returncode or '_OK' not in r.stdout or 'Error' in r.stdout: raise SystemExit(1)

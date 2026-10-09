@@ -36,6 +36,7 @@ sub stopPlayback(restore = true as boolean)
     end if
     m.playing = false
     m.pausedVOD = false
+    clearManagedResume()
     if m.playerOverlay <> invalid then m.playerOverlay.visible = false
     if m.playerBackdrop <> invalid then m.playerBackdrop.visible = false
     if m.playerTick <> invalid then m.playerTick.control = "stop"
@@ -87,13 +88,15 @@ sub pauseVOD()
     ' clear content, hide video, or replace the paused frame.
     if m.pausedVOD = true or m.video.state = "paused"
         if m.playbackDeliveryKind = "gateway" and m.managedPausePosition <> invalid
-            seekToPosition(m.managedPausePosition,true,true)
-            return
+            m.managedResumePosition = m.managedPausePosition
+            m.managedResumeClock = CreateObject("roTimespan")
+            m.managedResumeClock.mark()
         end if
         m.directSeekPause = false
         m.video.control = "resume"
         m.pausedVOD = false
     else
+        clearManagedResume()
         if m.playbackDeliveryKind = "gateway"
             saveProgress()
             m.managedPausePosition = m.position
@@ -109,6 +112,33 @@ sub pauseVOD()
     end if
 end sub
 
+sub clearManagedResume()
+    m.managedResumePosition = invalid
+    m.managedResumeClock = invalid
+end sub
+
+function checkManagedResume() as boolean
+    if m.managedResumePosition = invalid then return false
+    if not m.playing or m.pausedVOD = true or m.seeking = true
+        clearManagedResume()
+        return false
+    end if
+    target = m.managedResumePosition
+    if m.video.state = "playing" and m.timelineOffset + m.video.position > target + 0.1
+        clearManagedResume()
+        m.managedPausePosition = invalid
+        return false
+    end if
+    stalled = false
+    if m.managedResumeClock <> invalid then stalled = m.managedResumeClock.totalMilliseconds() >= 8000
+    if m.video.state <> "error" and not stalled then return false
+    ' A long pause can leave the rolling HLS window. Recover only after native
+    ' resume actually fails, using the same explicit source and frozen position.
+    clearManagedResume()
+    seekToPosition(target,true,true)
+    return true
+end function
+
 sub seekRestart(delta as integer)
     if not m.playing or m.playItem.type = "live" or m.playbackLive = true then return
     saveProgress()
@@ -117,6 +147,7 @@ end sub
 
 sub seekToPosition(target as double, managed = false as boolean, resumeAfterPause = false as boolean)
     if not m.playing or m.playItem.type = "live" or m.playbackLive = true or m.seeking = true then return
+    clearManagedResume()
     target = ClampPlayerSeek(target,m.duration)
     if not managed and m.position <> invalid
         if abs(target - m.position) < 0.5 then return
@@ -244,6 +275,8 @@ sub finishSeekSuccess()
     m.timelineOffset = m.seekTarget
     if Txt(data.mode) = "direct" and Txt(data.delivery_kind) <> "gateway" then m.timelineOffset = 0
     m.playbackDeliveryKind = Txt(data.delivery_kind)
+    m.playbackVideoMode = Txt(data.video_mode)
+    m.playbackAudioMode = Txt(data.audio_mode)
     m.position = m.seekTarget
     if data.duration <> invalid then m.duration = data.duration
     m.playbackMode = Txt(data.mode)

@@ -24,7 +24,10 @@ sub acceptPlayback(data as object,origin as object)
         end for
         m.sessionConnection = origin
         m.playbackDeliveryKind = Txt(data.delivery_kind)
+        m.playbackVideoMode = Txt(data.video_mode)
+        m.playbackAudioMode = Txt(data.audio_mode)
         m.managedPausePosition = invalid
+        clearManagedResume()
         url = ResolveUrl(origin.base,Txt(data.url))
         if url = ""
             m.status.text = "Server returned an unsupported playback URL."

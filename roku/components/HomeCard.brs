@@ -31,6 +31,10 @@ sub contentChanged()
     if item.hasField("uiWidth") and item.uiWidth = 240
         w = 240
         h = 135
+        ' Grid rows supply their cell height; the artwork shrinks so the
+        ' title/subtitle labels stay inside the cell instead of colliding
+        ' with the next row.
+        if item.hasField("uiHeight") and item.uiHeight = 176 then h = 124
     end if
     shape = "card"
     if w = 240 then shape = "episode"

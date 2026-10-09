@@ -68,19 +68,30 @@ sub handleResponse(event as object)
         playerTitleResponse(tag,result,origin)
         return
     end if
-    if val(parts[1]) <> m.generation then return
+    ' A cancelled live-source admission still owns m.pendingPlayback; dropping
+    ' the reply without releasing it left a permanent busy spinner. Stale
+    ' replies release the flags instead of starting playback.
     if tag = "livesource"
-        m.pendingPlayback = false
-        m.liveSourcePending = false
-        if result.ok and result.data.source <> invalid
-            m.playItem.stream_id = result.data.source.id
-            beginPlayback(false)
+        if val(parts[1]) = m.generation
+            m.pendingPlayback = false
+            m.liveSourcePending = false
+            if result.ok and result.data.source <> invalid
+                m.playItem.stream_id = result.data.source.id
+                beginPlayback(false)
+            else
+                sourceExhausted(Txt(result.error,"This channel is unavailable."))
+            end if
         else
-            sourceExhausted(Txt(result.error,"This channel is unavailable."))
+            if m.liveSourcePending = true
+                m.pendingPlayback = false
+                m.liveSourcePending = false
+                uiBusy(false)
+            end if
         end if
         return
     end if
-    if left(tag,4) = "epg:"
+    if val(parts[1]) <> m.generation then return
+    if tag = "epg:"
         epgResponse(tag,result)
         return
     end if

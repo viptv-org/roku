@@ -61,16 +61,16 @@
   <Label id="heading" translation="[128,36]" width="1088" height="64" color="#F4F2EE">
    <Font role="font" uri="pkg:/fonts/bricolage_grotesque_700.ttf" size="37" />
   </Label>
-  <ScrollingLabel id="pageCaption" translation="[128,90]" maxWidth="1088" color="#B6B4AF" repeatCount="-1" scrollSpeed="48">
+  <Label id="pageCaption" translation="[128,86]" maxWidth="1088" color="#B6B4AF" repeatCount="-1" scrollSpeed="48">
    <Font role="font" uri="pkg:/fonts/onest_400.ttf" size="15" />
-  </ScrollingLabel>
+  </Label>
   <Label id="status" visible="false" />
   <Label id="footer" visible="false" />
-  <MarkupGrid id="libraryTabs" translation="[128,102]" itemComponentName="FilterChip" itemSize="[220,38]" itemSpacing="[16,0]" numColumns="2" numRows="1" drawFocusFeedback="false" visible="false" />
+  <MarkupGrid id="libraryTabs" translation="[128,114]" itemComponentName="FilterChip" itemSize="[220,38]" itemSpacing="[16,0]" numColumns="2" numRows="1" drawFocusFeedback="false" visible="false" />
   <MarkupGrid id="discoverTypes" translation="[128,104]" itemComponentName="FilterChip" itemSize="[146,38]" itemSpacing="[12,0]" numColumns="4" numRows="1" drawFocusFeedback="false" visible="false" />
   <HorizontalStrip id="discoverFilters" translation="[128,156]" itemComponentName="FilterChip" itemSize="[240,38]" itemSpacing="[16,0]" viewportWidth="1088" visible="false" />
   <MarkupList id="list" translation="[100,184]" itemSize="[536,56]" numRows="7" itemSpacing="[0,12]" itemComponentName="ActionRow" vertFocusAnimationStyle="floatingFocus" drawFocusFeedback="false" visible="false" />
-  <HoldGrid id="posterGrid" translation="[128,180]" itemComponentName="HomeCard" itemSize="[240,180]" itemSpacing="[24,32]" numColumns="4" numRows="2" drawFocusFeedback="false" vertFocusAnimationStyle="floatingFocus" visible="false" />
+  <HoldGrid id="posterGrid" translation="[128,162]" itemComponentName="HomeCard" itemSize="[240,176]" itemSpacing="[24,10]" numColumns="4" numRows="3" drawFocusFeedback="false" vertFocusAnimationStyle="floatingFocus" visible="false" />
   <HoldGrid id="detailActions" translation="[128,244]" itemComponentName="ActionRow" itemSize="[180,48]" itemSpacing="[12,0]" numColumns="4" numRows="1" drawFocusFeedback="false" visible="false" />
   <MarkupGrid id="seasonList" translation="[128,403]" itemComponentName="FilterChip" itemSize="[240,38]" itemSpacing="[24,0]" numColumns="3" numRows="1" drawFocusFeedback="false" vertFocusAnimationStyle="floatingFocus" visible="false" />
   <Label id="seasonHeading" translation="[100,282]" text="SEASONS" color="#B6B4AF" visible="false">

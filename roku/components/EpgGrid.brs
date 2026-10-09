@@ -413,6 +413,7 @@ sub epgRoute(offset as integer, last = false as boolean)
 end sub
 
 sub epgDetails()
+    if m.row < 0 or m.row >= m.channels.count() then return
     if m.channels.count() = 0 then return
     cell = m.selectedCell
     m.detailHeading.text = cell.title
@@ -564,6 +565,7 @@ sub epgSearchChanged()
 end sub
 
 sub epgWatchChannel()
+    if m.row < 0 or m.row >= m.channels.count() then return
     item = CopyRouteData(m.channels[m.row])
     now = CreateObject("roDateTime").asSeconds()
     for each programme in epgProgrammes(Txt(item.id))

@@ -11,7 +11,10 @@ def routine(file, name):
     start = text.index('sub '+name+'(')
     return text[start:text.index('end sub',start)+len('end sub')]
 
-source = routine('SeekScene.brs','pauseVOD')+'\n'+routine('PlaybackScene.brs','saveProgress')
+text = (root/'components/SeekScene.brs').read_text()
+start = text.index('function checkManagedResume(')
+check = text[start:text.index('end function',start)+len('end function')]
+source = routine('SeekScene.brs','pauseVOD')+'\n'+routine('SeekScene.brs','clearManagedResume')+'\n'+check+'\n'+routine('PlaybackScene.brs','saveProgress')
 fixture = '''
 sub Main()
     m.playing = true : m.playItem = {id:"movie",type:"movie",name:"Movie"}
@@ -20,17 +23,35 @@ sub Main()
     m.profile = "1" : m.timelineOffset = 42 : m.position = 42 : m.duration = 120
     pauseVOD()
     if m.managedPausePosition <> 47 or m.video.control <> "pause" then throw "pause title anchor missing"
-    m.video.state = "paused" : m.video.position = 30
+    m.video.state = "paused" : m.video.position = 5
     saveProgress()
     if m.position <> 47 or m.saved.position <> 47 or m.duration <> 120 then throw "paused window advanced title progress"
     pauseVOD()
-    if m.seekTarget <> 47 or m.seekManaged <> true or m.seekResume <> true then throw "resume did not replace at frozen title position"
-    if m.video.control = "resume" then throw "stale HLS window resumed natively"
+    if m.seekTarget <> invalid then throw "resume unnecessarily replaced healthy delivery"
+    if m.video.control <> "resume" or m.pausedVOD then throw "resume did not continue the native decoder"
+    if m.playbackMode <> "direct" then throw "pause/resume changed the output mode"
+    m.video.state = "playing" : m.video.position = 5.5
+    if checkManagedResume() or m.managedResumePosition <> invalid then throw "healthy resume did not retire recovery marker"
+    m.video.state = "playing" : m.video.position = 6
+    pauseVOD() : m.video.state = "paused" : pauseVOD()
+    m.video.state = "error"
+    if not checkManagedResume() or m.seekTarget <> 48 or not m.seekManaged or not m.seekResume then throw "failed native resume did not recover exact position"
+    if checkManagedResume() then throw "resume recovery repeated"
+    m.seekTarget = invalid
+    m.video.state = "playing" : m.video.position = 7
+    pauseVOD() : m.video.state = "paused" : pauseVOD()
+    m.managedResumeClock = {totalMilliseconds:StalledElapsed}
+    m.video.state = "buffering"
+    if not checkManagedResume() or m.seekTarget <> 49 then throw "stalled resume did not recover frozen position"
     m.playbackDeliveryKind = "" : m.managedPausePosition = invalid
+    m.video.state = "paused"
     pauseVOD()
     if m.video.control <> "resume" then throw "original native pause behavior changed"
     print "MANAGED_TIMELINE_RUNTIME_OK"
 end sub
+function StalledElapsed() as integer
+    return 8000
+end function
 sub seekToPosition(target as double, managed=false as boolean, resumeAfterPause=false as boolean)
     m.seekTarget = target : m.seekManaged = managed : m.seekResume = resumeAfterPause
 end sub

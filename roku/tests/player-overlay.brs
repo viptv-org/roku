@@ -93,6 +93,35 @@ sub Main()
     ensure(not m.top.nodes.playbackStatus.visible,"hidden chrome leaves no status label")
     onKeyEvent("left",true)
     ensure(m.row = 1,"hidden live chrome reopens on icons")
+    m.top.opened = true
+    m.top.model.live = false
+    m.top.model.mode = "direct"
+    render()
+    ensure(instr(1,m.top.nodes.eyebrow.text,"DIRECT STREAM")>0 and instr(1,m.top.nodes.eyebrow.text,"NOW PLAYING")>0,"direct delivery shows in the eyebrow")
+    m.top.model.mode = "remux"
+    render()
+    ensure(instr(1,m.top.nodes.eyebrow.text,"REMUXING")>0,"remux delivery shows in the eyebrow")
+    m.top.model.mode = "transcode"
+    m.top.model.video_mode = "copy"
+    m.top.model.audio_mode = "copy"
+    render()
+    ensure(instr(1,m.top.nodes.eyebrow.text,"TRANSCODING")>0 and instr(1,m.top.nodes.eyebrow.text,"STREAM COPY")>0,"transcode with copy modes flags stream copy")
+    m.top.model.mode = "transcode"
+    m.top.model.video_mode = "encode"
+    render()
+    ensure(instr(1,m.top.nodes.eyebrow.text,"STREAM COPY")=0,"encode transcode omits the stream copy note")
+    m.top.model.live = true
+    render()
+    ensure(instr(1,m.top.nodes.eyebrow.text,"LIVE TV")>0 and instr(1,m.top.nodes.eyebrow.text,"TRANSCODING")=0,"live eyebrow carries no delivery badge")
+    m.top.model.live = false
+    m.top.model.mode = invalid
+    m.top.model.state = "buffering"
+    m.top.model.position = 650
+    render()
+    ensure(m.top.nodes.playbackStatus.text = "REBUFFERING","mid-playback stall reports rebuffering, not generic loading")
+    m.top.model.position = 0
+    render()
+    ensure(m.top.nodes.playbackStatus.text = "LOADING","initial preparation stays generic loading")
     print "PASS: player icons, explicit seeking and live focus"
 end sub
 function TestNode(id as string) as object

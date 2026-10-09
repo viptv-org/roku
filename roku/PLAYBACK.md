@@ -9,10 +9,14 @@ five-second bound. V2 control stays on the configured HTTPS backend.
 
 Delivery kind and processing mode are separate: gateway `mode: direct` still
 starts at native zero with its title offset. Managed Pause freezes title time;
-Resume replaces delivery at that anchor. Seek/track replacements retain the
+Resume first continues the same Video node and delivery, retaining its buffer
+and processing mode. Only native resume failure or eight seconds without clock
+progress requests same-source recovery at the frozen anchor. Seek/track replacements retain the
 single decoder, old lease and rollback position until success. Active/paused/
 transition leases renew individually. Refusal/expiry stops playback; network
 retries cannot extend expiry and late renewals cannot restore released leases.
+Transport failures, 408/429 and HTTP 5xx renewal responses retry while the existing
+lease remains valid; explicit authorization refusal and actual expiry stop playback.
 
 Healthy provider sources survive another provider's failure. Empty discovery
 shows its safe cause; raw provider messages never become displayed error text.
@@ -32,6 +36,16 @@ A selected source error, early end, expired identifier or preparation failure ne
 ## Pause
 
 For VOD, Pause sets the active SceneGraph `Video.control` to `pause`. It does not stop or hide Video, clear ContentNode, delete the playback session, or stop its heartbeat. Resume sets `control` to `resume` on that same Video instance. This preserves the decoded frame and buffer.
+
+## Buffering and buffer bars
+
+Roku's SceneGraph `Video` node exposes no buffered TimeRanges: `bufferingStatus`
+is valid only while a re-buffer is in progress and the `pauseBuffer*` fields
+apply to live pause only. A seekbar buffer bar (as drawn on tv-web) is
+therefore not implementable without fabricating data, and the client does not
+fabricate it. The player overlay reports an honest state cue instead:
+mid-playback stalls show a spinner plus a `REBUFFERING` status, initial
+preparation shows `LOADING`.
 
 ## Seek and track replacement
 

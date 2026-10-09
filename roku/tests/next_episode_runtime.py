@@ -151,7 +151,8 @@ end sub
 '''
 with tempfile.TemporaryDirectory(prefix='viptv-next-') as folder:
     for name,code in cases.items():
-        path=Path(folder)/(name+'.brs');path.write_text(code)
+        helpers=routine('SeekScene.brs','clearManagedResume')+'\n'+routine('SeekScene.brs','checkManagedResume','function')
+        path=Path(folder)/(name+'.brs');path.write_text(code+'\n'+helpers)
         result=subprocess.run([*brs_command(),str(path),*[str(root/'source'/f) for f in ['Util.brs','PresentationPolicy.brs','ContinuationPolicy.brs']]],capture_output=True,text=True,timeout=30)
         print(result.stdout,result.stderr)
         if result.returncode or '_OK' not in result.stdout or 'Error' in result.stdout:raise SystemExit(1)
