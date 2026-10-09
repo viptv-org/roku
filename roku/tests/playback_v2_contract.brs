@@ -38,5 +38,14 @@ sub Main()
     discovery = SanitizeApiResponse("/api/v2/streams/job?after=0","GET",{events:[{seq:1,source:"iptv:1",streams:[{id:"source",source_addon_id:"iptv:1"}]},{seq:2,source:"iptv:2",streams:[],error_code:"provider_connection_limit",error:"https://provider.invalid/private-token"}],done:true})
     if not discovery.ok or discovery.data.events[0].streams.count() <> 1 then throw "healthy source dropped"
     if instr(1,discovery.data.events[1].error,"connection limit") = 0 or instr(1,FormatJson(discovery),"private-token") > 0 then throw "discovery cause lost or leaked"
+    check(RokuTorrentStageText("finding_peers") = "Finding peers…","measured peer stage uses canonical copy")
+    check(RokuTorrentStageText("fetching_metadata") = "Fetching metadata…","measured metadata stage uses canonical copy")
+    check(RokuTorrentStageText("opening_archive") = "Opening archive…","measured archive stage uses canonical copy")
+    check(RokuTorrentStageText("buffering") = "Buffering…","measured buffering stage uses canonical copy")
+    check(RokuTorrentStageText("private raw upstream message") = "","unknown progress text is refused")
     print "PLAYBACK_V2_CONTRACT_OK"
+end sub
+
+sub check(value as boolean, message as string)
+    if not value then throw message
 end sub

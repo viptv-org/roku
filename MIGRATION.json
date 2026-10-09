@@ -74,8 +74,8 @@
       "source": "roku/components/ApiTask.xml",
       "destination": "roku/components/ApiTask.xml",
       "sha256": "515ea8f88a9dbf10356f68522238227d87b6b9a80ad32b2cdb6e31e0ce239c35",
-      "extracted_sha256": "69f647774e4e07fc6208f8f20ab54d7e9dc9f32998181439bb423e26a75c35c9",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained."
+      "extracted_sha256": "ad4dc3d55757cac635955d7546fb9767e1607f2d8517577ca941f6bea754c6bd",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. SRC-TORRENT-RUNTIME-002 measured gateway startup stages, scoped Task events and canonical copy; original extraction hash retained."
     },
     {
       "source": "roku/components/ApiTaskSanitize.brs",
@@ -266,8 +266,8 @@
       "source": "roku/components/MainScene.brs",
       "destination": "roku/components/MainScene.brs",
       "sha256": "86b18096942ced4d58c9408fe81598e2b7f648dde69c90ead66d376734d3b1b8",
-      "extracted_sha256": "a5619f7e91a5de5bad94fedf00f7f66320a68b498866507743849b088d61db2d",
-      "reason": "Rail hides behind full-screen keyboards; key-path freeze diagnostics in onKeyEvent. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained."
+      "extracted_sha256": "486a481e0090d914a11e1c26bacdacbaa64ba14c525bb50c5bd7508c09fef0d2",
+      "reason": "Rail hides behind full-screen keyboards; key-path freeze diagnostics in onKeyEvent. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained. SRC-TORRENT-RUNTIME-002 measured gateway startup stages, scoped Task events and canonical copy; original extraction hash retained."
     },
     {
       "source": "roku/components/MainScene.xml",
@@ -4243,8 +4243,8 @@
       "source": "roku/tests/lifecycle.brs",
       "destination": "roku/tests/lifecycle.brs",
       "sha256": "2ebc9c49d5fde0d2ddbe8bb34fe44448ed29a6ffc396adb471919966c5e2c339",
-      "extracted_sha256": "b166ac28a25bb222a844988a9ae7496ee671cd1d69bb3e93f934b8506f6a5272",
-      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract."
+      "extracted_sha256": "956c6ca28b993ca80548d11be297a6a352d59c8ac030e228ab67a7741cc268dc",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract. SRC-TORRENT-RUNTIME-002 measured gateway startup stages, scoped Task events and canonical copy; original extraction hash retained."
     },
     {
       "source": "roku/tests/live-ux.brs",

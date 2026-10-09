@@ -233,6 +233,19 @@ sub Main()
     assertThat(clean.series_id = "real-parent" and clean.year = 2008 and clean.releaseInfo = "2008–" and clean.imdb_id = "tt1234567" and clean.tmdb_id = "123","only parent identity and release evidence can reach episode matching")
     testEpisodeOrderingAndTitles()
     testPlayerIntegration()
+    m.pendingPlayback = true
+    m.pendingRequestId = "stage-owner"
+    stageEvent = {getData:FakeGetData,getRoSGNode:StageEventNode,data:"Fetching metadata…",node:{request:{tag:"playback|"+m.generation.toStr(),request_id:"stage-owner"}}}
+    playbackStageResponse(stageEvent)
+    assertThat(m.status.text = "Fetching metadata…","current measured stage reaches the existing status line")
+    stageEvent.node.request.request_id = "retired-owner"
+    stageEvent.data = "Opening archive…"
+    playbackStageResponse(stageEvent)
+    assertThat(m.status.text = "Fetching metadata…","stale source preparation cannot change current status")
+    stageEvent.node.request.request_id = "stage-owner"
+    stageEvent.data = "private raw diagnostic"
+    playbackStageResponse(stageEvent)
+    assertThat(m.status.text = "Fetching metadata…","unrecognized progress copy is never displayed")
     print "ROKU_LIFECYCLE_OK"
 end sub
 
@@ -458,4 +471,8 @@ function LifecycleDiscovery() as dynamic
         if m.queue[i].path = "/api/v2/streams" then return m.queue[i]
     end for
     return invalid
+end function
+
+function StageEventNode() as object
+    return m.node
 end function

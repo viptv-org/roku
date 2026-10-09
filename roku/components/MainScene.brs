@@ -166,6 +166,7 @@ sub startRequest(entry as object)
     task = CreateObject("roSGNode", "ApiTask")
     task.request = entry
     task.observeField("result", "response")
+    task.observeField("startupStage", "playbackStageResponse")
     m.tasks.push(task)
     task.control = "RUN"
 end sub
@@ -499,3 +500,18 @@ function onKeyEvent(key as string, press as boolean) as boolean
     end if
     return false
 end function
+
+sub playbackStageResponse(event as object)
+    task = event.getRoSGNode()
+    origin = task.request
+    if origin = invalid then return
+    parts = Txt(origin.tag).split("|")
+    if parts.count() < 2 then return
+    if parts[0] <> "playback" and parts[0] <> "seekplayback" then return
+    if val(parts[1]) <> m.generation then return
+    if not m.pendingPlayback and m.seeking <> true then return
+    if origin.request_id <> m.pendingRequestId then return
+    text = Txt(event.getData())
+    if text <> "Finding peers…" and text <> "Fetching metadata…" and text <> "Opening archive…" and text <> "Buffering…" then return
+    m.status.text = text
+end sub

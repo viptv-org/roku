@@ -24,7 +24,8 @@ sub Main()
         if scenario = "pending"
             if not result.ok or result.data.id <> "pb2_fixture" or result.data.delivery_kind <> "gateway" then throw "pending failed"
             if result.data.position <> 42 or result.data.mode <> "direct" then throw "timeline facts lost"
-            if m.calls.count() <> 2 or m.calls[1].method <> "GET" then throw "pending did not poll"
+            if m.calls.count() <> 3 or m.calls[1].method <> "GET" or right(m.calls[1].path,9) <> "/progress" or m.calls[2].method <> "GET" then throw "pending did not poll"
+            if m.top.startupStage <> "Fetching metadata…" then throw "measured stage did not reach the Task field"
         else if scenario = "refused"
             if result.ok or m.calls.count() <> 1 or result.error <> "Configure a playback gateway." then throw "definitive refusal retried"
         else
@@ -52,6 +53,10 @@ end function
 function HttpRequestRaw(request as object, result as object, method as string, sanitize as boolean) as object
     m.calls.push({path:request.path,method:method,body:FormatJson(request.body),cleanup:request.cleanup,timeout:request.timeout_ms})
     result.status = 200 : result.ok = true
+    if right(request.path,9) = "/progress"
+        result.data = {stage:"fetching_metadata"}
+        return result
+    end if
     if method = "DELETE"
         result.data = {}
         return result

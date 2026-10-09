@@ -52,6 +52,21 @@ function RokuPlaybackV2Start(request as object, result as object) as object
             if not result.ok then exit while
             renewAt = clock.TotalMilliseconds() + 20000
         end if
+        if result.data.status = "starting" and not m.top.cancel
+            progress = {}
+            progress.append(control)
+            progress.path = "/api/v2/playback/" + Enc(identity) + "/progress"
+            progress.body = invalid
+            progress.timeout_ms = deadline - clock.TotalMilliseconds()
+            if progress.timeout_ms > 1500 then progress.timeout_ms = 1500
+            if progress.timeout_ms > 0
+                observed = HttpRequestRaw(progress,RokuPlaybackV2Empty(result.tag),"GET",false)
+                if observed.ok and AccountIsObject(observed.data) and not m.top.cancel
+                    text = RokuTorrentStageText(observed.data.stage)
+                    if text <> "" then m.top.startupStage = text
+                end if
+            end if
+        end if
         if result.data.status = "ready"
             if not m.top.cancel and clock.TotalMilliseconds() < deadline
                 result.data = result.data.session
@@ -137,3 +152,13 @@ sub RokuPlaybackV2Cleanup(request as object, body as object, identity as string)
         raw = HttpRequestRaw(control,RokuPlaybackV2Empty(request.tag),"DELETE",false)
     end if
 end sub
+
+' Canonical SRC-TORRENT-RUNTIME-002 copy; unknown/raw upstream text is never shown.
+function RokuTorrentStageText(value as dynamic) as string
+    stage = Txt(value)
+    if stage = "finding_peers" then return "Finding peers…"
+    if stage = "fetching_metadata" then return "Fetching metadata…"
+    if stage = "opening_archive" then return "Opening archive…"
+    if stage = "buffering" then return "Buffering…"
+    return ""
+end function
