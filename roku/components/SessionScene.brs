@@ -78,6 +78,11 @@ sub acceptPlayback(data as object,origin as object)
         m.playStartClock.mark()
         m.video.control = "play"
         applyPlayerSubtitles()
+        spent = 0
+        if m.prepSpent <> invalid then spent = m.prepSpent
+        if m.prepClock <> invalid then spent += m.prepClock.totalMilliseconds()
+        m.startup.duration = (120000-spent)/1000.0
+        if m.startup.duration < 0.001 then m.startup.duration = 0.001
         m.startup.control = "start"
         m.heartbeat.control = "start"
 end sub

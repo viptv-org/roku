@@ -221,7 +221,7 @@ function HttpRequestRaw(request as object, result as object, method as string, s
     timer.Mark()
     deadline = 20000
     if method = "GET" and Left(request.path,13) = "/api/discover" then deadline = 35000
-    if MatchInteger(request.timeout_ms,1,70000) then deadline = request.timeout_ms
+    if MatchInteger(request.timeout_ms,1,120000) then deadline = request.timeout_ms
     if method = "GET"
         started = transfer.AsyncGetToFile(responseFile)
     else

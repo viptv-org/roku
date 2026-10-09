@@ -67,8 +67,8 @@
       "source": "roku/components/ApiTask.brs",
       "destination": "roku/components/ApiTask.brs",
       "sha256": "4e2eca9f8d0d16fc1402e769eeeae666a405eaa0bd526cc8c9e051cf45d28d64",
-      "extracted_sha256": "dd358dc51a83f324a7360877e9741cf211fcad2f0ba34a7dfed84bfd2ff2eabc",
-      "reason": "Cleanup 14a702c (ApiIsObject consolidation) and split: task runner, config lock/transport and HTTP request loop remain; ApiOrigin and the pure response-sanitization functions moved byte-identical into ApiTaskSanitize.brs (merged ApiTask component scope via ApiTask.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained. Corrected gateway_unavailable copy separately from gateway_required; provider connection-limit mapping preserved; no ZIP redeployment."
+      "extracted_sha256": "913cdf1a469ee3f0745f0017ffeca84e9cd36b38acc2420d3ec7d9267b02b042",
+      "reason": "Cleanup 14a702c (ApiIsObject consolidation) and split: task runner, config lock/transport and HTTP request loop remain; ApiOrigin and the pure response-sanitization functions moved byte-identical into ApiTaskSanitize.brs (merged ApiTask component scope via ApiTask.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained. Corrected gateway_unavailable copy separately from gateway_required; provider connection-limit mapping preserved; no ZIP redeployment. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained."
     },
     {
       "source": "roku/components/ApiTask.xml",
@@ -266,15 +266,15 @@
       "source": "roku/components/MainScene.brs",
       "destination": "roku/components/MainScene.brs",
       "sha256": "86b18096942ced4d58c9408fe81598e2b7f648dde69c90ead66d376734d3b1b8",
-      "extracted_sha256": "9535ebdb9496c25ed20214533effb78cdfed42024999d0684ececab0138627d1",
-      "reason": "Rail hides behind full-screen keyboards; key-path freeze diagnostics in onKeyEvent."
+      "extracted_sha256": "a5619f7e91a5de5bad94fedf00f7f66320a68b498866507743849b088d61db2d",
+      "reason": "Rail hides behind full-screen keyboards; key-path freeze diagnostics in onKeyEvent. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained."
     },
     {
       "source": "roku/components/MainScene.xml",
       "destination": "roku/components/MainScene.xml",
       "sha256": "683ee2541fb021de8402c8fc590ed211abc043d423c6f7cbc3a4b5b75626063c",
-      "extracted_sha256": "abeb31be9ee5b1cde6551e47fe52d818d5515fcbc2e3789b21eeb31edc6240ce",
-      "reason": "My List grid density (3 rows of 4), caption clearance above the segment tabs, and the player layout invariants."
+      "extracted_sha256": "bd20bdcbf8c19197edf037203641d15d5bb396cbf938e674059350491ce3d853",
+      "reason": "My List grid density (3 rows of 4), caption clearance above the segment tabs, and the player layout invariants. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained."
     },
     {
       "source": "roku/components/NavIcon.brs",
@@ -301,8 +301,8 @@
       "source": "roku/components/PlaybackScene.brs",
       "destination": "roku/components/PlaybackScene.brs",
       "sha256": "2895f449c1c79ce16987253c68728b4e2baca7539ca6e10e47955947e7ee09b3",
-      "reason": "Overlay model carries delivery mode; VOD no longer puts poster art in the live logo slot. Native buffered resume and bounded transient lease renewal correction, 2026-10-08.",
-      "extracted_sha256": "c3f354d9e27f5ff6624a4ea6e5b7a68cfc66d14f1a0dae76246ad22fd39cf3fa"
+      "reason": "Overlay model carries delivery mode; VOD no longer puts poster art in the live logo slot. Native buffered resume and bounded transient lease renewal correction, 2026-10-08. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained.",
+      "extracted_sha256": "929c8dd6e63a086011f1e5c211534f794c1fd113aca516d5715e1e548b06a68c"
     },
     {
       "source": "roku/components/PlayerOverlay.brs",
@@ -413,8 +413,8 @@
       "source": "roku/components/SessionScene.brs",
       "destination": "roku/components/SessionScene.brs",
       "sha256": "2245b7415d0385e882a9d49aa32c6b42fcca79b0f56b36776eab1727530332f2",
-      "reason": "Store video/audio delivery modes from the playback lease. Native buffered resume and bounded transient lease renewal correction, 2026-10-08. Native resume/renewal correction 2026-10-08; existing work retained.",
-      "extracted_sha256": "d7a90e0012bd6ad552b3eecbf71367000da133f7af69e35b5ca549700e591780"
+      "reason": "Store video/audio delivery modes from the playback lease. Native buffered resume and bounded transient lease renewal correction, 2026-10-08. Native resume/renewal correction 2026-10-08; existing work retained. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained.",
+      "extracted_sha256": "0ec9d03e8d111dff9c16a0e29ca7804df8b77127201b7a55ec2681b79400304a"
     },
     {
       "source": "roku/components/SourceCard.brs",
@@ -434,8 +434,8 @@
       "source": "roku/components/SourcesScene.brs",
       "destination": "roku/components/SourcesScene.brs",
       "sha256": "0524426eb7f1436536cddfa79ec3e10f424ccddfddfbb125fb69c144643aaf09",
-      "reason": "New file split from MainScene.brs: source discovery lifecycle, attempt state and view save/restore moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained.",
-      "extracted_sha256": "b5bf43f3135a9202dbc75b722517fc05992629a207934d1577076449339c8f01"
+      "reason": "New file split from MainScene.brs: source discovery lifecycle, attempt state and view save/restore moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained.",
+      "extracted_sha256": "77fb8cbc20ffec9b8c50d312f0e54089cf7fe0185e77cf50c03da0972dd18920"
     },
     {
       "source": "roku/components/StartupScene.brs",

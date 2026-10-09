@@ -8,12 +8,13 @@ function RokuPlaybackV2Start(request as object, result as object) as object
     control = {}
     control.append(request)
     control.body = body
-    deadline = 45000
-    if MatchInteger(request.timeout_ms,1,45000) then deadline = request.timeout_ms
+    deadline = 120000
+    if MatchInteger(request.timeout_ms,1,120000) then deadline = request.timeout_ms
     clock = CreateObject("roTimespan")
     clock.mark()
     identity = ""
     posted = false
+    renewAt = 20000
     waitPort = CreateObject("roMessagePort")
     while true
         remaining = deadline - clock.TotalMilliseconds()
@@ -36,6 +37,21 @@ function RokuPlaybackV2Start(request as object, result as object) as object
         end if
         result = RokuPlaybackV2Result(raw,identity,false)
         if not result.ok then exit while
+        if result.data.status = "starting" and clock.TotalMilliseconds() >= renewAt
+            heartbeat = {}
+            heartbeat.append(control)
+            heartbeat.path = "/api/v2/playback/" + Enc(identity) + "/heartbeat"
+            heartbeat.body = {}
+            heartbeat.timeout_ms = deadline - clock.TotalMilliseconds()
+            raw = HttpRequestRaw(heartbeat,RokuPlaybackV2Empty(result.tag),"POST",false)
+            if not raw.ok
+                result = raw
+                exit while
+            end if
+            result = RokuPlaybackV2Result(raw,identity,false)
+            if not result.ok then exit while
+            renewAt = clock.TotalMilliseconds() + 20000
+        end if
         if result.data.status = "ready"
             if not m.top.cancel and clock.TotalMilliseconds() < deadline
                 result.data = result.data.session

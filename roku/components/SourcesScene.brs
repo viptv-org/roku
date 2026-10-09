@@ -1,7 +1,7 @@
 sub prepExpired()
     cancelBrowse()
     if m.playing then stopPlayback(false)
-    m.prepSpent = 180000
+    m.prepSpent = 120000
     sourceExhausted("Playback preparation timed out.")
 end sub
 
@@ -39,7 +39,7 @@ sub refreshSourceIds(newEpoch = true as boolean)
         m.refreshClock = CreateObject("roTimespan")
         m.refreshClock.mark()
         if m.budgetTimer <> invalid
-            m.budgetTimer.duration = (180000-m.prepSpent)/1000.0
+            m.budgetTimer.duration = (120000-m.prepSpent)/1000.0
             m.budgetTimer.control = "start"
         end if
     end if

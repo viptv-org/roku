@@ -1,5 +1,30 @@
 # Decisions
 
+## Android completed episode indicators (AND-EPISODE-WATCHED-001)
+
+Proposed from the 2026-10-02 owner request. Android TV and phone episode cards
+show `Watched` beside their episode-number caption using the current profile's
+saved completion fact. Core and backend own completion semantics; the renderer
+does not infer completion from a progress percentage or another episode.
+Press, hold and repeated remote input retain existing card actions; the badge
+is informational and does not change source selection, Back or restored focus.
+No artwork readiness gate or animation is introduced. Loading/error progress
+does not fabricate completion; details remain browsable. Reopening details and
+switching profiles must project fresh profile progress. A completed fact hides
+the partial progress bar; resetting that fact removes the badge.
+
+On narrow phones, the badge wraps immediately below the episode-number caption
+when both cannot fit at full width. Keep the full label, existing artwork and
+44 dp options target; use layout constraints rather than a fixed phone breakpoint.
+
+Acceptance: render completed, partial, unwatched and missing-progress episodes
+together on TV and phone; verify only completed cards display and announce
+`Watched`. Replace a watched item with an incomplete item and switch profiles;
+no old badge remains. Verify a 1,410-episode lazy row near its end and ordinary
+source Back keep identity, selected episode and focus. Native emulator evidence
+and physical TV compatibility are recorded separately. Other platforms retain
+their pinned episode presentation until they explicitly adopt this addition.
+
 ## Settled with the product owner
 
 1. **Up Next:** a card with a countdown ("Starts in [8]") plus Play now / Cancel. It does not take over the whole screen.
@@ -13,8 +38,8 @@
 9. **Naming:** "My List" everywhere. It has two segments, My List | Continue Watching. History and counts are dropped from the tabs.
 10. **Avatars:** hide broken categories and compute the count shown in the header.
 11. **TV focus:** focused tiles, profiles, rows and controls keep their size. Use the white ring or off-white fill without scale.
-12. **TV reliability corrections:** [TV-034](../TV_POLISH.md) defines carousel bounds, stable rail geometry, profile activation, season navigation, live-only controls and progressive startup. These owner-requested corrections supersede conflicting static reference hints and spacing.
-13. **Native Android:** [AND-035](../ANDROID_DESIGN.md) adopts the current phone and 1920×1080 TV design, replacing the historical Android Roku reconstruction while retaining native Compose, Media3 and shared core behavior.
+12. **TV reliability corrections:** [TV-034](../docs/platforms/TV_POLISH.md) defines carousel bounds, stable rail geometry, profile activation, season navigation, live-only controls and progressive startup. These owner-requested corrections supersede conflicting static reference hints and spacing.
+13. **Native Android:** [AND-035](../docs/platforms/ANDROID_DESIGN.md) adopts the current phone and 1920×1080 TV design, replacing the historical Android Roku reconstruction while retaining native Compose, Media3 and shared core behavior.
 
 ## Design decisions made during the redesign
 
@@ -39,13 +64,13 @@ The 2026-09-26 owner request replaces phone device-code-only authentication with
 native username/password sign-in, keeps pairing optional, and requires original
 source playback on Android. Source feedback, player lifetime, provider groups,
 stateful library actions, insets and the scrolling/blurred TV hero are specified
-in `../../ANDROID_DESIGN.md#and-036--native-sign-in-direct-playback-and-interaction-corrections`.
+in `../docs/platforms/ANDROID_DESIGN.md#and-036--native-sign-in-direct-playback-and-interaction-corrections`.
 
 ## 15. Native Roku complete TV audit (ROK-043)
 
 The owner extends the later TV corrections to Roku, including accent Resume,
 all addon catalog shelves, bounded lazy loading, three lower Home shelves,
-TvTitle composition and TvLive guide. See [ROK-043](../ROKU_DESIGN.md#rok-043--complete-tv-screen-audit-and-catalog-correction).
+TvTitle composition and TvLive guide. See [ROK-043](../docs/platforms/ROKU_DESIGN.md#rok-043--complete-tv-screen-audit-and-catalog-correction).
 
 
 ## Phone TV remote (Watch on TV)
@@ -107,3 +132,71 @@ works; delayed reconnect has no offline flash, eventual failure is recoverable,
 and power/mute/name work via the synthetic SmartCast boundary. Measure Android
 initial/offscreen requests and retain first-frame, device and fixture evidence
 separately. Existing typography, palette and focus/Back contracts remain in force.
+
+## Native Android TV keyboard (AND-KEYBOARD-001)
+
+The 2026-10-01 owner request replaces Android TV custom character and PIN grids
+with native Android editable fields and the installed device input method.
+Search keeps separate progressive catalog shelves; Back dismisses native input
+before leaving its screen/dialog. Roku and TV-web retain their current inputs.
+The Android contract records focus, Results, secret input and return acceptance.
+
+## Native Android TV media-row edge (AND-TV-ROW-EDGE-001)
+
+The 2026-10-02 owner request extends horizontal Android TV media card rows,
+including Popular movies and Details episodes, through the right viewport edge.
+This explicitly supersedes the general 96 px right safe inset and TV-034's
+1824 px final-card bound **for native Android TV media rows only**. Headings,
+text and non-media content keep their safe inset. The
+[media-row contract](../specs/behavior/android-tv-media-rows.md) defines the
+geometry, focus restoration and acceptance cases.
+
+## Android TV episode-number jump (AND-EPISODE-JUMP-001)
+
+The proposed compact `Episode #` chip beside the season badge opens a native
+numeric-input dialog. Exact current-season episode metadata controls the jump;
+success only scrolls and focuses the card. Invalid input remains editable in
+the dialog, and Back first hides the IME. [The behavior contract](../specs/behavior/episode-number-jump.md)
+defines the full state and acceptance scenarios. This does not change the
+shared Core hero Play/Resume rule or require Roku/TV-web adoption.
+
+## Desktop pointer and playback corrections (DESK-PLAYBACK-2026-10-03)
+
+Owner approved 2026-10-03: the native desktop client uses pointer interaction.
+Disable desktop keyboard shortcuts, Tab navigation, spatial navigation and
+programmatic button arrival focus globally; text fields remain editable by
+clicking and typing. Remove keyboard legends from desktop source pickers.
+Clicking the player backdrop reveals controls and never hides them; existing
+inactivity hiding and popup dismissal remain.
+
+Relative skip clicks accumulate from the latest requested target until the
+engine confirms it, in either direction. Ignore transient zero/old clock
+reports while a seek is pending. Duration becomes available independently of
+seeking, and the timeline draws actual reported buffered ranges. New source
+selection retires the outgoing presentation before preparing the replacement.
+If that explicit replacement fails, keep the player empty: do not restore the
+previous video's duration, tracks, picture or audio. Managed seek/track/next
+operations retain their separate recovery rules.
+
+Returning from playback to the same open source selector retains its provider
+and quality filters, including browser/titlebar Back. Opening a different title
+or episode starts with All. Double-clicking the desktop titlebar during playback
+uses the player's fullscreen action. Both it and the fullscreen button hide app
+chrome and resize the native picture and controls to the fullscreen viewport;
+exit restores the windowed layout. Outside playback, titlebar double-click keeps
+the normal maximize action.
+
+Render player controls as crisp vector icons with legible skip numbers. Native
+desktop source rows use a smooth 16px radius and a 3px accent border for the best
+match/selected source. Show configured provider artwork; missing artwork uses
+a named monogram rather than an unknown-quality dash. All providers includes
+both observed add-on and IPTV producers. Native track titles take precedence;
+unknown-language tracks receive numbered labels, with codec facts when known.
+
+Acceptance: rapid forward/backward presses and pointer scrubbing retain the
+latest target without flashing zero; buffer/duration work before a skip; new
+source preparation shows no outgoing video/audio; selecting All includes both
+producer kinds; source artwork/borders remain smooth; desktop Tab/arrows/media
+keys do not activate or navigate controls; text editing still works. Home uses
+frame-bounded scroll measurement, cached card geometry and offscreen rendering
+containment. Verify scrolling with many loaded shelves on the desktop host.

@@ -8,6 +8,11 @@ These are the exact strings used on the screens. Text in `[brackets]` is a place
 - **Continue Watching** is the in-progress list: the second segment of My List, and the Home shelf ("Continue watching" as a shelf heading).
 - **Watch on TV** is the pairing / remote feature (the desktop app). The rail item is "On TV".
 - Search placeholder: **"Search movies and series"** (desktop and web show no keyboard-shortcut hint).
+- Android TV native input: **"Results"**, **"Done"**, **"Unlock"**, **"Cancel"**. The device owns IME action labels; the app shows no custom keyboard or jump-to-results hint.
+- Android TV episode jump (AND-EPISODE-JUMP-001): chip **"Episode #"**; dialog **"Jump to episode"**; field **"Episode number"**; actions **"Go"**, **"Cancel"**; invalid input **"Episode not found in this season."**
+- Android completed episode (AND-EPISODE-WATCHED-001): visible and accessible badge **"Watched"**.
+
+Responsive player picture mode (WEB-PLAYER-FIT-001): visible toggle **"Fit"** / **"Fill"**; accessible actions **"Fill video"** / **"Fit video"**.
 
 ## Empty states
 
@@ -23,6 +28,12 @@ These are the exact strings used on the screens. Text in `[brackets]` is a place
 | Live search, phone | No channels match your search. |
 | Live search, desktop / TV | No channels match your search. |
 | Sources, finding | Finding sources. Sources appear here as they arrive. |
+| Sources, provider pending | Still checking [provider] |
+| Sources, provider empty | No playable sources from [provider] |
+| Sources, provider unsupported (proposed, SRC-TORRENT-GATEWAY-001) | [provider] returned formats this app cannot play. Choose another source. |
+| Sources, unsupported API format (proposed, SRC-TORRENT-GATEWAY-001) | This source format is not supported. Choose another source. |
+| Sources, in-progress label before rows | Finding sources |
+| Sources, in-progress label after rows | Still checking sources |
 | Sources, none | No sources available. Check your add-ons in Settings. |
 | Sources, filtered out | No matching sources. Choose another provider or quality. |
 | Live details, no guide | No guide information. You can still watch this channel. |
@@ -58,6 +69,45 @@ These are the exact strings used on the screens. Text in `[brackets]` is a place
 - Could not check the VIPTV receiver. Check your connection and try again.
 - The TV accepted the launch request. Check its screen to confirm VIPTV opened.
 - This code expired. (TV pairing, with "Try again")
+
+## Native playback failure reasons (SRC-TORRENT-NATIVE-001)
+
+These strings replace the generic native startup explanation only when a
+platform reports the corresponding observed fact to shared Rust. Unknown
+failures use `native_playback_failed`. A deadline is not proof of absent peers
+or seeders. Raw engine/player text, hashes, URLs, paths and credentials are never
+presentation inputs. Existing recovery actions and geometry remain as specified
+in [the native contract](../specs/behavior/torrent-native-android.md).
+
+| Observed reason | Exact copy |
+|---|---|
+| `native_playback_failed` | The selected source could not start on this device. Try another source or retry playback. |
+| `native_acquisition_timeout` | This device took too long to prepare the selected source. Try another source or retry playback. |
+| `native_metadata_timeout` | No torrent metadata arrived from peers before the startup deadline. Check DHT/network access or choose another source. |
+| `native_session_timeout` | The device timed out creating its torrent network session. Check network access and retry playback. |
+| `native_cache_preparation_timeout` | The device timed out preparing local torrent storage. Check free space and retry after the previous stream has stopped. |
+| `native_initialization_timeout` | Torrent metadata arrived, but the local torrent engine did not initialize in time. Retry playback or check device storage. |
+| `native_loopback_timeout` | The torrent initialized, but the local playback endpoint did not open in time. Retry playback. |
+| `native_session_unavailable` | The device could not create its torrent network session. Check network access and retry playback. |
+| `native_initialization_failed` | Torrent metadata arrived, but initializing its local storage or torrent engine failed. Check device storage or choose another source. |
+| `native_loopback_unavailable` | The torrent initialized, but its local playback endpoint could not be opened. Retry playback. |
+| `native_retirement_pending` | The previous torrent is still closing. Wait a moment and retry playback. |
+| `native_dns_unavailable` | The device could not resolve the playback server address. Check DNS or your network connection. |
+| `native_tls_failed` | The secure connection to the playback server failed. Check the device clock and server certificate. |
+| `native_connection_failed` | The device could not establish a network connection to the playback server. Check that the server is running and reachable. |
+| `native_control_timeout` | The playback server did not respond before the request deadline. Check server health and your connection. |
+| `native_payload_limit` | The device's playback cache has no room for this stream. Stop another stream, choose another source or retry playback. |
+| `native_storage_unavailable` | This device could not reserve storage for playback. Free some space, choose another source or retry playback. |
+| `native_cache_unavailable` | The device's playback cache is unavailable. Choose another source or retry playback. |
+| `native_metadata_invalid` | This source has invalid or unsupported torrent file information. Choose another source. |
+| `native_file_unavailable` | The exact file selected by this source is missing or does not match its file information. Refresh the sources or choose another source. |
+| `native_authorization_expired` | This playback session has expired. Start playback again to reconnect. |
+| `native_network_unavailable` | This device could not connect to the selected source. Check your connection, choose another source or retry playback. |
+| `native_codec_unsupported` | This device cannot decode the selected source's audio or video format. Choose another source or retry playback. |
+
+Native failure messages append a blank line and `Diagnostic: <observed reason>`
+using only the validated closed code in the table. This is visible in the existing
+recovery dialog and can be quoted when reporting a failure.
 
 ## Dialogs
 

@@ -100,8 +100,7 @@ sub request(method as string, path as string, body as dynamic, tag as string, co
         m.pendingStartupConnection = entry
     end if
     if (tag = "playback" or tag = "seekplayback") and m.prepSpent <> invalid
-        entry.timeout_ms = 180000 - m.prepSpent
-        if entry.timeout_ms > 50000 then entry.timeout_ms = 50000
+        entry.timeout_ms = 120000 - m.prepSpent
         if entry.timeout_ms < 1 then entry.timeout_ms = 1
     end if
     ' Coalesce pending state writes; active writes always finish before later writes.

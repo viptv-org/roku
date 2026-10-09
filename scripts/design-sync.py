@@ -28,9 +28,12 @@ elif len(sys.argv) == 4 and sys.argv[1] == "sync":
         elif path.startswith("assets/roku/roku/images/design/") or path.startswith("assets/roku/roku/images/lucide/"):
             mapping[path] = path.removeprefix("assets/roku/")
     for path in ["ROKU_DESIGN.md", "DESIGN_SYNC.md", "viptv-design-system/components.md", "viptv-design-system/copy.md", "viptv-design-system/decisions.md", "viptv-design-system/tokens/tokens.json"]:
-        mapping[path] = "design-contract/" + path
-    if "PLAYBACK_ERROR_COPY.md" in paths:
-        mapping["PLAYBACK_ERROR_COPY.md"] = "design-contract/PLAYBACK_ERROR_COPY.md"
+        source = path if path in paths else {"ROKU_DESIGN.md":"docs/platforms/ROKU_DESIGN.md", "DESIGN_SYNC.md":"docs/process/DESIGN_SYNC.md"}.get(path,path)
+        mapping[source] = "design-contract/" + path
+    for source in ["PLAYBACK_ERROR_COPY.md", "docs/playback/PLAYBACK_ERROR_COPY.md"]:
+        if source in paths: mapping[source] = "design-contract/PLAYBACK_ERROR_COPY.md"
+    if "specs/behavior/torrent-runtime-v2.md" in paths:
+        mapping["specs/behavior/torrent-runtime-v2.md"] = "design-contract/torrent-runtime-v2.md"
     files = {}
     for source, target in mapping.items():
         data = git("show", sha + ":" + source)

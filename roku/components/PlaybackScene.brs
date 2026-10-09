@@ -100,14 +100,14 @@ sub beginPlayback(force as boolean)
     end if
     cancelBrowse()
     if m.prepSpent = invalid then resetAttempts()
-    if m.prepSpent >= 180000
+    if m.prepSpent >= 120000
         sourceExhausted("Playback preparation timed out.")
         return
     end if
     m.prepClock = CreateObject("roTimespan")
     m.prepClock.mark()
     if m.budgetTimer <> invalid
-        m.budgetTimer.duration = (180000 - m.prepSpent) / 1000.0
+        m.budgetTimer.duration = (120000 - m.prepSpent) / 1000.0
         m.budgetTimer.control = "start"
     end if
     m.pendingPlayback = true
@@ -194,7 +194,7 @@ sub videoState()
 end sub
 
 sub startupFailed()
-    retryPlayback("Playback did not start within 25 seconds.")
+    retryPlayback("Playback did not start within the startup deadline.")
 end sub
 
 sub retryPlayback(reason as string)
