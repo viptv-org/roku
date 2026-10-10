@@ -6,7 +6,10 @@ root=Path(__file__).resolve().parents[1]
 s=(root/'components/SeekScene.brs').read_text()
 def routine(name):
  a=s.index('sub '+name+'(');return s[a:s.index('end sub',a)+7]
-code='\n'.join(routine(n) for n in ['clearManagedResume','seekToPosition','prepareSeekReplacement','beginPrimarySeekFallback','seekPrimaryVideoState','finishSeekSuccess','beginSeekRollback','finishSeekRollback','seekReplacementFailed'])+'''
+lease=(root/'components/PlaybackLeaseScene.brs').read_text()
+a=lease.index('sub reportRokuPlaybackFirstFrame(')
+report=lease[a:lease.index('end sub',a)+7]
+code=report+'\n'+'\n'.join(routine(n) for n in ['clearManagedResume','seekToPosition','prepareSeekReplacement','beginPrimarySeekFallback','seekPrimaryVideoState','finishSeekSuccess','beginSeekRollback','finishSeekRollback','seekReplacementFailed'])+'''
 sub Main()
  m.playing=true:m.playItem={type:"movie",stream_id:"source",name:"Movie"}:m.playbackLive=false
  m.video={state:"paused",position:35,content:{url:"old.m3u8"}}

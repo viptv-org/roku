@@ -5,8 +5,28 @@ sub registerRokuPlaybackLease(data as object, connection as object)
     renew = CreateObject("roTimespan") : renew.mark()
     remaining = data.expires_at - CreateObject("roDateTime").asSeconds()
     if remaining > 60 then remaining = 60
-    m.playbackLeases[Txt(data.id)] = {connection:connection,url:data.url,clock:clock,remaining_seconds:remaining,renew:renew,renew_after_seconds:data.renew_after_seconds,pending:false}
+    previous = m.playbackLeases[Txt(data.id)]
+    acknowledged = previous <> invalid and previous.frame_reported = true
+    m.playbackLeases[Txt(data.id)] = {frame_reported:acknowledged,connection:connection,url:data.url,clock:clock,remaining_seconds:remaining,renew:renew,renew_after_seconds:data.renew_after_seconds,pending:false}
     m.leaseTick.control = "start"
+end sub
+
+sub reportRokuPlaybackFirstFrame()
+    if m.playbackLeases = invalid then return
+    if not m.playbackLeases.DoesExist(Txt(m.session)) then return
+    lease = m.playbackLeases[Txt(m.session)]
+    if lease.frame_reported = true then return
+    lease.frame_reported = true
+    request("POST",PlaybackSessionPath(lease.connection,Txt(m.session)) + "/first-frame",{},"sidefirstframe",lease.connection)
+end sub
+
+sub rokuPlaybackFirstFrameResponse(result as object, origin as object)
+    identity = Mid(Txt(origin.path),18).split("/")[0]
+    if identity <> Txt(m.session) then return
+    if not m.playbackLeases.DoesExist(identity) then return
+    lease = m.playbackLeases[identity]
+    if Txt(origin.access_token) <> Txt(lease.connection.access_token) then return
+    if not result.ok then retireRokuPlaybackLeases(Txt(result.error,"Playback startup acknowledgement was refused. Start playback again."))
 end sub
 
 sub rokuPlaybackLeaseTick()

@@ -67,8 +67,8 @@
       "source": "roku/components/ApiTask.brs",
       "destination": "roku/components/ApiTask.brs",
       "sha256": "4e2eca9f8d0d16fc1402e769eeeae666a405eaa0bd526cc8c9e051cf45d28d64",
-      "extracted_sha256": "913cdf1a469ee3f0745f0017ffeca84e9cd36b38acc2420d3ec7d9267b02b042",
-      "reason": "Cleanup 14a702c (ApiIsObject consolidation) and split: task runner, config lock/transport and HTTP request loop remain; ApiOrigin and the pure response-sanitization functions moved byte-identical into ApiTaskSanitize.brs (merged ApiTask component scope via ApiTask.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained. Corrected gateway_unavailable copy separately from gateway_required; provider connection-limit mapping preserved; no ZIP redeployment. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained."
+      "extracted_sha256": "a1e42d069e01975747f414e0bf7c096aeb0efe6e339995233c4d6da7b7e48276",
+      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent."
     },
     {
       "source": "roku/components/ApiTask.xml",
@@ -301,8 +301,8 @@
       "source": "roku/components/PlaybackScene.brs",
       "destination": "roku/components/PlaybackScene.brs",
       "sha256": "2895f449c1c79ce16987253c68728b4e2baca7539ca6e10e47955947e7ee09b3",
-      "reason": "Overlay model carries delivery mode; VOD no longer puts poster art in the live logo slot. Native buffered resume and bounded transient lease renewal correction, 2026-10-08. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained.",
-      "extracted_sha256": "929c8dd6e63a086011f1e5c211534f794c1fd113aca516d5715e1e548b06a68c"
+      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent.",
+      "extracted_sha256": "fca2d85e3ffcf9fc08df4b949b6d7c93a9d0afdc31586ec1b6184a6fdefb82bc"
     },
     {
       "source": "roku/components/PlayerOverlay.brs",
@@ -378,8 +378,8 @@
       "source": "roku/components/ResponseScene.brs",
       "destination": "roku/components/ResponseScene.brs",
       "sha256": "582c565e78ae88fd170b1c873e7253fb1906865b62dc647d5987ecac9e77f9f5",
-      "reason": "Stale live-source replies release pending admission flags instead of leaving a permanent spinner.",
-      "extracted_sha256": "01f9c25ad2b2816478b071153c05291b1a8c40087c1de10e70cb5af8acf4d9b8"
+      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent.",
+      "extracted_sha256": "72b2a1abc25070db6b8afe4f97b2bcaa5655c6c431934b5b97b2108c6dcf2d49"
     },
     {
       "source": "roku/components/SearchPanel.brs",
@@ -406,8 +406,8 @@
       "source": "roku/components/SeekScene.brs",
       "destination": "roku/components/SeekScene.brs",
       "sha256": "f0598482ad4cead37a554455f68f67ae05297a80eb8714575ce88f8b93dcd752",
-      "reason": "Mirror delivery modes after a seek replacement. Native buffered resume and bounded transient lease renewal correction, 2026-10-08.",
-      "extracted_sha256": "884de509b92f71e15d58de2f22f1ba629db7df1020b3b6841fbfde1eac8d90d5"
+      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent.",
+      "extracted_sha256": "e2f512194858d8519416773cc04b47c44e3a73013b62657aad45df8f7a7503d9"
     },
     {
       "source": "roku/components/SessionScene.brs",
@@ -3975,8 +3975,8 @@
       "source": "roku/source/Util.brs",
       "destination": "roku/source/Util.brs",
       "sha256": "35e9bf7a05399ae8a14d783b159b65436c1f2906b0ee56333c800f93b6169f0d",
-      "extracted_sha256": "96a634af0256993c80ecea1b84ba921095fd1b2e483ec69fb889b5452251e28f",
-      "reason": "Split: the m-free source-label cluster (SourceFullDetails, DistinctSourceLabels, SourceGroup, FairSources, SourceCardTitle, SourceAudioStatus, SourceReportedLanguages) moved byte-identical into source/SourceLabels.brs; SourceScore, CleanSourceLabel and SourceDisplayLabel stay because they cache compiled patterns in m. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained."
+      "extracted_sha256": "f47f76727dae8ad02eeac7e66c104d9e5d2d570b83f40ef8547f2953246b2a21",
+      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent."
     },
     {
       "source": "roku/source/main.brs",
@@ -4394,8 +4394,8 @@
       "source": "roku/tests/seek_rollback_runtime.py",
       "destination": "roku/tests/seek_rollback_runtime.py",
       "sha256": "097b5976ba7095873cd1b51e2b7e559fb5f287e91928248b8b8288067e937f48",
-      "extracted_sha256": "a8055d8c09581ef5fad8e1381900b1ab9e12f7681217a502d59aa16a6f5e7b38",
-      "reason": "Split follow-up: seek-transaction extractions moved to components/SeekScene.brs. Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained. Native buffered resume and bounded transient lease renewal correction, 2026-10-08."
+      "extracted_sha256": "b070b44b5858d2f226143936ef148a80c7432d59288681fa0467028e97fe8425",
+      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent."
     },
     {
       "source": "roku/tests/sgnode-identity.brs",

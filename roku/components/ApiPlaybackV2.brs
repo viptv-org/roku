@@ -8,6 +8,7 @@ function RokuPlaybackV2Start(request as object, result as object) as object
     control = {}
     control.append(request)
     control.body = body
+    control.path = "/api/v2/playback-decoder-start"
     deadline = 120000
     if MatchInteger(request.timeout_ms,1,120000) then deadline = request.timeout_ms
     clock = CreateObject("roTimespan")
@@ -137,7 +138,7 @@ sub RokuPlaybackV2Cleanup(request as object, body as object, identity as string)
     clock = CreateObject("roTimespan")
     clock.mark()
     if identity = ""
-        control.path = "/api/v2/playback"
+        control.path = "/api/v2/playback-decoder-start"
         control.body = body
         raw = HttpRequestRaw(control,RokuPlaybackV2Empty(request.tag),"POST",false)
         if AccountIsObject(raw.data)

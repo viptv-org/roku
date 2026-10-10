@@ -161,6 +161,13 @@ function HttpRequest(request as object, result as object, method as string) as o
     if Left(Txt(request.path),17) = "/api/v2/playback/"
         raw = HttpRequestRaw(request,result,method,false)
         if not raw.ok then return raw
+        if method = "POST" and Right(Txt(request.path),12) = "/first-frame"
+            if not AccountIsObject(raw.data) or raw.data.ok <> true or raw.data.count() <> 1
+                raw.ok = false
+                raw.error = "The server returned an invalid startup acknowledgement."
+            end if
+            return raw
+        end if
         if method = "DELETE"
             raw.data = {ok:true}
             return raw

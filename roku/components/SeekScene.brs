@@ -272,6 +272,7 @@ sub finishSeekSuccess()
     data = m.seekData
     m.session = m.seekNewSession
     m.sessionConnection = m.seekNewConnection
+    reportRokuPlaybackFirstFrame()
     m.timelineOffset = m.seekTarget
     if Txt(data.mode) = "direct" and Txt(data.delivery_kind) <> "gateway" then m.timelineOffset = 0
     m.playbackDeliveryKind = Txt(data.delivery_kind)

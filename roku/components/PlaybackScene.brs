@@ -154,6 +154,7 @@ sub videoState()
         m.hasPlayed = true
         if firstFrame and m.playbackLive = true then saveProgress()
         if firstFrame
+            reportRokuPlaybackFirstFrame()
             if m.playStartClock <> invalid then print "VIPTV_PLAYBACK_START mode=";m.playbackMode;" player_ms=";m.playStartClock.totalMilliseconds()
             m.playStartClock = invalid
             prefetchContinuation()

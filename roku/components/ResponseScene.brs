@@ -33,6 +33,10 @@ sub handleResponse(event as object)
     ' Account responses validate account_epoch before changing any profile/UI state.
     if accountResponse(tag,result,origin) then return
     if origin.account_epoch <> m.accountEpoch then return
+    if tag = "sidefirstframe"
+        rokuPlaybackFirstFrameResponse(result,origin)
+        return
+    end if
     if tag = "sideheartbeat" and Left(Txt(origin.path),17) = "/api/v2/playback/"
         rokuPlaybackHeartbeatResponse(result,origin)
         return

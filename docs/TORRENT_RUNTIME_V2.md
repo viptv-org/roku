@@ -20,3 +20,15 @@ cannot overwrite current status; unknown raw text is refused. Progress reads
 cannot renew authority. All 67 local checks, compilation and ZIP packaging pass.
 The same backend/gateway/progress API path has actual HTTPS browser decode and
 pending-metadata cancellation evidence; it is not physical Roku presentation.
+
+Startup uses the separate decoder-aware backend route. The first Video `playing`
+event reports a scoped `{}` acknowledgement, including successful managed seek
+replacement. Renewal preserves its coalesced state; a stale reply cannot retire
+a replacement session. A definitive acknowledgement refusal retires active media.
+The request uses backend control authority and never follows a media URL.
+
+All 67 local checks pass; the changed playback/lease/seek/transport checks were
+also rerun after the final closed-response validation. BrighterScript compilation
+and the runtime ZIP pass. Actual Roku frame delivery remains separately
+coordinated; gateway/browser acknowledgement evidence does not qualify its Video
+node on physical hardware.

@@ -16,6 +16,12 @@ sub Main()
     connection = {path:"/api/v2/playback",base:"https://backend.invalid",access_token:"fixture",last_profile_id:"1"}
     data = {id:"lease",delivery_kind:"gateway",url:"https://gateway.invalid/media/viewer/cap/index.m3u8",expires_at:CreateObject("roDateTime").asSeconds()+60,renew_after_seconds:20}
     registerRokuPlaybackLease(data,connection)
+    m.session = "lease"
+    reportRokuPlaybackFirstFrame()
+    reportRokuPlaybackFirstFrame()
+    if m.queue.count() <> 1 or m.queue[0].path <> "/api/v2/playback/lease/first-frame" then throw "first frame acknowledgement was not coalesced or used media origin"
+    if m.queue[0].tag.split("|")[0] <> "sidefirstframe" or m.queue[0].body.count() <> 0 then throw "frame body/tag leaked player facts"
+    m.queue = []
     m.playbackLeases.lease.clock = {TotalMilliseconds:Elapsed}
     origin = {path:"/api/v2/playback/lease/heartbeat",access_token:"fixture"}
     rokuPlaybackHeartbeatResponse({ok:false,status:0,error:"Network request failed"},origin)
@@ -49,6 +55,17 @@ sub Main()
     mismatched = {} : mismatched.append(data) : mismatched.url = "https://gateway.invalid/media/different"
     rokuPlaybackHeartbeatResponse({ok:true,status:200,data:mismatched},origin)
     if instr(1,m.failure,"different playback") = 0 then throw "changed delivery accepted"
+    registerRokuPlaybackLease(data,connection)
+    m.playbackLeases.lease.frame_reported = true
+    rokuPlaybackHeartbeatResponse({ok:true,status:200,data:data},origin)
+    if m.playbackLeases.lease.frame_reported <> true then throw "heartbeat reset frame acknowledgement"
+    m.stopped = false
+    m.session = "replacement"
+    rokuPlaybackFirstFrameResponse({ok:false,status:403,error:"stale"},{path:"/api/v2/playback/lease/first-frame",access_token:"fixture"})
+    if m.stopped then throw "stale first frame response stopped replacement"
+    m.session = "lease"
+    rokuPlaybackFirstFrameResponse({ok:false,status:403,error:"frame refused"},{path:"/api/v2/playback/lease/first-frame",access_token:"fixture"})
+    if not m.stopped or m.failure <> "frame refused" then throw "active frame refusal did not retire media"
     if PlaybackSessionPath(connection,"x") <> "/api/v2/playback/x" then throw "v2 release route lost"
     if PlaybackSessionPath({path:"/api/not-playback"},"x") <> "/api/v2/playback/x" then throw "connection path affected v2 session route"
     print "PLAYBACK_LEASE_RUNTIME_OK"

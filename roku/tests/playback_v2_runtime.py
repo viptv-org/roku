@@ -39,6 +39,10 @@ sub Main()
             end if
             if scenario = "cancelled" and result.error <> "Cancelled" then throw "cancellation lost"
         end if
+        if m.calls[0].path <> "/api/v2/playback-decoder-start" then throw "decoder-aware start route lost"
+        if scenario = "ambiguous" or scenario = "cancelled"
+            if m.calls[1].path <> m.calls[0].path then throw "cleanup changed startup protocol"
+        end if
         for each call in m.calls
             if left(call.path,16) <> "/api/v2/playback" then throw "control followed media URL"
         end for

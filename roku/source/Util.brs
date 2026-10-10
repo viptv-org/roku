@@ -509,8 +509,8 @@ function PlaybackRequestsConflict(a as object, b as object) as boolean
     if a.method = "GET" or b.method = "GET" then return false
     first = Txt(a.tag).split("|")[0]
     second = Txt(b.tag).split("|")[0]
-    aPlayback = first = "playback" or first = "seekplayback" or first = "cleanup"
-    bPlayback = second = "playback" or second = "seekplayback" or second = "cleanup"
+    aPlayback = first = "playback" or first = "seekplayback" or first = "cleanup" or first = "sidefirstframe"
+    bPlayback = second = "playback" or second = "seekplayback" or second = "cleanup" or second = "sidefirstframe"
     aProgress = first = "sideprogress" or first = "sideheartbeat" or first = "siderestorequeue"
     bProgress = second = "sideprogress" or second = "sideheartbeat" or second = "siderestorequeue"
     return not ((aPlayback and bProgress) or (bPlayback and aProgress))
