@@ -169,8 +169,14 @@ function SanitizeApiResponse(path as string, method as string, data as dynamic) 
         if not ApiIsArray(data) then return failure
         return {ok:true,data:ApiItems(data,2000)}
     end if
+    ' Addons fit one bounded v2 page; scenes receive the same array as other lists.
+    if route = "/api/v2/addons" and method = "GET"
+        if not AccountIsObject(data) then return failure
+        if not ApiIsArray(data.items) then return failure
+        return { ok: true, data: ApiItems(data.items, 100) }
+    end if
     collection = CreateObject("roRegex", "^/api/profiles/[^/]+/(favorites|progress|continue)$", "")
-    arrayRoute = route = "/api/catalogs" or route = "/api/providers" or route = "/api/addons" or route = "/api/matches" or collection.IsMatch(route)
+    arrayRoute = route = "/api/catalogs" or collection.IsMatch(route)
     if method = "GET" and arrayRoute
         if not ApiIsArray(data) then return failure
         limit = 500

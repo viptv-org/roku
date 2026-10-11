@@ -362,7 +362,7 @@ sub keyboardDone()
     end if
     uiRestoreFocus()
     if result.accepted and m.keyboardKind = "addon" and result.text.trim() <> ""
-        request("POST","/api/addons",{manifest_url:result.text.trim()},"addonchanged")
+        request("POST","/api/v2/addons",{manifest_url:result.text.trim()},"addonchanged")
         m.status.text = "Installing addon…"
     end if
 end sub
