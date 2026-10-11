@@ -58,7 +58,7 @@ sub selectItem(item as object)
         else if action = "addons"
             cancelBrowse()
             rows("Addons",[],"addons","")
-            request("GET","/api/addons",invalid,"accountaddons")
+            request("GET","/api/v2/addons?limit=100",invalid,"accountaddons")
         else if action = "installaddon"
             keyboard("addon","Install addon manifest URL", "https://")
         else if action = "manageaddon"

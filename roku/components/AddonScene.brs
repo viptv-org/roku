@@ -6,7 +6,7 @@ sub addonResponse(tag as string, result as object)
     end if
     if tag = "addonchanged"
         clearHomeCache()
-        request("GET","/api/addons",invalid,"accountaddons")
+        request("GET","/api/v2/addons?limit=100",invalid,"accountaddons")
         return
     end if
     values = [{name:"Install addon",action:"installaddon",description:"Enter a Stremio manifest URL."}]
@@ -22,7 +22,7 @@ end sub
 sub addonChoice(choice as object)
     item = m.managedAddon
     if item = invalid then return
-    path = "/api/addons/" + Enc(Txt(item.id))
+    path = "/api/v2/addons/" + Enc(Txt(item.id))
     if choice.action = "toggleaddon"
         request("PATCH",path,{enabled:item.enabled <> true},"addonchanged")
     else if choice.action = "removeaddon"
