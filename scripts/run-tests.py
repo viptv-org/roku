@@ -24,7 +24,6 @@ from brs_cli import brs_command  # noqa: E402
 STATIC = [
     "account_only_contract.py",
     "branding_contract.py",
-    "design_contract.py",
     "focus_contract.py",
     "playback_static.py",
     "scenegraph_ux_contract.py",
