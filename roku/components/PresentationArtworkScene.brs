@@ -2,6 +2,7 @@ sub uiLoadHeroArt()
     if m.mode <> "home" or m.uiHeroOwner <> invalid then return
     item = homeCurrent()
     if item = invalid or item.action <> invalid or item.type = "live" then return
+    if GetInterface(item.engine_card,"ifAssociativeArray") <> invalid then return
     if PresentationBackdrop(item) <> "" then return
     path = "/api/meta/" + Enc(Txt(item.type,"movie")) + "/" + Enc(PresentationMetadataId(item))
     if m.cache[path] <> invalid or m.uiHeroTried.doesExist(path) then return
@@ -124,7 +125,7 @@ sub uiLoadCardArtwork()
     end if
     issued = 0
     for each node in uiVisibleArtwork()
-        if node.mediaType <> "live" and Txt(node.metadataId) <> ""
+        if node.mediaType <> "live" and Txt(node.metadataId) <> "" and Txt(node.metadataPath) <> ""
             path = node.metadataPath
             if Txt(m.uiLandscapeCache[path]) <> "" then node.HDPosterUrl = m.uiLandscapeCache[path]
             needsMetadata = node.HDPosterUrl = ""

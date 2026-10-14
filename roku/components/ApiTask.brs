@@ -153,6 +153,14 @@ function DeviceCapabilities() as object
 end function
 
 function HttpRequest(request as object, result as object, method as string) as object
+    if request.content_contract = 3
+        library = EngineLibraryRequest(request,result,method)
+        if library <> invalid then return library
+        personal = EnginePersonalRequest(request,result,method)
+        if personal <> invalid then return personal
+        engine = EngineContentRequest(request,result,method)
+        if engine <> invalid then return engine
+    end if
     if Left(Txt(request.path),8) = "/api/v2/" and LCase(Left(Txt(request.base),8)) <> "https://"
         result.error = "This server connection requires HTTPS. Update the server address in Settings."
         return result

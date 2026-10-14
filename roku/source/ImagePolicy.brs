@@ -28,7 +28,7 @@ function ImageUrl(uri as string, width as integer, height as integer, large = fa
             end if
         end for
     end if
-    safe = CreateObject("roRegex","^https://(image\.tmdb\.org|artworks\.thetvdb\.com|episodes\.metahub\.space|images\.metahub\.space|live\.metahub\.space|assets\.fanart\.tv|i\.imgur\.com)/[^?#@]+$","")
+    safe = CreateObject("roRegex","^https://(simkl\.in|image\.tmdb\.org|artworks\.thetvdb\.com|episodes\.metahub\.space|images\.metahub\.space|live\.metahub\.space|assets\.fanart\.tv|i\.imgur\.com)/[^?#@]+$","")
     if not safe.isMatch(uri) then return original
     w = ImagePixels(width)
     h = ImagePixels(height)

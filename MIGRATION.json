@@ -69,15 +69,15 @@
       "source": "roku/components/ApiTask.brs",
       "destination": "roku/components/ApiTask.brs",
       "sha256": "4e2eca9f8d0d16fc1402e769eeeae666a405eaa0bd526cc8c9e051cf45d28d64",
-      "extracted_sha256": "a1e42d069e01975747f414e0bf7c096aeb0efe6e339995233c4d6da7b7e48276",
-      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent."
+      "extracted_sha256": "e7242b785a9b872abe5db3b24b0213bea2c39ddd5ad9a55a89667ab460498fde",
+      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent. Experimental shared-host v3 content, membership and automatic paging adoption."
     },
     {
       "source": "roku/components/ApiTask.xml",
       "destination": "roku/components/ApiTask.xml",
       "sha256": "515ea8f88a9dbf10356f68522238227d87b6b9a80ad32b2cdb6e31e0ce239c35",
-      "extracted_sha256": "ad4dc3d55757cac635955d7546fb9767e1607f2d8517577ca941f6bea754c6bd",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. SRC-TORRENT-RUNTIME-002 measured gateway startup stages, scoped Task events and canonical copy; original extraction hash retained."
+      "extracted_sha256": "d1e8ca8ce9b334697b5141de80ca3e05f9bcd1daac6f4d1179a852770ab7f2f2",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. SRC-TORRENT-RUNTIME-002 measured gateway startup stages, scoped Task events and canonical copy; original extraction hash retained. Experimental shared-host v3 content, membership and automatic paging adoption."
     },
     {
       "source": "roku/components/ApiTaskSanitize.brs",
@@ -132,15 +132,15 @@
       "source": "roku/components/ContinuationScene.brs",
       "destination": "roku/components/ContinuationScene.brs",
       "sha256": "1026bd34038e8a0897f256fb93069b9ab464c600f91159af99964eb698baac28",
-      "extracted_sha256": "306b5d547f077b505d85873ebe07c130a6e2f7730e3f864618e17875b5985d4a",
-      "reason": "Cleanup: removed unreferenced continuationDialogSelected() and the write-only m.continuationAutomatic. Next-transition cleanup normalizes an unset session identity with Txt() before the typed PlaybackSessionPath call."
+      "extracted_sha256": "1c9ac51b974d9c7ff938c2dba1ced82fd281bc5bceb0c8e435034f356616316d",
+      "reason": "Cleanup: removed unreferenced continuationDialogSelected() and the write-only m.continuationAutomatic. Next-transition cleanup normalizes an unset session identity with Txt() before the typed PlaybackSessionPath call. Experimental shared-host v3 content, membership and automatic paging adoption."
     },
     {
       "source": "roku/components/DiscoverScene.brs",
       "destination": "roku/components/DiscoverScene.brs",
       "sha256": "d389426f5f252714c53698bbb12bc148f40fbb9f20c2cc8ca9c3b91626e8140c",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
-      "extracted_sha256": "a56880d5495cbd3b3a7a3e6e5d9c7f0151f061ae70102663b79e06b66dcf06cb"
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. Experimental shared-host v3 content, membership and automatic paging adoption.",
+      "extracted_sha256": "b35d76babea8533c38b26f5ea92541aee37b54da82dddfeeae2955e6934bb78e"
     },
     {
       "source": "roku/components/EpgGrid.brs",
@@ -242,20 +242,22 @@
       "source": "roku/components/HomeFeedScene.brs",
       "destination": "roku/components/HomeFeedScene.brs",
       "sha256": "d637da6fe6b503b790bee68ba35c939273d080e912071772f32029300d294c9a",
-      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
-      "extracted_sha256": "ed56ad7d38d4fc9633502eae65b67ba2b099470cdb9e621f8b3a93ca2b0f8f8f"
+      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. Experimental shared-host v3 content, membership and automatic paging adoption.",
+      "extracted_sha256": "212b48b8d0652e426bc7bd7f7fa2242a0eb8457ffe0a6807f6846c19a892a064"
     },
     {
       "source": "roku/components/HomeScene.brs",
       "destination": "roku/components/HomeScene.brs",
       "sha256": "98eff40f139b55c320c4eb4901c04061833c7e6223cc1afe7eb93e91e4f0d166",
-      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained.",
-      "extracted_sha256": "098dc051b25f809d775e77258b62b79d6c2c2d5a9509be51683a6a9649c5050f"
+      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained. Experimental shared-host v3 content, membership and automatic paging adoption.",
+      "extracted_sha256": "5fb84edb75fd40bfa807b23c91fe261b84ac8f56ce2b2396a112d10ce65f47cb"
     },
     {
       "source": "roku/components/LibraryScene.brs",
       "destination": "roku/components/LibraryScene.brs",
-      "sha256": "b3da744dd8a9b7b317c9249dac06dda48de88c1e5cfc3d1d44d5708f8ca9c92a"
+      "sha256": "b3da744dd8a9b7b317c9249dac06dda48de88c1e5cfc3d1d44d5708f8ca9c92a",
+      "extracted_sha256": "945366d27ea6d8bcca0ce3acbf2fa577bba1e514d128f21d20ed643c89fe75a8",
+      "reason": " Experimental shared-host v3 content, membership and automatic paging adoption."
     },
     {
       "source": "roku/components/LiveScene.brs",
@@ -268,15 +270,15 @@
       "source": "roku/components/MainScene.brs",
       "destination": "roku/components/MainScene.brs",
       "sha256": "86b18096942ced4d58c9408fe81598e2b7f648dde69c90ead66d376734d3b1b8",
-      "extracted_sha256": "7d5468fb5a242ef32cd67ff786bc1eb2cbede25dd1b8ec89b062cf8206517b98",
-      "reason": "Rail hides behind full-screen keyboards; key-path freeze diagnostics in onKeyEvent. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained. SRC-TORRENT-RUNTIME-002 measured gateway startup stages, scoped Task events and canonical copy; original extraction hash retained. BE-002 v1 removal: addon list/install/toggle/remove use /api/v2/addons; retired /api/providers and /api/matches array routes dropped."
+      "extracted_sha256": "94f0e92a27223086b91bf5d66046d12b55ff7f43257362f1a54df1da516d26d4",
+      "reason": "Rail hides behind full-screen keyboards; key-path freeze diagnostics in onKeyEvent. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained. SRC-TORRENT-RUNTIME-002 measured gateway startup stages, scoped Task events and canonical copy; original extraction hash retained. BE-002 v1 removal: addon list/install/toggle/remove use /api/v2/addons; retired /api/providers and /api/matches array routes dropped. Experimental shared-host v3 content, membership and automatic paging adoption."
     },
     {
       "source": "roku/components/MainScene.xml",
       "destination": "roku/components/MainScene.xml",
       "sha256": "683ee2541fb021de8402c8fc590ed211abc043d423c6f7cbc3a4b5b75626063c",
-      "extracted_sha256": "bd20bdcbf8c19197edf037203641d15d5bb396cbf938e674059350491ce3d853",
-      "reason": "My List grid density (3 rows of 4), caption clearance above the segment tabs, and the player layout invariants. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained."
+      "extracted_sha256": "6fe603929b03ceb48d5901f25ef80462e620d7574f7c0ff08b6482405593b11b",
+      "reason": "My List grid density (3 rows of 4), caption clearance above the segment tabs, and the player layout invariants. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained. Experimental shared-host v3 content, membership and automatic paging adoption."
     },
     {
       "source": "roku/components/NavIcon.brs",
@@ -296,8 +298,8 @@
       "source": "roku/components/NavigationScene.brs",
       "destination": "roku/components/NavigationScene.brs",
       "sha256": "11dd77e46308cf597fdd2b7dbcdcf8c99be17f640ad0ba48b153191d86bccc8c",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained. BE-002 v1 removal: addon list/install/toggle/remove use /api/v2/addons; retired /api/providers and /api/matches array routes dropped.",
-      "extracted_sha256": "6f4b54f58c3327b83665dfa7aec7a8503fdb8df160b398fce9a884b1b55ad03e"
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained. BE-002 v1 removal: addon list/install/toggle/remove use /api/v2/addons; retired /api/providers and /api/matches array routes dropped. Experimental shared-host v3 content, membership and automatic paging adoption.",
+      "extracted_sha256": "17364f9230c8b321c955d386ea8ca7e138d7b635b0382f4b9f83fae376b3aaee"
     },
     {
       "source": "roku/components/PlaybackScene.brs",
@@ -324,8 +326,8 @@
       "source": "roku/components/PresentationArtworkScene.brs",
       "destination": "roku/components/PresentationArtworkScene.brs",
       "sha256": "f4d9ae9fe9239a1e967f152906115bdf69810611933fe0cf64b4e7b6448f671e",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. Removed unreferenced nextPlayerDialogId, playerDialogEventMatches, playerTrackSelected and prefetchHeroBackdrop, plus the heroPrefetch posters only the latter used.",
-      "extracted_sha256": "13d16aa9effd45c2051ec2b1bc146dbf660fb881ea64680d73c106d62a24c036"
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. Removed unreferenced nextPlayerDialogId, playerDialogEventMatches, playerTrackSelected and prefetchHeroBackdrop, plus the heroPrefetch posters only the latter used. Experimental shared-host v3 content, membership and automatic paging adoption.",
+      "extracted_sha256": "d3ab9c10a55a732ee44c035646dbd37bd802fc0a03d0e49f1c9c529680f7cd2a"
     },
     {
       "source": "roku/components/PresentationDetailsScene.brs",
@@ -380,8 +382,8 @@
       "source": "roku/components/ResponseScene.brs",
       "destination": "roku/components/ResponseScene.brs",
       "sha256": "582c565e78ae88fd170b1c873e7253fb1906865b62dc647d5987ecac9e77f9f5",
-      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent.",
-      "extracted_sha256": "72b2a1abc25070db6b8afe4f97b2bcaa5655c6c431934b5b97b2108c6dcf2d49"
+      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent. Experimental shared-host v3 content, membership and automatic paging adoption.",
+      "extracted_sha256": "c5d20639ffe46c980dff1c0f1d037ae01beb8c05d386298a853098a91bf23057"
     },
     {
       "source": "roku/components/SearchPanel.brs",
@@ -401,8 +403,8 @@
       "source": "roku/components/SearchScene.brs",
       "destination": "roku/components/SearchScene.brs",
       "sha256": "7dd943ac418c54be97d1d5f2ea611d4d1e73390b4a90dde21c6403a3f87c45d5",
-      "extracted_sha256": "aed9d1581c45352dd16bd0b0f0329ee2f90f71ab806e3aa720104d22dae55ef7",
-      "reason": "Hide the navigation rail behind the search keypad."
+      "extracted_sha256": "8e59ce125789013d38116b685e14a9fbc72d64318ca0b6d3f7d68710c92fa898",
+      "reason": "Hide the navigation rail behind the search keypad. Experimental shared-host v3 content, membership and automatic paging adoption."
     },
     {
       "source": "roku/components/SeekScene.brs",
@@ -436,8 +438,8 @@
       "source": "roku/components/SourcesScene.brs",
       "destination": "roku/components/SourcesScene.brs",
       "sha256": "0524426eb7f1436536cddfa79ec3e10f424ccddfddfbb125fb69c144643aaf09",
-      "reason": "New file split from MainScene.brs: source discovery lifecycle, attempt state and view save/restore moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained.",
-      "extracted_sha256": "77fb8cbc20ffec9b8c50d312f0e54089cf7fe0185e77cf50c03da0972dd18920"
+      "reason": "New file split from MainScene.brs: source discovery lifecycle, attempt state and view save/restore moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained. Experimental shared-host v3 content, membership and automatic paging adoption.",
+      "extracted_sha256": "5aea88961853bf8ee54e493973a750fafdc2dc29d342437e8bf2f5fe5049cc11"
     },
     {
       "source": "roku/components/StartupScene.brs",
@@ -3947,8 +3949,8 @@
       "source": "roku/source/ImagePolicy.brs",
       "destination": "roku/source/ImagePolicy.brs",
       "sha256": "cb9ba53488b8a2659ec0e7c227e5c1b5fc2299cc6eec684404a150455347b5ea",
-      "extracted_sha256": "3046760adac883676bb8baa9a51641c9c568ca2502e65cdaad11a465ae91bdd5",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
+      "extracted_sha256": "f2ed1d163e90ca912f8ea4cf3c4914c110a225c68d5a5214ef48b4d53efe39c2",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. Experimental shared-host v3 content, membership and automatic paging adoption."
     },
     {
       "source": "roku/source/JellyfinCaptionPolicy.brs",
@@ -3964,8 +3966,8 @@
       "source": "roku/source/PresentationPolicy.brs",
       "destination": "roku/source/PresentationPolicy.brs",
       "sha256": "fd2f4800cf57b02088852fe0c4147487ba5bd9dbb9cb5ac82052e8b805b296d2",
-      "extracted_sha256": "bc17af4c4e4ee4c1ffc26bff93fc80220fc914799a0d7ebe625ecdc5d584ea36",
-      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained."
+      "extracted_sha256": "2cbf936d10e035ed2df00895b9e712ace09e725d905babd232c44730b1a0627b",
+      "reason": "ROK-044: compact episode card captions and retain player episode-title metadata with scoped asynchronous ownership. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained. Experimental shared-host v3 content, membership and automatic paging adoption."
     },
     {
       "source": "roku/source/SourceLabels.brs",
@@ -3977,8 +3979,8 @@
       "source": "roku/source/Util.brs",
       "destination": "roku/source/Util.brs",
       "sha256": "35e9bf7a05399ae8a14d783b159b65436c1f2906b0ee56333c800f93b6169f0d",
-      "extracted_sha256": "f47f76727dae8ad02eeac7e66c104d9e5d2d570b83f40ef8547f2953246b2a21",
-      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent."
+      "extracted_sha256": "a211667559a45ff1b6c92c6f7148fd61e1d10ca7cef3c08733d31f35cebf4a18",
+      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent. Experimental shared-host v3 content, membership and automatic paging adoption."
     },
     {
       "source": "roku/source/main.brs",
@@ -4226,8 +4228,8 @@
       "source": "roku/tests/image-policy.brs",
       "destination": "roku/tests/image-policy.brs",
       "sha256": "f56a56ce6784fabdbef0d092b9a31de63502c39484c4c1be146599011c1cf699",
-      "extracted_sha256": "788265320938e2e4b6e91f8ffe0f205e7cc5f76aebf13f0c8b33da2c2595a98f",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
+      "extracted_sha256": "1471dd3fe84777c7277652635432b3d226b5721e9bd52846e97e174530a66166",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. Experimental shared-host v3 content, membership and automatic paging adoption."
     },
     {
       "source": "roku/tests/keyboard-input.brs",
@@ -4245,8 +4247,8 @@
       "source": "roku/tests/lifecycle.brs",
       "destination": "roku/tests/lifecycle.brs",
       "sha256": "2ebc9c49d5fde0d2ddbe8bb34fe44448ed29a6ffc396adb471919966c5e2c339",
-      "extracted_sha256": "956c6ca28b993ca80548d11be297a6a352d59c8ac030e228ab67a7741cc268dc",
-      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract. SRC-TORRENT-RUNTIME-002 measured gateway startup stages, scoped Task events and canonical copy; original extraction hash retained."
+      "extracted_sha256": "18bf6984d1a7b73416415cb6f448aa4675bf81435dbd18beed91d04e4eaef2ed",
+      "reason": "Tests run through scripts/run-tests.py: harnesses resolve the interpreter via tests/brs_cli.py (no machine-specific fallback) and BrightScript tests match the v2 playback/live/search contract. SRC-TORRENT-RUNTIME-002 measured gateway startup stages, scoped Task events and canonical copy; original extraction hash retained. Experimental shared-host v3 content, membership and automatic paging adoption."
     },
     {
       "source": "roku/tests/live-ux.brs",

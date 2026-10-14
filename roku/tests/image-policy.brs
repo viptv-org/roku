@@ -14,6 +14,9 @@ sub Main()
         check(ImageUrl(private,256,144)=private,"private/original URLs stay local")
     end for
     check(instr(1,ImageUrl("https://i.imgur.com/logo.png",112,73,false,true),"output=png")>0,"logo transparency")
+    check(instr(1,ImageUrl("https://simkl.in/posters/public_m.webp",200,300),"output=jpg")>0,"public Simkl posters use the existing TV image format")
+    privateSimkl = "https://simkl.in/posters/public_m.webp?token=private"
+    check(ImageUrl(privateSimkl,200,300)=privateSimkl,"query-bearing image hints do not leave their origin")
     print "IMAGE_POLICY_OK"
 end sub
 sub check(ok as boolean,label as string)

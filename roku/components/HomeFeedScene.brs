@@ -1,6 +1,24 @@
 sub homeResponse(kind as string, result as object)
     if m.mode <> "home" or m.homeData = invalid then return
     if m.homeKeyValue <> m.config.base + "|" + Txt(m.config.account_id) + "|" + m.profile then return
+    if kind = "bootstrap"
+        if result.ok and Txt(result.data.profile_id) = m.profile
+            m.engineHome = true
+            m.engineMembership = result.data.membership
+            m.homeDone.bootstrap = true
+            m.homeDone.delete("progress")
+            m.homeDone.delete("favorites")
+            m.homeDone.live = true
+            m.homeDone.livefavorites = true
+            m.homeDone.recent = true
+            homeResponse("progress",{ok:true,data:result.data.queue})
+            homeResponse("favorites",{ok:true,data:result.data.favorites})
+            homeUseCatalogs({ok:true,data:result.data.catalogs})
+        else
+            m.status.text = "Home is unavailable. Try again."
+        end if
+        return
+    end if
     if kind = "catalogs"
         homeUseCatalogs(result)
         return
@@ -20,11 +38,11 @@ sub homeResponse(kind as string, result as object)
         if kind = "favorites"
             if GetInterface(incoming,"ifAssociativeArray") <> invalid then incoming = incoming.items
             m.liveFavoriteItems = Bounded(incoming,40)
-            request("GET","/api/v2/iptv/live/channels?collection=favorites&limit=24",invalid,"home:livefavorites")
+            if m.engineHome <> true then request("GET","/api/v2/iptv/live/channels?collection=favorites&limit=24",invalid,"home:livefavorites")
         end if
         if kind = "progress"
             if GetInterface(incoming,"ifAssociativeArray") <> invalid then incoming = incoming.items
-            incoming = ContinueWatchingItems(incoming)
+            if m.engineHome <> true then incoming = ContinueWatchingItems(incoming)
         end if
         if kind = "recent" or kind = "livefavorites" then incoming = result.data.items
         if kind = "favorites" then incoming = OnDemandItems(incoming)

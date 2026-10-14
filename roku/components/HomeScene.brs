@@ -1,5 +1,6 @@
 function homeRevision(kind as string) as integer
     if m.homeRevisions = invalid then m.homeRevisions = {progress:0,favorites:0}
+    if not m.homeRevisions.doesExist(kind) then m.homeRevisions[kind] = 0
     return m.homeRevisions[kind]
 end function
 
@@ -14,9 +15,15 @@ sub homeMutation(origin as object, completed as boolean)
     if kind = "" then return
     revision = homeRevision(kind)
     m.homeRevisions[kind] = revision + 1
+    m.homeRevisions.bootstrap = homeRevision("bootstrap") + 1
     m.homeDirty = true
     if m.homeDone <> invalid then m.homeDone.delete(kind)
+    if m.homeDone <> invalid then m.homeDone.delete("bootstrap")
     if completed and m.mode = "home" and m.homeData <> invalid
+        if m.engineHome = true
+            request("GET","/api/v3/bootstrap",invalid,"home:bootstrap")
+            return
+        end if
         ' A revision rejects older GETs that finish after the mutation acknowledgement.
         if kind = "progress"
             request("GET",prefix + "continue/page?limit=13",invalid,"home:progress")
@@ -131,6 +138,8 @@ sub showHome()
     key = m.config.base + "|" + Txt(m.config.account_id) + "|" + m.profile
     now = CreateObject("roDateTime").asSeconds()
     if m.homeKeyValue <> key
+        m.engineMembership = invalid
+        m.engineHome = false
         m.views = []
         clearHomeCache()
         m.homePosition = [0,0]
@@ -185,11 +194,7 @@ sub showHome()
     homeRestore()
     homeHero()
     if acknowledgementMayFocus() then uiHomeFocus()
-    if not m.homeDone.doesExist("progress") then request("GET","/api/profiles/" + Enc(m.profile) + "/continue/page?limit=13",invalid,"home:progress")
-    if not m.homeDone.doesExist("favorites") then request("GET","/api/profiles/" + Enc(m.profile) + "/favorites/page?limit=13&exclude_live=true",invalid,"home:favorites")
-    if not m.homeDone.doesExist("recent") then request("GET","/api/v2/iptv/live/channels?collection=recent&limit=24",invalid,"home:recent")
-    if not m.homeDone.doesExist("live") then request("GET","/api/v2/iptv/live/channels?limit=12&search=",invalid,"home:live")
-    if m.homeCatalogs = invalid then request("GET","/api/catalogs",invalid,"home:catalogs")
+    if not m.homeDone.doesExist("bootstrap") then request("GET","/api/v3/bootstrap",invalid,"home:bootstrap")
     homeCatalogPump()
 end sub
 

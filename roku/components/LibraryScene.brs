@@ -4,6 +4,13 @@ sub openLibraryPage(offset = 0 as integer)
     m.collection = "favorites"
     m.libraryOffset = offset
     if m.libraryOffset < 0 then m.libraryOffset = 0
+    m.collectionItems = []
+    m.collectionNextOffset = invalid
+    m.collectionAppending = false
+    m.collectionLoading = true
+    m.collectionRetryAfter = invalid
+    m.collectionRestoreIndex = m.libraryRestoreIndex
+    m.libraryRestoreIndex = invalid
     rows("My List",[],"collection","Loading…")
     request("GET","/api/profiles/"+Enc(m.profile)+"/favorites/page?limit=40&offset="+m.libraryOffset.toStr(),invalid,"librarypage")
 end sub
@@ -14,19 +21,7 @@ function libraryResponse(tag as string,result as object) as boolean
         return true
     end if
     if tag = "librarypage"
-        if not result.ok
-            rows("My List",[{name:"Try again",action:"librarypage",offset:m.libraryOffset}],"collection","Could not load My List.")
-            return true
-        end if
-        items = Bounded(result.data.items,40)
-        if items.count() = 0 and m.libraryOffset > 0 then openLibraryPage(m.libraryOffset-40) : return true
-        if result.data.offset > 0 then items.unshift({name:"Previous page",action:"librarypage",offset:result.data.offset-40})
-        if result.data.next_offset <> invalid then items.push({name:"Next page",action:"librarypage",offset:result.data.next_offset})
-        rows("My List",items,"collection","Hold OK or press * to remove a title")
-        if m.libraryRestoreIndex <> invalid
-            m.list.jumpToItem = RestoreCardIndex(m.libraryRestoreIndex,items.count())
-            m.libraryRestoreIndex = invalid
-        end if
+        collectionPage(result,"My List","Hold OK or press * to remove a title","librarypage")
         return true
     end if
     if tag = "librarycorrected"

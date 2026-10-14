@@ -43,7 +43,15 @@ sub searchEverything()
     m.searchInFlight = 0
     m.searchNext = 0
     m.searchErrors = 0
-    request("GET","/api/catalogs",invalid,"searchcatalogs")
+    if m.searchScope = "live"
+        searchCatalogs({ok:true,data:[]})
+    else
+        kind = "all"
+        if m.searchScope = "movie" or m.searchScope = "series" then kind = m.searchScope
+        m.searchPending = 1
+        m.searchInFlight = 1
+        request("GET","/api/v3/discover?type=" + kind + "&search=" + Enc(m.search),invalid,"searchengine")
+    end if
 end sub
 
 sub searchCatalogs(result as object)
@@ -54,7 +62,8 @@ sub searchCatalogs(result as object)
                 if m.searchCatalog = invalid or (Txt(catalog.id) = Txt(m.searchCatalog.id) and Txt(catalog.addon_id) = Txt(m.searchCatalog.addon_id))
                 section = {name:Txt(catalog.addon_name) + " · " + Txt(catalog.name,Txt(catalog.id)),kind:Txt(catalog.type),items:[],done:false}
                 m.searchSections.push(section)
-                path = "/api/discover?type=" + Enc(section.kind) + "&addon_id=" + Enc(Txt(catalog.addon_id)) + "&catalog=" + Enc(Txt(catalog.id)) + "&skip=0&search=" + Enc(m.search)
+                path = "/api/discover?type=" + Enc(section.kind) + "&catalog=" + Enc(Txt(catalog.id)) + "&skip=0&search=" + Enc(m.search)
+                if Txt(catalog.addon_id) <> "" then path += "&addon_id=" + Enc(Txt(catalog.addon_id))
                 m.searchPending++
                 if UiCatalogRequired(catalog,"genre") and Bounded(catalog.genres,64).count() > 0 then path += "&genre=" + Enc(Txt(catalog.genres[0]))
                 section.path = path

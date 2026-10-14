@@ -70,6 +70,7 @@ sub UiCardContent(node as object, item as object)
     if art = "" then art = Txt(item.thumbnail)
     if art = "" and Txt(item.posterShape) = "landscape" then art = Txt(item.poster)
     path = "/api/meta/" + Enc(Txt(item.type,"movie")) + "/" + Enc(PresentationMetadataId(item))
+    if GetInterface(item.engine_card,"ifAssociativeArray") <> invalid then path = ""
     if art = "" and m.uiLandscapeCache <> invalid
         if m.uiLandscapeCache[path] <> invalid then art = m.uiLandscapeCache[path]
     end if
@@ -122,6 +123,13 @@ function OriginalSourceDetails(item as object) as string
 end function
 
 function UiIsFavorite(item as object) as boolean
+    if GetInterface(m.engineMembership,"ifArray") <> invalid and Txt(item.type) <> "live"
+        id = PresentationMetadataId(item)
+        for each identity in m.engineMembership
+            if Txt(identity.id) = id and Txt(identity.kind) = Txt(item.type) then return true
+        end for
+        return false
+    end if
     values = m.liveFavoriteItems
     if values = invalid and m.homeData <> invalid then values = m.homeData[4]
     for each favorite in Bounded(values,10000)

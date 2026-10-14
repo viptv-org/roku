@@ -146,7 +146,7 @@ sub Main()
     assertThat(m.playItem.name = "Canonical Series","actual episode selection keeps canonical name")
     assertThat(m.playItem.displayName = "Canonical Series — Decorated Episode","actual episode selection keeps separate display name")
     assertThat(m.queue[m.queue.count()-1].body.name = "Canonical Series" and m.queue[m.queue.count()-1].body.year = 2022,"actual selection request matches canonical series and year")
-    ' Catalog-driven global search: searchable catalogs plus raw Live TV, three requests in flight.
+    ' The selected host metadata owner ranks one global search, including Anime.
     m.queue = []
     m.top.dialog = invalid
     m.video.visible = false
@@ -157,35 +157,21 @@ sub Main()
     m.searchPanel = {results:invalid,status:"",selected:invalid}
     m.search = "shared query"
     searchEverything()
-    assertThat(m.queue.count() = 1 and m.queue[0].path = "/api/catalogs","global search first reads searchable catalogs")
+    assertThat(m.queue.count() = 1 and m.queue[0].path = "/api/v3/discover?type=all&search=shared%20query","global metadata search uses one encoded host query")
+    assertThat(m.searchPending = 1 and m.searchInFlight = 1,"global search does not fan out over catalogs")
     m.queue = []
     currentGeneration = m.generation
-    event = {data:{tag:"searchcatalogs|" + currentGeneration.toStr(),ok:true,data:[{id:"top",addon_id:"a1",addon_name:"Addon",name:"Top",type:"movie",supports_search:true},{id:"shows",addon_id:"a1",addon_name:"Addon",name:"Shows",type:"series",supports_search:true},{id:"plain",addon_id:"a1",name:"Plain",type:"movie",supports_search:false},{id:"tv",addon_id:"a2",addon_name:"Other",name:"TV",type:"tv",supports_search:true}]},node:{request:m.config},getData:FakeGetData,getRoSGNode:FakeGetNode}
+    matches = [{id:"naruto",type:"series",category:"anime",name:"Naruto"},{id:"movie",type:"movie",name:"Movie match"},{id:"show",type:"series",category:"tv",name:"Show match"}]
+    event = {data:{tag:"searchengine|" + currentGeneration.toStr(),ok:true,data:{metas:matches}},node:{request:m.config},getData:FakeGetData,getRoSGNode:FakeGetNode}
     response(event)
-    assertThat(m.searchSections.count() = 3 and m.searchSections[2].kind = "live","only searchable movie/series catalogs plus Live TV become sections")
-    assertThat(m.queue.count() = 3 and m.searchInFlight = 3,"at most three section requests are in flight")
-    for each pending in m.queue
-        assertThat(instr(1,pending.path,"search=shared%20query") > 0,"one encoded query shared across sections")
-    end for
-    assertThat(m.queue[2].path = "/api/v2/iptv/live/channels?limit=80&search=shared%20query","live search uses the raw v2 channel route")
-    movies = []
-    for i = 1 to 30
-        movies.push({id:"movie" + i.toStr(),name:"Movie match"})
-    end for
-    movies.push({id:"movie1",name:"Duplicate"})
-    event.data = {tag:"searchall:0|" + currentGeneration.toStr(),ok:true,data:{metas:movies}}
+    assertThat(m.searchSections.count() = 3 and m.searchSections[0].name = "Anime","server category order retains top ranked Anime")
+    assertThat(m.searchSections[0].items[0].id = "naruto" and m.searchSections[0].items[0].type = "series","render grouping does not rewrite canonical playback kind")
+    assertThat(m.searchPending = 0 and m.queue.count() = 0,"complete global response schedules no extra searches")
     response(event)
-    assertThat(m.searchSections[0].items.count() = 24 and m.searchSections[0].items[0].type = "movie","section results are typed and bounded")
-    event.data = {tag:"searchall:0|" + currentGeneration.toStr(),ok:true,data:{metas:[{id:"late",name:"Late"}]}}
-    response(event)
-    assertThat(m.searchSections[0].items.count() = 24 and m.searchPending = 2,"a repeated section response cannot append twice")
-    event.data = {tag:"searchall:2|" + currentGeneration.toStr(),ok:true,data:{items:[{id:"shared-id",name:"Live match",now:{title:"News"}}]}}
-    response(event)
-    assertThat(m.searchSections[2].items[0].type = "live" and m.searchSections[2].items[0].releaseInfo = "ON NOW · News","live result appends typed with what is on now")
-    event.data = {tag:"searchall:1|" + currentGeneration.toStr(),ok:false,error:"HTTP 503"}
-    response(event)
-    assertThat(m.searchErrors = 1 and m.searchPending = 0 and instr(1,m.searchPanel.status,"Some sources couldn't load") > 0,"failed section leaves other results and reports partial failure")
-    assertThat(m.searchRowKeys.count() = 2 and m.searchRowKeys[1] = 2,"empty and failed sections render no row")
+    assertThat(m.searchSections[0].items.count() = 1,"repeated result publication does not append duplicate cards")
+    m.searchScope = "live"
+    searchEverything()
+    assertThat(m.queue.count() = 1 and m.queue[0].path = "/api/v2/iptv/live/channels?limit=80&search=shared%20query","explicit Live search retains its live channel boundary")
     m.pendingPlayback = false
     m.queue = []
     ' Discover catalog routing renders the full page; see browse-policy.brs and home_catalog_runtime.py.

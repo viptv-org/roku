@@ -156,6 +156,10 @@ sub handleResponse(event as object)
         searchCatalogs(result)
         return
     end if
+    if tag = "searchengine"
+        engineSearchResponse(result)
+        return
+    end if
     if left(tag,10) = "searchall:"
         searchBatch(mid(tag,11),result)
         return
@@ -309,6 +313,9 @@ sub handleResponse(event as object)
         showDetail(m.selected)
         if values.count() = 2 then m.description.text = "No guide data supplied for this channel."
     else if tag = "favorited"
+        if GetInterface(result.data.library_membership,"ifAssociativeArray") <> invalid
+            if GetInterface(result.data.library_membership.identities,"ifArray") <> invalid then m.engineMembership = result.data.library_membership.identities
+        end if
         if result.data.saved <> invalid
             m.favoriteMessage = "Removed from favorites."
             if result.data.saved then m.favoriteMessage = "Added to favorites."

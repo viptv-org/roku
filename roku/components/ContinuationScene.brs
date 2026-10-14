@@ -30,18 +30,7 @@ function continuationResponse(tag as string, result as object) as boolean
         return true
     end if
     if tag = "queuepage"
-        if not result.ok
-            rows("Continue Watching",[{name:"Try again",action:"queuepage",offset:m.queueOffset}],"collection",Txt(result.error))
-            return true
-        end if
-        items = result.data.items
-        if result.data.offset > 0 then items.unshift({name:"Previous page",action:"queuepage",offset:result.data.offset-40})
-        if result.data.next_offset <> invalid then items.push({name:"Next page",action:"queuepage",offset:result.data.next_offset})
-        rows("Continue Watching",items,"collection","Hold OK or press * to manage a title")
-        if m.queueRestoreIndex <> invalid
-            m.list.jumpToItem = RestoreCardIndex(m.queueRestoreIndex,items.count())
-            m.queueRestoreIndex = invalid
-        end if
+        collectionPage(result,"Continue Watching","Hold OK or press * to manage a title","queuepage")
         return true
     end if
     if tag = "queuevisibility"
@@ -137,6 +126,7 @@ end sub
 
 function selectQueueItem(item as object) as boolean
     if Txt(item.queue_status) = "" then return false
+    if item.queue_status = "resume" then return false
     if item.queue_status = "next"
         findStreams(item,true)
     else
@@ -152,6 +142,13 @@ sub openViewingQueue(offset = 0 as integer)
     m.collection = "progress"
     m.queueOffset = offset
     if m.queueOffset < 0 then m.queueOffset = 0
+    m.collectionItems = []
+    m.collectionNextOffset = invalid
+    m.collectionAppending = false
+    m.collectionLoading = true
+    m.collectionRetryAfter = invalid
+    m.collectionRestoreIndex = m.queueRestoreIndex
+    m.queueRestoreIndex = invalid
     rows("Continue Watching",[],"collection","Loading…")
     request("GET",continuationPath("page")+"?limit=40&offset="+m.queueOffset.toStr(),invalid,"queuepage")
 end sub

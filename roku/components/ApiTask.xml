@@ -13,4 +13,9 @@
  <script type="text/brightscript" uri="pkg:/components/ApiTask.brs" />
  <script type="text/brightscript" uri="pkg:/components/ApiPlaybackV2.brs" />
  <script type="text/brightscript" uri="pkg:/components/ApiTaskSanitize.brs" />
+ <script type="text/brightscript" uri="pkg:/source/EngineCard.brs" />
+ <script type="text/brightscript" uri="pkg:/source/EngineHome.brs" />
+ <script type="text/brightscript" uri="pkg:/components/ApiEngineContent.brs" />
+ <script type="text/brightscript" uri="pkg:/components/ApiEngineQueue.brs" />
+ <script type="text/brightscript" uri="pkg:/components/ApiEngineLibrary.brs" />
 </component>

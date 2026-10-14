@@ -255,6 +255,7 @@ end sub
 
 sub focused()
     uiQueueCardArtwork()
+    collectionMaybeLoad()
     if m.listUpdating = true then return
     index = m.list.itemFocused
     if index < 0 or index >= m.items.count() then index = 0
@@ -287,5 +288,7 @@ sub toggleFavorite()
     if item.id = invalid or item.type = invalid then return
     m.favoriteBusy = true
     m.favoriteItem = item
-    request("POST", "/api/profiles/" + Enc(m.profile) + "/favorites/toggle", {id:item.id,type:item.type,name:item.name,poster:FavoriteArtwork(item)}, "favorited")
+    body = {id:item.id,type:item.type,name:item.name,poster:FavoriteArtwork(item),desired_saved:not UiIsFavorite(item)}
+    if GetInterface(item.engine_card,"ifAssociativeArray") <> invalid then body.engine_card = item.engine_card
+    request("POST", "/api/profiles/" + Enc(m.profile) + "/favorites/toggle", body, "favorited")
 end sub

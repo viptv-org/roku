@@ -54,6 +54,7 @@ sub refreshSourceIds(newEpoch = true as boolean)
     m.playItem.duration = m.duration
     body = {id:m.playItem.id,type:m.playItem.type,name:Txt(m.playItem.seriesName,m.playItem.name)}
     body.append(StreamContext(m.playItem))
+    if GetInterface(m.playItem.engine_card,"ifAssociativeArray") <> invalid then body.card = m.playItem.engine_card
     m.discoveryV2 = true
     m.discoveryError = ""
     request("POST","/api/v2/streams",body,"streamstart")

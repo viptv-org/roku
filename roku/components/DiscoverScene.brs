@@ -99,7 +99,10 @@ sub browse(kind as string, offset as integer)
         ' Omitting an empty search preserves normal Stremio catalog browsing and
         ' its authoritative cursor; search= would incorrectly invoke aggregation.
         if query <> "" then path += "&search=" + Enc(query)
-        if m.catalog <> invalid then path += "&catalog=" + Enc(Txt(m.catalog.id)) + "&addon_id=" + Enc(Txt(m.catalog.addon_id))
+        if m.catalog <> invalid
+            path += "&catalog=" + Enc(Txt(m.catalog.id))
+            if Txt(m.catalog.addon_id) <> "" then path += "&addon_id=" + Enc(Txt(m.catalog.addon_id))
+        end if
         genre = Txt(m.discoverGenre).trim()
         if m.discoverActive = true and genre <> "" then path += "&genre=" + Enc(genre)
         if m.discoverActive = true and m.discoverExtras <> invalid

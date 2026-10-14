@@ -85,6 +85,7 @@ sub request(method as string, path as string, body as dynamic, tag as string, co
         m.playbackLeases.delete(identity)
     end if
     if tag = "home:progress" or tag = "home:favorites" then tag += ":" + homeRevision(mid(tag,6)).toStr()
+    if tag = "home:bootstrap" then tag += ":" + homeRevision("bootstrap").toStr()
     if tag = "home:recent" then tag += ":" + homeRevision("progress").toStr()
     if tag = "home:livefavorites" then tag += ":" + homeRevision("favorites").toStr()
     if m.requestSequence = invalid then m.requestSequence = 0
@@ -92,6 +93,7 @@ sub request(method as string, path as string, body as dynamic, tag as string, co
     requestId = m.generation.toStr() + "-" + m.requestSequence.toStr()
     entry = {base:connection.base,access_token:Txt(connection.access_token),path:path,method:method,body:body,tag:tag + "|" + m.generation.toStr(),request_id:requestId}
     entry.account_epoch = m.accountEpoch
+    entry.content_contract = 3
     entry.last_profile_id = Txt(connection.last_profile_id)
     if (tag = "playback" or tag = "seekplayback") and body <> invalid
         if Txt(m.startupPrefix) = "" then m.startupPrefix = CreateObject("roDateTime").asSeconds().toStr()

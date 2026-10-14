@@ -325,6 +325,12 @@ function EpisodeItem(parent as object, video as object) as object
     parentId = MatchingContext({series_id:parent.id})
     if parentId.series_id <> invalid then context.series_id = parentId.series_id
     episode.append(context)
+    if GetInterface(video.engine_card,"ifAssociativeArray") <> invalid
+        episode.engine_card = video.engine_card
+        episode.engine_identity = video.engine_card.identity
+        episode.engine_parent_identity = video.engine_card.parent_identity
+        episode.engine_provider_id = video.engine_card.provider_id
+    end if
     return episode
 end function
 

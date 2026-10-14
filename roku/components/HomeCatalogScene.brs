@@ -16,9 +16,17 @@ sub homeUseCatalogs(result as object)
             title = Txt(catalog.name,Txt(catalog.id))
             if Txt(catalog.addon_name) <> "" then title = Txt(catalog.addon_name)+" · "+title
             entry = {catalog:catalog,title:title,loaded:false,failed:false,empty:false,nextSkip:0,column:0}
+            cached = invalid
+            if catalog.engine_ready = true and GetInterface(catalog.engine_cards,"ifArray") <> invalid
+                cached = catalog.engine_cards
+                entry.loaded = true
+                entry.empty = cached.count() = 0
+                entry.nextSkip = invalid
+                if catalog.engine_next <> invalid then entry.nextSkip = val(Txt(catalog.engine_next))
+            end if
             index = m.homeCatalogs.count()+7
             m.homeCatalogs.push(entry)
-            m.homeData.push(homeCatalogPlaceholder(index))
+            if cached <> invalid then m.homeData.push(cached) else m.homeData.push(homeCatalogPlaceholder(index))
             m.homeStates.push("Loading catalog…")
             m.homeFailed.push(false)
             m.homeRoot.appendChild(homeRow(index))
@@ -130,7 +138,8 @@ sub homeCatalogPump(advanceWindow = false as boolean)
                     m.homeCatalogSerial++
                     tag = "homecatalog:"+m.homeCatalogSerial.toStr()
                     m.homeCatalogPending[tag] = {index:index,skip:skip,scope:m.homeKeyValue}
-                    path = "/api/discover?type="+Enc(Txt(catalog.type))+"&addon_id="+Enc(Txt(catalog.addon_id))+"&catalog="+Enc(Txt(catalog.id))+"&skip="+skip.toStr()
+                    path = "/api/discover?type="+Enc(Txt(catalog.type))+"&catalog="+Enc(Txt(catalog.id))+"&skip="+skip.toStr()
+                    if Txt(catalog.addon_id) <> "" then path += "&addon_id="+Enc(Txt(catalog.addon_id))
                     occupied++
                     request("GET",path,invalid,tag)
                 end if
