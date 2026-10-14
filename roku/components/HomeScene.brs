@@ -139,6 +139,7 @@ sub showHome()
     now = CreateObject("roDateTime").asSeconds()
     if m.homeKeyValue <> key
         m.engineMembership = invalid
+        m.engineSubtitlesAvailable = false
         m.engineHome = false
         m.views = []
         clearHomeCache()

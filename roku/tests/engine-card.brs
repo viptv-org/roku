@@ -23,6 +23,10 @@ sub Main()
     check(catalogs.count() = 1 and catalogs[0].type = "anime" and catalogs[0].id = "simkl-trending", "shelf routes come from explicit server action")
     check(catalogs[0].engine_cards[0].id = two.id and catalogs[0].engine_ready, "startup shelf cards do not require a second discover request")
     check(EngineQueue({entries:[{card:card,record:history,status:"Next"}],next_cursor:"40"}).next_offset = 40, "authoritative continuation cursor survives projection")
+    bootstrap = {identity:{profile_id:"1"},home:home,library:{cards:[]},continuation:{entries:[]},subtitle_availability:{available:true,provider_count:1}}
+    check(EngineBootstrap(bootstrap).subtitles_available = true, "profile subtitle availability comes from the startup aggregate")
+    bootstrap.delete("subtitle_availability")
+    check(EngineBootstrap(bootstrap).subtitles_available = false, "older host does not imply enabled subtitle providers")
     print "ROKU_ENGINE_CARD_OK"
 end sub
 

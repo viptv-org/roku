@@ -5,6 +5,7 @@ sub homeResponse(kind as string, result as object)
         if result.ok and Txt(result.data.profile_id) = m.profile
             m.engineHome = true
             m.engineMembership = result.data.membership
+            m.engineSubtitlesAvailable = result.data.subtitles_available = true
             m.homeDone.bootstrap = true
             m.homeDone.delete("progress")
             m.homeDone.delete("favorites")

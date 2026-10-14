@@ -242,15 +242,15 @@
       "source": "roku/components/HomeFeedScene.brs",
       "destination": "roku/components/HomeFeedScene.brs",
       "sha256": "d637da6fe6b503b790bee68ba35c939273d080e912071772f32029300d294c9a",
-      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. Experimental shared-host v3 content, membership and automatic paging adoption.",
-      "extracted_sha256": "212b48b8d0652e426bc7bd7f7fa2242a0eb8457ffe0a6807f6846c19a892a064"
+      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. Experimental shared-host v3 content, membership and automatic paging adoption. Profile subtitle availability from the shared startup aggregate, 2026-10-13.",
+      "extracted_sha256": "f181c580cb90cb4224ae4fb9c6185b6eda1f5fcf460f65a2df0ab7f7421a53d3"
     },
     {
       "source": "roku/components/HomeScene.brs",
       "destination": "roku/components/HomeScene.brs",
       "sha256": "98eff40f139b55c320c4eb4901c04061833c7e6223cc1afe7eb93e91e4f0d166",
-      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained. Experimental shared-host v3 content, membership and automatic paging adoption.",
-      "extracted_sha256": "5fb84edb75fd40bfa807b23c91fe261b84ac8f56ce2b2396a112d10ce65f47cb"
+      "reason": "ROK-044: preserve matching episode title/logo/rating; measured inline hero progress, metadata ownership checks and cache reset. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. BE-002 removes the retired quality preference/control while preserving decoder facts and active preference boundaries; original extraction hash retained. Experimental shared-host v3 content, membership and automatic paging adoption. Profile subtitle availability from the shared startup aggregate, 2026-10-13.",
+      "extracted_sha256": "ea80598dabeb024e89b844aa2a6ccfa4a2ef7449e58aca77f15c82fc5d1deedb"
     },
     {
       "source": "roku/components/LibraryScene.brs",
@@ -305,8 +305,8 @@
       "source": "roku/components/PlaybackScene.brs",
       "destination": "roku/components/PlaybackScene.brs",
       "sha256": "2895f449c1c79ce16987253c68728b4e2baca7539ca6e10e47955947e7ee09b3",
-      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent. Shared engine Live, scoped provider captions and explicit gateway timeline integration; original extraction hash retained, 2026-10-13.",
-      "extracted_sha256": "0deb6b580a248c1668201acc92f50aa4998e7fdd56dae0ba127128737c79bc75"
+      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent. Shared engine Live, scoped provider captions and explicit gateway timeline integration; original extraction hash retained, 2026-10-13. Profile subtitle availability from the shared startup aggregate, 2026-10-13.",
+      "extracted_sha256": "d17cdaaf5b70812ee5dfe52a9ce09838e8055c6b5b4fc9cb0989cf408fc9f7bf"
     },
     {
       "source": "roku/components/PlayerOverlay.brs",

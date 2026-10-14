@@ -49,7 +49,9 @@ function EngineBootstrap(data as dynamic) as dynamic
     if queue = invalid then return invalid
     membership = []
     if AccountIsObject(data.library_membership) and EngineIsArray(data.library_membership.identities) then membership = data.library_membership.identities
-    return {queue:queue,favorites:EngineCards(data.library.cards),membership:membership,catalogs:EngineCatalogs(data.home),hero:EngineCard(data.home.hero),profile_id:Txt(data.identity.profile_id)}
+    subtitles = false
+    if AccountIsObject(data.subtitle_availability) then subtitles = data.subtitle_availability.available = true
+    return {queue:queue,favorites:EngineCards(data.library.cards),membership:membership,catalogs:EngineCatalogs(data.home),hero:EngineCard(data.home.hero),profile_id:Txt(data.identity.profile_id),subtitles_available:subtitles}
 end function
 
 function EngineRequestCopy(request as object) as object

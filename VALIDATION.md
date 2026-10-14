@@ -11,3 +11,5 @@ The shared Live adapter retains opaque M3U connection/channel/group IDs and exac
 Current full local suite: 71 passed, zero failures. BrighterScript 0.73.1 compile/staging passed. The public runtime ZIP was packaged from that staging tree; its checksum is stored beside the private workspace artifact. This is an experimental package, not a production release.
 
 The compatible timeline contract retains the explicit gateway offset, keeping resumed HLS seek and title clocks separate. Backend integration pin: `91ecda58179ffa9fde4f19264c49b52c8dd4386c`; gateway `c85cd279c68e9fbc46530fb2e39bfc5de45ee7cd`. The current real HTTPS metadata probe again collected all 1,184 One Piece episodes.
+
+Provider subtitle discovery is hidden unless the selected profile bootstrap advertises an enabled subtitle provider. Old hosts default to unavailable; no extra startup request is added. The existing full 71-check gate is supplemented by the focused bootstrap projection check and current compiler pass.

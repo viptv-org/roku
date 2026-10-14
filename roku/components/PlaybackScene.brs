@@ -335,7 +335,7 @@ sub showPlayerTracks(kind as string, page = 0 as integer)
         message = "This stream has no selectable audio tracks."
         if kind = "subtitles" then message = "This stream has no selectable subtitles."
     end if
-    if kind = "subtitles" and m.externalSubtitlesSupported = true and m.playbackLive <> true then m.trackChoices.push({action:"provider-search",name:"Find add-on subtitles"})
+    if kind = "subtitles" and m.externalSubtitlesSupported = true and m.engineSubtitlesAvailable = true and m.playbackLive <> true then m.trackChoices.push({action:"provider-search",name:"Find add-on subtitles"})
     m.trackChoices.push({action:"back",name:"Back to player"})
     m.choiceKind = "playerTracks"
     m.choiceGeneration = m.generation
