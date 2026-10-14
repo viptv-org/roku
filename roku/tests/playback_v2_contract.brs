@@ -12,6 +12,21 @@ sub Main()
     lease = RokuPlaybackV2Lease(value,"pb2_fixture")
     if not lease.ok then throw "valid lease refused"
     if lease.data.session.delivery_kind <> "gateway" or lease.data.session.position <> 42 or lease.data.session.selected_audio.input_index <> 2 then throw "delivery facts lost"
+    value.delivery.position = 0
+    value.delivery.timeline_offset_seconds = 48.6#
+    value.delivery.external_subtitles_supported = true
+    lease = RokuPlaybackV2Lease(value)
+    clock = PlaybackClock(lease.data.session)
+    if not lease.ok or clock.offset <> 48.6# or clock.seek <> invalid then throw "explicit gateway cut offset lost or double sought"
+    if lease.data.session.external_subtitles_supported <> true then throw "external subtitle capability lost"
+    value.delivery.timeline_offset_seconds = -1
+    if RokuPlaybackV2Lease(value).ok then throw "negative cut offset accepted"
+    value.delivery.timeline_offset_seconds = 48.6#
+    value.delivery.position = 48.6#
+    if RokuPlaybackV2Lease(value).ok then throw "double gateway seek accepted"
+    value.delivery.delete("timeline_offset_seconds")
+    value.delivery.delete("external_subtitles_supported")
+    value.delivery.position = 42
     value.delivery.audio_tracks[0].url = "https://provider.invalid/private-track"
     if RokuPlaybackV2Lease(value).data.session.audio_tracks[0].DoesExist("url") then throw "raw track authority exposed"
     if RokuPlaybackV2Lease(value,"foreign").ok then throw "identity mismatch accepted"

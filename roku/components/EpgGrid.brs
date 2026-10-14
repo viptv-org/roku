@@ -15,7 +15,7 @@ sub init()
     m.cache = {}
     m.order = []
     m.labels = {}
-    m.filtersData = [{id:"all",name:"All channels"},{id:"favorites",name:"My channels"},{id:"recent",name:"Recent"},{id:"search",name:"Search"}]
+    m.filtersData = epgBaseFilters()
     m.menu = 0
     m.row = 0
     m.offset = 0
@@ -37,7 +37,7 @@ sub open(scope as string)
         m.cache = {}
         m.order = []
         m.labels = {}
-        m.filtersData = [{id:"all",name:"All channels"},{id:"favorites",name:"My channels"},{id:"recent",name:"Recent"},{id:"search",name:"Search"}]
+        m.filtersData = epgBaseFilters()
     end if
     m.top.query = ""
     m.scope = scope
@@ -72,12 +72,12 @@ end sub
 
 sub epgCategories()
     paging = m.categoryBusy = true
-    m.filtersData = [{id:"all",name:"All channels"},{id:"favorites",name:"My channels"},{id:"recent",name:"Recent"},{id:"search",name:"Search"}]
+    m.filtersData = epgBaseFilters()
     for each category in Bounded(m.top.categories,100)
         if Txt(category.id) <> "" then m.filtersData.push({id:category.id,name:Txt(category.name)})
     end for
     if paging
-        m.menu = 4
+        m.menu = m.baseFilterCount
         if m.top.categoryPage.last = true then m.menu = m.filtersData.count()-1
         if m.menu >= m.filtersData.count() then m.menu = 0
         m.menuFocus = true
@@ -464,7 +464,7 @@ function onKeyEvent(key as string, press as boolean) as boolean
             m.top.categoryNeeded = {cursor:m.categoryNext,last:false}
             return true
         end if
-        if key = "left" and m.menu = 4 and Txt(m.categoryPrevious) <> ""
+        if key = "left" and m.menu = m.baseFilterCount and Txt(m.categoryPrevious) <> ""
             m.categoryBusy = true
             m.top.categoryNeeded = {cursor:m.categoryPrevious,last:true}
             return true
@@ -610,3 +610,14 @@ sub epgDetailSelected()
         epgRender()
     end if
 end sub
+
+function epgBaseFilters() as object
+    values = [{id:"all",name:"All channels"}]
+    if m.top.collectionsSupported <> false
+        values.push({id:"favorites",name:"My channels"})
+        values.push({id:"recent",name:"Recent"})
+    end if
+    values.push({id:"search",name:"Search"})
+    m.baseFilterCount = values.count()
+    return values
+end function

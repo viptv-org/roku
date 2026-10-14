@@ -8,6 +8,7 @@ function EngineContentRequest(request as object, result as object, method as str
     if route = "/api/v3/bootstrap" then target = path
     if route = "/api/discover" then target = "/api/v3/discover" + mid(path,len(route)+1)
     if route = "/api/v3/discover" then target = path
+    if left(route,18) = "/api/v3/subtitles/" then target = path
     if left(route,10) = "/api/meta/" then target = "/api/v3/meta/" + mid(path,11)
     if target = "" then return invalid
     if left(Txt(request.base),8) <> "https://"
@@ -30,6 +31,8 @@ function EngineContentRequest(request as object, result as object, method as str
             if data.next_cursor <> invalid then nextSkip = val(Txt(data.next_cursor))
             projected = {metas:EngineCards(data.cards),has_more:nextSkip <> invalid,next_skip:nextSkip}
         end if
+    else if left(route,18) = "/api/v3/subtitles/"
+        if AccountIsObject(data) and ApiIsArray(data.candidates) then projected = {candidates:data.candidates}
     else
         projected = EngineDetailPages(wire,response)
     end if

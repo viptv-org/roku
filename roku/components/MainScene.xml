@@ -3,10 +3,12 @@
  <script type="text/brightscript" uri="pkg:/source/Util.brs" />
  <script type="text/brightscript" uri="pkg:/components/EngineSearchScene.brs" />
  <script type="text/brightscript" uri="pkg:/components/CollectionPagingScene.brs" />
+ <script type="text/brightscript" uri="pkg:/components/ProviderCaptionsScene.brs" />
  <script type="text/brightscript" uri="pkg:/source/SourceLabels.brs" />
  <script type="text/brightscript" uri="pkg:/source/BrowsePolicy.brs" />
  <script type="text/brightscript" uri="pkg:/source/PresentationPolicy.brs" />
  <script type="text/brightscript" uri="pkg:/source/JellyfinCaptionPolicy.brs" />
+ <script type="text/brightscript" uri="pkg:/source/ProviderCaptionPolicy.brs" />
  <script type="text/brightscript" uri="pkg:/source/AccountPolicy.brs" />
  <script type="text/brightscript" uri="pkg:/components/AccountScene.brs" />
  <script type="text/brightscript" uri="pkg:/components/AccountProfilesScene.brs" />

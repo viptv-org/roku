@@ -317,7 +317,7 @@ sub showPlayerTracks(kind as string, page = 0 as integer)
         tracks = Bounded(m.subtitleTracks,32)
         title = "Subtitles"
         message = "Choose a subtitle track."
-        if m.subtitlesSupported = true then m.trackChoices.push({action:"off",name:"Off"})
+        if m.subtitlesSupported = true or m.externalSubtitlesSupported = true then m.trackChoices.push({action:"off",name:"Off"})
     end if
     selectedIndex = 0
     for each track in tracks
@@ -335,6 +335,7 @@ sub showPlayerTracks(kind as string, page = 0 as integer)
         message = "This stream has no selectable audio tracks."
         if kind = "subtitles" then message = "This stream has no selectable subtitles."
     end if
+    if kind = "subtitles" and m.externalSubtitlesSupported = true and m.playbackLive <> true then m.trackChoices.push({action:"provider-search",name:"Find add-on subtitles"})
     m.trackChoices.push({action:"back",name:"Back to player"})
     m.choiceKind = "playerTracks"
     m.choiceGeneration = m.generation
@@ -347,6 +348,14 @@ sub uiPlayerTrackChosen(index as integer)
     closePlayerTracks()
     if m.trackDialogOwner <> TrackOwner(m.playItem) or m.trackDialogSession <> m.session then return
     if choice.action = "back" then return
+    if choice.action = "provider-search"
+        beginProviderSubtitles()
+        return
+    end if
+    if choice.action = "provider" and m.trackKind = "subtitles" and m.externalSubtitlesSupported = true
+        choosePlayerTrack(choice)
+        return
+    end if
     if choice.action <> "off"
         if not MatchInteger(choice.input_index,0,65535) then return
         if not PlayerTrackSelectable(choice) then return
@@ -364,8 +373,13 @@ sub choosePlayerTrack(choice as object)
         language = StablePreferenceText(choice.language,16)
         if language <> "" then m.playItem.audio_language = lcase(language)
     else
+        m.trackPreferences.delete("external_subtitle_id")
         if m.captionRestore = invalid then m.captionRestore = m.video.globalCaptionMode
-        if choice.action = "off"
+        if choice.action = "provider"
+            m.trackPreferences.delete("subtitle_track_index")
+            m.trackPreferences.external_subtitle_id = choice.subtitle_id
+            m.trackPreferences.subtitles_off = false
+        else if choice.action = "off"
             m.trackPreferences.delete("subtitle_track_index")
             m.trackPreferences.subtitles_off = true
             m.video.globalCaptionMode = "Off"

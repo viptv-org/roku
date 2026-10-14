@@ -15,6 +15,9 @@ sub acceptPlayback(data as object,origin as object)
         m.audioTracks = Bounded(data.audio_tracks,32)
         m.subtitleTracks = Bounded(data.subtitle_tracks,32)
         m.subtitlesSupported = data.subtitles_supported = true
+        m.externalSubtitlesSupported = data.external_subtitles_supported = true
+        m.providerCaptionId = ""
+        if GetInterface(data.provider_caption,"ifAssociativeArray") <> invalid then m.providerCaptionId = Txt(data.provider_caption.subtitle_id)
         m.selectedSubtitle = data.selected_subtitle
         for each track in m.audioTracks
             if track.selected = true
@@ -48,17 +51,14 @@ sub acceptPlayback(data as object,origin as object)
         preferences = data.preferences
         if m.playbackDeliveryKind = "gateway" and Txt(m.sourcePreferencesProfile) = m.profile then preferences = m.sourcePreferences
         ApplyProfileCaptionStyle(m.video, preferences)
-        PrepareNativeCaptions(m.video, data.selected_subtitle <> invalid)
+        PrepareNativeCaptions(m.video, data.selected_subtitle <> invalid or data.provider_caption <> invalid)
+        if GetInterface(data.provider_caption,"ifAssociativeArray") <> invalid then ApplyProviderCaption(content,data)
         m.directSeekPause = false
         m.video.autoplayAfterSeek = true
         m.video.content = content
-        m.timelineOffset = 0
-        m.resumePosition = data.position
-        if Txt(data.mode) <> "direct" or m.playbackDeliveryKind = "gateway"
-            ' FFmpeg has already sought the input; generated HLS starts at zero.
-            m.timelineOffset = data.position
-            m.resumePosition = invalid
-        end if
+        clock = PlaybackClock(data)
+        m.timelineOffset = clock.offset
+        m.resumePosition = clock.seek
         if data.duration <> invalid then m.duration = data.duration
         m.playbackMode = Txt(data.mode)
         uiHidePageExtras()

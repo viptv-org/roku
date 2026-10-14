@@ -220,6 +220,7 @@ sub prepareSeekReplacement(data as object, connection as object)
     content.streamFormat = Txt(data.format,"hls")
     content.title = Txt(m.playItem.displayName,Txt(m.playItem.name))
     content.live = false
+    if GetInterface(data.provider_caption,"ifAssociativeArray") <> invalid then ApplyProviderCaption(content,data)
     m.seekNewContent = content
     beginPrimarySeekFallback()
 end sub
@@ -236,7 +237,7 @@ sub beginPrimarySeekFallback()
     m.seekPhase = "primary"
     m.status.text = "Seeking to " + PlayerTime(m.seekTarget) + "…"
     m.video.control = "stop"
-    PrepareNativeCaptions(m.video,m.seekData.selected_subtitle <> invalid)
+    PrepareNativeCaptions(m.video,m.seekData.selected_subtitle <> invalid or m.seekData.provider_caption <> invalid)
     m.video.content = m.seekNewContent
     m.video.visible = true
     m.video.control = "play"
@@ -274,6 +275,7 @@ sub finishSeekSuccess()
     m.sessionConnection = m.seekNewConnection
     reportRokuPlaybackFirstFrame()
     m.timelineOffset = m.seekTarget
+    if data.timeline_offset_seconds <> invalid then m.timelineOffset = data.timeline_offset_seconds
     if Txt(data.mode) = "direct" and Txt(data.delivery_kind) <> "gateway" then m.timelineOffset = 0
     m.playbackDeliveryKind = Txt(data.delivery_kind)
     m.playbackVideoMode = Txt(data.video_mode)
@@ -284,6 +286,9 @@ sub finishSeekSuccess()
     m.audioTracks = Bounded(data.audio_tracks,32)
     m.subtitleTracks = Bounded(data.subtitle_tracks,32)
     m.subtitlesSupported = data.subtitles_supported = true
+    m.externalSubtitlesSupported = data.external_subtitles_supported = true
+    m.providerCaptionId = ""
+    if GetInterface(data.provider_caption,"ifAssociativeArray") <> invalid then m.providerCaptionId = Txt(data.provider_caption.subtitle_id)
     m.selectedSubtitle = data.selected_subtitle
     m.nativeCaptionName = ""
     m.seeking = false

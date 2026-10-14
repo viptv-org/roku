@@ -20,6 +20,7 @@ sub openEpg(resuming = false as boolean, collection = "" as string)
     m.heading.visible = false
     m.pageCaption.visible = false
     m.epgPending = {}
+    m.epgGrid.collectionsSupported = false
     if resuming
         m.epgGrid.callFunc("resume")
     else

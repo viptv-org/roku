@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <component name="EpgGrid" extends="Group">
  <interface>
+  <field id="collectionsSupported" type="boolean" value="true" />
   <field id="active" type="boolean" value="true" onChange="epgRender" />
   <field id="data" type="assocarray" onChange="epgData" />
   <field id="categories" type="array" onChange="epgCategories" />

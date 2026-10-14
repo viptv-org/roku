@@ -18,4 +18,7 @@
  <script type="text/brightscript" uri="pkg:/components/ApiEngineContent.brs" />
  <script type="text/brightscript" uri="pkg:/components/ApiEngineQueue.brs" />
  <script type="text/brightscript" uri="pkg:/components/ApiEngineLibrary.brs" />
+ <script type="text/brightscript" uri="pkg:/source/EngineLive.brs" />
+ <script type="text/brightscript" uri="pkg:/components/ApiEngineLive.brs" />
+ <script type="text/brightscript" uri="pkg:/components/ApiProviderCaptions.brs" />
 </component>

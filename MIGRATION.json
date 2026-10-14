@@ -69,15 +69,15 @@
       "source": "roku/components/ApiTask.brs",
       "destination": "roku/components/ApiTask.brs",
       "sha256": "4e2eca9f8d0d16fc1402e769eeeae666a405eaa0bd526cc8c9e051cf45d28d64",
-      "extracted_sha256": "e7242b785a9b872abe5db3b24b0213bea2c39ddd5ad9a55a89667ab460498fde",
-      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent. Experimental shared-host v3 content, membership and automatic paging adoption."
+      "extracted_sha256": "303e639c421c1efdf97c1d124d08472ad9930686dc95234bc83485d86419dcbb",
+      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent. Experimental shared-host v3 content, membership and automatic paging adoption. Shared engine Live, scoped provider captions and explicit gateway timeline integration; original extraction hash retained, 2026-10-13."
     },
     {
       "source": "roku/components/ApiTask.xml",
       "destination": "roku/components/ApiTask.xml",
       "sha256": "515ea8f88a9dbf10356f68522238227d87b6b9a80ad32b2cdb6e31e0ce239c35",
-      "extracted_sha256": "d1e8ca8ce9b334697b5141de80ca3e05f9bcd1daac6f4d1179a852770ab7f2f2",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. SRC-TORRENT-RUNTIME-002 measured gateway startup stages, scoped Task events and canonical copy; original extraction hash retained. Experimental shared-host v3 content, membership and automatic paging adoption."
+      "extracted_sha256": "e9116d4439ac01b4d6105eb40db2ff79d4f25be089555c9b9d713cd472214b64",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. SRC-TORRENT-RUNTIME-002 measured gateway startup stages, scoped Task events and canonical copy; original extraction hash retained. Experimental shared-host v3 content, membership and automatic paging adoption. Shared engine Live, scoped provider captions and explicit gateway timeline integration; original extraction hash retained, 2026-10-13."
     },
     {
       "source": "roku/components/ApiTaskSanitize.brs",
@@ -146,22 +146,22 @@
       "source": "roku/components/EpgGrid.brs",
       "destination": "roku/components/EpgGrid.brs",
       "sha256": "1a942f3bb3db967b9fe079d176bd20e3cabacb1b7c3c0e5f9ca6f88716895a42",
-      "extracted_sha256": "129b1b843a866c510df9e547edc801850cd245c65859d85c500cf90f2925ffbe",
-      "reason": "Bounds-guard channel-row access in epgDetails and epgWatchChannel (fresh-open Live TV freeze hardening)."
+      "extracted_sha256": "2789e015ca48ad87281a6665d67297bdfb54728430ef4df629d00b1e9d7123be",
+      "reason": "Bounds-guard channel-row access in epgDetails and epgWatchChannel (fresh-open Live TV freeze hardening). Shared engine Live, scoped provider captions and explicit gateway timeline integration; original extraction hash retained, 2026-10-13."
     },
     {
       "source": "roku/components/EpgGrid.xml",
       "destination": "roku/components/EpgGrid.xml",
       "sha256": "72782188dbdb7913581205a071c90598d61ac6eaa35d415492bee05703e3ea24",
-      "extracted_sha256": "c4522d5d8dfbd9a047871c3169defd83790dcd8dcf99dd22b8da00a9691096dd",
-      "reason": "ROK-043 guide audit: preserve true programme bounds when cells clip to the time window; readable detail panel. BE-002 review: implicit category boundary paging and fail-closed raw page/source validation; original hash retained."
+      "extracted_sha256": "91c2dccd1e53174cc2528d5e7dcd0633fcf83a17d143338b04d1a5dd3ff47da6",
+      "reason": "ROK-043 guide audit: preserve true programme bounds when cells clip to the time window; readable detail panel. BE-002 review: implicit category boundary paging and fail-closed raw page/source validation; original hash retained. Shared engine Live, scoped provider captions and explicit gateway timeline integration; original extraction hash retained, 2026-10-13."
     },
     {
       "source": "roku/components/EpgScene.brs",
       "destination": "roku/components/EpgScene.brs",
       "sha256": "48d8740b0898fbc1e38ac7cac2919a83d2a6a14a2864ca8bef18168b37fd8382",
-      "extracted_sha256": "ee4fc2802aa965b53979f1f0c531dd9548c098d90642fc883f94bae389cafb2f",
-      "reason": " BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. BE-002 review: implicit category boundary paging and fail-closed raw page/source validation; original hash retained."
+      "extracted_sha256": "7883536c7bb9f847576157df9cc44ccc3934faa34e91ca9c970011b90befc03d",
+      "reason": " BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. BE-002 review: implicit category boundary paging and fail-closed raw page/source validation; original hash retained. Shared engine Live, scoped provider captions and explicit gateway timeline integration; original extraction hash retained, 2026-10-13."
     },
     {
       "source": "roku/components/EpisodeCard.brs",
@@ -277,8 +277,8 @@
       "source": "roku/components/MainScene.xml",
       "destination": "roku/components/MainScene.xml",
       "sha256": "683ee2541fb021de8402c8fc590ed211abc043d423c6f7cbc3a4b5b75626063c",
-      "extracted_sha256": "6fe603929b03ceb48d5901f25ef80462e620d7574f7c0ff08b6482405593b11b",
-      "reason": "My List grid density (3 rows of 4), caption clearance above the segment tabs, and the player layout invariants. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained. Experimental shared-host v3 content, membership and automatic paging adoption."
+      "extracted_sha256": "3269d2d0b490c01808bb25a553765f7e6c8a8e57b0451f5a4d79b8ed6cffb75f",
+      "reason": "My List grid density (3 rows of 4), caption clearance above the segment tabs, and the player layout invariants. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained. Experimental shared-host v3 content, membership and automatic paging adoption. Shared engine Live, scoped provider captions and explicit gateway timeline integration; original extraction hash retained, 2026-10-13."
     },
     {
       "source": "roku/components/NavIcon.brs",
@@ -305,8 +305,8 @@
       "source": "roku/components/PlaybackScene.brs",
       "destination": "roku/components/PlaybackScene.brs",
       "sha256": "2895f449c1c79ce16987253c68728b4e2baca7539ca6e10e47955947e7ee09b3",
-      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent.",
-      "extracted_sha256": "fca2d85e3ffcf9fc08df4b949b6d7c93a9d0afdc31586ec1b6184a6fdefb82bc"
+      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent. Shared engine Live, scoped provider captions and explicit gateway timeline integration; original extraction hash retained, 2026-10-13.",
+      "extracted_sha256": "0deb6b580a248c1668201acc92f50aa4998e7fdd56dae0ba127128737c79bc75"
     },
     {
       "source": "roku/components/PlayerOverlay.brs",
@@ -382,8 +382,8 @@
       "source": "roku/components/ResponseScene.brs",
       "destination": "roku/components/ResponseScene.brs",
       "sha256": "582c565e78ae88fd170b1c873e7253fb1906865b62dc647d5987ecac9e77f9f5",
-      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent. Experimental shared-host v3 content, membership and automatic paging adoption.",
-      "extracted_sha256": "c5d20639ffe46c980dff1c0f1d037ae01beb8c05d386298a853098a91bf23057"
+      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent. Experimental shared-host v3 content, membership and automatic paging adoption. Shared engine Live, scoped provider captions and explicit gateway timeline integration; original extraction hash retained, 2026-10-13.",
+      "extracted_sha256": "d827a5352c6fee67787a8ec50e6f98538ac7bd02775d0e98f3f95928e6a9d9a7"
     },
     {
       "source": "roku/components/SearchPanel.brs",
@@ -410,15 +410,15 @@
       "source": "roku/components/SeekScene.brs",
       "destination": "roku/components/SeekScene.brs",
       "sha256": "f0598482ad4cead37a554455f68f67ae05297a80eb8714575ce88f8b93dcd752",
-      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent.",
-      "extracted_sha256": "e2f512194858d8519416773cc04b47c44e3a73013b62657aad45df8f7a7503d9"
+      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent. Shared engine Live, scoped provider captions and explicit gateway timeline integration; original extraction hash retained, 2026-10-13.",
+      "extracted_sha256": "31d3e4c87dfba797add8d3a54778e6cc8e4e5ac91d57cf871b30360ee2066e41"
     },
     {
       "source": "roku/components/SessionScene.brs",
       "destination": "roku/components/SessionScene.brs",
       "sha256": "2245b7415d0385e882a9d49aa32c6b42fcca79b0f56b36776eab1727530332f2",
-      "reason": "Store video/audio delivery modes from the playback lease. Native buffered resume and bounded transient lease renewal correction, 2026-10-08. Native resume/renewal correction 2026-10-08; existing work retained. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained.",
-      "extracted_sha256": "0ec9d03e8d111dff9c16a0e29ca7804df8b77127201b7a55ec2681b79400304a"
+      "reason": "Store video/audio delivery modes from the playback lease. Native buffered resume and bounded transient lease renewal correction, 2026-10-08. Native resume/renewal correction 2026-10-08; existing work retained. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained. Shared engine Live, scoped provider captions and explicit gateway timeline integration; original extraction hash retained, 2026-10-13.",
+      "extracted_sha256": "d1cee79e200aca077b0c129e7f34e6ad5a58ac8d0fbb794328798b972a5e18a5"
     },
     {
       "source": "roku/components/SourceCard.brs",
@@ -3979,8 +3979,8 @@
       "source": "roku/source/Util.brs",
       "destination": "roku/source/Util.brs",
       "sha256": "35e9bf7a05399ae8a14d783b159b65436c1f2906b0ee56333c800f93b6169f0d",
-      "extracted_sha256": "a211667559a45ff1b6c92c6f7148fd61e1d10ca7cef3c08733d31f35cebf4a18",
-      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent. Experimental shared-host v3 content, membership and automatic paging adoption."
+      "extracted_sha256": "93c8f49d086fcbd7d9dd81141d9014d3175d713188083b35a6bae9ca8587de2c",
+      "reason": "Decoder-aware startup sends a scoped acknowledgement from Roku playing events, including successful seek replacement; heartbeat and cleanup remain independent. Experimental shared-host v3 content, membership and automatic paging adoption. Shared engine Live, scoped provider captions and explicit gateway timeline integration; original extraction hash retained, 2026-10-13."
     },
     {
       "source": "roku/source/main.brs",

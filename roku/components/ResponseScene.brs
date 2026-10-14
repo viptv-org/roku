@@ -160,6 +160,10 @@ sub handleResponse(event as object)
         engineSearchResponse(result)
         return
     end if
+    if left(tag,19) = "provider-subtitles:"
+        providerSubtitleResponse(tag,result)
+        return
+    end if
     if left(tag,10) = "searchall:"
         searchBatch(mid(tag,11),result)
         return

@@ -13,6 +13,7 @@ production += '\n' + routine(grid, 'sub epgData(', 'end sub')
 production += '\n' + routine(grid, 'sub epgGuide(', 'end sub')
 production += '\n' + routine(grid, 'sub epgCategories(', 'end sub')
 production += '\n' + routine(grid, 'sub epgCategoryState(', 'end sub')
+production += '\n' + routine(grid, 'function epgBaseFilters(', 'end function')
 production += '\n' + routine(grid, 'function onKeyEvent(', 'end function')
 production += '\n' + routine(playback, 'sub beginPlayback(', 'end sub')
 fixture = '''

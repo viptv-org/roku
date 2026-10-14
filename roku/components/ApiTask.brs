@@ -154,6 +154,8 @@ end function
 
 function HttpRequest(request as object, result as object, method as string) as object
     if request.content_contract = 3
+        live = EngineLiveRequest(request,result,method)
+        if live <> invalid then return live
         library = EngineLibraryRequest(request,result,method)
         if library <> invalid then return library
         personal = EnginePersonalRequest(request,result,method)

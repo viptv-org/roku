@@ -70,8 +70,13 @@ function RokuPlaybackV2Start(request as object, result as object) as object
         end if
         if result.data.status = "ready"
             if not m.top.cancel and clock.TotalMilliseconds() < deadline
-                result.data = result.data.session
-                return result
+                if StablePreferenceText(request.body.external_subtitle_id,128) = ""
+                    result.data = result.data.session
+                    return result
+                end if
+                prepared = RokuPrepareProviderCaption(request,result.data.session,deadline-clock.TotalMilliseconds())
+                if prepared.ok and not m.top.cancel and clock.TotalMilliseconds() < deadline then return prepared
+                result = prepared
             end if
             exit while
         end if

@@ -3,6 +3,17 @@ function PlaybackSessionPath(connection as dynamic, identity as string) as strin
     return "/api/v2/playback/" + Enc(identity)
 end function
 
+function PlaybackClock(session as object) as object
+    clock = {offset:0,seek:session.position}
+    if Txt(session.mode) <> "direct" or Txt(session.delivery_kind) = "gateway"
+        clock.offset = session.position
+        if session.timeline_offset_seconds <> invalid then clock.offset = session.timeline_offset_seconds
+        clock.seek = invalid
+    end if
+    if session.live = true then clock = {offset:0,seek:invalid}
+    return clock
+end function
+
 function TrackOwner(item as object) as string
     if Txt(item.type) = "live" then return "live:" + Txt(item.id)
     return "source:" + Txt(item.stream_id,Txt(item.id))
@@ -16,6 +27,11 @@ function TrackRequestFields(item as object, preferences as dynamic) as object
         if MatchInteger(preferences[key],0,65535) then fields[key] = preferences[key]
     end for
     if preferences.subtitles_off = true then fields.subtitles_off = true
+    subtitle = StablePreferenceText(preferences.external_subtitle_id,128)
+    if subtitle <> "" and preferences.subtitles_off <> true
+        fields.external_subtitle_id = subtitle
+        fields.delete("subtitle_track_index")
+    end if
     return fields
 end function
 

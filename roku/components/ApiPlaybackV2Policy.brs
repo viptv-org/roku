@@ -19,6 +19,10 @@ function RokuPlaybackV2Body(request as object, capabilities as object) as dynami
     output = {request_id:identity,stream_id:source,position:body.position,force_gateway:true,conversion:conversion,subtitles_off:body.subtitles_off = true,client:{platform:"roku",can_play_direct:false,max_width:capabilities.max_width,max_height:capabilities.max_height,video_codecs:video,audio_codecs:audio}}
     if MatchInteger(body.audio_track_index,0,65535) then output.audio_track = body.audio_track_index
     if output.subtitles_off <> true and MatchInteger(body.subtitle_track_index,0,65535) then output.subtitle_track = body.subtitle_track_index
+    if StablePreferenceText(body.external_subtitle_id,128) <> ""
+        output.subtitles_off = true
+        output.delete("subtitle_track")
+    end if
     if Txt(body.audio_language) <> "" and len(Txt(body.audio_language)) <= 32 then output.audio_language = body.audio_language
     return output
 end function
@@ -81,6 +85,13 @@ function RokuPlaybackV2Lease(value as dynamic, expectedId = "" as string) as obj
         end for
     end for
     session = {id:value.id,url:url,format:"hls",mode:delivery.mode,delivery_kind:"gateway",video_mode:delivery.video_mode,audio_mode:delivery.audio_mode,position:delivery.position,duration:delivery.duration,live:delivery.live,audio_tracks:RokuPlaybackV2Tracks(delivery.audio_tracks),subtitle_tracks:RokuPlaybackV2Tracks(delivery.subtitle_tracks),subtitles_supported:delivery.subtitles_supported,expires_at:value.expires_at,renew_after_seconds:value.renew_after_seconds}
+    session.external_subtitles_supported = delivery.external_subtitles_supported = true
+    if delivery.timeline_offset_seconds <> invalid
+        if not ApiIsNumber(delivery.timeline_offset_seconds) then return failure
+        if delivery.timeline_offset_seconds < 0 or delivery.timeline_offset_seconds > 604800 then return failure
+        if delivery.position <> 0 or (delivery.live and delivery.timeline_offset_seconds <> 0) then return failure
+        session.timeline_offset_seconds = delivery.timeline_offset_seconds
+    end if
     if delivery.live then session.position = 0
     for each track in session.audio_tracks
         if track.selected = true then session.selected_audio = track
