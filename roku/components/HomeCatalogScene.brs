@@ -196,19 +196,8 @@ sub homeCatalogAction(item as object)
     if item.action = "homecatalogfilter"
         catalog = m.homeCatalogs[index-7].catalog
         saveView()
-        cancelBrowse()
-        m.discoverActive = true
-        m.discoverType = Txt(catalog.type)
-        m.discoverCatalogs = []
-        for each entry in m.homeCatalogs
-            m.discoverCatalogs.push(entry.catalog)
-        end for
-        m.catalog = catalog
-        m.discoverGenre = ""
-        m.discoverExtras = {}
-        m.search = ""
-        m.offsetHistory = []
-        browse(m.discoverType,0)
+        openDiscover(Txt(catalog.type))
+        m.discoverPreferredCatalog = catalog
     else
         m.homeCatalogs[index-7].failed = false
         m.homeCatalogs[index-7].loaded = false

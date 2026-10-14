@@ -6,6 +6,8 @@
  <script type="text/brightscript" uri="pkg:/components/ProviderCaptionsScene.brs" />
  <script type="text/brightscript" uri="pkg:/source/SourceLabels.brs" />
  <script type="text/brightscript" uri="pkg:/source/BrowsePolicy.brs" />
+ <script type="text/brightscript" uri="pkg:/source/DiscoveryControls.brs" />
+ <script type="text/brightscript" uri="pkg:/source/DiscoveryCatalogLabels.brs" />
  <script type="text/brightscript" uri="pkg:/source/PresentationPolicy.brs" />
  <script type="text/brightscript" uri="pkg:/source/JellyfinCaptionPolicy.brs" />
  <script type="text/brightscript" uri="pkg:/source/ProviderCaptionPolicy.brs" />
@@ -15,6 +17,7 @@
  <script type="text/brightscript" uri="pkg:/components/PresentationScene.brs" />
  <script type="text/brightscript" uri="pkg:/components/PresentationDetailsScene.brs" />
  <script type="text/brightscript" uri="pkg:/components/PresentationHomeScene.brs" />
+ <script type="text/brightscript" uri="pkg:/components/PresentationDiscoveryScene.brs" />
  <script type="text/brightscript" uri="pkg:/components/PresentationArtworkScene.brs" />
  <script type="text/brightscript" uri="pkg:/components/AddonScene.brs" />
  <script type="text/brightscript" uri="pkg:/components/SearchScene.brs" />

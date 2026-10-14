@@ -71,18 +71,25 @@ sub uxFixtureChanged()
         for i = 0 to 185
             languages.push("Language " + i.toStr())
         end for
-        catalogs = [{id:"lang",type:"movie",name:"By Language",addon_id:"1",addon_name:"Fixture",genres:languages,extra:[{name:"genre",required:true,default:"Language 100",options:languages}]},{id:"anime-search",type:"anime.series",name:"Anime search",addon_id:"1",extra:[{name:"search",required:true,options:[]}]},{id:"calendar",type:"series",name:"Calendar",addon_id:"1",extra:[{name:"calendarVideosIds",required:true,options:[]}]}]
+        controls = [{id:"genre",label:"Language",kind:"SingleChoice",required:true,maximum_selections:1,choices:[]}]
+        for each language in languages
+            controls[0].choices.push({value:language,label:language})
+        end for
+        catalogs = [{id:"lang",type:"movie",connection_id:"addon:1",name:"By Language",addon_id:1,addon_name:"Fixture",controls:controls,extra:[],genres:[]}]
         m.discoverActive = true
         m.discoverType = "movie"
         m.offsetHistory = []
-        discoverUseCatalogs(catalogs)
-        uxCheck(m.discoverCatalogs.count()=3,"Discover retains search and custom-type catalogs")
-        uxCheck(m.discoverGenre="Language 100","required advertised default is retained")
-        uxCheck(m.discoverFilterItems[2].name="Language 100","language picker shows selected value")
+        discoverUseCatalogs({catalogs:catalogs,media_types:["movie","anime.series","series"]})
+        uxCheck(m.discoverCatalogs.count()=1,"Discover retains host-scoped catalog")
+        uxCheck(m.discoverGenre="","required advertised input waits for a choice")
+        uxCheck(m.discoverFilterItems[1].name="Language: Required","friendly required language chip")
+        m.discoverGenre="Language 100"
+        discoverBuildFilters()
+        uxCheck(m.discoverFilterItems[1].name="Language: Language 100","language picker shows selected label")
+        searchControl = {id:"search",label:"Search catalog",kind:"Text",required:true,choices:[],maximum_selections:1}
         m.discoverType = "anime.series"
-        discoverChooseDefaultCatalog()
-        browse(m.discoverType,0)
-        uxCheck(m.discoverFilterItems[2].action="dsearch","search-only catalog has a real search control")
+        discoverUseCatalogs({catalogs:[{id:"anime-search",type:"anime.series",name:"Anime search",connection_id:"addon:1",addon_id:1,controls:[searchControl],extra:[],genres:[]}],media_types:["anime.series"]})
+        uxCheck(m.discoverFilterItems[1].action="dcontrol","search-only catalog has a real search control")
         uxCheck(m.emptyState.visible,"required search waits for input rather than requesting an invalid catalog")
         m.search = "Naruto"
         browse(m.discoverType,0)
@@ -90,9 +97,6 @@ sub uxFixtureChanged()
         catalogResult = {ok:true,tag:"browse|" + m.generation.toStr(),data:{metas:[{id:"tt0409591",type:"series",name:"Naruto"}],has_more:false}}
         handleResponse({data:catalogResult,getData:uxResult,node:{request:{account_epoch:m.accountEpoch}},getRoSGNode:uxNode})
         uxCheck(m.heading.text="Discover · Anime" and m.items[0].name="Naruto","custom-type response renders without a missing type label")
-        m.discoverType = "series"
-        discoverChooseDefaultCatalog()
-        uxCheck(DiscoverMissingOption(m.catalog,"","",m.discoverExtras)<>"","calendar requires its advertised input")
         showMetadata({meta:{id:"tvdbc:fixture",type:"movie",name:"Movie collection",videos:[{id:"tt0001",title:"First film",overview:"First summary"},{id:"tt0002",title:"Second film"}]}})
         uxCheck(m.mode="browse" and m.items.count()=2,"collection opens its member films even when aggregator omits its optional flag")
         uxCheck(m.items[0].id="tt0001" and m.items[0].type="movie","collection preserves playable member identities")

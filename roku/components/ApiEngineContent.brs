@@ -6,6 +6,7 @@ function EngineContentRequest(request as object, result as object, method as str
     target = ""
     if route = "/api/catalogs" then target = "/api/v3/bootstrap"
     if route = "/api/v3/bootstrap" then target = path
+    if route = "/api/v3/discovery-controls" then target = path
     if route = "/api/discover" then target = "/api/v3/discover" + mid(path,len(route)+1)
     if route = "/api/v3/discover" then target = path
     if left(route,18) = "/api/v3/subtitles/" then target = path
@@ -25,6 +26,9 @@ function EngineContentRequest(request as object, result as object, method as str
         if AccountIsObject(data) and AccountIsObject(data.home) then projected = EngineCatalogs(data.home)
     else if route = "/api/v3/bootstrap"
         projected = EngineBootstrap(data)
+    else if route = "/api/v3/discovery-controls"
+        kind = EngineUrlParameter(path,"type")
+        projected = EngineDiscoveryControls(data,kind.Unescape())
     else if route = "/api/discover" or route = "/api/v3/discover"
         if AccountIsObject(data) and ApiIsArray(data.cards)
             nextSkip = invalid

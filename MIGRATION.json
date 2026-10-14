@@ -48,8 +48,8 @@
       "source": "roku/components/ActionRow.brs",
       "destination": "roku/components/ActionRow.brs",
       "sha256": "290b36676f8b03935d596f758d93903d891be9dd71fa81298fe179f580af33dd",
-      "extracted_sha256": "5d92bcd4c0cb41cfc5f715d311608c6237b4d5f67488eb0c054fbda772043c30",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
+      "extracted_sha256": "12537d12a07ea81ce14dcf675e62b2c41d598b2778fc4825cd23889dcfb2daea",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. Host-authored discovery controls, draft multi-selection, exact catalog ownership and navigation preservation; no Home-derived capabilities."
     },
     {
       "source": "roku/components/ActionRow.xml",
@@ -76,8 +76,8 @@
       "source": "roku/components/ApiTask.xml",
       "destination": "roku/components/ApiTask.xml",
       "sha256": "515ea8f88a9dbf10356f68522238227d87b6b9a80ad32b2cdb6e31e0ce239c35",
-      "extracted_sha256": "e9116d4439ac01b4d6105eb40db2ff79d4f25be089555c9b9d713cd472214b64",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. SRC-TORRENT-RUNTIME-002 measured gateway startup stages, scoped Task events and canonical copy; original extraction hash retained. Experimental shared-host v3 content, membership and automatic paging adoption. Shared engine Live, scoped provider captions and explicit gateway timeline integration; original extraction hash retained, 2026-10-13."
+      "extracted_sha256": "a4ee5e618549dff5d1dfe59481b6d06ad443993400af0b64eaa9d349d3ea0f6a",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. SRC-TORRENT-RUNTIME-002 measured gateway startup stages, scoped Task events and canonical copy; original extraction hash retained. Experimental shared-host v3 content, membership and automatic paging adoption. Shared engine Live, scoped provider captions and explicit gateway timeline integration; original extraction hash retained, 2026-10-13. Host-authored discovery controls, draft multi-selection, exact catalog ownership and navigation preservation; no Home-derived capabilities."
     },
     {
       "source": "roku/components/ApiTaskSanitize.brs",
@@ -139,8 +139,8 @@
       "source": "roku/components/DiscoverScene.brs",
       "destination": "roku/components/DiscoverScene.brs",
       "sha256": "d389426f5f252714c53698bbb12bc148f40fbb9f20c2cc8ca9c3b91626e8140c",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. Experimental shared-host v3 content, membership and automatic paging adoption.",
-      "extracted_sha256": "b35d76babea8533c38b26f5ea92541aee37b54da82dddfeeae2955e6934bb78e"
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. Experimental shared-host v3 content, membership and automatic paging adoption. Host-authored discovery controls, draft multi-selection, exact catalog ownership and navigation preservation; no Home-derived capabilities.",
+      "extracted_sha256": "465899567a037a61f166a190eed0e04e7fd8cb45d012b84dba9ced6e50dafc47"
     },
     {
       "source": "roku/components/EpgGrid.brs",
@@ -270,15 +270,15 @@
       "source": "roku/components/MainScene.brs",
       "destination": "roku/components/MainScene.brs",
       "sha256": "86b18096942ced4d58c9408fe81598e2b7f648dde69c90ead66d376734d3b1b8",
-      "extracted_sha256": "94f0e92a27223086b91bf5d66046d12b55ff7f43257362f1a54df1da516d26d4",
-      "reason": "Rail hides behind full-screen keyboards; key-path freeze diagnostics in onKeyEvent. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained. SRC-TORRENT-RUNTIME-002 measured gateway startup stages, scoped Task events and canonical copy; original extraction hash retained. BE-002 v1 removal: addon list/install/toggle/remove use /api/v2/addons; retired /api/providers and /api/matches array routes dropped. Experimental shared-host v3 content, membership and automatic paging adoption."
+      "extracted_sha256": "a11af35e2cf982f6ae11addbb6b40cdf64e02f0cd2fe0eb2a46becff0c4b6768",
+      "reason": "Rail hides behind full-screen keyboards; key-path freeze diagnostics in onKeyEvent. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained. SRC-TORRENT-RUNTIME-002 measured gateway startup stages, scoped Task events and canonical copy; original extraction hash retained. BE-002 v1 removal: addon list/install/toggle/remove use /api/v2/addons; retired /api/providers and /api/matches array routes dropped. Experimental shared-host v3 content, membership and automatic paging adoption. Host-authored discovery controls, draft multi-selection, exact catalog ownership and navigation preservation; no Home-derived capabilities."
     },
     {
       "source": "roku/components/MainScene.xml",
       "destination": "roku/components/MainScene.xml",
       "sha256": "683ee2541fb021de8402c8fc590ed211abc043d423c6f7cbc3a4b5b75626063c",
-      "extracted_sha256": "3269d2d0b490c01808bb25a553765f7e6c8a8e57b0451f5a4d79b8ed6cffb75f",
-      "reason": "My List grid density (3 rows of 4), caption clearance above the segment tabs, and the player layout invariants. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained. Experimental shared-host v3 content, membership and automatic paging adoption. Shared engine Live, scoped provider captions and explicit gateway timeline integration; original extraction hash retained, 2026-10-13."
+      "extracted_sha256": "f529e5ce72a20934b882f3b1832a1bd8361b42edc76d593f89912e2dbe02566c",
+      "reason": "My List grid density (3 rows of 4), caption clearance above the segment tabs, and the player layout invariants. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained. Experimental shared-host v3 content, membership and automatic paging adoption. Shared engine Live, scoped provider captions and explicit gateway timeline integration; original extraction hash retained, 2026-10-13. Host-authored discovery controls, draft multi-selection, exact catalog ownership and navigation preservation; no Home-derived capabilities."
     },
     {
       "source": "roku/components/NavIcon.brs",
@@ -340,15 +340,15 @@
       "source": "roku/components/PresentationHomeScene.brs",
       "destination": "roku/components/PresentationHomeScene.brs",
       "sha256": "2bfb69990dfc3f24cd494e35c0c6ab440a5582dcf930e61bdd06019b17e67e76",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved.",
-      "extracted_sha256": "094c19e41e1c7d6d7d275795882cd6a2062825d1d28f6d413c82ed6fde3f4bea"
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. BE-002 bounded raw live guide, opaque source and mandatory authorized gateway lease migration; original extraction hash preserved. Host-authored discovery controls, draft multi-selection, exact catalog ownership and navigation preservation; no Home-derived capabilities.",
+      "extracted_sha256": "cb2e005d92f1e500bcee12cea900d8d2d169e5795170587e2efde20a11fe12ba"
     },
     {
       "source": "roku/components/PresentationScene.brs",
       "destination": "roku/components/PresentationScene.brs",
       "sha256": "21e2793fd82e785b1baa933c7d7e62c9e072cc0f990d0a213ed53f0aef8dda32",
-      "extracted_sha256": "2d3a521a9ff3842529c8f7a05619e8d99f0fdbd0217c3521cb0809c0ed6b00f1",
-      "reason": "Search chrome restore on page change; My List grid geometry."
+      "extracted_sha256": "3d73270997c9c5582f97d797ac01fe153cebb9339205810e2f71956453c11c6e",
+      "reason": "Search chrome restore on page change; My List grid geometry. Host-authored discovery controls, draft multi-selection, exact catalog ownership and navigation preservation; no Home-derived capabilities."
     },
     {
       "source": "roku/components/ProfileCard.brs",
@@ -438,8 +438,8 @@
       "source": "roku/components/SourcesScene.brs",
       "destination": "roku/components/SourcesScene.brs",
       "sha256": "0524426eb7f1436536cddfa79ec3e10f424ccddfddfbb125fb69c144643aaf09",
-      "reason": "New file split from MainScene.brs: source discovery lifecycle, attempt state and view save/restore moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained. Experimental shared-host v3 content, membership and automatic paging adoption.",
-      "extracted_sha256": "5aea88961853bf8ee54e493973a750fafdc2dc29d342437e8bf2f5fe5049cc11"
+      "reason": "New file split from MainScene.brs: source discovery lifecycle, attempt state and view save/restore moved byte-identical into the merged MainScene component scope (script tag in MainScene.xml). BE-002 v2 VOD discovery/playback and bounded logical leases; live remains legacy; original extraction hash retained. Approved BE-002 legacy transport removal and Roku 1.11.4 packaging; original extraction hash retained. SRC-TORRENT-RUNTIME-002: 120-second shared startup budget, preparation renewal and pinned design path relocation; original extraction hash retained. Experimental shared-host v3 content, membership and automatic paging adoption. Host-authored discovery controls, draft multi-selection, exact catalog ownership and navigation preservation; no Home-derived capabilities.",
+      "extracted_sha256": "ad830b5a6750ceb31ae26f2cb11de327aa4ae07b64b0ce0c7b9274e076ea2578"
     },
     {
       "source": "roku/components/StartupScene.brs",
@@ -464,15 +464,15 @@
       "source": "roku/components/UiChoice.brs",
       "destination": "roku/components/UiChoice.brs",
       "sha256": "637bd94aac40af9c6b2b4e5f3500f5371a33018dc6345d0d725436897f887b87",
-      "extracted_sha256": "fcf7b114cb00c05f61cefe24435a972ef6fadb64abf95aa3544de7136157c2a9",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
+      "extracted_sha256": "afcedd25ee020bbe456980b96c748735c7ca32948784b10d0c54c8ebb0c44fc3",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. Host-authored discovery controls, draft multi-selection, exact catalog ownership and navigation preservation; no Home-derived capabilities."
     },
     {
       "source": "roku/components/UiChoice.xml",
       "destination": "roku/components/UiChoice.xml",
       "sha256": "8a075f9f786f46ef7371fefb225eff47a311ce8f50104083935a80c7d8c9d07d",
-      "extracted_sha256": "033dd4006fa2ea3e4f90fb1c14e718f2e88bf3bc46775e60cca0ccdbbd0a6cb1",
-      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434."
+      "extracted_sha256": "957ac1abf95a62015d933ee97ed6eb2c2e466594affb705b216f5485fc6c2714",
+      "reason": "ROK-043 owner-requested full TV audit: lazy catalog shelves, three-row Home, graphics-resolution artwork, title/guide composition, rail layering, search/library/track controls; design 3b6e434. Host-authored discovery controls, draft multi-selection, exact catalog ownership and navigation preservation; no Home-derived capabilities."
     },
     {
       "source": "roku/data/BSLIB-LICENSE.txt",
@@ -4450,8 +4450,8 @@
       "source": "roku/tests/ux_preview.brs",
       "destination": "roku/tests/ux_preview.brs",
       "sha256": "bfe358b15bfce9e359c42d3f25e53614d9c44fdde69554fb9eddf36f6fe93916",
-      "extracted_sha256": "e1d7c4fece3145edf18c082df90f35a5870be151a831b1b84ae381cdb8e4a8fa",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "4a7e95ce2df4c9b4d3cbb49a4a2eab3525d3715c6b4e4ce9962edb2d58fef80a",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. Host-authored discovery controls, draft multi-selection, exact catalog ownership and navigation preservation; no Home-derived capabilities."
     },
     {
       "source": "roku/tools/fetch_character_avatars.py",

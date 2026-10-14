@@ -207,7 +207,7 @@ end function
 sub saveView()
     if m.views = invalid then m.views = []
     if m.mode = invalid or m.mode = "preparing" or m.mode = "resuming" or m.mode = "sourceerror" then return
-    snapshot = {mode:m.mode,items:m.items,selected:m.selected,mediaType:m.mediaType,catalog:m.catalog,search:m.search,offset:m.offset,nextOffset:m.nextOffset,offsetHistory:m.offsetHistory,collection:m.collection,episodes:m.episodes,episodeOffset:m.episodeOffset,position:m.homePosition,index:m.list.itemFocused,liveCategory:m.liveCategory,liveCategoryName:m.liveCategoryName,categoryOffset:m.categoryOffset,pageCount:m.pageCount,discoverActive:m.discoverActive,discoverType:m.discoverType,discoverGenre:m.discoverGenre,discoverExtras:CopyRouteData(m.discoverExtras),discoverCatalogs:m.discoverCatalogs,episodeSeason:m.episodeSeason,homeExpanded:m.homeExpanded,homeActionIndex:m.homeActions.itemFocused,queueOffset:m.queueOffset,libraryOffset:m.libraryOffset}
+    snapshot = {mode:m.mode,items:m.items,selected:m.selected,mediaType:m.mediaType,catalog:m.catalog,search:m.search,offset:m.offset,nextOffset:m.nextOffset,offsetHistory:m.offsetHistory,collection:m.collection,episodes:m.episodes,episodeOffset:m.episodeOffset,position:m.homePosition,index:m.list.itemFocused,liveCategory:m.liveCategory,liveCategoryName:m.liveCategoryName,categoryOffset:m.categoryOffset,pageCount:m.pageCount,discoverActive:m.discoverActive,discoverType:m.discoverType,discoverGenre:m.discoverGenre,discoverExtras:CopyRouteData(m.discoverExtras),discoverVectors:CopyRouteData(m.discoverVectors),discoverMediaTypes:CopyRouteData(m.discoverMediaTypes),discoverCatalogs:m.discoverCatalogs,episodeSeason:m.episodeSeason,homeExpanded:m.homeExpanded,homeActionIndex:m.homeActions.itemFocused,queueOffset:m.queueOffset,libraryOffset:m.libraryOffset}
     if m.mode = "searchall"
         snapshot.searchState = {sections:CopyRouteData(Bounded(m.searchSections,128)),errors:m.searchErrors,index:m.searchPanel.position,scope:m.searchScope,catalog:m.searchCatalog}
     end if
@@ -259,7 +259,7 @@ sub restoreView()
             return
         end if
     end if
-    for each key in ["selected","mediaType","catalog","search","offset","nextOffset","offsetHistory","collection","episodes","episodeOffset","liveCategory","liveCategoryName","categoryOffset","pageCount","discoverActive","discoverType","discoverGenre","discoverExtras","discoverCatalogs","episodeSeason","queueOffset","libraryOffset"]
+    for each key in ["selected","mediaType","catalog","search","offset","nextOffset","offsetHistory","collection","episodes","episodeOffset","liveCategory","liveCategoryName","categoryOffset","pageCount","discoverActive","discoverType","discoverGenre","discoverExtras","discoverVectors","discoverMediaTypes","discoverCatalogs","episodeSeason","queueOffset","libraryOffset"]
         m[key] = saved[key]
     end for
     if saved.mode = "episodes" and Txt(m.profile) <> ""

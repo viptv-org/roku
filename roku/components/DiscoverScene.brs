@@ -5,33 +5,41 @@ sub openDiscover(kind as string)
     m.mediaType = kind
     m.discoverGenre = ""
     m.discoverExtras = {}
+    m.discoverVectors = {}
     m.search = ""
     m.discoverCatalogs = []
     m.catalog = invalid
+    m.discoverPreferredCatalog = invalid
     m.offsetHistory = []
     m.nextOffset = invalid
     rows("Discover",[{name:"Loading catalogs…",action:"waiting"}],"loading","Movies, series and live catalogs from your configured addons.")
-    request("GET","/api/catalogs",invalid,"discovercatalogs")
+    request("GET","/api/v3/discovery-controls?type="+Enc(kind),invalid,"discovercatalogs")
 end sub
 
 sub discoverUseCatalogs(data as dynamic)
-    m.discoverCatalogs = []
-    for each catalog in Bounded(data,2048)
-        m.discoverCatalogs.push(catalog)
-    end for
+    m.discoverCatalogs = Bounded(data.catalogs,2048)
+    m.discoverUnavailableMessage = Txt(data.message)
+    m.discoverMediaTypes = Bounded(data.media_types,64)
     supported = false
-    for each catalog in m.discoverCatalogs
-        if DiscoverTypeMatches(Txt(catalog.type),m.discoverType) then supported = true
+    for each kind in m.discoverMediaTypes
+        if kind = m.discoverType then supported = true
     end for
-    if not supported and m.discoverCatalogs.count() > 0
+    if not supported and m.discoverMediaTypes.count() > 0
+        openDiscover(m.discoverMediaTypes[0])
+        return
+    end if
+    discoverChooseDefaultCatalog()
+    if m.discoverPreferredCatalog <> invalid
         for each catalog in m.discoverCatalogs
-            if Txt(catalog.type) <> "live"
-                m.discoverType = Txt(catalog.type)
+            preferred = m.discoverPreferredCatalog
+            if Txt(catalog.id) = Txt(preferred.id) and Txt(catalog.type) = Txt(preferred.type) and Txt(catalog.addon_id) = Txt(preferred.addon_id)
+                m.catalog = catalog
+                uiRequiredGenre()
                 exit for
             end if
         end for
+        m.discoverPreferredCatalog = invalid
     end if
-    discoverChooseDefaultCatalog()
     discoverBuildFilters()
     browse(m.discoverType,0)
 end sub
@@ -40,7 +48,7 @@ sub discoverChooseDefaultCatalog()
     m.catalog = invalid
     for each catalog in m.discoverCatalogs
         if DiscoverTypeMatches(Txt(catalog.type),m.discoverType)
-            if not UiCatalogRequired(catalog,"search")
+            if DiscoveryMissingControl(catalog,"","",{},{}) = ""
                 m.catalog = catalog
                 exit for
             end if
@@ -76,10 +84,13 @@ sub browse(kind as string, offset as integer)
     if m.discoverActive = true and kind <> "live"
         discoverBuildFilters()
         if m.catalog = invalid
-            uiEmpty("No catalogs are available","Add or enable a catalog addon in Settings.")
+            uiEmpty("No catalogs are available",Txt(m.discoverUnavailableMessage,"Configure this profile’s discovery provider in the web account settings."))
+            if acknowledgementMayFocus()
+                if Bounded(m.discoverMediaTypes,64).count() > 0 then m.discoverTypes.setFocus(true) else m.sidebar.setFocus(true)
+            end if
             return
         end if
-        missing = DiscoverMissingOption(m.catalog,m.search,m.discoverGenre,m.discoverExtras)
+        missing = DiscoveryMissingControl(m.catalog,m.search,m.discoverGenre,m.discoverExtras,m.discoverVectors)
         if missing <> ""
             uiEmpty("Choose " + missing,"Use the filters above to browse this catalog.")
             if acknowledgementMayFocus() then m.discoverFilters.setFocus(true)
@@ -100,7 +111,7 @@ sub browse(kind as string, offset as integer)
         ' its authoritative cursor; search= would incorrectly invoke aggregation.
         if query <> "" then path += "&search=" + Enc(query)
         if m.catalog <> invalid
-            path += "&catalog=" + Enc(Txt(m.catalog.id))
+            if Txt(m.catalog.id) <> "" then path += "&catalog=" + Enc(Txt(m.catalog.id))
             if Txt(m.catalog.addon_id) <> "" then path += "&addon_id=" + Enc(Txt(m.catalog.addon_id))
         end if
         genre = Txt(m.discoverGenre).trim()
@@ -109,6 +120,8 @@ sub browse(kind as string, offset as integer)
             if m.discoverExtras.count() > 0 then path += "&extras=" + Enc(FormatJson(m.discoverExtras))
         end if
     end if
+    vectors = DiscoveryQueryValues(m.discoverVectors)
+    if m.discoverActive = true and vectors.count() > 0 then path += "&values="+Enc(FormatJson(vectors))
     request("GET",path,invalid,"browse")
     m.status.text = "Loading " + kind + "…"
 end sub

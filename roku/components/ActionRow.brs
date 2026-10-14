@@ -1,8 +1,12 @@
 sub render()
     item = m.top.itemContent
     if item = invalid then return
-    if m.ownerItem <> invalid then m.ownerItem.unobserveField("uiOwnerFocused")
+    if m.ownerItem <> invalid
+        m.ownerItem.unobserveField("uiOwnerFocused")
+        m.ownerItem.unobserveField("uiIcon")
+    end if
     m.ownerItem = item
+    if item.hasField("uiIcon") then item.observeField("uiIcon","render")
     if item.hasField("uiOwnerFocused") then item.observeField("uiOwnerFocused","renderFocus")
     width = 536
     height = 54
@@ -53,7 +57,7 @@ sub render()
         label.horizAlign = "left"
         label.translation = [20,0]
         label.width = width-40
-        if icon.visible
+        if icon.visible or (item.hasField("uiCheckable") and item.uiCheckable = true)
             label.translation = [52,0]
             label.width = width-72
         end if

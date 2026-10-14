@@ -355,7 +355,7 @@ sub keyboardDone()
             if m.keyboardKind = "discoverSearch"
                 m.search = result.text.trim()
             else
-                m.discoverExtras[m.discoverExtraName] = result.text.trim()
+                uiSetDiscoveryScalar(m.discoverExtraName,result.text.trim())
             end if
             browse(m.discoverType,0)
         end if

@@ -120,3 +120,7 @@ The table is a complete reference inventory, not a blanket pixel-parity or hardw
 certification. Native full text/PIN entry and unexercised destructive/auth/decoder
 states are explicitly distinguished. Captures remain private; no screenshots,
 credentials or user catalog contents are included in source or release ZIPs.
+
+The host-driven Discover multi-select sheet and required/empty/limit states are
+provisional additions described in `docs/DISCOVERY_V3.md`. Their transport and
+interaction fixtures do not establish physical Roku design or focus acceptance.

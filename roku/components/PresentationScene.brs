@@ -466,6 +466,12 @@ sub uiChoiceSelected(event as object)
         m.discoverGenre = choice.value
     else if kind = "discoverExtra"
         m.discoverExtras[m.discoverExtraName] = choice.value
+    else if kind = "discoverControl"
+        if choice.values <> invalid
+            m.discoverVectors[m.discoverExtraName] = choice.values
+        else
+            uiSetDiscoveryScalar(m.discoverExtraName,Txt(choice.value))
+        end if
     else if kind = "liveOptions"
         if choice.action = "favorite" then toggleFavorite()
         if choice.action = "guide" then openFocusedLiveGuide()
@@ -489,10 +495,12 @@ sub uiChoiceSelected(event as object)
 end sub
 
 sub uiRequiredGenre()
+    m.discoverVectors = {}
     m.discoverGenre = ""
     m.discoverExtras = {}
     m.search = ""
     if m.catalog = invalid then return
+    if m.catalog.controls <> invalid then return
     for each extra in Bounded(m.catalog.extra,16)
         if extra.required = true
             value = Txt(extra.default)

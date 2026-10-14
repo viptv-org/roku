@@ -45,6 +45,7 @@ PRESENTATION = UTIL + ["source/PresentationPolicy.brs"]
 # test file -> (production scripts it runs against, success marker it must print)
 BRS_TESTS = {
     "engine-live.brs": (API_TASK, "ROKU_ENGINE_LIVE_OK"),
+    "engine-discovery.brs": (UTIL + ["source/AccountPolicy.brs", "source/EngineCard.brs", "source/EngineHome.brs", "source/DiscoveryControls.brs", "source/EngineDiscoveryControls.brs", "source/DiscoveryCatalogLabels.brs", "source/ChoiceSelection.brs", "components/ApiTaskSanitize.brs", "components/ApiEngineContent.brs", "components/ApiEngineQueue.brs"], "ROKU_ENGINE_DISCOVERY_OK"),
     "provider-captions.brs": (UTIL + ["source/AccountPolicy.brs", "source/ProviderCaptionPolicy.brs", "source/EngineHome.brs", "source/EngineCard.brs", "components/ApiProviderCaptions.brs"], "ROKU_PROVIDER_CAPTIONS_OK"),
     "collection-paging.brs": (UTIL + ["source/BrowsePolicy.brs", "components/CollectionPagingScene.brs"], "ROKU_COLLECTION_PAGING_OK"),
     "engine-card.brs": (API_TASK, "ROKU_ENGINE_CARD_OK"),

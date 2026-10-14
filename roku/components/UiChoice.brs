@@ -1,37 +1,8 @@
 sub init()
     m.choices = m.top.findNode("choices")
     m.choices.observeField("itemSelected","choose")
-end sub
-
-sub render()
-    model = m.top.model
-    if model = invalid then return
-    m.top.findNode("title").text = Txt(model.title)
-    root = CreateObject("roSGNode","ContentNode")
-    m.items = Bounded(model.items,2048)
-    for each item in m.items
-        node = root.createChild("ContentNode")
-        node.title = Txt(item.name)
-        node.addFields({uiWidth:440,uiHeight:54})
-    end for
-    count = m.items.count()
-    if count < 1 then count = 1
-    if count > 7 then count = 7
-    panelHeight = 720
-    panelTop = 0
-    m.top.findNode("surface").translation = [733,0]
-    m.top.findNode("surface").height = panelHeight
-    m.top.findNode("title").translation = [776,43]
-    m.top.findNode("description").text = Txt(model.description)
-    m.choices.translation = [776,130]
-    if Txt(model.description) <> "" then m.choices.translation = [776,190]
-    m.choices.numRows = count
-    m.choices.content = root
-    m.top.visible = true
-    index = 0
-    if model.index <> invalid then index = RestoreChoiceIndex(model.index,m.items.count())
-    m.choices.jumpToItem = index
-    m.choices.setFocus(true)
+    m.actions = m.top.findNode("actions")
+    m.actions.observeField("itemSelected","choiceAction")
 end sub
 
 function RestoreChoiceIndex(index as integer, count as integer) as integer
@@ -42,16 +13,61 @@ end function
 sub choose()
     index = m.choices.itemSelected
     if index < 0 or index >= m.items.count() then return
+    if m.multiple
+        value = Txt(m.items[index].value)
+        rejected = not ChoiceHasValue(m.draft,value) and m.draft.count() >= m.maximum
+        m.draft = ChoiceToggle(m.draft,value,m.maximum)
+        choiceDraftChanged()
+        if rejected then m.top.findNode("description").text = "Select at most "+m.maximum.toStr()+"."
+        return
+    end if
     m.top.visible = false
     m.top.selection = {index:index,item:m.items[index]}
+end sub
+
+sub choiceAction()
+    index = m.actions.itemSelected
+    if index = 0
+        m.draft = []
+        choiceDraftChanged()
+    else if index = 1
+        if m.required and m.draft.count() = 0
+            m.top.findNode("description").text = "Choose at least one option."
+            return
+        end if
+        values = []
+        for each value in m.draft
+            values.push(value)
+        end for
+        m.top.visible = false
+        m.top.selection = {index:-1,item:{values:values}}
+    else if index = 2
+        choiceDismiss()
+    end if
+end sub
+
+sub choiceDismiss()
+    m.top.visible = false
+    m.top.dismissed = true
 end sub
 
 function onKeyEvent(key as string, press as boolean) as boolean
     if not press then return false
     if key = "back"
-        m.top.visible = false
-        m.top.dismissed = true
+        choiceDismiss()
         return true
+    end if
+    if m.multiple
+        if m.choices.hasFocus() and (key = "right" or (key = "down" and m.choices.itemFocused = m.items.count()-1))
+            m.lastChoice = m.choices.itemFocused
+            m.actions.jumpToItem = 1
+            m.actions.setFocus(true)
+            return true
+        else if m.actions.hasFocus() and key = "up"
+            m.choices.jumpToItem = m.lastChoice
+            m.choices.setFocus(true)
+            return true
+        end if
     end if
     return key = "left" or key = "right"
 end function
