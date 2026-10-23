@@ -57,6 +57,7 @@ sub render()
         if imageHeight > w then shape = "remote-poster"
         if RObject(c.wire.profile) then shape = "remote-profile"
         m.artMask.maskUri = "pkg:/images/design/"+shape+"-mask.png"
+        m.ground.uri = "pkg:/images/design/"+shape+"-mask.png"
         m.ring.uri = "pkg:/images/design/"+shape+"-focus.png"
         m.ring.translation = [0,0]
         m.ring.width = w
