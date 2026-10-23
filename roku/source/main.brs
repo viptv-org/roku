@@ -4,7 +4,7 @@ sub Main()
     port = CreateObject("roMessagePort")
     screen.SetMessagePort(port)
 
-    scene = screen.CreateScene("MainScene")
+    scene = screen.CreateScene("RemoteScene")
     screen.Show()
 
     while true

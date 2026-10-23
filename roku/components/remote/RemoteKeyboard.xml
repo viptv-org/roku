@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="RemoteKeyboard" extends="Group">
+ <interface>
+  <field id="text" type="string" alwaysNotify="true" onChange="textChanged" />
+  <field id="prompt" type="string" onChange="layout" />
+  <field id="secret" type="boolean" value="false" onChange="textChanged" />
+  <field id="searchMode" type="boolean" value="false" onChange="layout" />
+  <field id="submitted" type="boolean" alwaysNotify="true" />
+  <field id="cancelled" type="boolean" alwaysNotify="true" />
+  <field id="exitRight" type="boolean" alwaysNotify="true" />
+ </interface>
+ <script type="text/brightscript" uri="pkg:/components/remote/RemoteKeyboard.brs" />
+ <children>
+  <Rectangle id="ground" width="1920" height="1080" color="#0B0B0C" />
+  <Label id="title" translation="[96,96]" width="1700" height="72" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="52" /></Label>
+  <Poster id="field" uri="pkg:/images/design/row.9.png" translation="[96,230]" width="1130" height="84" blendColor="#212124" />
+  <Label id="value" translation="[120,246]" width="1082" height="52" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_500.ttf" size="32" /></Label>
+  <Group id="keys" />
+ </children>
+</component>

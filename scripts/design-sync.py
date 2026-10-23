@@ -34,6 +34,8 @@ elif len(sys.argv) == 4 and sys.argv[1] == "sync":
         if source in paths: mapping[source] = "design-contract/PLAYBACK_ERROR_COPY.md"
     if "specs/behavior/torrent-runtime-v2.md" in paths:
         mapping["specs/behavior/torrent-runtime-v2.md"] = "design-contract/torrent-runtime-v2.md"
+    if "docs/platforms/ROKU_KMP_REMOTE.md" in paths:
+        mapping["docs/platforms/ROKU_KMP_REMOTE.md"] = "design-contract/ROKU_KMP_REMOTE.md"
     files = {}
     for source, target in mapping.items():
         data = git("show", sha + ":" + source)

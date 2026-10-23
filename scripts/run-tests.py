@@ -22,6 +22,7 @@ sys.path.insert(0, str(tests))
 from brs_cli import brs_command  # noqa: E402
 
 STATIC = [
+    "remote_contract.py",
     "account_only_contract.py",
     "branding_contract.py",
     "design_contract.py",
@@ -74,6 +75,8 @@ BRS_TESTS = {
 }
 # Inputs for preview generators and SceneGraph harnesses, not standalone tests.
 BRS_FIXTURES = {
+    "remote_runtime.brs": "production remote SceneGraph handlers executed by remote_runtime.py",
+    "remote_transport.brs": "production Task HTTPS and storage adapters executed by remote_transport_runtime.py",
     "epg_navigation.brs": "injected into EpgGrid by epg_navigation_runtime.py",
     "epg_preview.brs": "preview scene for epg_navigation_runtime.py",
     "ux_preview.brs": "injected by make_ux_preview.py into a networkless preview copy",

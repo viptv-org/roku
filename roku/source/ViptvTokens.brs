@@ -257,7 +257,7 @@ function ViptvTokens() as object
         size_banner_icon_default: 40
         size_banner_icon_tv: 72
         size_tile_phone_poster_width: 111
-        size_tile_phone_poster_height: 139
+        size_tile_phone_poster_height: 167
         size_tile_phone_continue_width: 292
         size_tile_phone_continue_height: 96
         size_tile_phone_continue_thumb_width: 60

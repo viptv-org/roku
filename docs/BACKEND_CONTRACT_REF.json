@@ -1,0 +1,17 @@
+{
+  "observed_at": "2026-10-23T11:47:20.428091+00:00",
+  "base_commit": "7275bce4a7543c1ef7cbde871fe03813e1490f4e",
+  "status": "working-tree producer contract; not a deployed or committed producer revision",
+  "files": {
+    "server/src/routes.rs": "e22b81f91a1665d9a8d121f621ae4209b60ffe04e994ca0db3bbda0b48e0fd72",
+    "server/src/engine_v3/mod.rs": "48b89e06e49a72404664276088b47953651d26038f3351b187d3cd742db4536a",
+    "server/src/engine_v3/viewing_action.rs": "40bdc4ee89556e94d22e82d9d1d5fd047f94b0dc869df7def57069c7e53f86e9",
+    "server/src/engine_v3/viewing_presentation.rs": "3f2405b64742634a43c8ff7252c7a2fac0344793b7a020d1a6d2613e151a374d",
+    "server/src/engine_v3/source_ranking.rs": "6166e059f88d5a1a8bcc15748dbf0d2a5e2f2eb6f469f0c80039c9b61e998657",
+    "server/src/engine_v3/preferences.rs": "79ae68deff92ec05c74381566f98a48a0f02216d1b6b6777a736c7f0f6a41507",
+    "server/src/engine_v3/live.rs": "8e7966a90cf476e8b55f2636c1d8dd077a54a92e51dee11d9f4192cd3230dd40",
+    "server/src/gateway/playback.rs": "fac5151491f4a9f654561cc77fadc136c8f5782b4988e7ef54e7548efdcd8609",
+    "TV_REMOTE_API.md": "57ca9a778d372038298beab7046e4133b87ecf1313b2898728e3791b7f52a3b2",
+    "server/src/engine_v3/library/listing.rs": "7d04c37528049950f5b36b6050c1369697b5dd4b8dd8b655175e70476bf73ef9"
+  }
+}

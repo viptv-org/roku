@@ -1,0 +1,230 @@
+{
+  "home": {
+    "scope": {
+      "connection_id": "server",
+      "account_id": "fixture-account",
+      "profile_id": "7",
+      "revision": 1
+    },
+    "revision": 1,
+    "hero": {
+      "identity": {
+        "kind": "movie",
+        "id": "opaque-title",
+        "ids": []
+      },
+      "provider_id": "simkl",
+      "title": "Contract fixture",
+      "subtitle": null,
+      "description": null,
+      "poster": null,
+      "landscape": null,
+      "logo": null,
+      "progress": null,
+      "badges": [],
+      "view": {
+        "saved": true
+      }
+    },
+    "featured": [
+      {
+        "identity": {
+          "kind": "movie",
+          "id": "opaque-title",
+          "ids": []
+        },
+        "provider_id": "simkl",
+        "title": "Contract fixture",
+        "subtitle": null,
+        "description": null,
+        "poster": null,
+        "landscape": null,
+        "logo": null,
+        "progress": null,
+        "badges": [],
+        "view": {
+          "saved": true
+        }
+      }
+    ],
+    "rows": [
+      {
+        "id": "server-chosen-role",
+        "title": "A server row",
+        "provider_id": "simkl",
+        "state": "Ready",
+        "cards": [
+          {
+            "identity": {
+              "kind": "movie",
+              "id": "opaque-title",
+              "ids": []
+            },
+            "provider_id": "simkl",
+            "title": "Contract fixture",
+            "subtitle": null,
+            "description": null,
+            "poster": null,
+            "landscape": null,
+            "logo": null,
+            "progress": null,
+            "badges": [],
+            "view": {
+              "saved": true
+            }
+          }
+        ],
+        "next_cursor": null,
+        "view": {
+          "card_shape": "landscape"
+        }
+      }
+    ],
+    "complete": true
+  },
+  "viewing_action": {
+    "request": {
+      "card": {
+        "identity": {
+          "kind": "movie",
+          "id": "opaque-title",
+          "ids": []
+        },
+        "provider_id": "simkl",
+        "title": "Contract fixture",
+        "subtitle": null,
+        "description": null,
+        "poster": null,
+        "landscape": null,
+        "logo": null,
+        "progress": null,
+        "badges": [],
+        "view": {
+          "saved": true
+        }
+      },
+      "restart": false
+    },
+    "response": {
+      "card": {
+        "identity": {
+          "kind": "movie",
+          "id": "opaque-title",
+          "ids": []
+        },
+        "provider_id": "simkl",
+        "title": "Contract fixture",
+        "subtitle": null,
+        "description": null,
+        "poster": null,
+        "landscape": null,
+        "logo": null,
+        "progress": null,
+        "badges": [],
+        "view": {
+          "saved": true
+        }
+      },
+      "label": "Resume",
+      "resume": true,
+      "source_selection": "best"
+    }
+  },
+  "source_ranking": {
+    "request": {
+      "ids": [
+        "source-a",
+        "source-b"
+      ],
+      "device_max_height": 1080
+    },
+    "response": {
+      "streams": [
+        {
+          "id": "source-a",
+          "name": "First display row",
+          "presentation": {
+            "quality": "2160p"
+          }
+        },
+        {
+          "id": "source-b",
+          "name": "Named server choice",
+          "presentation": {
+            "quality": "1080p"
+          }
+        }
+      ],
+      "best_match_id": "source-b",
+      "quality_filters": [
+        {
+          "height": 2160,
+          "label": "4K",
+          "count": 1
+        },
+        {
+          "height": 1080,
+          "label": "1080p",
+          "count": 1
+        }
+      ],
+      "total": 2
+    }
+  },
+  "addon_activation": {
+    "connection_id": "addon:fixture",
+    "enabled": true
+  },
+  "preferences": {
+    "revision": 1,
+    "preferences": {
+      "source_selection": "best"
+    },
+    "controls": [
+      {
+        "id": "source_selection",
+        "group": "playback",
+        "label": "Default source",
+        "choices": [
+          {
+            "label": "Best match",
+            "value": "best"
+          },
+          {
+            "label": "Ask every time",
+            "value": "ask"
+          }
+        ]
+      }
+    ]
+  },
+  "live_sources": {
+    "streams": [
+      {
+        "id": "source-a",
+        "name": "First display row",
+        "presentation": {
+          "quality": "2160p"
+        }
+      },
+      {
+        "id": "source-b",
+        "name": "Named server choice",
+        "presentation": {
+          "quality": "1080p"
+        }
+      }
+    ],
+    "live": true
+  },
+  "guide": {
+    "channel_id": "channel-1",
+    "programs": [],
+    "view": {
+      "current_program_id": null,
+      "now_millis": 1800000000000,
+      "window_start_millis": 1800000000000,
+      "window_end_millis": 1800007200000
+    }
+  }
+}

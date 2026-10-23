@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="RemoteItem" extends="Group">
+ <interface>
+  <field id="itemContent" type="node" onChange="render" />
+  <field id="focusPercent" type="float" onChange="focusChanged" />
+  <field id="rowFocusPercent" type="float" value="1" onChange="focusChanged" />
+  <field id="rowListHasFocus" type="boolean" onChange="focusChanged" />
+  <field id="listHasFocus" type="boolean" onChange="focusChanged" />
+  <field id="gridHasFocus" type="boolean" onChange="focusChanged" />
+ </interface>
+ <script type="text/brightscript" uri="pkg:/source/RemoteWire.brs" />
+ <script type="text/brightscript" uri="pkg:/components/remote/RemoteItem.brs" />
+ <children>
+  <Poster id="ground" uri="pkg:/images/ui-round-fill.9.png" blendColor="#212124" />
+  <MaskGroup id="artMask" maskUri="pkg:/images/design/remote-wide-mask.png">
+   <Poster id="art" loadDisplayMode="scaleToZoom" />
+   <Label id="initials" color="#F4F2EE" horizAlign="center" vertAlign="center" visible="false"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="64" /></Label>
+   <Rectangle id="progressGround" color="#FFFFFF44" visible="false" height="4" />
+   <Rectangle id="progress" color="#F5C542" visible="false" height="4" />
+  </MaskGroup>
+  <Poster id="icon" width="30" height="30" loadWidth="30" loadHeight="30" loadDisplayMode="scaleToFit" visible="false" />
+  <Label id="label" color="#F4F2EE" height="38" maxLines="1"><Font role="font" uri="pkg:/fonts/remote_onest_600.ttf" size="26" /></Label>
+  <Label id="detail" color="#B6B4AF" height="32" maxLines="1"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="20" /></Label>
+  <Label id="quality" translation="[28,20]" width="116" height="36" color="#F4F2EE" visible="false"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="30" /></Label>
+  <Label id="format" translation="[28,56]" width="116" height="24" color="#B6B4AF" visible="false"><Font role="font" uri="pkg:/fonts/remote_onest_600.ttf" size="18" /></Label>
+  <Poster id="rowPoster" translation="[176,12]" width="72" height="108" loadWidth="72" loadHeight="108" loadDisplayMode="scaleToZoom" visible="false" />
+  <Poster id="ring" uri="pkg:/images/ui-round-fill.9.png" blendColor="#F4F2EE" visible="false" />
+ </children>
+</component>

@@ -1,3 +1,20 @@
+# Current remote Roku contract — ROK-REMOTE-001
+
+The owner-approved 2.0 implementation uses the current KMP TV presentation and
+server-authoritative contracts. `roku/source/main.brs` launches `RemoteScene`;
+`roku/bsconfig.json` excludes the historical controller and policies from runtime
+packages. The adopted design is recorded by `DESIGN_REF`, with the KMP source
+ledger in `docs/KMP_REFERENCE.json`.
+
+Read `design-contract/ROKU_KMP_REMOTE.md`, `docs/BACKEND_HANDOFF.md` and
+`docs/REMOTE_STATUS.md` for current interfaces, acceptance and remaining gates.
+The web-TV agent owns backend changes. No live backend deployment, physical
+installation or Store submission is implied by a passing compile or ZIP build.
+
+The earlier specifications below are historical, not the shipping entry point.
+
+---
+
 # Current Roku TV contract — ROK-044
 
 VIPTV 1.11.3 adopts design `ac5ae2bad129753135aed01cb85e5a2b343f33f9` under

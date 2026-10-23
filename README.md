@@ -1,52 +1,80 @@
-# viptv roku
+# VIPTV for Roku
 
-GitHub Actions builds the compiled runtime ZIP on pushes to `main` and on manual
-dispatch ([build.yml](.github/workflows/build.yml)). Each run uploads a 30-day
-`roku-<commit>` artifact containing the ZIP, `SHA256SUMS` and `build.json`
-(revision and design pin). There are no pull-request gates, automatic releases,
-tags or deployments; run the local checks below before pushing.
+The 2.0 client is a native, server-connected SceneGraph renderer of the current
+KMP TV presentation. `RemoteScene` is the shipping entry point. Its build
+allowlist excludes the old scenes, provider parsers, ranking, continuation
+policies and v2 API adapter. Historical sources remain for regression evidence.
+There is no local engine, local library, torrent runtime or offline mode.
 
-Extracted from `vynxc/viptv@7d6b413`. `MIGRATION.json` records every original file and SHA-256; the original repository retains history. This repository owns the native Roku client.
+The server supplies Home rows and card shapes, catalog order, discovery controls,
+saved-title state, profile permissions, preference controls, playback targets,
+resume intent, source ranking and the named best match. Roku handles focus,
+rendering, bounded view windows, input, credential storage and native Video.
 
-The [design repository](https://github.com/viptv-org/design) is the product source of truth. The native client adopts the current TV design under [ROK-044](design-contract/ROKU_DESIGN.md): bundled Onest/Bricolage fonts, Lucide controls, landscape Home/detail artwork, stable focus rings, the expanding rail and right-side panels. The 1920×1080 references map proportionally to Roku's 1280×720 logical canvas. Read [SPEC.md](SPEC.md), [AGENTS.md](AGENTS.md), and `DESIGN_REF` before implementation.
+Read [the implementation/qualification record](docs/REMOTE_STATUS.md),
+[backend handoff](docs/BACKEND_HANDOFF.md), and [pinned design adoption](design-contract/ROKU_KMP_REMOTE.md).
+The producer contract includes additions being implemented by the web-TV agent;
+this package is a candidate, not a claim that the live backend supports them.
 
-`python3 scripts/design-sync.py check` verifies the pinned native assets, fonts,
-tokens and contract. To deliberately adopt a revision:
-`python3 scripts/design-sync.py sync ../design <full-commit>`.
-Fonts and their licenses are included in the compiled runtime package.
+## Reference and backend
 
-See [TV_AUDIT.md](TV_AUDIT.md) for the complete TV reference inventory, precedence, fixes and evidence limits.
+`docs/KMP_REFERENCE.json` records the selected KMP commit and 512 working-tree
+source/resource hashes. Its source archive and private renderer captures stay
+under ignored `artifacts/`. `DESIGN_REF` and `DESIGN_ASSETS.json` pin imported
+fonts, masks, icons, gradients and the remote-adoption contract.
 
-## Local checks
+`docs/BACKEND_CONTRACT_REF.json` records the observed producer source hashes.
+`/api/bootstrap` must report contract version 3. The remote presentation additions
+include `HomeRow.view.card_shape`, `Card.view.saved`, preference `controls`,
+source-ranking `best_match_id`/`quality_filters`, and profile `viewing-action` and
+`addon-activation` endpoints. An old server gets an update/retry state; it does
+not activate legacy client policy.
 
-From the repository root:
+The normal package keeps the existing origin lock. The public package supports
+another HTTPS origin and clears the previous origin's grant. Both preserve the
+existing registry format for rotating device credentials and remembered profile
+IDs. Transient failures retain credentials; profile selection remains server-validated.
+
+## Local verification
 
 ```sh
-python3 scripts/design-sync.py check   # pinned design assets, fonts, tokens and contract
-python3 scripts/verify-migration.py    # extraction inventory and recorded re-pins
-python3 scripts/run-tests.py           # static contracts, runtime harnesses, BrightScript tests
+python3 scripts/design-sync.py check
+python3 scripts/verify-migration.py
+python3 scripts/run-tests.py
 (cd roku && npx --yes brighterscript@0.73.1 --project bsconfig.json)
 ```
 
-`run-tests.py` needs Python 3 and a BrightScript interpreter: `VIPTV_BRS_CLI`
-(a `brs-cli` executable), otherwise `brs-cli` on `PATH`, otherwise `npx` fetches
-the pinned `brs-node@2.5.3`. Use `--group static|runtime|brs` and `-k <name>` to
-select checks. These are interpreter and compile fixtures, not physical Roku
-validation.
+The runner uses `VIPTV_BRS_CLI`, `brs-cli` on PATH, or pinned `brs-node@2.5.3`.
+The new remote checks execute production SceneGraph handlers and Task HTTP over
+disposable HTTPS. The older tests cover retained historical implementations;
+they do not establish the new client's device or visual parity.
 
-## Build artifact
-
-The installable ZIP is a runtime package, created from a BrighterScript 0.73.1 staging tree so it contains generated `source/bslib.brs`. The build workflow, and a local build, run:
+Private, networkless renderer fixtures:
 
 ```sh
-(cd roku && npx --yes brighterscript@0.73.1 --project bsconfig.json --copy-to-staging --staging-folder-path <staging> --retain-staging-folder)
-python3 scripts/package.py --input <staging> [--public] [--output-dir <new-directory>]
+python3 scripts/remote-preview.py artifacts/new-home home
+node scripts/render-remote.mjs artifacts/new-home artifacts/new-home.png
 ```
 
-`package.py` deliberately rejects raw source as input, refuses to overwrite an existing archive and appends to `SHA256SUMS`. Keep the source repository and its notices available separately when distributing GPL-covered source.
+The simulator may render its FHD design canvas even with a 720p device setting.
+A requested 720p export is then explicitly marked as a scaled preview in its
+sidecar JSON. It is not a physical 720p renderer measurement.
+
+## Runtime artifacts
+
+Use new staging/output paths for every build:
+
+```sh
+(cd roku && npx --yes brighterscript@0.73.1 --project bsconfig.json --copy-to-staging --staging-folder-path ../artifacts/new-staging --retain-staging-folder)
+python3 scripts/package.py --input artifacts/new-staging --output-dir artifacts/new-build
+python3 scripts/package.py --input artifacts/new-staging --public --output-dir artifacts/new-build
+```
+
+Packages include compiler BSLib, fonts and licenses. Preview inputs and account
+credentials are excluded. Actions builds on main pushes/manual dispatch remain
+unchanged; there is no automatic deployment, Store submission or device install.
 
 ## License
 
-Copyright (C) 2026 viptv contributors.
-
-This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; version 2 of the License. See [LICENSE](LICENSE). Keep this source repository available alongside any distributed runtime package, as the package alone is not the corresponding source.
+Copyright (C) 2026 viptv contributors. GPL version 2; see [LICENSE](LICENSE).
+Preserve corresponding source and the bundled third-party notices when distributing.

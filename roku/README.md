@@ -1,3 +1,15 @@
+# VIPTV Roku 2.0
+
+The shipping entry point is `RemoteScene`, an account-required renderer for the
+current server API. See the [repository guide](../README.md) and
+[qualification record](../docs/REMOTE_STATUS.md).
+
+The former 1.x implementation notes below are historical. Their left rail,
+client-side catalog assembly, source scoring and v2 playback adapter are not
+included in the new runtime package.
+
+---
+
 # VIPTV for Roku
 
 VIPTV is a native 1280×720 SceneGraph client using Roku `Video`, native keyboard input, account-scoped device sessions, and profile-specific history. Its TV design uses bundled fonts, Lucide icons and approved avatar artwork. It contains no static administrator key, packaged bearer or provider credentials.

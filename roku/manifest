@@ -1,8 +1,8 @@
 title=VIPTV
-major_version=1
-minor_version=11
-build_version=6
-ui_resolutions=hd
+major_version=2
+minor_version=0
+build_version=0
+ui_resolutions=fhd
 splash_color=#0B0B0C
 splash_screen_hd=pkg:/images/splash-hd.jpg
 splash_min_time=1200

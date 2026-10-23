@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="RemoteActionBar" extends="Group">
+ <interface>
+  <field id="content" type="node" onChange="render" />
+  <field id="itemFocused" type="integer" value="0" onChange="paint" />
+  <field id="itemSelected" type="integer" alwaysNotify="true" />
+ </interface>
+ <script type="text/brightscript" uri="pkg:/source/RemoteWire.brs" />
+ <script type="text/brightscript" uri="pkg:/components/remote/RemoteActionBar.brs" />
+ <children><Group id="items" /></children>
+</component>

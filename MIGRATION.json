@@ -20,15 +20,15 @@
       "source": "roku/README.md",
       "destination": "roku/README.md",
       "sha256": "d910b07caec23d4dfbe5b62162da43c21a0b1c2123205bf5cba91c634b84de17",
-      "extracted_sha256": "f4dcaaa50715fedee0635c48bb228d6375b719aae8c909afd3d8fb2f9cef90ec",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. Local checks documented through scripts/run-tests.py; retired Settings quality row and DSH-only commands removed."
+      "extracted_sha256": "15c8f3357a0cc6da501554b08df2240fe7a9c552294c3650f91ce1c716252cb8",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. Local checks documented through scripts/run-tests.py; retired Settings quality row and DSH-only commands removed. ROK-REMOTE-001 (2026-10-23): current KMP TV design pin, remote-only runtime entry/build allowlist and updated current/historical documentation; original extraction digest retained."
     },
     {
       "source": "roku/bsconfig.json",
       "destination": "roku/bsconfig.json",
       "sha256": "483022be77240fdc9644889ebd030b75d63d97707bb5839d1322dc0714b45e51",
-      "extracted_sha256": "5eac7d21d91e9638d999bfffd016c94a91e0c084153886941fa5ccdb04ad986a",
-      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained."
+      "extracted_sha256": "2e6fff8fe94dafbde4a46f7d7d5aa51136ba484858b2d56b6a6cd3c41f07c7ff",
+      "reason": "ROK-042 native TV design adoption at design@e33bf664f8370aea72ef839fb6f81c9687eac9d9: presentation geometry, bundled typography/icons, native rail and corresponding acceptance contracts; original extraction hash retained. ROK-REMOTE-001 (2026-10-23): current KMP TV design pin, remote-only runtime entry/build allowlist and updated current/historical documentation; original extraction digest retained."
     },
     {
       "source": "roku/components/AccountProfilesScene.brs",
@@ -3916,8 +3916,8 @@
       "source": "roku/manifest",
       "destination": "roku/manifest",
       "sha256": "e3ec6e7a1150fbd14f500736f2b28550b8a7a4bf08832546fc29b208b22dee58",
-      "extracted_sha256": "e8e63c81ea3541731fc4d524b771ee284562a439d15d4037a9c6ac2cc287dce6",
-      "reason": "ROK-044: compact episode card; re-pinned for build 5 (keyboard/rail, My List grid, delivery badge, freeze hardening). Native buffered resume and bounded transient lease renewal correction, 2026-10-08."
+      "extracted_sha256": "086ee0d60f947cf22d3f775501f904f70a42eac70dd6dc67d874aad937a3b84f",
+      "reason": "ROK-044: compact episode card; re-pinned for build 5 (keyboard/rail, My List grid, delivery badge, freeze hardening). Native buffered resume and bounded transient lease renewal correction, 2026-10-08. ROK-REMOTE-001 (2026-10-23): current KMP TV design pin, remote-only runtime entry/build allowlist and updated current/historical documentation; original extraction digest retained."
     },
     {
       "source": "roku/source/AccountPolicy.brs",
@@ -3983,7 +3983,9 @@
     {
       "source": "roku/source/main.brs",
       "destination": "roku/source/main.brs",
-      "sha256": "d8fd47bce448ed5be50b0a0e3473947a8b8e88fd44d164372747d3bb7baed0ea"
+      "sha256": "d8fd47bce448ed5be50b0a0e3473947a8b8e88fd44d164372747d3bb7baed0ea",
+      "extracted_sha256": "90b5304e005b8333415f3f10b59f71ab16a6f5b1707d871cd390e8491213b3f5",
+      "reason": " ROK-REMOTE-001 (2026-10-23): current KMP TV design pin, remote-only runtime entry/build allowlist and updated current/historical documentation; original extraction digest retained."
     },
     {
       "source": "roku/tests/account-flow.brs",

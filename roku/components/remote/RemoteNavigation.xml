@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="RemoteNavigation" extends="Group">
+ <interface>
+  <field id="destinations" type="array" onChange="render" />
+  <field id="active" type="string" onChange="paint" />
+  <field id="cursor" type="integer" value="1" onChange="paint" />
+  <field id="selected" type="string" alwaysNotify="true" />
+  <field id="down" type="boolean" alwaysNotify="true" />
+  <field id="profileName" type="string" onChange="render" />
+  <field id="avatarUri" type="string" onChange="render" />
+ </interface>
+ <script type="text/brightscript" uri="pkg:/source/RemoteWire.brs" />
+ <script type="text/brightscript" uri="pkg:/components/remote/RemoteNavigation.brs" />
+ <children>
+  <Group translation="[96,44]">
+   <Poster width="44" height="44" uri="pkg:/images/design/row.9.png" blendColor="#F5C542" />
+   <Label width="44" height="44" text="V" color="#0B0B0C" horizAlign="center" vertAlign="center"><Font role="font" uri="pkg:/fonts/remote_bricolage_800.ttf" size="27" /></Label>
+   <Label translation="[56,0]" width="32" height="44" vertAlign="center" text="V" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_bricolage_800.ttf" size="32" /></Label>
+   <Label translation="[74.944,0]" width="32" height="44" vertAlign="center" text="I" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_bricolage_800.ttf" size="32" /></Label>
+   <Label translation="[81.44,0]" width="32" height="44" vertAlign="center" text="P" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_bricolage_800.ttf" size="32" /></Label>
+   <Label translation="[98.912,0]" width="32" height="44" vertAlign="center" text="T" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_bricolage_800.ttf" size="32" /></Label>
+   <Label translation="[114.144,0]" width="32" height="44" vertAlign="center" text="V" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_bricolage_800.ttf" size="32" /></Label>
+  </Group>
+  <Group id="items" />
+ </children>
+</component>
