@@ -152,6 +152,8 @@ sub rReset(route as string)
     m.actions.translation = [96,648]
     m.shelves.translation = [96,824]
     m.shelves.rowItemSize = [[320,252]]
+    m.shelves.showRowLabel = [true]
+    m.shelves.numRows = 3
     m.shelves.itemSize = [1728,304]
     m.shelves.rowItemSpacing = [[24,0]]
     m.heading.translation = [96,160]
@@ -420,6 +422,15 @@ function onKeyEvent(key as string, press as boolean) as boolean
     if m.route = "search" and key = "left" and m.shelves.isInFocusChain()
         m.keyboard.setFocus(true)
         return true
+    end if
+    if m.route = "profiles"
+        if key = "down" and m.shelves.isInFocusChain() and m.actions.visible
+            m.actions.setFocus(true)
+            return true
+        else if key = "up" and m.actions.isInFocusChain()
+            m.shelves.setFocus(true)
+            return true
+        end if
     end if
     if key = "options" and m.failedRequest <> invalid
         q = m.failedRequest

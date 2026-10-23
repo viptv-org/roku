@@ -74,6 +74,7 @@ sub rProfiles(data as object)
         values.push({title:p.name,subtitle:"",profile:p,action:"selectProfile",poster:rAvatar(RText(p.avatar_id))})
     end for
     visibleProfiles = values.count()
+    if visibleProfiles < 1 then visibleProfiles = 1
     if visibleProfiles > 5 then visibleProfiles = 5
     m.grid.translation = [int((1920-(visibleProfiles*256-56))/2),380]
     m.grid.itemSize = [200,276]
@@ -81,8 +82,20 @@ sub rProfiles(data as object)
     m.grid.numColumns = 5
     m.grid.numRows = 1
     m.grid.content = rContent(values,200,276,200,"poster")
-    m.grid.visible = true
-    m.grid.setFocus(true)
+    ' One virtualized horizontal row, including accounts with more than five
+    ' profiles. Down always reaches management, never a second profile grid row.
+    root = CreateObject("roSGNode","ContentNode")
+    row = root.createChild("ContentNode")
+    row.appendChildren(rContent(values,200,276,200,"poster").getChildren(-1,0))
+    m.shelves.showRowLabel = [false]
+    m.shelves.numRows = 1
+    m.shelves.itemSize = [visibleProfiles*256-56,276]
+    m.shelves.rowItemSize = [[200,276]]
+    m.shelves.rowItemSpacing = [[56,0]]
+    m.shelves.translation = m.grid.translation
+    m.shelves.content = root
+    m.shelves.visible = values.count() > 0
+    m.shelves.setFocus(true)
     actions = []
     if RGet(RGet(data.capabilities,"create",{}),"availability") = "Available" then actions.push({title:"Add profile",action:"createProfile"})
     if RGet(RGet(data.capabilities,"rename",{}),"availability") = "Available" then actions.push({title:"Manage profiles",action:"manageProfiles"})
@@ -309,6 +322,7 @@ sub rHero(card as object)
 end sub
 
 sub rShelfFocused()
+    if m.route = "profiles" then return
     index = m.shelves.rowItemFocused
     if index.count() <> 2 or m.shelves.content = invalid then return
     row = m.shelves.content.getChild(index[0])
@@ -361,6 +375,10 @@ sub rShelfSelected()
     row = m.shelves.content.getChild(index[0])
     node = row.getChild(index[1])
     if node <> invalid
+        if m.route = "profiles"
+            rRun(node.wire)
+            return
+        end if
         if (m.route = "detail" and RObject(node.wire.identity.episode)) or (m.route = "home" and RGet(row.wire,"id") = "continue")
             rRun({action:"play",card:node.wire})
         else

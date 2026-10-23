@@ -65,6 +65,12 @@ sub runChecks()
     rProfiles(management)
     rCheck(not m.actions.visible,"unsupported profile actions omitted")
     rCheck(m.grid.content.getChildCount() = 1,"profile renders server data")
+    management.profiles = []
+    for i = 1 to 12
+        management.profiles.push({id:i.toStr(),name:"Profile "+i.toStr(),can_delete:false})
+    end for
+    rProfiles(management)
+    rCheck(m.shelves.numRows = 1 and m.shelves.content.getChild(0).getChildCount() = 12,"large accounts retain one horizontal virtual profile row")
     rReset("movie")
     m.browseQuery = {type:"movie",skip:"0"}
     m.controls = {catalogs:[],controls:[]}
