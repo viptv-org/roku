@@ -37,6 +37,7 @@ sub rCalendar(data as object, request as object)
     if request.context.version <> m.calendarVersion then return
     if request.context.cursor <> "" and request.context.cursor <> m.calendarCursor then return
     if request.context.day <> m.calendarDay or request.context.type <> m.calendarType then return
+    if RText(request.context.cursor) = "" then m.calendarEntries = []
     for each entry in RArray(data.entries)
         m.calendarEntries.push(entry)
     end for
@@ -61,7 +62,14 @@ sub rCalendar(data as object, request as object)
     m.skeleton.visible = false
     m.top.findNode("calendarPreview").visible = values.count() > 0
     m.message.text = ""
-    if values.count() = 0 then m.message.text = "No releases for this day."
+    if values.count() = 0
+        m.message.text = "No releases for this day."
+        m.message.translation = [96,420]
+        m.message.width = 1100
+        rShowActions([{title:"Browse Home",action:"home",width:280}])
+        m.actions.translation = [96,560]
+        m.actions.setFocus(true)
+    end if
     m.calendarCursor = RText(data.next_cursor)
     rCalendarPreview()
 end sub
@@ -78,6 +86,23 @@ sub rCalendarPreview()
     if m.rows.itemFocused >= m.rows.content.getChildCount()-4 and m.calendarCursor <> ""
         rCalendarFetch(m.calendarCursor)
     end if
+end sub
+
+sub rCalendarFailure(request as object, message as string)
+    context = RGet(request,"context",{})
+    if not RObject(context) then return
+    if context.version <> m.calendarVersion then return
+    if context.day <> m.calendarDay or context.type <> m.calendarType then return
+    m.failedRequest = {method:request.method,path:request.path,body:RCopy(request.body),query:RCopy(request.query),tag:"calendar",context:RCopy(context)}
+    m.failedRequest.epoch = m.epoch
+    m.failedRequest.generation = m.generation
+    m.message.text = message
+    m.message.translation = [96,420]
+    m.message.width = 1100
+    m.retryBar.content = rContent([{title:"Try again",action:"retry",width:220}],220,72)
+    m.retryBar.translation = [96,560]
+    m.retryBar.visible = true
+    m.retryBar.setFocus(true)
 end sub
 
 sub rRetireCalendar()

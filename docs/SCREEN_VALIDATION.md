@@ -26,7 +26,7 @@ executed in a disposable simulator fixture. It does not establish device behavio
 | Live guide | Current-program/window authority; direct Live action/ranking and stale-intent regressions; cached-guide hydration; current descriptor paging and TCL short reverse/forward focus | Native time/grid navigation, paging boundaries, actual Live decoding and recovery |
 | Library | Server defaults verified over isolated HTTPS; native sheet choice/keyboard input; bounded reverse/forward paging and explicit retry on TCL fixture; error text above artwork; hydration/revision/return-state handlers | Real-network/native hydration and return-state combinations, empty states, dynamic typography, sustained scrolling/texture memory and latency |
 | History | Native landscape row implementation; current API adapter and ordered rendering | Matched reference capture, clear/retry/empty states on device; day headings need producer presentation |
-| Calendar | Server-ordered range paging/version guard; landscape preview correction | Matching server day/status/watch presentation, date controls, native return navigation |
+| Calendar | Server-ordered range paging/version guard; landscape preview correction; scoped failed-day Retry and empty-day Browse Home verified in a native fixture | Matching server day/status/watch presentation, date controls, native return navigation |
 | Settings/add-ons/source integrations/Simkl | Current preference choices and capability omission; settings row renderer; activation intent handlers | Every supported group with real current responses; permitted mutations/cancellation; native matched states |
 | Player/tracks/continuation | Server action/resume/continuation and lease regressions; real gateway/native MP4 completion, pause/resume, server seek admission, audio/subtitle replacements and active Back/lease cleanup | Visible picture/audio quality, end-of-stream, seek/track/replacement/recovery campaigns, sustained playback timing and memory |
 
@@ -2523,3 +2523,18 @@ not separately retained; package archives are in
 SHA256 `574056ba80fd571a461e99a91a6b832e7957b7f5c0d8b78f32f0a8d78ae62f4e`.
 This closes the Home loading/failed-row shell gap, not full Home parity,
 sustained scrolling, picture/audio quality or app-wide timing budgets.
+
+## Calendar failed/empty state follow-up
+
+Calendar day responses now clear retained entries on an accepted first page for
+that selected day, preventing a stale day from making an empty server response
+look populated. Failed day loads retain request ownership and expose a focused
+Try again action; stale failures are ignored. Empty days expose a focused Browse
+Home action. The malformed request/context guard was corrected after a TCL
+fixture reproduced a crash. All four harnesses and BrighterScript compilation
+passed. Native fixture evidence:
+`artifacts/tcl-current-20261023/calendar-state-check-r2/result.json` and
+`calendar-state-fixture-r2.jpg`. Normal public package restored from
+`artifacts/calendar-state-build/`; SHA256 values are in that directory. This
+closes the tested failure/empty states, not producer day-label presentation,
+native return navigation, or full Calendar parity.

@@ -169,6 +169,8 @@ sub rResponse(event as object)
             m.failedRequest = request
             m.liveFailureText = RText(result.error,"Live information could not be loaded. Try again.")
             if not m.drawer.visible and not rInputVisible() and m.playback = invalid then rError(m.liveFailureText)
+        else if tag = "calendar"
+            rCalendarFailure(request,RText(result.error,"Release schedule could not be loaded. Try again."))
         else if tag <> "auth:persist" and left(tag,5) <> "save:"
             m.failedRequest = request
             rError(RText(result.error,"The server could not complete this request."))

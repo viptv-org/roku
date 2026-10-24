@@ -627,6 +627,24 @@ sub runChecks()
     stalePage.context.cursor = "old-page"
     m.calendarCursor = "new-page"
     rCheck(not rRequestCurrent(stalePage),"outdated calendar pagination cannot replay after authentication refresh")
+    failedRequest = RCopy(current)
+    m.result = {ok:false,status:503,error:"Calendar provider failed"}
+    rResponse({getRoSGNode:remoteOwnedNode,getData:remoteOwnedData,request:failedRequest,result:m.result})
+    rCheck(m.retryBar.visible and m.retryBar.isInFocusChain() and m.message.text = "Calendar provider failed","calendar failure exposes scoped retry")
+    beforeRetry = m.queue.count()
+    rRetrySelected()
+    rCheck(m.queue.count() = beforeRetry+1 and m.queue[m.queue.count()-1].context.day = date,"calendar retry replays the visible day")
+    oldFailure = RCopy(current)
+    oldFailure.context.day = "2026-10-01"
+    rCalendarFailure(oldFailure,"Old day failed")
+    rCheck(m.message.text <> "Old day failed","stale calendar failure cannot overwrite the selected day")
+    m.retryBar.visible = false
+    m.failedRequest = invalid
+    emptyRequest = RCopy(m.queue[m.queue.count()-1])
+    emptyRequest.context.cursor = ""
+    m.calendarCursor = ""
+    rCalendar({entries:[],complete:true},emptyRequest)
+    rCheck(m.message.text = "No releases for this day." and m.actions.content.getChild(0).wire.action = "home" and m.actions.isInFocusChain(),"empty calendar exposes a reachable Home action")
     sharedSource = {id:"opaque-producer-source",name:"Do not parse 2160p HDR",view:RCopy(producer.source_view)}
     rShowSources([sharedSource])
     sourceRow = m.drawerRows.content.getChild(0)
