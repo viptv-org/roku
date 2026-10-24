@@ -13,7 +13,7 @@ executed in a disposable simulator fixture. It does not establish device behavio
 
 | Screen/state | Verified evidence | Remaining qualification |
 | --- | --- | --- |
-| Startup/welcome | KMP1080/720 captures; corrected brand/poster wall; TCL native capture;50 welcome/choice return cycles with stable uptime | Cold-launch distribution, frame times during drift, sustained texture/heap bounds; spontaneous earlier reboot root cause remains unproven |
+| Startup/welcome | KMP1080/720 captures; corrected brand/poster wall; TCL native capture;50 welcome/choice return cycles; final public package60s idle59.077–60.048 recent graphics FPS | Cold-launch distribution, sustained texture/heap bounds; spontaneous earlier reboot root cause remains unproven |
 | Sign-in choice | Matching KMP artwork, geometry, supported rows; TCL render/navigation | Long-string/accessibility states; input-to-visible-focus latency |
 | Phone/browser pairing | Scoped polling/cancellation handlers; revised two-column preview; server draft retained through refresh | Native QR over current isolated HTTPS host, pending/expired/denied/approved flows, final matched capture |
 | Password | KMP combined-form captures1080/720; native masked/revealed/Back states; focus-chain bug reproduced and corrected; rejection/cancel/late-grant handlers | Final isolated HTTPS login through the combined form, rejection/retry on device, long drafts and repeat/hold timing |
@@ -2570,3 +2570,13 @@ The fresh public package from `artifacts/final-current-build/` was installed on
 `final-current.jpg` and `texture-memory.xml` are retained under
 `artifacts/tcl-current-20261023/final-current-install/`. This is a smoke launch,
 not full visual/playback qualification.
+
+## Final TCL recent graphics FPS
+
+Using Roku's documented read-only `/query/graphics-frame-rate`, the final public
+package produced60 one-second samples in an idle Home state and60 samples during
+scripted navigation. Idle: min59.077, p05 59.936, median59.9999, max60.048.
+Navigation: min59.936, p05 59.948, median59.9999, max60.067. Evidence:
+`artifacts/final-current-build/tcl-idle-fps.json` and
+`tcl-navigation-fps.json`. This is recent graphics FPS, not per-frame timing,
+input-to-visible-focus latency, memory ceiling, or 720p/native playback evidence.
