@@ -27,7 +27,7 @@ executed in a disposable simulator fixture. It does not establish device behavio
 | Library | Server defaults verified over isolated HTTPS; native sheet choice/keyboard input; bounded reverse/forward paging and explicit retry on TCL fixture; error text above artwork; hydration/revision/return-state handlers | Real-network/native hydration and return-state combinations, empty states, dynamic typography, sustained scrolling/texture memory and latency |
 | History | Native landscape row implementation; current API adapter and ordered rendering | Matched reference capture, clear/retry/empty states on device; day headings need producer presentation |
 | Calendar | Server-ordered range paging/version guard; landscape preview correction; scoped failed-day Retry and empty-day Browse Home verified in a native fixture | Matching server day/status/watch presentation, date controls, native return navigation |
-| Settings/add-ons/source integrations/Simkl | Current preference choices and capability omission; settings row renderer; activation intent handlers | Every supported group with real current responses; permitted mutations/cancellation; native matched states |
+| Settings/add-ons/source integrations/Simkl | Current preference choices and capability omission; settings row renderer; activation intent handlers; Display controls/display-only save verified by handler and native fixture | Producer display compile fix and HTTPS integration; every supported group with real current responses; permitted mutations/cancellation; native matched states |
 | Player/tracks/continuation | Server action/resume/continuation and lease regressions; real gateway/native MP4 completion, pause/resume, server seek admission, audio/subtitle replacements and active Back/lease cleanup | Visible picture/audio quality, end-of-stream, seek/track/replacement/recovery campaigns, sustained playback timing and memory |
 
 ## Evidence anchors
@@ -2580,3 +2580,13 @@ Navigation: min59.936, p05 59.948, median59.9999, max60.067. Evidence:
 `artifacts/final-current-build/tcl-idle-fps.json` and
 `tcl-navigation-fps.json`. This is recent graphics FPS, not per-frame timing,
 input-to-visible-focus latency, memory ceiling, or 720p/native playback evidence.
+
+## Display settings follow-up
+
+Roku now exposes the producer's Display section and display-only preference
+updates. Local gates and BrighterScript compilation pass; the native TCL fixture
+rendered the server controls and produced a display-only save body. Evidence:
+`artifacts/tcl-current-20261023/display-settings-check-r2/result.json` and
+`display-settings-fixture-r2.jpg`. Current backend integration is blocked by
+the producer compile error recorded in BACKEND_HANDOFF.md; no backend source was
+edited by this client pass.

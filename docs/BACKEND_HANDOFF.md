@@ -21,7 +21,7 @@ This is source/integration evidence, not production deployment evidence.
 | Live/calendar | profile `/live/channels`, channel `/guide` and `/sources`; `/api/calendar` | bounded server-ordered pages and canonical channel/episode identity |
 | Settings | profile `/preferences`, `/integrations`, `/source-integrations`, `/simkl`; `/api/parent/status` and `/api/parent/unlock` | consume in-progress preference `controls` and `/addon-activation` intent; no local assignment construction |
 | Feature visibility | bootstrap integrations + profile management + discovery capabilities | additive feature/action availability needed for unsupported auth, player actions and device display settings |
-| Display preferences | missing device-scoped remote preference contract | server persistence required before exposing these KMP controls |
+| Display preferences | profile `/preferences` now projects `display` and `display` controls in the current backend working tree | Roku consumes the controls/display object and sends display-only updates; current backend snapshot has a producer compile error in `viewing_presentation.rs`/tests, so integration remains blocked until that tree compiles |
 
 Add fields compatibly and include shared fixtures for missing/unsupported
 capabilities, intentionally surprising source ranking/episode order, scoped
@@ -371,3 +371,18 @@ disguised/joinable/direct/recovery/HDR/VAAPI sets. No client compensation is
 needed or wanted; the delivered playlist duration now matches the admission
 response. Remaining open on the producer side: requalifying long-form (2h+)
 VOD disk/playlist behavior on hardware and the media-lab campaign.
+
+## Display preferences — Roku adoption and producer compile blocker (2026-10-24)
+
+The current backend working tree projects profile-scoped `display` values and
+six `display` controls. Roku now adds the Display section, consumes the exact
+server controls/display values, and sends display-only PUT updates without
+copying playback preferences. Handler and native TCL fixture checks passed:
+`artifacts/tcl-current-20261023/display-settings-check-r2/result.json`.
+
+The isolated producer snapshot at backend `5a92f3de46a48371d285828843d59cbdc745a8ba`
+plus the current dirty display files does not compile: `card_view`/`decorate`
+now take `show_ratings`, while existing tests/history call sites still pass two
+arguments. Evidence: `artifacts/backend-integration-5a92-display/compile.log`.
+Roku did not edit backend source; current-backend integration for display
+settings remains blocked on that producer compile fix.

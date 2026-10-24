@@ -15,7 +15,7 @@ sub rSettingsSection(section as string)
     m.message.translation = [640,940]
     m.message.width = 1184
     m.navigation.visible = false
-    sections = [{title:"Account",action:"section",section:"Account"},{title:"Profiles",action:"profiles"},{title:"Playback",action:"section",section:"Playback"},{title:"Subtitles & audio",action:"section",section:"Subtitles & audio"},{title:"Add-ons",action:"section",section:"Add-ons"},{title:"Source integrations",action:"section",section:"Source integrations"},{title:"Parental controls",action:"section",section:"Parental controls"},{title:"About",action:"section",section:"About"}]
+    sections = [{title:"Account",action:"section",section:"Account"},{title:"Profiles",action:"profiles"},{title:"Display",action:"section",section:"Display"},{title:"Playback",action:"section",section:"Playback"},{title:"Subtitles & audio",action:"section",section:"Subtitles & audio"},{title:"Add-ons",action:"section",section:"Add-ons"},{title:"Source integrations",action:"section",section:"Source integrations"},{title:"Parental controls",action:"section",section:"Parental controls"},{title:"About",action:"section",section:"About"}]
     selectedIndex = 0
     sectionIndex = 0
     for each item in sections
@@ -24,7 +24,7 @@ sub rSettingsSection(section as string)
         item.selected = item.section = section
         if item.selected then selectedIndex = sectionIndex
         sectionIndex++
-        icons = {Account:"profile",Profiles:"remote-users",Playback:"remote-play","Subtitles & audio":"remote-captions","Add-ons":"addons","Source integrations":"remote-server","Parental controls":"remote-lock",About:"info"}
+        icons = {Account:"profile",Profiles:"remote-users",Display:"remote-sliders",Playback:"remote-play","Subtitles & audio":"remote-captions","Add-ons":"addons","Source integrations":"remote-server","Parental controls":"remote-lock",About:"info"}
         item.icon = icons[item.title]
     end for
     m.settingsNav.content = rContent(sections,440,72)
@@ -40,7 +40,7 @@ sub rSettingsSection(section as string)
     m.rows.itemSize = [1184,96]
     m.rows.itemSpacing = [0,12]
     m.skeleton.visible = true
-    if section = "Playback" or section = "Subtitles & audio"
+    if section = "Playback" or section = "Subtitles & audio" or section = "Display"
         rSend("GET",rProfilePath("/preferences"),invalid,"settings:preferences")
     else if section = "Source integrations"
         rSend("GET",rProfilePath("/source-integrations"),invalid,"settings:sources")
@@ -81,6 +81,7 @@ sub rSettingsResponse(tag as string, data as dynamic, request as object)
         values = []
         group = "playback"
         if m.section = "Subtitles & audio" then group = "subtitles"
+        if m.section = "Display" then group = "display"
         for each control in RArray(data.controls)
             if control.group = group
                 label = ""
@@ -88,6 +89,7 @@ sub rSettingsResponse(tag as string, data as dynamic, request as object)
                     if REqual(choice.value,data.preferences[control.id]) then label = choice.label
                 end for
                 current = data.preferences[control.id]
+                if group = "display" then current = RGet(RGet(data,"display",{}),control.id)
                 toggle = GetInterface(current,"ifBoolean") <> invalid and RArray(control.choices).count() = 2
                 for each choice in RArray(control.choices)
                     if GetInterface(choice.value,"ifBoolean") = invalid then toggle = false
@@ -164,7 +166,13 @@ sub rSettingsAction(value as object)
     else if action = "savePreference"
         p = RCopy(m.preferences.preferences)
         p[value.field] = value.value
-        rSend("PUT",rProfilePath("/preferences"),{revision:m.preferences.revision,preferences:p},"save:preferences")
+        body = {revision:m.preferences.revision,preferences:p}
+        if m.section = "Display"
+            display = RCopy(RGet(m.preferences,"display",{}))
+            display[value.field] = value.value
+            body = {revision:m.preferences.revision,display:display}
+        end if
+        rSend("PUT",rProfilePath("/preferences"),body,"save:preferences")
         if m.pending.doesExist("save:preferences")
             if m.drawer.visible then m.drawerMessage.text = "Saving…" else m.message.text = "Saving…"
         end if

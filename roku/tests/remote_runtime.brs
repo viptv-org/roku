@@ -98,6 +98,14 @@ sub runChecks()
     m.section = "Playback"
     rSettingsResponse("settings:preferences",{revision:5,preferences:{server_choice:"b"},controls:[{id:"server_choice",group:"playback",label:"Server choice",choices:[{label:"B",value:"b"}]}]},{})
     rCheck(m.rows.content.getChildCount() = 1 and m.rows.content.getChild(0).title = "Server choice","settings controls are server-owned")
+    rSettingsSection("Display")
+    rSettingsResponse("settings:preferences",{revision:5,preferences:{subtitle_mode:"always"},display:{accent_color:"#F5C542",show_ratings:true,text_size:"default",reduce_motion:"follow",screen_saver_minutes:5,screen_inset:0},controls:[{id:"accent_color",group:"display",label:"Accent colour",description:"Progress bars, marks and toggles",kind:"swatches",choices:[{label:"Amber",value:"#F5C542"},{label:"Mint",value:"#62D9BC"}]},{id:"screen_inset",group:"display",label:"Fit to screen",kind:"calibration",min:0,max:20,step:1}]},{})
+    rCheck(m.rows.content.getChildCount() = 2 and m.rows.content.getChild(0).title = "Accent colour","Display renders current producer controls")
+    m.queue = []
+    m.pending = {}
+    rRun({action:"savePreference",field:"accent_color",value:"#62D9BC"})
+    q = m.queue[m.queue.count()-1]
+    rCheck(q.body.doesExist("display") and not q.body.doesExist("preferences") and q.body.display.accent_color = "#62D9BC","Display saves a display-only server-owned update")
     rRun({action:"toggleAddon",connection:{id:"addon:opaque"},enabled:false})
     q = m.queue[m.queue.count()-1]
     rCheck(q.method = "PUT" and q.path = "/api/profiles/7/addon-activation" and q.body.count() = 2,"addon intent does not construct assignments")
@@ -1935,7 +1943,7 @@ sub runChecks()
     rCheck(instr(1,m.queue[0].path,"offset=4294967295") > 0,"transport preserves the current producer's full unsigned cursor range as an opaque string")
     rReset("settings")
     rSettingsSection("Parental controls")
-    rCheck(m.settingsNav.itemFocused = 6,"read-only settings section restores its matching sidebar focus")
+    rCheck(m.settingsNav.itemFocused = 7,"read-only settings section restores its matching sidebar focus")
     rSettingsResponse("settings:parent",{pin_configured:true,unlocked:false,restricted:true},{})
     rCheck(m.rows.content.getChildCount() = 1 and m.rows.content.getChild(0).wire.action = "unlock","configured locked parental status exposes supported PIN unlock")
     rSettingsResponse("settings:parent",{pin_configured:true,unlocked:true,restricted:true},{})
