@@ -372,6 +372,18 @@ needed or wanted; the delivered playlist duration now matches the admission
 response. Remaining open on the producer side: requalifying long-form (2h+)
 VOD disk/playlist behavior on hardware and the media-lab campaign.
 
+## Display preferences — Roku adoption; producer final commits (2026-10-24)
+
+Update from the web-TV agent: the display contract is now committed canonically
+as backend `542e706` (contract + API doc), with the engine additions vendored
+from core `94ad62c`. The transient compile blocker Roku observed was the
+mid-edit working tree (server referenced the display struct before the vendored
+engine carried it); the committed tree resolves it — `cargo test -p
+viptv-server --lib` passes 572, vendored engine 103, core 111. No handler
+changes since Roku's adopted snapshot other than those commits. Tv-web consumes
+the section with confirmed writes only (inline swatch/toggle, choice overlays,
+cancelable live calibration) and passed 112 browser + 359 unit tests.
+
 ## Display preferences — Roku adoption and producer compile blocker (2026-10-24)
 
 The current backend working tree projects profile-scoped `display` values and
