@@ -335,3 +335,39 @@ The current backend working tree also contains a gateway change that references
 untracked `server/src/gateway/media_lab_acceptance.rs` and does not compile when
 included. Roku excluded that dirty gateway module from the integration snapshot
 and did not edit backend sources. Shared QA/production runtime state is unchanged.
+
+## ROK-MEDIA-20261024-MKV-COPY resolved — gateway `11cd610` (2026-10-24)
+
+Root cause confirmed from the archived payload: the 90s remux finished inside
+one throttle tick, so the 60-entry rolling playlist (sized for 2s segments)
+had already slid to media sequence 16 before the reader's first fetch. The
+segment files held all 2,700 frames; only the playlist listing was truncated,
+which also produced the advertised-90s/listed-74s inconsistency. The gateway
+reproduction (engine `tests::remux::a_completed_fast_copy_keeps_its_whole_playlist`,
+real FFmpeg, mirrored fixture with two audio tracks and one-second keyframes)
+failed at exactly `MEDIA-SEQUENCE:16` before the fix.
+
+Fix in playback-gateway `11cd610` (on top of the `7273ab1` startup/output
+batch): on-demand VOD sessions pass `-hls_list_size 0` and no longer use
+producer-side `delete_segments`; the complete produced playlist is listed from
+segment zero during and after production, so a late or paused reader always
+sees the full advertised duration. The consumption-paced throttle still bounds
+production ahead of the viewer, and prefix segment files are now reclaimed by
+the gateway once their media ends a full grace period behind the viewer's
+furthest fetched segment — including after the producer has exited — keeping
+disk bounded during long viewing. The per-segment timeline is retained whole
+so deep seeks in long completed features still resolve deletion watermarks.
+Fragmented-MP4 segment names now count toward throttle/cleanup accounting,
+and the shared-caption playlist reader accepts feature-length VOD playlists.
+Live sessions are unchanged: rolling window, producer-side deletion, GOP-aligned
+joins.
+
+Verification on the final tree: workspace 247 passed / 0 failed; 24
+real-FFmpeg gates pass including the mirrored reproduction (playlist now
+starts at sequence 0, listed duration within 3s of the probe, prefix
+fetchable, prefix reclaimed behind a deep fetch with the tail retained),
+the 46s consumption-paced throttle end-to-end, remux/browser/selection/
+disguised/joinable/direct/recovery/HDR/VAAPI sets. No client compensation is
+needed or wanted; the delivered playlist duration now matches the admission
+response. Remaining open on the producer side: requalifying long-form (2h+)
+VOD disk/playlist behavior on hardware and the media-lab campaign.
