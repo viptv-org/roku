@@ -2610,3 +2610,18 @@ object, a display-only PUT, persisted reread and logout. Evidence:
 `artifacts/backend-integration-5a92-display/native-check.log`. This closes the
 Roku display-settings contract/integration gap; deployment and physical visual
 effects of those settings remain separate qualification.
+
+## Ready-for-human-QA checklist (2026-10-24)
+
+The current public package is `artifacts/display-settings-final-build/viptv-roku-public.zip`
+(SHA256 `82a25bfbc40be5f278dfc24c659e43da135f8b0c702883b8eeac275e9a18a6ce`). It is installed as the TCL development channel, and its startup log is clean. Automated evidence ends here; the remaining qualification needs a person at the TV.
+
+Please verify, in order:
+
+1. Launch from the Roku home screen; confirm the VIPTV UI appears and the remote responds.
+2. Play a known title; confirm the picture visibly moves and audio is audible.
+3. Seek forward/back, pause/resume, change audio/subtitle tracks if available, and press Back during playback.
+4. Navigate Home, Movies/Series, Search, Library, Live, Calendar, History, Settings, and Display; watch for clipped text, wrong focus, or unresponsive controls.
+5. Run the TV for a sustained session and note any reboot, overheating, audio dropouts, or severe stutter.
+
+What cannot be measured locally: physical p95 remote-input-to-visible-focus latency (no capture hardware), picture/audio quality, native 720p output behavior, and complete long-session playback. Those are the final human/device gates before any Store or production activation.
