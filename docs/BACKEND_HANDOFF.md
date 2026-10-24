@@ -21,7 +21,7 @@ This is source/integration evidence, not production deployment evidence.
 | Live/calendar | profile `/live/channels`, channel `/guide` and `/sources`; `/api/calendar` | bounded server-ordered pages and canonical channel/episode identity |
 | Settings | profile `/preferences`, `/integrations`, `/source-integrations`, `/simkl`; `/api/parent/status` and `/api/parent/unlock` | consume in-progress preference `controls` and `/addon-activation` intent; no local assignment construction |
 | Feature visibility | bootstrap integrations + profile management + discovery capabilities | additive feature/action availability needed for unsupported auth, player actions and device display settings |
-| Display preferences | profile `/preferences` now projects `display` and `display` controls in the current backend working tree | Roku consumes the controls/display object and sends display-only updates; current backend snapshot has a producer compile error in `viewing_presentation.rs`/tests, so integration remains blocked until that tree compiles |
+| Display preferences | profile `/preferences` projects `display` and six display controls in backend `5a92f3d` plus current dirty display files | Resolved: Roku consumes controls/display and sends display-only updates; isolated verified-HTTPS integration passed |
 
 Add fields compatibly and include shared fixtures for missing/unsupported
 capabilities, intentionally surprising source ranking/episode order, scoped
@@ -381,8 +381,9 @@ copying playback preferences. Handler and native TCL fixture checks passed:
 `artifacts/tcl-current-20261023/display-settings-check-r2/result.json`.
 
 The isolated producer snapshot at backend `5a92f3de46a48371d285828843d59cbdc745a8ba`
-plus the current dirty display files does not compile: `card_view`/`decorate`
-now take `show_ratings`, while existing tests/history call sites still pass two
-arguments. Evidence: `artifacts/backend-integration-5a92-display/compile.log`.
-Roku did not edit backend source; current-backend integration for display
-settings remains blocked on that producer compile fix.
+plus the complete current dirty display file set compiled after including the
+updated mod/listing/history call sites. Roku's production HTTP adapter passed
+verified-HTTPS login/profile selection, preferences display/control projection,
+a display-only PUT, persisted reread and logout. Evidence:
+`artifacts/backend-integration-5a92-display/`; disposable host/proxy/database
+were stopped and removed. Roku did not edit backend source.

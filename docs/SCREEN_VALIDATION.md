@@ -27,7 +27,7 @@ executed in a disposable simulator fixture. It does not establish device behavio
 | Library | Server defaults verified over isolated HTTPS; native sheet choice/keyboard input; bounded reverse/forward paging and explicit retry on TCL fixture; error text above artwork; hydration/revision/return-state handlers | Real-network/native hydration and return-state combinations, empty states, dynamic typography, sustained scrolling/texture memory and latency |
 | History | Native landscape row implementation; current API adapter and ordered rendering | Matched reference capture, clear/retry/empty states on device; day headings need producer presentation |
 | Calendar | Server-ordered range paging/version guard; landscape preview correction; scoped failed-day Retry and empty-day Browse Home verified in a native fixture | Matching server day/status/watch presentation, date controls, native return navigation |
-| Settings/add-ons/source integrations/Simkl | Current preference choices and capability omission; settings row renderer; activation intent handlers; Display controls/display-only save verified by handler and native fixture | Producer display compile fix and HTTPS integration; every supported group with real current responses; permitted mutations/cancellation; native matched states |
+| Settings/add-ons/source integrations/Simkl | Current preference choices and capability omission; settings row renderer; activation intent handlers; Display controls/display-only save verified by handler and native fixture | Every supported group with real current responses; permitted mutations/cancellation; native matched states |
 | Player/tracks/continuation | Server action/resume/continuation and lease regressions; real gateway/native MP4 completion, pause/resume, server seek admission, audio/subtitle replacements and active Back/lease cleanup | Visible picture/audio quality, end-of-stream, seek/track/replacement/recovery campaigns, sustained playback timing and memory |
 
 ## Evidence anchors
@@ -2598,5 +2598,15 @@ Normal ZIP SHA256 `dea2a42a2c08e425cf1304916f5111acfcec15a6802c354169967dd2e11e6
 public ZIP SHA256 `82a25bfbc40be5f278dfc24c659e43da135f8b0c702883b8eeac275e9a18a6ce`.
 The public package was installed on the TCL and launched without runtime/debugger
 errors. Evidence: `artifacts/tcl-current-20261023/display-settings-final-install/`.
-The backend display-preference integration remains blocked by the producer compile
-error recorded in BACKEND_HANDOFF.md.
+The backend display-preference integration now passes in isolation; see
+BACKEND_HANDOFF.md and `artifacts/backend-integration-5a92-display/`.
+
+## Display current-backend integration
+
+The complete current producer snapshot (backend `5a92f3d` plus its display
+working-tree files) compiled in isolation. The production Roku HTTP adapter
+passed verified-HTTPS login/profile selection, six display controls, the display
+object, a display-only PUT, persisted reread and logout. Evidence:
+`artifacts/backend-integration-5a92-display/native-check.log`. This closes the
+Roku display-settings contract/integration gap; deployment and physical visual
+effects of those settings remain separate qualification.
