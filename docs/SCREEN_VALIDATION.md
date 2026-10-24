@@ -2561,3 +2561,12 @@ SHA256 `6ba0931b33daf4cdd795c2cd595f804c5d5f153e1edf597ad32eba4f907e3f0e`.
 All four current harnesses, design integrity and package inspection passed.
 Package scans found no retired policy/test files. This is a build checkpoint,
 not a release qualification.
+
+## Final current TCL install check
+
+The fresh public package from `artifacts/final-current-build/` was installed on
+ the TCL and launched as the development channel. The captured startup log after
+ installation contains no runtime error, debugger entry, or syntax error;
+`final-current.jpg` and `texture-memory.xml` are retained under
+`artifacts/tcl-current-20261023/final-current-install/`. This is a smoke launch,
+not full visual/playback qualification.
