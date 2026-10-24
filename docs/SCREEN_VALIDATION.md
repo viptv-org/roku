@@ -48,7 +48,7 @@ executed in a disposable simulator fixture. It does not establish device behavio
 - Current clean producer commit `0d8da118e2282c1d7cefa4bc590004bf6a97c211` was
   compiled in isolation and passed the production Roku HTTP adapter over verified
   HTTPS: login/profile/bootstrap, navigation, Home preview fields, ordered
-  metadata/badge arrays, Library defaults, preferences/history, add-on activation,
+  metadata/badge arrays, Library defaults, preferences/source-integrations/parent status, add-on activation,
   viewing-action, source discovery/ranking/display fields, discovery cleanup,
   credential refresh and logout. Evidence:
   `artifacts/backend-integration-0d8-current/`. The dirty backend gateway module
@@ -2551,3 +2551,13 @@ package was restored from `artifacts/calendar-state-build/`. Producer-supplied
 chips/cast and exact full-screen series parity remain unavailable until the
 current response projects those fields; this correction closes the native
 caption-clipping/overlap defect only.
+
+## Current package checkpoint after Calendar/Details corrections
+
+Fresh BrighterScript staging and both runtime packages were produced at
+`artifacts/final-current-build/`. Normal ZIP SHA256
+`ebe86399711bbc943800341f97114c6f9fc7eac6c567253183ce793c857e39f9`; public ZIP
+SHA256 `6ba0931b33daf4cdd795c2cd595f804c5d5f153e1edf597ad32eba4f907e3f0e`.
+All four current harnesses, design integrity and package inspection passed.
+Package scans found no retired policy/test files. This is a build checkpoint,
+not a release qualification.
