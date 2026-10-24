@@ -2590,3 +2590,13 @@ rendered the server controls and produced a display-only save body. Evidence:
 `display-settings-fixture-r2.jpg`. Current backend integration is blocked by
 the producer compile error recorded in BACKEND_HANDOFF.md; no backend source was
 edited by this client pass.
+
+## Display settings final package
+
+Display-settings support is packaged in `artifacts/display-settings-final-build/`.
+Normal ZIP SHA256 `dea2a42a2c08e425cf1304916f5111acfcec15a6802c354169967dd2e11e6487`;
+public ZIP SHA256 `82a25bfbc40be5f278dfc24c659e43da135f8b0c702883b8eeac275e9a18a6ce`.
+The public package was installed on the TCL and launched without runtime/debugger
+errors. Evidence: `artifacts/tcl-current-20261023/display-settings-final-install/`.
+The backend display-preference integration remains blocked by the producer compile
+error recorded in BACKEND_HANDOFF.md.
