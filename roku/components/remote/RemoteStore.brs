@@ -2,21 +2,18 @@
 
 
 function rStored(value as dynamic, packaged as dynamic) as object
-    base = ROrigin(RGet(value,"base",RGet(value,"server")))
+    base = ROrigin(RGet(value,"base"))
     locked = ROrigin(RGet(packaged,"base")) <> ""
     if locked then base = ROrigin(packaged.base)
-    result = {base:base,locked:locked,access_token:"",refresh_token:"",last_profile_id:"",account_id:"",auth_origin:base,auth_version:3}
-    if RGet(value,"auth_origin") = base and (RGet(value,"auth_version") = 2 or RGet(value,"auth_version") = 3)
+    result = {base:base,locked:locked,access_token:"",refresh_token:"",account_id:"",auth_origin:base,auth_version:3}
+    if RGet(value,"auth_origin") = base and RGet(value,"auth_version") = 3
         refresh = RText(value.refresh_token)
         access = RText(value.access_token)
-        if value.auth_version = 2 and access = "" then access = RText(value.token)
         safe = CreateObject("roRegex","^[!-~]{1,4096}$","")
         if safe.isMatch(refresh) and safe.isMatch(access)
             result.access_token = access
             result.refresh_token = refresh
-            result.last_profile_id = RText(value.last_profile_id)
             result.account_id = RText(value.account_id)
-            if value.auth_version = 2 and result.last_profile_id = "" then result.last_profile_id = RText(value.profile)
         end if
     end if
     return result
@@ -40,9 +37,6 @@ function rStore(q as object, result as object) as object
             return result
         end if
         saved = registry.write("config",FormatJson(document))
-        registry.delete("token")
-        registry.delete("server")
-        registry.delete("profile")
         if not registry.flush() or not saved
             result.error = "This TV could not save its sign-in. Try again."
             return result
@@ -51,7 +45,7 @@ function rStore(q as object, result as object) as object
     stored = registry.read("config")
     value = invalid
     if stored <> "" then value = ParseJson(stored)
-    if not RObject(value) then value = {base:registry.read("server")}
+    if not RObject(value) then value = {}
     result.data = rStored(value,packaged)
     result.data.capabilities = rDeviceFacts()
     result.ok = true

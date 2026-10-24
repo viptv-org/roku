@@ -14,6 +14,7 @@ with tempfile.TemporaryDirectory(prefix='viptv-remote-runtime-') as directory:
     shutil.copyfile(root / 'manifest', app / 'manifest')
     (app / 'tests/fixtures').mkdir(parents=True)
     shutil.copyfile(root / 'tests/fixtures/remote-v3.json', app / 'tests/fixtures/remote-v3.json')
+    shutil.copyfile(root / 'tests/fixtures/producer-viewing-v3.json', app / 'tests/fixtures/producer-viewing-v3.json')
     scene = app / 'components/remote/RemoteScene.brs'
     text = scene.read_text().replace('rSend("CONFIG_LOAD","",invalid,"auth:config")', "' Fixture: no real registry.")
     scene.write_text(text + '\n' + (root / 'tests/remote_runtime.brs').read_text())
@@ -21,6 +22,10 @@ with tempfile.TemporaryDirectory(prefix='viptv-remote-runtime-') as directory:
     transport.write_text(transport.read_text().replace('sub rDispatch()\n', 'sub rDispatch()\n    return\n'))
     xml = app / 'components/remote/RemoteScene.xml'
     xml.write_text(xml.read_text().replace('<component name="RemoteScene" extends="Scene">', '<component name="RemoteScene" extends="Scene"><interface><function name="runChecks" /></interface>'))
+    # Expose only the real key handler in this disposable harness.
+    for component in ('RemotePassword', 'RemoteKeyboard', 'RemoteFormDialog', 'RemotePlayerInput', 'RemoteFilters', 'RemoteLibrarySheet'):
+        node_xml = app / f'components/remote/{component}.xml'
+        node_xml.write_text(node_xml.read_text().replace('<interface>', '<interface><function name="onKeyEvent" />', 1))
     (app / 'source/main.brs').write_text('''sub Main()
     screen = CreateObject("roSGScreen")
     scene = screen.createScene("RemoteScene")

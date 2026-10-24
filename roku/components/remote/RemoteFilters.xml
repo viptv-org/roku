@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="RemoteFilters" extends="Group">
+ <interface>
+  <field id="controls" type="array" />
+  <field id="draft" type="assocarray" />
+  <field id="catalogLabel" type="string" alias="catalog.text" />
+  <field id="resetCatalog" type="boolean" value="false" />
+  <field id="submitted" type="boolean" alwaysNotify="true" />
+  <field id="cancelled" type="boolean" alwaysNotify="true" />
+  <function name="release" />
+  <function name="open" />
+  <function name="refresh" />
+ </interface>
+ <script type="text/brightscript" uri="pkg:/source/RemoteWire.brs" />
+ <script type="text/brightscript" uri="pkg:/components/remote/RemoteFilters.brs" />
+ <children>
+  <Rectangle width="1920" height="1080" color="#0B0B0C" />
+  <RemoteTrackedLabel translation="[96,93]" text="Filters" size="52" tracking="-1.04" />
+  <Label id="catalog" translation="[96,156]" width="1728" height="32" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="24" /></Label>
+  <Group id="facets" translation="[96,216]" />
+  <Label id="choiceTitle" translation="[800,216]" width="1024" height="44" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="36" /></Label>
+  <Label id="choiceCount" translation="[800,260]" width="1024" height="32" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="24" /></Label>
+  <Label id="choiceHint" translation="[800,292]" width="1024" height="32" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="24" /></Label>
+  <Group id="choices" translation="[800,344]" />
+  <Group id="textEditor" visible="false">
+   <Group id="textField" translation="[800,313]">
+    <Poster width="819" height="84" uri="pkg:/images/design/remote-filter-facet.9.png" blendColor="#FFFFFF14" />
+    <Label id="textValue" translation="[28,24]" width="763" height="36" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="30" /></Label>
+   </Group>
+   <RemoteKeyboard id="textKeyboard" entryMode="true" entryWidth="1024" maxLength="64" translation="[800,413]" />
+   <Group id="textClear" translation="[800,849]" />
+  </Group>
+  <Group id="buttons" translation="[96,954]" />
+ </children>
+</component>

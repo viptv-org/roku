@@ -69,12 +69,28 @@ function RemoteWireResponse(request as object, result as object) as object
     end if
     if route = "/api/bootstrap"
         valid = RObject(data)
-        if valid then valid = data.contract_version = 3 and RObject(data.identity) and RObject(data.profile_management)
+        if valid then valid = data.contract_version = 3 and RObject(data.identity) and RObject(data.profile_management) and GetInterface(data.navigation,"ifArray") <> invalid
         if valid and RObject(data.home) then valid = RHomeWire(data.home)
     else if right(route,5) = "/home"
         valid = RHomeWire(data)
-    else if route = "/api/discover" or (right(route,8) = "/library" and request.method = "GET")
+    else if right(route,14) = "/live/channels" and request.method = "GET"
+        valid = GetInterface(RGet(data,"channels"),"ifArray") <> invalid and GetInterface(RGet(data,"groups"),"ifArray") <> invalid and GetInterface(RGet(data,"connections"),"ifArray") <> invalid
+        if valid then valid = GetInterface(RGet(data,"complete"),"ifBoolean") <> invalid and RText(RGet(data,"availability")) <> "" and data.channels.count() <= 200 and RText(RGet(data,"snapshot_id")) <> ""
+        if valid then valid = RLivePagingWire(RGet(data,"paging"))
+        if valid then valid = data.channels.count() <= data.paging.limit
+        if valid
+            for each channel in data.channels
+                if not RCard(RGet(channel,"card")) or RText(RGet(channel,"id")) = "" or RText(RGet(channel,"connection_id")) = "" then valid = false
+            end for
+        end if
+    else if instr(1,route,"/live/") > 0 and right(route,6) = "/guide" and request.method = "GET"
+        valid = RGuideWire(data)
+        channel = RText(RGet(request.context,"channel"))
+        if valid and channel <> "" then valid = data.channel_id = channel
+    else if route = "/api/discover"
         valid = RCards(RGet(data,"cards"))
+    else if right(route,8) = "/library" and request.method = "GET"
+        valid = RCards(RGet(data,"cards")) and RObject(RGet(data,"query")) and RObject(RGet(data,"default_query"))
     else if left(route,10) = "/api/meta/"
         valid = RCard(RGet(data,"item")) and RCards(RGet(data,"episodes"))
     else if route = "/api/search"
@@ -99,6 +115,10 @@ function RemoteWireResponse(request as object, result as object) as object
                 if RText(RGet(source,"id")) = "" then valid = false
             end for
         end if
+    else if instr(1,route,"/live/") > 0 and right(route,8) = "/sources" and request.method = "POST"
+        action = RGet(data,"action",{})
+        valid = GetInterface(RGet(data,"streams"),"ifArray") <> invalid and RCard(RGet(action,"card")) and GetInterface(RGet(action,"resume"),"ifBoolean") <> invalid
+        if valid then valid = action.source_selection = "best" or action.source_selection = "ask"
     else if route = "/api/streams" and request.method = "POST"
         valid = RText(RGet(data,"id")) <> ""
     else if left(route,13) = "/api/streams/" and request.method = "GET"
@@ -118,18 +138,43 @@ end function
 function RHomeWire(data as dynamic) as boolean
     if not RObject(data) then return false
     if not RObject(data.scope) or GetInterface(data.rows,"ifArray") = invalid then return false
-    if data.rows.count() > 128 then return false
+    if data.rows.count() > 16 then return false
     for each row in data.rows
         if not RObject(row) or not RCards(RGet(row,"cards")) then return false
+        if row.cards.count() > 24 then return false
+        state = RText(RGet(row,"state"))
+        if state <> "Pending" and state <> "Ready" and state <> "Empty" and state <> "Failed" then return false
+        if state = "Failed" and GetInterface(RGet(row,"message"),"ifString") = invalid then return false
+        if state <> "Ready" and row.cards.count() > 0 then return false
         shape = RGet(RGet(row,"view",{}),"card_shape")
         if shape <> "landscape" and shape <> "poster" then return false
+        for each card in row.cards
+            if not RHomePreview(RGet(RGet(card,"view",{}),"preview")) then return false
+        end for
     end for
+    return true
+end function
+
+function RHomePreview(value as dynamic) as boolean
+    if not RObject(value) then return false
+    for each key in ["background","caption","progress","action"]
+        if not value.doesExist(key) then return false
+    end for
+    if value.action <> "play" and value.action <> "details" then return false
+    for each key in ["background","caption"]
+        if value[key] <> invalid and GetInterface(value[key],"ifString") = invalid then return false
+    end for
+    if value.progress <> invalid
+        number = GetInterface(value.progress,"ifInt") <> invalid or GetInterface(value.progress,"ifFloat") <> invalid or GetInterface(value.progress,"ifDouble") <> invalid
+        if not number then return false
+        if value.progress < 0 or value.progress > 1 then return false
+    end if
     return true
 end function
 
 function RIdentityKey(card as object) as string
     ' Exact wire identity including metadata origin; no ID parsing or fallback.
-    return FormatJson({identity:card.identity,metadata_origin:card.metadata_origin})
+    return RValueKey({identity:card.identity,metadata_origin:card.metadata_origin})
 end function
 
 function RMetadataFields(card as object) as object
@@ -154,7 +199,7 @@ end function
 
 function RGateway(value as dynamic) as boolean
     if not RObject(value) then return false
-    if RText(value.id) = "" or value.status <> "ready" then return false
+    if RText(value.id) = "" or value.status <> "ready" or not RObject(value.actions) then return false
     d = value.delivery
     if not RObject(d) then return false
     if d.kind <> "gateway" or (d.format <> "hls" and d.format <> "mp4") then return false
@@ -170,4 +215,155 @@ function ROrigin(value as dynamic) as string
     pattern = CreateObject("roRegex","^https://([a-z0-9]([a-z0-9.-]*[a-z0-9])?|\[[0-9a-f:]+\])(:[0-9]{1,5})?$","i")
     if not pattern.isMatch(value) then return ""
     return value
+end function
+
+' Snapshot wire values without serializing JSON on the SceneGraph thread.
+function RCopy(value as dynamic) as dynamic
+    if RObject(value)
+        copy = CreateObject("roAssociativeArray")
+        copy.setModeCaseSensitive()
+        for each key in value
+            copy[key] = RCopy(value[key])
+        end for
+        return copy
+    else if GetInterface(value,"ifArray") <> invalid
+        copy = []
+        for each item in value
+            copy.push(RCopy(item))
+        end for
+        return copy
+    end if
+    return value
+end function
+
+function REqual(a as dynamic,b as dynamic) as boolean
+    if a = invalid then return b = invalid
+    if b = invalid then return false
+    if RObject(a)
+        if not RObject(b) then return false
+        if a.count() <> b.count() then return false
+        for each key in a
+            if not b.doesExist(key) then return false
+            if not REqual(a[key],b[key]) then return false
+        end for
+        return true
+    end if
+    if GetInterface(a,"ifArray") <> invalid
+        if GetInterface(b,"ifArray") = invalid then return false
+        if a.count() <> b.count() then return false
+        for i = 0 to a.count()-1
+            if not REqual(a[i],b[i]) then return false
+        end for
+        return true
+    end if
+    if RObject(b) or GetInterface(b,"ifArray") <> invalid then return false
+    if (GetInterface(a,"ifString") <> invalid) <> (GetInterface(b,"ifString") <> invalid) then return false
+    if (GetInterface(a,"ifBoolean") <> invalid) <> (GetInterface(b,"ifBoolean") <> invalid) then return false
+    return a = b
+end function
+
+function RValueKey(value as dynamic) as string
+    if value = invalid then return "n"
+    if RObject(value)
+        keys = value.keys()
+        keys.sort()
+        key = "o"+keys.count().toStr()+":"
+        for each name in keys
+            key += RValueKey(name)+RValueKey(value[name])
+        end for
+        return key
+    end if
+    if GetInterface(value,"ifArray") <> invalid
+        key = "a"+value.count().toStr()+":"
+        for each item in value
+            key += RValueKey(item)
+        end for
+        return key
+    end if
+    if GetInterface(value,"ifString") <> invalid then return "s"+len(value).toStr()+":"+value
+    if GetInterface(value,"ifBoolean") <> invalid
+        if value then return "t" else return "f"
+    end if
+    return "d"+value.toStr()+":"
+end function
+
+' Optional query fields are absent in HTTP when the server returns JSON null.
+function RQueryFields(value as object) as object
+    query = CreateObject("roAssociativeArray")
+    query.setModeCaseSensitive()
+    for each key in value
+        if value[key] <> invalid then query[key] = RCopy(value[key])
+    end for
+    return query
+end function
+
+function RPlaybackAllowed(session as dynamic,action as string) as boolean
+    return RGet(RGet(session,"actions",{}),action,false) = true
+end function
+function RTrackSelectable(track as dynamic) as boolean
+    if not RObject(track) then return false
+    if RGet(track,"selectable",false) <> true or RGet(track,"supported",true) = false then return false
+    index = RGet(track,"input_index")
+    if GetInterface(index,"ifInt") = invalid and GetInterface(index,"ifFloat") = invalid and GetInterface(index,"ifDouble") = invalid then return false
+    return index >= 0 and index <= 65535 and int(index) = index
+end function
+
+function RGuideNumber(value as dynamic) as boolean
+    return GetInterface(value,"ifInt") <> invalid or GetInterface(value,"ifFloat") <> invalid or GetInterface(value,"ifDouble") <> invalid or type(value) = "LongInteger" or type(value) = "roLongInteger"
+end function
+
+function RGuideWire(data as dynamic) as boolean
+    if not RObject(data) then return false
+    if RText(data.channel_id) = "" or RText(data.availability) = "" then return false
+    if GetInterface(data.programs,"ifArray") = invalid or not RObject(data.view) then return false
+    view = data.view
+    if not view.doesExist("current_program_id") then return false
+    if view.current_program_id <> invalid and GetInterface(view.current_program_id,"ifString") = invalid then return false
+    for each field in ["now_millis","window_start_millis","window_end_millis"]
+        if not RGuideNumber(view[field]) then return false
+        if view[field] < 0 then return false
+    end for
+    if view.window_end_millis <= view.window_start_millis then return false
+    for each program in data.programs
+        if not RObject(program) then return false
+        if RText(program.id) = "" or GetInterface(program.title,"ifString") = invalid then return false
+        if not RGuideNumber(program.start_millis) or not RGuideNumber(program.end_millis) then return false
+        if program.start_millis < 0 or program.end_millis < program.start_millis then return false
+    end for
+    return true
+end function
+
+function RGuideWindowMillis(value as double) as longinteger
+    bucket& = int(value/1800000#)
+    return bucket& * 1800000&
+end function
+
+' Current shared producer paging contract; no legacy next_cursor fallback.
+function RLivePageSize(value as dynamic) as boolean
+    if GetInterface(value,"ifInt") = invalid then return false
+    return value >= 1 and value <= 200
+end function
+
+function RLiveRequestWire(value as dynamic) as boolean
+    if not RObject(value) then return false
+    return RText(value.cursor) <> "" and len(RText(value.cursor)) <= 512 and RLivePageSize(value.limit) and RLivePageSize(value.page_size)
+end function
+
+function RLivePagingWire(value as dynamic) as boolean
+    if not RObject(value) then return false
+    if RText(value.origin) = "" or not RLivePageSize(value.limit) or not RLivePageSize(value.page_size) then return false
+    if not value.doesExist("previous") or not value.doesExist("next") then return false
+    for each direction in ["previous","next"]
+        if value[direction] <> invalid
+            if not RLiveRequestWire(value[direction]) then return false
+        end if
+    end for
+    return true
+end function
+
+function RLiveBoundary(pages as object, direction as string) as dynamic
+    if pages.count() = 0 then return invalid
+    if direction = "previous" then return RGet(RGet(pages[0],"paging"),"previous")
+    if direction = "next" then return RGet(RGet(pages[pages.count()-1],"paging"),"next")
+    return invalid
 end function

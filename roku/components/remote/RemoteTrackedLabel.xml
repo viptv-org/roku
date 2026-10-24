@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="RemoteTrackedLabel" extends="Group">
+ <interface>
+  <field id="weight" type="string" value="700" onChange="render" />
+  <field id="textColor" type="color" value="#F4F2EE" onChange="paint" />
+  <field id="rowWidth" type="float" value="0" onChange="render" />
+  <field id="rowHeight" type="float" value="0" onChange="render" />
+  <field id="text" type="string" onChange="render" />
+  <field id="size" type="float" value="56" onChange="render" />
+  <field id="tracking" type="float" value="-1.12" onChange="render" />
+ </interface>
+ <script type="text/brightscript" uri="pkg:/components/remote/RemoteTrackedLabel.brs" />
+ <children><Group id="glyphs" /></children>
+</component>

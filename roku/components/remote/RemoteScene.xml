@@ -5,64 +5,117 @@
  <script type="text/brightscript" uri="pkg:/components/remote/RemoteTransport.brs" />
  <script type="text/brightscript" uri="pkg:/components/remote/RemotePages.brs" />
  <script type="text/brightscript" uri="pkg:/components/remote/RemoteSettings.brs" />
+ <script type="text/brightscript" uri="pkg:/components/remote/RemoteProfileEdit.brs" />
+ <script type="text/brightscript" uri="pkg:/components/remote/RemoteSearch.brs" />
  <script type="text/brightscript" uri="pkg:/components/remote/RemotePlayer.brs" />
  <script type="text/brightscript" uri="pkg:/components/remote/RemoteLive.brs" />
  <script type="text/brightscript" uri="pkg:/components/remote/RemoteCalendar.brs" />
+ <script type="text/brightscript" uri="pkg:/components/remote/RemoteHistory.brs" />
  <children>
   <Rectangle width="1920" height="1080" color="#0B0B0C" />
   <Group id="hero" visible="false">
    <Poster id="backdrop" width="1920" height="1080" loadWidth="1920" loadHeight="1080" loadDisplayMode="scaleToZoom" />
    <Poster id="scrimX" width="1920" height="1080" uri="pkg:/images/design/remote-home-x.png" />
    <Poster id="scrimY" width="1920" height="1080" uri="pkg:/images/design/remote-home-y.png" />
-   <Poster id="heroLogo" translation="[96,306]" width="410" height="160" loadWidth="410" loadHeight="160" loadDisplayMode="scaleToFit" visible="false" />
+   <MaskGroup id="homePoster" translation="[1520,96]" maskSize="[280,420]" maskUri="pkg:/images/design/remote-home-preview-poster.png" visible="false">
+    <Poster id="homePosterArt" width="280" height="420" loadWidth="280" loadHeight="420" loadDisplayMode="scaleToZoom" />
+   </MaskGroup>
+   <Poster id="heroLogo" translation="[96,306]" width="410" height="160" loadWidth="460" loadHeight="0" loadDisplayMode="limitSize" visible="false" />
    <Label id="heroTitle" translation="[96,306]" width="800" height="160" vertAlign="bottom" wrap="true" maxLines="2" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="48" /></Label>
-   <Label id="heroMeta" translation="[96,494]" width="900" height="38" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_500.ttf" size="24" /></Label>
+   <RemoteMetadata id="heroMeta" translation="[96,494]" />
    <Label id="heroDescription" translation="[96,544]" width="780" height="76" wrap="true" maxLines="2" color="#DAD8D3"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="26" /></Label>
   </Group>
+  <RemoteEntry id="entry" visible="false" />
+  <RemoteTrackedLabel id="entryHeading" translation="[96,92]" text="Sign in to VIPTV" visible="false" />
   <Label id="heading" translation="[96,160]" width="1700" height="76" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="48" /></Label>
   <RemoteActionBar id="actions" translation="[96,648]" visible="false" />
   <Group id="heroIndicators" translation="[96,760]" visible="false" />
+  <RemoteLibraryHeader id="libraryHeader" translation="[96,140]" visible="false" />
   <MarkupGrid id="filters" translation="[96,260]" itemComponentName="RemoteItem" itemSize="[260,64]" itemSpacing="[16,0]" numColumns="6" numRows="1" drawFocusFeedback="false" visible="false" />
   <Group id="shelfClip" clippingRect="[80,0,1760,1080]">
-   <RowList id="shelves" translation="[96,770]" itemComponentName="RemoteItem" itemSize="[1728,304]" rowItemSize="[[320,252]]" rowItemSpacing="[[24,0]]" showRowLabel="[true]" rowLabelOffset="[[0,8]]" numRows="3" rowFocusAnimationStyle="floatingFocus" vertFocusAnimationStyle="fixedFocus" drawFocusFeedback="false" visible="false"><Font role="rowLabelFont" uri="pkg:/fonts/remote_onest_600.ttf" size="30" /></RowList>
+   <RowList id="shelves" rowTitleComponentName="RemoteShelfTitle" translation="[96,770]" itemComponentName="RemoteItem" itemSize="[1728,304]" rowItemSize="[[320,252]]" rowItemSpacing="[[24,0]]" showRowLabel="[true]" rowLabelOffset="[[0,16]]" numRows="3" rowFocusAnimationStyle="floatingFocus" vertFocusAnimationStyle="fixedFocus" drawFocusFeedback="false" visible="false"><Font role="rowLabelFont" uri="pkg:/fonts/remote_onest_600.ttf" size="30" /></RowList>
   </Group>
-  <MarkupGrid id="grid" translation="[96,360]" itemComponentName="RemoteItem" itemSize="[232,410]" itemSpacing="[16,36]" numColumns="7" numRows="2" drawFocusFeedback="false" visible="false" />
-  <MarkupList id="rows" translation="[96,270]" itemComponentName="RemoteItem" itemSize="[1728,104]" itemSpacing="[0,16]" numRows="6" drawFocusFeedback="false" visible="false" />
-  <Group id="skeleton" visible="false"><Rectangle translation="[96,780]" width="320" height="180" color="#212124" /><Rectangle translation="[440,780]" width="320" height="180" color="#212124" /><Rectangle translation="[784,780]" width="320" height="180" color="#212124" /><Rectangle translation="[1128,780]" width="320" height="180" color="#212124" /><Rectangle translation="[1472,780]" width="320" height="180" color="#212124" /></Group>
+  <Group id="catalogClip" clippingRect="[80,0,1760,1080]">
+  <MarkupGrid vertFocusAnimationStyle="floatingFocus" id="grid" translation="[96,360]" itemComponentName="RemoteItem" itemSize="[232,410]" itemSpacing="[16,36]" numColumns="7" numRows="2" drawFocusFeedback="false" visible="false" />
+  </Group>
+  <Timer id="catalogLayoutTick" duration="0.01" />
+  <Group id="rowClip" clippingRect="[0,0,1920,1080]">
+  <MarkupList vertFocusAnimationStyle="floatingFocus" id="rows" translation="[96,270]" itemComponentName="RemoteItem" itemSize="[1728,104]" itemSpacing="[0,16]" numRows="6" drawFocusFeedback="false" visible="false" />
+  </Group>
+  <Group id="skeleton" visible="false">
+   <Rectangle translation="[96,300]" width="360" height="150" color="#212124" />
+   <Rectangle translation="[96,494]" width="520" height="30" color="#212124" />
+   <Rectangle translation="[96,548]" width="760" height="26" color="#212124" />
+   <Rectangle translation="[96,586]" width="600" height="26" color="#212124" />
+   <Rectangle translation="[96,648]" width="220" height="72" color="#212124" />
+   <Rectangle translation="[336,648]" width="72" height="72" color="#212124" />
+   <Rectangle translation="[428,648]" width="72" height="72" color="#212124" />
+   <Rectangle translation="[96,828]" width="300" height="32" color="#212124" />
+   <Rectangle translation="[96,876]" width="422.4" height="237.6" color="#212124" />
+   <Rectangle translation="[538.4,876]" width="422.4" height="237.6" color="#212124" />
+   <Rectangle translation="[980.8,876]" width="422.4" height="237.6" color="#212124" />
+   <Rectangle translation="[1423.2,876]" width="422.4" height="237.6" color="#212124" />
+  </Group>
   <Label id="message" translation="[96,940]" width="1728" height="90" wrap="true" maxLines="2" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="24" /></Label>
   <RemoteActionBar id="retryBar" translation="[1540,940]" visible="false" />
+  <RemoteTrackedLabel id="settingsHeading" translation="[640,90]" size="40" tracking="-0.8" visible="false" />
+  <Label id="settingsExplanation" translation="[640,150]" width="1184" height="36" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="24" /></Label>
+  <Label id="historyExplanation" translation="[96,276]" width="1300" height="40" color="#B6B4AF" text="Everything watched on this profile, newest first." visible="false"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="24" /></Label>
+  <RemoteActionBar id="historyClear" translation="[1564,236]" visible="false" />
+  <Group id="historyEmpty" visible="false">
+   <Label translation="[96,436]" width="1500" height="48" text="Nothing watched yet" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="32" /></Label>
+   <Label translation="[96,498]" width="1500" height="38" text="Titles you play show up here." color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="24" /></Label>
+  </Group>
   <Group id="settingsSidebar" visible="false">
    <Rectangle width="560" height="1080" color="#161618" />
    <Label translation="[96,93]" width="420" height="56" text="Settings" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="44" /></Label>
-   <MarkupList id="settingsNav" translation="[72,196]" itemComponentName="RemoteItem" itemSize="[440,72]" itemSpacing="[0,8]" numRows="9" drawFocusFeedback="false" />
+   <MarkupList vertFocusAnimationStyle="floatingFocus" id="settingsNav" translation="[72,196]" itemComponentName="RemoteItem" itemSize="[440,72]" itemSpacing="[0,8]" numRows="9" drawFocusFeedback="false" />
   </Group>
   <RemoteNavigation id="navigation" />
+  <RemoteActionBar id="entryServer" translation="[1404,96]" visible="false" />
   <Group id="pairing" visible="false">
-   <Label id="pairAddress" translation="[96,350]" width="950" height="120" wrap="true" color="#DAD8D3"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="32" /></Label>
-   <Label id="pairCode" translation="[96,510]" width="900" height="100" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="64" /></Label>
-   <Poster id="qr" translation="[1230,310]" width="380" height="380" loadWidth="380" loadHeight="380" loadDisplayMode="scaleToFit" />
-  </Group>
-  <Group id="welcomeArt" visible="false">
-   <Poster translation="[1120,250]" width="704" height="396" loadWidth="704" loadHeight="396" loadDisplayMode="scaleToZoom" opacity="0.6" uri="pkg:/images/design/remote-entry.jpg" />
-   <Label translation="[1120,668]" width="704" height="160" numLines="4" wrap="true" color="#B6B4AF" text="All of these reach the same VIPTV account. You can add more ways to sign in later from your phone or computer."><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="26" /></Label>
+   <Label id="pairLeftTitle" translation="[96,250]" width="760" height="44" text="Scan with your phone" color="#F4F2EE" ><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="30" /></Label>
+   <Label id="pairInstructions" translation="[96,316]" width="760" height="80" text="Point your camera at the code. You’ll finish on your phone and this TV signs in by itself." color="#B6B4AF" wrap="true" numLines="2" lineSpacing="6"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="26" /></Label>
+   <Poster translation="[96,424]" width="340" height="340" uri="pkg:/images/design/remote-pair-qr.png" blendColor="#FFFFFFFF" />
+   <Poster id="qr" translation="[116,444]" width="300" height="300" loadWidth="300" loadHeight="300" loadDisplayMode="scaleToFit" />
+   <Rectangle translation="[959,250]" width="2" height="560" color="#FFFFFF1F" />
+   <Poster translation="[930,500]" width="60" height="60" uri="pkg:/images/design/circle.png" blendColor="#0B0B0C" />
+   <Poster translation="[930,500]" width="60" height="60" uri="pkg:/images/design/remote-pair-or.png" blendColor="#FFFFFF1F" />
+   <Label id="pairOr" translation="[930,500]" width="60" height="60" text="or" color="#B6B4AF" horizAlign="center" vertAlign="center"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="22" /></Label>
+   <Label id="pairRightTitle" translation="[1064,250]" width="760" height="44" text="Use any browser" color="#F4F2EE" ><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="30" /></Label>
+   <Poster translation="[1064,316]" width="44" height="44" uri="pkg:/images/design/remote-pair-step.png" blendColor="#FFFFFF4D" />
+   <Label id="pairStep1" translation="[1064,316]" width="44" height="44" text="1" color="#F4F2EE" horizAlign="center" vertAlign="center"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="22" /></Label>
+   <Label id="pairStepCopy1" translation="[1126,316]" width="698" height="44" text="Go to" color="#B6B4AF" vertAlign="center"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="26" /></Label>
+   <Poster translation="[1064,468]" width="44" height="44" uri="pkg:/images/design/remote-pair-step.png" blendColor="#FFFFFF4D" />
+   <Label id="pairStep2" translation="[1064,468]" width="44" height="44" text="2" color="#F4F2EE" horizAlign="center" vertAlign="center"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="22" /></Label>
+   <Label id="pairStepCopy2" translation="[1126,468]" width="698" height="44" text="Enter this code" color="#B6B4AF" vertAlign="center"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="26" /></Label>
+   <Label id="pairAddress" translation="[1126,382]" width="698" height="64" text="" color="#F4F2EE" ><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="44" /></Label>
+   <Poster translation="[1126,534]" width="640" height="120" uri="pkg:/images/design/remote-pair-code.png" blendColor="#FFFFFF14" />
+   <RemoteTrackedLabel id="pairCode" translation="[1126,534]" rowWidth="640" rowHeight="120" size="72" tracking="5.76" />
+   <Label id="pairExpiry" translation="[1126,676]" width="240" height="48" text="" color="#8F8D89" vertAlign="center"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="22" /></Label>
+   <Poster translation="[96,911]" width="12" height="12" uri="pkg:/images/design/circle.png" blendColor="#F5C542" />
+   <Label id="pairWaiting" translation="[122,900]" width="840" height="70" text="Waiting for you to sign in…" color="#B6B4AF" ><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="24" /></Label>
   </Group>
   <Group id="calendarPreview" visible="false">
-   <Poster id="calendarPoster" translation="[1430,332]" width="300" height="450" loadWidth="300" loadHeight="450" loadDisplayMode="scaleToZoom" />
-   <Label id="calendarTitle" translation="[1290,810]" width="534" height="80" wrap="true" numLines="2" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="30" /></Label>
-   <Label id="calendarDescription" translation="[1290,904]" width="534" height="120" wrap="true" numLines="3" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="24" /></Label>
+   <MaskGroup translation="[1240,250]" maskSize="[584,329]" maskUri="pkg:/images/design/remote-calendar-preview.png">
+    <Poster id="calendarPoster" width="584" height="329" loadWidth="584" loadHeight="329" loadDisplayMode="scaleToZoom" />
+   </MaskGroup>
+   <Label id="calendarTitle" translation="[1240,598]" width="584" height="48" wrap="true" numLines="2" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="30" /></Label>
+   <Label id="calendarDescription" translation="[1240,656]" width="584" height="96" wrap="true" numLines="3" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="24" /></Label>
   </Group>
   <Group id="drawer" visible="false">
-   <Rectangle id="scrim" width="1920" height="1080" color="#00000099" />
+   <Rectangle id="drawerScrim" width="1920" height="1080" color="#00000099" />
    <Group id="drawerPanel" translation="[960,0]">
-    <Rectangle width="960" height="1080" color="#161618" />
+    <Rectangle id="drawerGround" width="960" height="1080" color="#161618" />
+    <Poster id="menuGround" width="117" height="160" uri="pkg:/images/design/remote-profile-menu.png" blendColor="#161618" visible="false" />
     <Label id="drawerTitle" translation="[64,72]" width="800" height="64" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="40" /></Label>
     <Label id="drawerSubtitle" translation="[64,148]" width="800" height="72" wrap="true" maxLines="2" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="24" /></Label>
     <RemoteActionBar id="sourceFilters" translation="[64,202]" visible="false" />
-    <MarkupList id="drawerRows" translation="[64,250]" itemComponentName="RemoteItem" itemSize="[800,104]" itemSpacing="[0,10]" numRows="6" drawFocusFeedback="false" />
+    <MarkupList vertFocusAnimationStyle="floatingFocus" id="drawerRows" translation="[64,250]" itemComponentName="RemoteItem" itemSize="[800,104]" itemSpacing="[0,10]" numRows="6" drawFocusFeedback="false" />
     <Label id="drawerMessage" translation="[64,940]" width="800" height="88" wrap="true" maxLines="2" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="22" /></Label>
    </Group>
   </Group>
-  <Video id="player" width="1920" height="1080" visible="false" enableUI="false" />
+  <Video id="player" width="1920" height="1080" visible="false" enableUI="false" focusable="false" />
   <Group id="playerUi" visible="false">
    <Poster width="1920" height="1080" uri="pkg:/images/design/remote-player-y.png" />
    <Label id="playerTitle" translation="[96,64]" width="1400" height="38" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="30" /></Label>
@@ -74,7 +127,12 @@
    <Poster id="playerThumb" translation="[74,923]" width="44" height="44" uri="pkg:/images/design/circle.png" blendColor="#FFFFFF" />
    <RemoteActionBar id="playerActions" translation="[96,846]" />
   </Group>
+  <RemotePlayerInput id="playerInput" />
+  <RemoteLibrarySheet id="librarySheet" visible="false" />
+  <RemoteFilters id="filterPage" visible="false" />
+  <RemotePassword id="passwordForm" visible="false" />
   <RemoteKeyboard id="keyboard" visible="false" />
+  <RemoteFormDialog id="formDialog" visible="false" />
   <Timer id="searchTick" duration="0.35" repeat="false" />
   <Timer id="networkTick" repeat="true" duration="0.05" />
   <Timer id="pollTick" repeat="true" duration="1" />
@@ -82,6 +140,8 @@
   <Timer id="hideControls" repeat="false" duration="5" />
   <Animation id="drawerMotion" duration="0.3" easeFunction="outQuad"><Vector2DFieldInterpolator id="drawerSlide" key="[0,1]" keyValue="[[1920,0],[960,0]]" fieldToInterp="drawerPanel.translation" /></Animation>
   <Animation id="homeMotion" duration="0.45" easeFunction="outCubic"><Vector2DFieldInterpolator id="homeSlide" key="[0,1]" keyValue="[[96,824],[96,690]]" fieldToInterp="shelves.translation" /></Animation>
+  <Animation id="homeNavMotion" duration="0.2" easeFunction="linear"><FloatFieldInterpolator id="homeNavFade" key="[0,1]" keyValue="[1,0]" fieldToInterp="navigation.opacity" /></Animation>
   <Animation id="heroArrival" duration="0.14" easeFunction="linear"><FloatFieldInterpolator key="[0,1]" keyValue="[0,1]" fieldToInterp="hero.opacity" /></Animation>
+  <Animation id="menuMotion" duration="0.12" easeFunction="outQuad"><FloatFieldInterpolator id="menuFade" key="[0,1]" keyValue="[0,1]" fieldToInterp="drawerPanel.opacity" /></Animation>
  </children>
 </component>

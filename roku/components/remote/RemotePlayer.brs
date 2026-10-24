@@ -1,15 +1,30 @@
 ' Native decoder adapter. Source, resume and episode decisions arrive from host.
 sub rStartSource(source as object, position = invalid as dynamic, track = invalid as dynamic)
     if m.admission <> invalid then return
+    if m.replacement <> invalid
+        if m.drawer.visible then m.drawerMessage.text = "Playback is still starting…" else m.top.findNode("playerSubtitle").text = "Playback is still starting…"
+        return
+    end if
     m.playSource = source
     m.playSequence = 0
-    id = rNow().toStr()+"-"+m.sequence.toStr()+"-roku"
+    id = CreateObject("roDeviceInfo").getRandomUUID()
     body = {request_id:id,stream_id:source.id,client:RPlaybackFacts(m.config.capabilities),force_gateway:true,position:0,resume:RGet(m.viewingAction,"resume",false)}
     if m.playback <> invalid
         if m.playback.source.id = source.id
             for each key in ["audio_track","subtitle_track","subtitles_off"]
                 if m.playback.body.doesExist(key) then body[key] = m.playback.body[key]
             end for
+        end if
+    end if
+    if m.playback <> invalid
+        if position <> invalid and not RPlaybackAllowed(m.playback.session,"seek") then return
+        if RObject(track) and not RPlaybackAllowed(m.playback.session,"tracks") then return
+        replacementId = RText(RGet(m.playIntent,"replace_id"))
+        if position = invalid and replacementId <> ""
+            if replacementId <> m.playback.session.id then return
+            if not RObject(track) and not RPlaybackAllowed(m.playback.session,"change_source") then return
+            body.resume = false
+            body.replace_source = {playback_id:replacementId,observed_position:rPlayerPosition()}
         end if
     end if
     if position <> invalid
@@ -21,7 +36,19 @@ sub rStartSource(source as object, position = invalid as dynamic, track = invali
             body[key] = track[key]
         end for
     end if
-    m.admission = {request_id:id,id:"",due:rNow()+120,renew:0,poll:0,body:body,card:m.playCard,source:source}
+    permission = ""
+    fromId = ""
+    if m.playback <> invalid
+        fromId = m.playback.session.id
+        if position <> invalid
+            permission = "seek"
+        else if RObject(track)
+            permission = "tracks"
+        else if RText(RGet(m.playIntent,"replace_id")) <> ""
+            permission = "change_source"
+        end if
+    end if
+    m.admission = {request_id:id,id:"",due:rNow()+120,renew:0,poll:0,body:body,card:m.playCard,source:source,permission:permission,from_id:fromId}
     rSend("POST","/api/playback",body,"player:start",{request_id:id})
     if not m.pending.doesExist("player:start") then m.admission = invalid
     m.drawerMessage.text = "Preparing playback…"
@@ -40,7 +67,7 @@ sub rPlayerResponse(tag as string, data as object, request as object)
         m.admission.poll = rNow()+1
         if data.status = "ready"
             if not RGateway(data)
-                rPlaybackError("The server returned unsupported playback delivery.")
+                rAdmissionFailure("The server returned unsupported playback delivery.")
                 return
             end if
             nextPlayer = {session:data,card:m.admission.card,source:m.admission.source,body:m.admission.body,renew:m.admission.renew,owner:request,acknowledged:false,firstFrame:false,started:rNow(),sequence:0}
@@ -54,7 +81,7 @@ sub rPlayerResponse(tag as string, data as object, request as object)
             m.playback = nextPlayer
             rInstallVideo(data)
         else if data.status <> "starting"
-            rPlaybackError("This source could not start. Choose another source.")
+            rAdmissionFailure("This source could not start. Choose another source.")
         end if
     else if tag = "player:first-frame"
         if m.playback = invalid or RGet(request.context,"id") <> m.playback.session.id then return
@@ -63,28 +90,48 @@ sub rPlayerResponse(tag as string, data as object, request as object)
             return
         end if
         m.playback.acknowledged = true
-        if m.replacement <> invalid
-            rCleanup("/api/playback/"+REncode(m.replacement.session.id),m.replacement.owner)
-            m.replacement = invalid
-        end if
+        rReleaseRecovery()
         rPlaybackEvent("start",false)
     else if tag = "player:next"
-        if RCard(data.item) and data.status = "Next"
-            m.nextCard = data.item
-            rShowControls()
-        end if
+        if m.playback = invalid then return
+        if not RPlaybackAllowed(m.playback.session,"next_episode") then return
+        if RGet(request.context,"id") <> m.playback.session.id then return
+        m.nextCard = invalid
+        if RCard(data.item) and data.status = "Next" then m.nextCard = data.item
+        rShowControls()
     else if left(tag,13) = "player:renew:"
         lease = rFindLease(mid(tag,14))
         if lease = invalid then return
         if data.id <> lease.session.id or data.status <> "ready" or RGet(RGet(data,"delivery",{}),"url") <> lease.session.delivery.url
-            rPlaybackError("Playback authorization changed. Try again.")
+            if m.replacement <> invalid and lease.session.id = m.replacement.session.id
+                rReleaseRecovery()
+            else
+                rPlaybackError("Playback authorization changed. Try again.")
+            end if
             return
         end if
+        changed = not REqual(lease.session.actions,data.actions)
+        lease.session.actions = RCopy(data.actions)
         rLeaseClock(lease,data)
+        if m.playback <> invalid and lease.session.id = m.playback.session.id and changed
+            if m.admission <> invalid
+                permission = RText(RGet(m.admission,"permission"))
+                if permission <> "" and RGet(m.admission,"from_id") = lease.session.id
+                    if not RPlaybackAllowed(lease.session,permission) then rAdmissionFailure("Playback action is no longer available.")
+                end if
+            end if
+            if not RPlaybackAllowed(lease.session,"next_episode") then m.nextCard = invalid
+            if not RPlaybackAllowed(lease.session,"seek") then m.seekPosition = invalid
+            if m.drawerKind = "episodes" and not RPlaybackAllowed(lease.session,"episodes") then rCloseDrawer()
+            if m.drawerKind = "tracks" and not RPlaybackAllowed(lease.session,"tracks") then rCloseDrawer()
+            if m.drawerKind = "sources" and not RPlaybackAllowed(lease.session,"change_source") then rCloseDrawer()
+            if m.playerUi.visible and not m.drawer.visible then rShowControls()
+        end if
     end if
 end sub
 
 sub rInstallVideo(session as object)
+    rRetireEpisodeRequests()
     rCancelDiscovery()
     m.pending.delete("player:first-frame")
     d = session.delivery
@@ -118,26 +165,32 @@ sub rVideoState()
     else if state = "paused"
         rPlaybackEvent("pause",false)
     else if state = "finished"
-        m.playback.ended = true
-        rPlaybackEvent("stop",true)
-        rSaveProgress(true)
-        card = m.playback.card
-        if RObject(card.parent_identity)
-            body = RMetadataFields(card)
-            body.identity = card.identity
-            body.parent_identity = card.parent_identity
-            rSend("POST",rProfilePath("/continue/next"),body,"player:next")
-        end if
-        rShowControls()
+        rVideoFinished()
     else if state = "error"
         rPlaybackError("This source could not play. Try another source.")
     end if
 end sub
 
+sub rVideoFinished()
+    if m.playback = invalid then return
+    if RGet(m.playback,"ended",false) then return
+        m.playback.ended = true
+        rPlaybackEvent("stop",true)
+        rSaveProgress(true)
+        card = m.playback.card
+        if RPlaybackAllowed(m.playback.session,"next_episode")
+            body = RMetadataFields(card)
+            body.identity = card.identity
+            body.parent_identity = card.parent_identity
+            rSend("POST",rProfilePath("/continue/next"),body,"player:next",{id:m.playback.session.id})
+        end if
+        rShowControls()
+end sub
+
 sub rPlayerPoll(now as double)
     if m.admission <> invalid
         if now >= m.admission.due
-            rPlaybackError("Playback preparation timed out. Try again.")
+            rAdmissionFailure("Playback preparation timed out. Try again.")
         else if m.admission.id <> ""
             if now >= m.admission.poll
                 m.admission.poll = now+1
@@ -154,6 +207,9 @@ sub rPlayerPoll(now as double)
         rPlaybackError("The video did not start. Try another source.")
         return
     end if
+    if m.replacement <> invalid
+        if m.replacement.clock.totalMilliseconds() >= m.replacement.remaining*1000 then rReleaseRecovery()
+    end if
     for each lease in [m.playback,m.replacement]
         if lease <> invalid
             if lease.clock.totalMilliseconds() >= lease.remaining*1000
@@ -166,7 +222,7 @@ sub rPlayerPoll(now as double)
             rSend("POST","/api/playback/"+REncode(lease.session.id)+"/heartbeat",{},"player:renew:"+lease.session.id)
         end if
     end for
-    if now-m.lastProgress >= 15 and m.playback.firstFrame
+    if now-m.lastProgress >= 15 and m.playback.firstFrame and not RGet(m.playback,"ended",false)
         m.lastProgress = now
         rSaveProgress(false)
     end if
@@ -178,7 +234,7 @@ sub rPlayerPoll(now as double)
     remaining = duration-position
     if remaining < 0 then remaining = 0
     m.top.findNode("playerRemaining").text = "−"+rTime(remaining)
-    m.top.findNode("playerThumb").visible = duration > 0 and m.playback.session.delivery.live <> true
+    m.top.findNode("playerThumb").visible = duration > 0 and RPlaybackAllowed(m.playback.session,"seek")
     if duration > 0
         fraction = position/duration
         if fraction > 1 then fraction = 1
@@ -204,24 +260,50 @@ function rFindLease(id as string) as dynamic
 end function
 
 sub rPlayerFailure(tag as string, result as object, request as object)
+    if tag = "player:episodes"
+        if not rEpisodeRequestCurrent(request) then return
+        m.episodeFailed = {id:request.context.id,version:request.context.episode_version,cursor:request.context.cursor,append:request.context.append}
+        values = []
+        for each card in RArray(m.playerEpisodes)
+            values.push({title:card.title,subtitle:RText(card.subtitle),episode:card,action:"player:episode",ring:false})
+        end for
+        values.push({title:"Retry",action:"player:retryEpisodes",ring:false})
+        focus = m.drawerRows.itemFocused
+        m.drawerRows.itemSize = [800,144]
+        m.drawerRows.numRows = 4
+        m.drawerRows.content = rContent(values,800,144)
+        if focus >= 0 and focus < values.count() then m.drawerRows.jumpToItem = focus
+        m.drawerMessage.translation = [64,940]
+        m.drawerMessage.text = RText(result.error,"Could not load episodes. Try again.")
+        if values.count() = 1 then m.drawerRows.setFocus(true)
+        return
+    end if
     if left(tag,13) = "player:renew:"
         lease = rFindLease(mid(tag,14))
         if lease = invalid
             if m.admission = invalid then return
             if m.admission.id <> mid(tag,14) then return
+            rAdmissionFailure(RText(result.error,"Playback preparation could not continue. Try again."))
+            return
         else
             transient = result.status = 0 or result.status = 408 or result.status = 429 or result.status >= 500
             if transient and lease.clock.totalMilliseconds() < lease.remaining*1000
                 lease.renew = rNow()+2
                 return
             end if
+            if m.replacement <> invalid and lease.session.id = m.replacement.session.id
+                rReleaseRecovery()
+                return
+            end if
         end if
-    else if tag = "player:first-frame"
+    else if tag = "player:first-frame" or tag = "player:next"
         if m.playback = invalid then return
         if RGet(request.context,"id") <> m.playback.session.id then return
     else if tag = "player:start" or tag = "player:poll"
         if m.admission = invalid then return
         if RGet(request.context,"request_id") <> m.admission.request_id then return
+        rAdmissionFailure(RText(result.error,"This source could not start. Try again."))
+        return
     end if
     rPlaybackError(RText(result.error,"Playback failed. Try again."))
 end sub
@@ -240,14 +322,13 @@ end function
 sub rShowControls()
     if m.playback = invalid then return
     values = []
-    d = m.playback.session.delivery
-    if RObject(m.playback.card.parent_identity) then values.push({title:"Episodes",icon:"remote-list",action:"player:episodes",width:250,ring:false,heroAction:true})
-    if RArray(d.audio_tracks).count() > 0 or d.subtitles_supported = true then values.push({title:"Audio & subtitles",icon:"remote-captions",action:"player:tracks",width:340,ring:false,heroAction:true})
-    values.push({title:"Source",icon:"remote-sliders",action:"player:sources",width:210,ring:false,heroAction:true})
-    if m.nextCard <> invalid then values.push({title:"Next episode",icon:"next",action:"player:next",width:280,ring:false,heroAction:true})
+    if RPlaybackAllowed(m.playback.session,"episodes") then values.push({title:"Episodes",icon:"remote-list",action:"player:episodes",width:250,ring:false,heroAction:true})
+    if RPlaybackAllowed(m.playback.session,"tracks") then values.push({title:"Audio & subtitles",icon:"remote-captions",action:"player:tracks",width:340,ring:false,heroAction:true})
+    if RPlaybackAllowed(m.playback.session,"change_source") then values.push({title:"Source",icon:"remote-sliders",action:"player:sources",width:210,ring:false,heroAction:true})
+    if RPlaybackAllowed(m.playback.session,"next_episode") and m.nextCard <> invalid then values.push({title:"Next episode",icon:"next",action:"player:next",width:280,ring:false,heroAction:true})
     m.playerActions.content = rContent(values,240,56)
     m.playerUi.visible = true
-    m.playerActions.setFocus(true)
+    if values.count() > 0 then m.playerActions.setFocus(true) else m.playerInput.setFocus(true)
     m.hideControls.control = "stop"
     m.hideControls.control = "start"
 end sub
@@ -255,10 +336,11 @@ end sub
 sub rHideControls()
     if m.drawer.visible or m.seekPosition <> invalid then return
     m.playerUi.visible = false
-    m.player.setFocus(true)
+    m.playerInput.setFocus(true)
 end sub
 
 sub rPlayerSelected()
+    if m.playerActions.content = invalid then return
     node = m.playerActions.content.getChild(m.playerActions.itemSelected)
     if node <> invalid then rPlayerAction(node.wire)
 end sub
@@ -267,78 +349,107 @@ sub rPlayerAction(value as object)
     if m.playback = invalid then return
     action = value.action
     if action = "player:pause"
+        if not RPlaybackAllowed(m.playback.session,"pause") then return
         if m.player.state = "paused" then m.player.control = "resume" else m.player.control = "pause"
         rShowControls()
     else if action = "player:sources"
+        if not RPlaybackAllowed(m.playback.session,"change_source") then return
         m.playCard = m.playback.card
-        m.playIntent = {explicit:true}
-        rDiscoverSources(m.playCard)
+        m.playIntent = {explicit:true,replace_id:m.playback.session.id}
         m.top.removeChild(m.drawer)
         m.top.appendChild(m.drawer)
+        rDiscoverSources(m.playCard)
     else if action = "player:tracks"
+        if not RPlaybackAllowed(m.playback.session,"tracks") then return
         values = []
         for each track in RArray(m.playback.session.delivery.audio_tracks)
-            values.push({title:"Audio · "+RText(track.title,RText(track.language,"Track")),action:"player:track",track:{audio_track:track.input_index}})
+            if RTrackSelectable(track) then values.push({title:"Audio · "+RText(track.title,RText(track.language,"Track")),action:"player:track",track:{audio_track:track.input_index}})
         end for
         if m.playback.session.delivery.subtitles_supported = true then values.push({title:"Subtitles off",action:"player:track",track:{subtitles_off:true}})
         for each track in RArray(m.playback.session.delivery.subtitle_tracks)
-            values.push({title:"Subtitles · "+RText(track.title,RText(track.language,"Track")),action:"player:track",track:{subtitle_track:track.input_index,subtitles_off:false}})
+            if RTrackSelectable(track) then values.push({title:"Subtitles · "+RText(track.title,RText(track.language,"Track")),action:"player:track",track:{subtitle_track:track.input_index,subtitles_off:false}})
         end for
-        rOpenDrawer("Subtitles & audio",values,"tracks")
         m.top.removeChild(m.drawer)
         m.top.appendChild(m.drawer)
+        rOpenDrawer("Subtitles & audio",values,"tracks")
     else if action = "player:track"
+        if not RPlaybackAllowed(m.playback.session,"tracks") then return
         m.playCard = m.playback.card
-        rStartSource(m.playback.source,rPlayerPosition(),value.track)
+        m.playIntent = {explicit:true,replace_id:m.playback.session.id}
+        rStartSource(m.playback.source,invalid,value.track)
     else if action = "player:next"
+        if not RPlaybackAllowed(m.playback.session,"next_episode") or not RCard(m.nextCard) then return
         card = m.nextCard
         rStopPlayer()
+        rCancelDiscovery()
         m.playIntent = {explicit:false}
-        rSend("POST",rProfilePath("/viewing-action"),{card:card,restart:false},"viewing")
+        rSend("POST",rProfilePath("/viewing-action"),{card:card,restart:false},"viewing",{source_epoch:m.sourceEpoch})
+    else if action = "player:retryEpisodes"
+        failed = m.episodeFailed
+        if not RObject(failed) or m.playback = invalid then return
+        if failed.id <> m.playback.session.id or failed.version <> m.episodeVersion then return
+        m.episodeFailed = invalid
+        rPlayerEpisodes(failed.cursor,failed.append)
     else if action = "player:episodes"
+        if not RPlaybackAllowed(m.playback.session,"episodes") then return
         m.playerEpisodes = []
         m.episodeCursor = ""
-        rOpenDrawer("Episodes",[],"episodes")
         m.top.removeChild(m.drawer)
         m.top.appendChild(m.drawer)
+        rOpenDrawer("Episodes",[],"episodes")
         rPlayerEpisodes("0",false)
     else if action = "player:episode"
         card = value.episode
         rStopPlayer()
         m.drawer.visible = false
         m.drawerStack = []
+        rCancelDiscovery()
         m.playIntent = {explicit:false}
-        rSend("POST",rProfilePath("/viewing-action"),{card:card,restart:false},"viewing")
+        rSend("POST",rProfilePath("/viewing-action"),{card:card,restart:false},"viewing",{source_epoch:m.sourceEpoch})
     end if
 end sub
 
 sub rPlayerEpisodes(cursor as string, appendPage as boolean)
     if m.playback = invalid then return
+    if not RPlaybackAllowed(m.playback.session,"episodes") then return
     card = m.playback.card
     parent = card.parent_identity
     if not RObject(parent) then return
+    if not appendPage
+        rRetireEpisodeRequests()
+        m.playerEpisodes = []
+        m.episodeCursor = ""
+        m.drawerRows.content = rContent([],800,144)
+    else
+        if m.episodeFailed <> invalid or cursor <> m.episodeCursor then return
+    end if
+    m.drawerMessage.translation = [64,940]
+    m.drawerMessage.text = "Loading episodes…"
     query = {offset:cursor,limit:"24"}
     if card.metadata_origin <> invalid
-        expected = ParseJson(FormatJson(card))
+        expected = RCopy(card)
         expected.identity = parent
         expected.parent_identity = invalid
-        query.metadata_origin = FormatJson(card.metadata_origin)
-        query.card = FormatJson(expected)
+        query.metadata_origin = card.metadata_origin
+        query.card = expected
     else
         query.provider_id = card.provider_id
     end if
-    rSend("GET","/api/meta/"+REncode(parent.kind)+"/"+REncode(parent.id)+"?"+rQuery(query),invalid,"player:episodes",{id:m.playback.session.id,append:appendPage})
+    rSend("GET","/api/meta/"+REncode(parent.kind)+"/"+REncode(parent.id),invalid,"player:episodes",{id:m.playback.session.id,append:appendPage,cursor:cursor,episode_version:m.episodeVersion},query)
 end sub
 
 sub rPlayerEpisodesResponse(data as object, request as object)
-    if m.playback = invalid or m.drawerKind <> "episodes" then return
-    if request.context.id <> m.playback.session.id then return
+    if not rEpisodeRequestCurrent(request) then return
+    hadRows = m.drawerRows.content <> invalid
+    if hadRows then hadRows = m.drawerRows.content.getChildCount() > 0
+    m.episodeFailed = invalid
+    m.drawerMessage.text = ""
+    m.episodeCursor = ""
     if not request.context.append then m.playerEpisodes = []
     m.playerEpisodes.append(RArray(data.episodes))
     while m.playerEpisodes.count() > 300
         m.playerEpisodes.shift()
     end while
-    m.episodeCursor = RText(data.next_cursor)
     values = []
     for each card in m.playerEpisodes
         values.push({title:card.title,subtitle:RText(card.subtitle),episode:card,action:"player:episode",ring:false})
@@ -357,6 +468,13 @@ sub rPlayerEpisodesResponse(data as object, request as object)
     m.sourceFilters.content = rContent(seasons,200,52)
     m.sourceFilters.visible = seasons.count() > 1
     m.drawerRows.translation = [64,278]
+    m.episodeCursor = RText(data.next_cursor)
+    if values.count() = 0
+        m.drawerMessage.text = "No episodes are available."
+        if m.sourceFilters.visible then m.sourceFilters.setFocus(true)
+    else if not hadRows and not m.sourceFilters.isInFocusChain()
+        m.drawerRows.setFocus(true)
+    end if
 end sub
 
 function rPlayerKey(key as string) as boolean
@@ -364,8 +482,8 @@ function rPlayerKey(key as string) as boolean
     if key = "play"
         rPlayerAction({action:"player:pause"})
     else if key = "left" or key = "right" or key = "rewind" or key = "fastforward"
-        if m.playerUi.visible and m.playerActions.isInFocusChain() and m.seekPosition = invalid then return false
-        if m.playback.session.delivery.live = true then return true
+        if (key = "left" or key = "right") and m.playerUi.visible and m.playerActions.isInFocusChain() and m.seekPosition = invalid then return false
+        if not RPlaybackAllowed(m.playback.session,"seek") then return true
         position = rPlayerPosition()
         if m.seekPosition <> invalid then position = m.seekPosition
         delta = 10
@@ -377,14 +495,15 @@ function rPlayerKey(key as string) as boolean
         m.seekPosition = position
         m.playerUi.visible = true
         m.playerTime.text = rTime(position)+" · OK to seek · Back to cancel"
-        m.top.setFocus(true)
+        m.playerInput.setFocus(true)
     else if key = "OK" and m.seekPosition <> invalid
+        if not RPlaybackAllowed(m.playback.session,"seek") then return true
         position = m.seekPosition
         m.seekPosition = invalid
         m.playCard = m.playback.card
         rStartSource(m.playback.source,position)
     else if key = "down" and m.playerActions.isInFocusChain()
-        m.top.setFocus(true)
+        m.playerInput.setFocus(true)
         m.hideControls.control = "stop"
     else if key = "OK" or key = "up" or key = "down" or key = "options"
         rShowControls()
@@ -395,7 +514,9 @@ function rPlayerKey(key as string) as boolean
 end function
 
 sub rSaveProgress(ended as boolean)
-    if m.playback = invalid or m.playback.session.delivery.live = true then return
+    if m.playback = invalid then return
+    if RGet(m.playback,"ended",false) and not ended then return
+    if not RPlaybackAllowed(m.playback.session,"report_progress") then return
     if m.playback.firstFrame <> true then return
     card = m.playback.card
     record = {presentation:card,identity:card.identity,parent_identity:card.parent_identity,provider_id:card.provider_id,title:card.title,poster:card.poster,landscape:card.landscape,position_millis:int(rPlayerPosition()*1000),duration_millis:int(RGet(m.playback.session.delivery,"duration",0)*1000),updated_at_millis:0,metadata_origin:card.metadata_origin}
@@ -403,7 +524,9 @@ sub rSaveProgress(ended as boolean)
 end sub
 
 sub rPlaybackEvent(kind as string, ended as boolean)
-    if m.playback = invalid or m.playback.session.delivery.live = true then return
+    if m.playback = invalid then return
+    if RGet(m.playback,"ended",false) and not ended then return
+    if not RPlaybackAllowed(m.playback.session,"report_progress") then return
     if m.playback.firstFrame <> true then return
     m.playback.sequence++
     card = m.playback.card
@@ -412,19 +535,8 @@ sub rPlaybackEvent(kind as string, ended as boolean)
 end sub
 
 sub rStopPlayer()
-    if m.admission <> invalid
-        for each worker in m.workers
-            if worker.request.tag = "player:start" or worker.request.tag = "player:poll"
-                if RGet(worker.request.context,"request_id") = m.admission.request_id then worker.cancel = true
-            end if
-        end for
-        m.pending.delete("player:start")
-        m.pending.delete("player:poll")
-        path = "/api/playback-requests/"+REncode(m.admission.request_id)
-        if m.admission.id <> "" then path = "/api/playback/"+REncode(m.admission.id)
-        rCleanup(path,{base:m.config.base,access_token:m.config.access_token,epoch:m.epoch})
-        m.admission = invalid
-    end if
+    rRetireEpisodeRequests()
+    rCancelAdmission()
     if m.playback <> invalid
         if m.playback.ended <> true
             rPlaybackEvent("stop",false)
@@ -445,6 +557,9 @@ end sub
 
 sub rPlaybackError(message as string)
     if m.replacement <> invalid
+        if m.replacement.clock.totalMilliseconds() >= m.replacement.remaining*1000 then rReleaseRecovery()
+    end if
+    if m.replacement <> invalid
         if m.playback <> invalid then rCleanup("/api/playback/"+REncode(m.playback.session.id),m.playback.owner)
         previous = m.replacement
         m.replacement = invalid
@@ -452,7 +567,7 @@ sub rPlaybackError(message as string)
         m.player.control = "stop"
         m.player.content = previous.content
         m.player.control = "play"
-        m.player.seek = previous.position
+        if RPlaybackAllowed(previous.session,"seek") then m.player.seek = previous.position
         rShowControls()
         m.playerTime.text = message
     else
@@ -460,4 +575,94 @@ sub rPlaybackError(message as string)
         rError(message)
         rFocusContent()
     end if
+end sub
+
+sub rRetireEpisodeRequests()
+    m.episodeVersion++
+    m.episodeFailed = invalid
+    m.episodeCursor = ""
+    for each worker in m.workers
+        if worker.request.tag = "player:episodes" then worker.cancel = true
+    end for
+    retained = []
+    for each request in m.queue
+        if request.tag <> "player:episodes" then retained.push(request)
+    end for
+    m.queue = retained
+    retained = []
+    for each request in m.retryAuth
+        if request.tag <> "player:episodes" then retained.push(request)
+    end for
+    m.retryAuth = retained
+    m.pending.delete("player:episodes")
+end sub
+function rEpisodeRequestCurrent(request as object) as boolean
+    if m.playback = invalid or not m.drawer.visible or m.drawerKind <> "episodes" or m.drawerClosing then return false
+    if RGet(request.context,"id") <> m.playback.session.id then return false
+    if RGet(request.context,"episode_version") <> m.episodeVersion then return false
+    if RGet(request.context,"append",false)
+        if RGet(request.context,"cursor") <> m.episodeCursor then return false
+    end if
+    return true
+end function
+
+sub rCancelAdmission()
+    if m.admission = invalid then return
+    id = m.admission.request_id
+    renewTag = "player:renew:"+m.admission.id
+    for each worker in m.workers
+        if RGet(worker.request.context,"request_id") = id or (m.admission.id <> "" and worker.request.tag = renewTag) then worker.cancel = true
+    end for
+    retained = []
+    for each request in m.queue
+        if RGet(request.context,"request_id") <> id and (m.admission.id = "" or request.tag <> renewTag) then retained.push(request)
+    end for
+    m.queue = retained
+    retained = []
+    for each request in m.retryAuth
+        if RGet(request.context,"request_id") <> id and (m.admission.id = "" or request.tag <> renewTag) then retained.push(request)
+    end for
+    m.retryAuth = retained
+    m.pending.delete("player:start")
+    m.pending.delete("player:poll")
+    if m.admission.id <> "" then m.pending.delete(renewTag)
+    path = "/api/playback-requests/"+REncode(id)
+    if m.admission.id <> "" then path = "/api/playback/"+REncode(m.admission.id)
+    rCleanup(path,{base:m.config.base,access_token:m.config.access_token,epoch:m.epoch})
+    m.admission = invalid
+end sub
+sub rAdmissionFailure(message as string)
+    rCancelAdmission()
+    if m.drawer.visible
+        m.drawerMessage.text = message
+        m.drawerRows.setFocus(true)
+    else if m.playback <> invalid
+        rShowControls()
+        m.top.findNode("playerSubtitle").text = message
+    else
+        rError(message)
+        rFocusContent()
+    end if
+end sub
+
+sub rReleaseRecovery()
+    if m.replacement = invalid then return
+    previous = m.replacement
+    m.replacement = invalid
+    tag = "player:renew:"+previous.session.id
+    for each worker in m.workers
+        if worker.request.tag = tag then worker.cancel = true
+    end for
+    retained = []
+    for each request in m.queue
+        if request.tag <> tag then retained.push(request)
+    end for
+    m.queue = retained
+    retained = []
+    for each request in m.retryAuth
+        if request.tag <> tag then retained.push(request)
+    end for
+    m.retryAuth = retained
+    m.pending.delete(tag)
+    rCleanup("/api/playback/"+REncode(previous.session.id),previous.owner)
 end sub

@@ -2,6 +2,7 @@
 
 import argparse
 import hashlib
+import json
 from pathlib import Path
 import zipfile
 
@@ -34,6 +35,19 @@ if missing:
 
 if not (package_root / "source/bslib.brs").is_file():
     raise SystemExit("Compiled staging must include source/bslib.brs")
+# Reject contaminated or reused staging trees, even when compilation succeeded.
+source_root = root / "roku"
+config = json.loads((source_root / "bsconfig.json").read_text())
+allowed = {p.relative_to(source_root).as_posix()
+           for pattern in config["files"] for p in source_root.glob(pattern) if p.is_file()}
+allowed.add("source/bslib.brs")
+actual = {p.relative_to(package_root).as_posix() for p in package_root.rglob("*") if p.is_file()}
+unexpected = actual - allowed
+if unexpected:
+    raise SystemExit("Unrecognized staged runtime files: " + ", ".join(sorted(unexpected)))
+missing = allowed - actual
+if missing:
+    raise SystemExit("Missing staged runtime files: " + ", ".join(sorted(missing)))
 out = args.output_dir.resolve() if args.output_dir else root / "artifacts"
 out.mkdir(exist_ok=True, parents=True)
 files = [package_root / "manifest"]

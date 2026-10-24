@@ -1,9 +1,8 @@
 # VIPTV for Roku
 
 The 2.0 client is a native, server-connected SceneGraph renderer of the current
-KMP TV presentation. `RemoteScene` is the shipping entry point. Its build
-allowlist excludes the old scenes, provider parsers, ranking, continuation
-policies and v2 API adapter. Historical sources remain for regression evidence.
+KMP TV presentation. `RemoteScene` is the shipping entry point. Only the current implementation is retained: retired scenes, provider parsers,
+ranking policies, continuation policies and API adapters have been removed.
 There is no local engine, local library, torrent runtime or offline mode.
 
 The server supplies Home rows and card shapes, catalog order, discovery controls,
@@ -31,23 +30,20 @@ source-ranking `best_match_id`/`quality_filters`, and profile `viewing-action` a
 not activate legacy client policy.
 
 The normal package keeps the existing origin lock. The public package supports
-another HTTPS origin and clears the previous origin's grant. Both preserve the
-existing registry format for rotating device credentials and remembered profile
+another HTTPS origin and clears the previous origin's grant. Both use only the current version 3 registry format for rotating device credentials and remembered profile
 IDs. Transient failures retain credentials; profile selection remains server-validated.
 
 ## Local verification
 
 ```sh
 python3 scripts/design-sync.py check
-python3 scripts/verify-migration.py
 python3 scripts/run-tests.py
 (cd roku && npx --yes brighterscript@0.73.1 --project bsconfig.json)
 ```
 
 The runner uses `VIPTV_BRS_CLI`, `brs-cli` on PATH, or pinned `brs-node@2.5.3`.
 The new remote checks execute production SceneGraph handlers and Task HTTP over
-disposable HTTPS. The older tests cover retained historical implementations;
-they do not establish the new client's device or visual parity.
+disposable HTTPS. These checks do not establish device performance or visual parity.
 
 Private, networkless renderer fixtures:
 

@@ -23,7 +23,31 @@
       "progress": null,
       "badges": [],
       "view": {
-        "saved": true
+        "saved": true,
+        "metadata_parts": [
+          "Movie",
+          "Fixture metadata"
+        ],
+        "hero_metadata_parts": [
+          "Fixture metadata"
+        ],
+        "compact_metadata_parts": [
+          "Fixture metadata"
+        ],
+        "hero_badges": [
+          {
+            "label": "Server badge",
+            "role": "capability"
+          }
+        ],
+        "badges": [
+          {
+            "label": "Server badge",
+            "role": "capability"
+          }
+        ],
+        "tile_badge": null,
+        "progress": null
       }
     },
     "featured": [
@@ -43,7 +67,31 @@
         "progress": null,
         "badges": [],
         "view": {
-          "saved": true
+          "saved": true,
+          "metadata_parts": [
+            "Movie",
+            "Fixture metadata"
+          ],
+          "hero_metadata_parts": [
+            "Fixture metadata"
+          ],
+          "compact_metadata_parts": [
+            "Fixture metadata"
+          ],
+          "hero_badges": [
+            {
+              "label": "Server badge",
+              "role": "capability"
+            }
+          ],
+          "badges": [
+            {
+              "label": "Server badge",
+              "role": "capability"
+            }
+          ],
+          "tile_badge": null,
+          "progress": null
         }
       }
     ],
@@ -70,7 +118,37 @@
             "progress": null,
             "badges": [],
             "view": {
-              "saved": true
+              "saved": true,
+              "metadata_parts": [
+                "Movie",
+                "Fixture metadata"
+              ],
+              "hero_metadata_parts": [
+                "Fixture metadata"
+              ],
+              "compact_metadata_parts": [
+                "Fixture metadata"
+              ],
+              "hero_badges": [
+                {
+                  "label": "Server badge",
+                  "role": "capability"
+                }
+              ],
+              "badges": [
+                {
+                  "label": "Server badge",
+                  "role": "capability"
+                }
+              ],
+              "tile_badge": null,
+              "progress": null,
+              "preview": {
+                "background": null,
+                "caption": null,
+                "progress": null,
+                "action": "details"
+              }
             }
           }
         ],
@@ -100,7 +178,31 @@
         "progress": null,
         "badges": [],
         "view": {
-          "saved": true
+          "saved": true,
+          "metadata_parts": [
+            "Movie",
+            "Fixture metadata"
+          ],
+          "hero_metadata_parts": [
+            "Fixture metadata"
+          ],
+          "compact_metadata_parts": [
+            "Fixture metadata"
+          ],
+          "hero_badges": [
+            {
+              "label": "Server badge",
+              "role": "capability"
+            }
+          ],
+          "badges": [
+            {
+              "label": "Server badge",
+              "role": "capability"
+            }
+          ],
+          "tile_badge": null,
+          "progress": null
         }
       },
       "restart": false
@@ -122,7 +224,31 @@
         "progress": null,
         "badges": [],
         "view": {
-          "saved": true
+          "saved": true,
+          "metadata_parts": [
+            "Movie",
+            "Fixture metadata"
+          ],
+          "hero_metadata_parts": [
+            "Fixture metadata"
+          ],
+          "compact_metadata_parts": [
+            "Fixture metadata"
+          ],
+          "hero_badges": [
+            {
+              "label": "Server badge",
+              "role": "capability"
+            }
+          ],
+          "badges": [
+            {
+              "label": "Server badge",
+              "role": "capability"
+            }
+          ],
+          "tile_badge": null,
+          "progress": null
         }
       },
       "label": "Resume",
@@ -225,6 +351,8 @@
       "now_millis": 1800000000000,
       "window_start_millis": 1800000000000,
       "window_end_millis": 1800007200000
-    }
+    },
+    "availability": "Available",
+    "reason": null
   }
 }

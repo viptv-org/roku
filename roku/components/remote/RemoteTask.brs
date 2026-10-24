@@ -29,6 +29,15 @@ function rHttp(q as object, result as object) as object
         result.error = "Invalid account credential."
         return result
     end if
+    if RObject(q.query) and q.query.count() > 0
+        separator = "?"
+        if instr(1,route,"?") > 0 then separator = "&"
+        route += separator+rQuery(q.query)
+    end if
+    if len(route) > 262144
+        result.error = "The request is too large."
+        return result
+    end if
     transfer = CreateObject("roUrlTransfer")
     port = CreateObject("roMessagePort")
     transfer.setMessagePort(port)
@@ -42,6 +51,7 @@ function rHttp(q as object, result as object) as object
     transfer.addHeader("Content-Type","application/json")
     transfer.addHeader("x-viptv-image-delivery","direct")
     transfer.addHeader("User-Agent","VIPTV-Roku/2")
+    transfer.addHeader("Origin",origin)
     if token <> "" then transfer.addHeader("Authorization","Bearer "+token)
     transfer.setRequest(q.method)
     responsePath = "tmp:/remote-"+q.request_id+"-"+transfer.getIdentity().toStr()+".json"
@@ -133,4 +143,15 @@ function rHttpError(status as integer) as string
     if status = 429 then return "Too many requests. Try again shortly."
     if status = 400 or status = 422 then return "Check the entered values and try again."
     return "Could not reach the server. Try again."
+end function
+
+' Query JSON and URL construction run only inside this Task.
+function rQuery(query as object) as string
+    values = []
+    for each key in query
+        value = query[key]
+        if GetInterface(value,"ifString") = invalid then value = FormatJson(value)
+        values.push(REncode(key)+"="+REncode(value))
+    end for
+    return values.join("&")
 end function

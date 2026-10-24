@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="RemoteEntry" extends="Group">
+ <interface><field id="mode" type="string" onChange="render" /></interface>
+ <script type="text/brightscript" uri="pkg:/components/remote/RemoteEntry.brs" />
+ <children>
+  <Group id="startup" visible="false">
+   <Group id="startupBrand" translation="[777.0,440]" />
+   <Group translation="[840,600]" clippingRect="[0,0,240,4]">
+    <Poster width="240" height="4" uri="pkg:/images/design/remote-startup-track.png" blendColor="#FFFFFF1F" />
+    <Poster id="startupIndicator" width="96" height="4" uri="pkg:/images/design/remote-startup-indicator.png" blendColor="#F4F2EE" />
+   </Group>
+  </Group>
+  <Group id="welcome">
+   <Group id="wall" />
+   <Poster width="1920" height="1080" uri="pkg:/images/design/remote-welcome-scrim.png" />
+   <Group id="welcomeBrand" translation="[797.346,336]" />
+   <RemoteTrackedLabel translation="[96,474]" rowWidth="1728" rowHeight="42" size="34" weight="400" tracking="0" text="Your shows, channels and progress. All in one place." />
+  </Group>
+  <Group id="choice" visible="false">
+   <MaskGroup translation="[1120,250]" maskUri="pkg:/images/design/remote-entry-feature-mask.png" maskSize="[704,396]">
+    <Poster width="704" height="396" loadWidth="704" loadHeight="396" loadDisplayMode="scaleToZoom" opacity="0.6" uri="pkg:/images/design/remote-entry.jpg" />
+    <Group id="choiceBrand" translation="[32,278]" />
+   </MaskGroup>
+   <RemoteTrackedLabel translation="[1120,671]" size="26" weight="400" tracking="0" textColor="#B6B4AF" text="All of these reach the same VIPTV account. You can add" />
+   <RemoteTrackedLabel translation="[1120,709]" size="26" weight="400" tracking="0" textColor="#B6B4AF" text="more ways to sign in later from your phone or computer." />
+  </Group>
+  <Animation id="startupMotion" duration="1.2" repeat="true" easeFunction="linear"><Vector2DFieldInterpolator key="[0.0,0.0138889,0.0277778,0.0416667,0.0555556,0.0694444,0.0833333,0.0972222,0.1111111,0.125,0.1388889,0.1527778,0.1666667,0.1805556,0.1944444,0.2083333,0.2222222,0.2361111,0.25,0.2638889,0.2777778,0.2916667,0.3055556,0.3194444,0.3333333,0.3472222,0.3611111,0.375,0.3888889,0.4027778,0.4166667,0.4305556,0.4444444,0.4583333,0.4722222,0.4861111,0.5,0.5138889,0.5277778,0.5416667,0.5555556,0.5694444,0.5833333,0.5972222,0.6111111,0.625,0.6388889,0.6527778,0.6666667,0.6805556,0.6944444,0.7083333,0.7222222,0.7361111,0.75,0.7638889,0.7777778,0.7916667,0.8055556,0.8194444,0.8333333,0.8472222,0.8611111,0.875,0.8888889,0.9027778,0.9166667,0.9305556,0.9444444,0.9583333,0.9722222,0.9861111,1.0]" keyValue="[[-96.0,0],[-95.85725,0],[-95.41269,0],[-94.63962,0],[-93.50816,0],[-91.98478,0],[-90.03187,0],[-87.6073,0],[-84.66407,0],[-81.15,0],[-77.00777,0],[-72.17539,0],[-66.58755,0],[-60.17815,0],[-52.88489,0],[-44.65629,0],[-35.46184,0],[-25.30472,0],[-14.23541,0],[-2.36207,0],[10.14768,0],[23.07775,0],[36.18702,0],[49.23868,0],[62.0262,0],[74.38899,0],[86.21636,0],[97.44274,0],[108.03858,0],[118.0005,0],[127.34266,0],[136.08994,0],[144.27316,0],[151.92575,0],[159.08162,0],[165.77386,0],[172.03399,0],[177.89156,0],[183.374,0],[188.50663,0],[193.3127,0],[197.81351,0],[202.02858,0],[205.97576,0],[209.67139,0],[213.13046,0],[216.3667,0],[219.39272,0],[222.22011,0],[224.85956,0],[227.32091,0],[229.61326,0],[231.74503,0],[233.72403,0],[235.55749,0],[237.25215,0],[238.81428,0],[240.24972,0],[241.56392,0],[242.76201,0],[243.84874,0],[244.82862,0],[245.70584,0],[246.48436,0],[247.1679,0],[247.75998,0],[248.2639,0],[248.68279,0],[249.01962,0],[249.27716,0],[249.45809,0],[249.5649,0],[249.6,0]]" fieldToInterp="startupIndicator.translation" /></Animation>
+  <Animation id="startupArrival" duration="0.6" easeFunction="outCubic"><FloatFieldInterpolator key="[0,1]" keyValue="[0,1]" fieldToInterp="startupBrand.opacity" /></Animation>
+  <Animation id="drift" duration="120" repeat="true" easeFunction="linear"><Vector2DFieldInterpolator key="[0,0.5,1]" keyValue="[[0,0],[-500,0],[0,0]]" fieldToInterp="wall.translation" /></Animation>
+ </children>
+</component>

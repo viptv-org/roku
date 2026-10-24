@@ -8,7 +8,8 @@ import ssl
 import subprocess
 import tempfile
 import threading
-from brs_cli import brs_command
+from urllib.parse import urlsplit, parse_qs
+from brs_cli import native_http_command
 
 root=Path(__file__).resolve().parents[1]
 class Handler(BaseHTTPRequestHandler):
@@ -19,12 +20,17 @@ class Handler(BaseHTTPRequestHandler):
         if self.command!='GET':
             raw=self.rfile.read(int(self.headers.get('Content-Length','0')))
             body=json.loads(raw) if raw else None
-        if self.path=='/api/bootstrap': value={'contract_version':3,'identity':{},'profile_management':{}}
+        if self.path=='/api/bootstrap': value={'contract_version':3,'identity':{},'profile_management':{},'navigation':[]}
+        elif self.path in ('/api/profiles/7/live/channel-1/guide','/api/profiles/7/live/bad-window/guide'):
+            value=json.loads((root/'tests/fixtures/remote-v3.json').read_text())['guide']
+            if 'bad-window' in self.path:
+                value['channel_id']='bad-window'
+                value['view']['window_start_millis']='not-a-clock'
         elif self.path=='/api/empty': status=204; value=None
         elif self.path=='/api/denied': status=403; value={'error':'private-fixture-must-not-leak'}
         elif self.path=='/api/old': value=None
         elif self.path=='/api/large': value={'large':'x'*2_100_000}
-        else: value={'method':self.command,'body':body,'authenticated':self.headers.get('Authorization')=='Bearer fixture-access'}
+        else: value={'method':self.command,'body':body,'query':parse_qs(urlsplit(self.path).query, keep_blank_values=True),'authenticated':self.headers.get('Authorization')=='Bearer fixture-access', 'origin_valid':self.headers.get('Origin')==f'https://localhost:{self.server.server_port}'}
         raw=b'' if status==204 else json.dumps(value).encode()
         self.send_response(status);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(raw)));self.end_headers()
         try:self.wfile.write(raw)
@@ -46,7 +52,7 @@ with tempfile.TemporaryDirectory(prefix='roku-remote-tls-') as directory:
     shutil.copyfile(root/'components/remote/RemoteStore.brs',tmp/'RemoteStore.brs')
     env=dict(os.environ,NODE_EXTRA_CA_CERTS=str(cert))
     try:
-        result=subprocess.run([*brs_command(),'--root',str(tmp),'RemoteWire.brs','RemoteStore.brs','RemoteTask.brs','checks.brs'],cwd=tmp,env=env,capture_output=True,text=True,timeout=120)
+        result=subprocess.run([*native_http_command(tmp),'--root',str(tmp),'RemoteWire.brs','RemoteStore.brs','RemoteTask.brs','checks.brs'],cwd=tmp,env=env,capture_output=True,text=True,timeout=120)
     finally:server.shutdown();server.server_close()
     print(result.stdout,result.stderr)
     if result.returncode or 'REMOTE_TRANSPORT_OK' not in result.stdout or 'REMOTE_TRANSPORT_FAILED' in result.stdout:

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="RemoteShelfTitle" extends="Group">
+ <interface><field id="content" type="node" onChange="render" /></interface>
+ <script type="text/brightscript" uri="pkg:/components/remote/RemoteShelfTitle.brs" />
+ <children>
+  <Rectangle id="spacer" width="1728" height="52" color="#00000000" />
+  <Label id="title" width="1728" height="40" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_600.ttf" size="30" /></Label>
+  <Label id="message" translation="[0,60]" width="1124" height="26" visible="false" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="22" /></Label>
+ </children>
+</component>

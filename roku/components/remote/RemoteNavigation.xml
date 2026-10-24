@@ -13,7 +13,7 @@
  <script type="text/brightscript" uri="pkg:/components/remote/RemoteNavigation.brs" />
  <children>
   <Group translation="[96,44]">
-   <Poster width="44" height="44" uri="pkg:/images/design/row.9.png" blendColor="#F5C542" />
+   <Poster width="44" height="44" uri="pkg:/images/design/remote-brand-mark.png" blendColor="#F5C542" />
    <Label width="44" height="44" text="V" color="#0B0B0C" horizAlign="center" vertAlign="center"><Font role="font" uri="pkg:/fonts/remote_bricolage_800.ttf" size="27" /></Label>
    <Label translation="[56,0]" width="32" height="44" vertAlign="center" text="V" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_bricolage_800.ttf" size="32" /></Label>
    <Label translation="[74.944,0]" width="32" height="44" vertAlign="center" text="I" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_bricolage_800.ttf" size="32" /></Label>

@@ -1,4 +1,5 @@
 sub init()
+    m.top.focusable = true
     m.items = m.top.findNode("items")
     m.top.observeField("focusedChild","paint")
 end sub

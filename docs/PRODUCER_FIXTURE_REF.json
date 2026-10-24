@@ -1,0 +1,7 @@
+{
+  "commit": "0d8da118e2282c1d7cefa4bc590004bf6a97c211",
+  "working_tree": false,
+  "source": "backend/fixtures/remote-viewing-v3.json",
+  "sha256": "89959d41044e35c22af26f2e4997344580ad27d9270e87907f93035791d02a20",
+  "snapshot_record": "artifacts/home-preview-adoption-20261024/source.json"
+}

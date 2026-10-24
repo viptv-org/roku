@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="RemoteMetadata" extends="Group">
+ <interface>
+  <field id="parts" type="array" onChange="render" />
+  <field id="badges" type="array" onChange="render" />
+ </interface>
+ <script type="text/brightscript" uri="pkg:/source/RemoteWire.brs" />
+ <script type="text/brightscript" uri="pkg:/components/remote/RemoteMetadata.brs" />
+ <children><Group id="items" /></children>
+</component>

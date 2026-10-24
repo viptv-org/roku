@@ -1,17 +1,66 @@
 {
-  "observed_at": "2026-10-23T11:47:20.428091+00:00",
-  "base_commit": "7275bce4a7543c1ef7cbde871fe03813e1490f4e",
-  "status": "working-tree producer contract; not a deployed or committed producer revision",
+  "observed_at": "2026-10-24T02:57:54.606939+00:00",
+  "base_commit": "e8e7b5fa74a581dc6c40d6876edee9ab3f9a665d",
+  "status": "Source observation including producer working-tree offset fix; isolated HTTPS native-HTTP simulator integration passed; not deployment or physical decoder qualification",
   "files": {
-    "server/src/routes.rs": "e22b81f91a1665d9a8d121f621ae4209b60ffe04e994ca0db3bbda0b48e0fd72",
-    "server/src/engine_v3/mod.rs": "48b89e06e49a72404664276088b47953651d26038f3351b187d3cd742db4536a",
-    "server/src/engine_v3/viewing_action.rs": "40bdc4ee89556e94d22e82d9d1d5fd047f94b0dc869df7def57069c7e53f86e9",
-    "server/src/engine_v3/viewing_presentation.rs": "3f2405b64742634a43c8ff7252c7a2fac0344793b7a020d1a6d2613e151a374d",
-    "server/src/engine_v3/source_ranking.rs": "6166e059f88d5a1a8bcc15748dbf0d2a5e2f2eb6f469f0c80039c9b61e998657",
-    "server/src/engine_v3/preferences.rs": "79ae68deff92ec05c74381566f98a48a0f02216d1b6b6777a736c7f0f6a41507",
-    "server/src/engine_v3/live.rs": "8e7966a90cf476e8b55f2636c1d8dd077a54a92e51dee11d9f4192cd3230dd40",
-    "server/src/gateway/playback.rs": "fac5151491f4a9f654561cc77fadc136c8f5782b4988e7ef54e7548efdcd8609",
-    "TV_REMOTE_API.md": "57ca9a778d372038298beab7046e4133b87ecf1313b2898728e3791b7f52a3b2",
-    "server/src/engine_v3/library/listing.rs": "7d04c37528049950f5b36b6050c1369697b5dd4b8dd8b655175e70476bf73ef9"
+    "server/src/routes.rs": "49e884a13eb6252f492d2c6866507d3e1730382080508d3bc3455c56af6bb07e",
+    "server/src/engine_v3/mod.rs": "b8248c7c4d7fe56530bc1380c295a7b4e775ca9f7cc0141b784b6e8ad7641285",
+    "server/src/engine_v3/viewing_action.rs": "f4f5196e442dc7303d4c497aebb20032b21778779e9dc268966c135df388b502",
+    "server/src/engine_v3/viewing_presentation.rs": "de1682c0716d2d0b88777a134b47f1cad794bfcf3b58b522d8493d1eb2792b7e",
+    "server/src/engine_v3/source_ranking.rs": "d13c2be7ffb2cbe4e2561502b2023f6160120075f14a19395fdbae80caead7d1",
+    "server/src/engine_v3/preferences.rs": "c9fc8dac6fc27081aae1dbc195d96383d95d8df728e4963a5580e55034b8f47b",
+    "server/src/engine_v3/live.rs": "ac320e9c201666202b30eb185e23390bb5215dda7a3795ff33140afc3ebf7882",
+    "server/src/gateway/playback.rs": "93ba7ba80bb0742ac8f7444595ed696005377b6d84114edf603544eb2c638e5c",
+    "TV_REMOTE_API.md": "193aa3a2759a784209072a96b464c5e552e2a67616306693814051c9e200e42c",
+    "server/src/engine_v3/library/listing.rs": "ee693b2c672c7d7c95b389410188d24e4dd0c8c47a2b035a998065100a3c3f9c",
+    "server/shared/engine/src/library/controls.rs": "83338a4be70615d4b73363c7ec467bbb66bce7261d3e9d0a7c872eb3aa4d9195",
+    "server/shared/engine/src/library/query.rs": "17370c291a7e56dadf781b3e47a686821053f42a73fe5f42ba82352f9a4da2d4",
+    "server/shared/engine/src/library/project.rs": "fc7154920ba14c2e5d63b6627f8fa9a1fb13b1966b2b8af88c2af6b57378142a"
+  },
+  "live_page_scope_observation": {
+    "commit": "e8e7b5fa74a581dc6c40d6876edee9ab3f9a665d",
+    "source": "server/shared/engine/src/live.rs",
+    "sha256": "be1f1941a909d12131b2b2dcbef043d0e0bb3063425242207eea5926bfc22cc0",
+    "status": "Shared snapshot_id consumed; fixture-tested matching, mismatched and failed reload paths; native/backend integration not yet qualified"
+  },
+  "current_snapshot": "artifacts/backend-integration-e8e7-current/source.json",
+  "offset_boundary_observation": {
+    "base_commit": "e8e7b5fa74a581dc6c40d6876edee9ab3f9a665d",
+    "working_tree": true,
+    "source_hashes": {
+      "server/shared/engine/src/live.rs": "724566417c14db5fd96ee29d00688ff752f50aff9ac901adb7e43e2bab8c7a8f",
+      "server/src/engine_v3/live/native.rs": "9b9bd45937a5397bd17e82d10bad8d934048b7cea8f2feceea4065992e827544",
+      "server/src/engine_v3/live_tests.rs": "c19d481355b1a07b637b037d35af6cbdcf3a6505a0cd1e1f4d4c6f4df4900612",
+      "fixtures/remote-viewing-v3.json": "31a2e6722840653d829d0e78138670fc91023750b3122c0f2d271c482617a13b"
+    },
+    "producer_test": "engine_v3::live_tests::live_browsing_and_search_follow_cursors_past_ten_thousand passed in isolated snapshot"
+  },
+  "bidirectional_paging_adoption": {
+    "backend_commit": "1a361e4dc7923cf2909ff0be828912fb8530fa48",
+    "core_revision": "65add90c6a73da8743021ed0a0ff5c862d78124d",
+    "working_tree_snapshot": "artifacts/backend-integration-bidirectional/source.json",
+    "files": {
+      "TV_REMOTE_API.md": "ff77c3ffc541032071d582b4f2d4dce03df985ed5dc087e8648307e7c6ef36ff",
+      "fixtures/remote-viewing-v3.json": "a1279536faa2bac9e29bebbe7450e6eb3f5e09413427651f63e63db30ab252ac",
+      "server/src/engine_v3/live/snapshot.rs": "d54557c9de046361a2544bc158fc95488cd1cddbbe5d0dc38be52bfd8bc661a9",
+      "server/shared/engine/src/live.rs": "962731cd32242068c08c244bfc0143f01bee7989f8389829fb3353392b6a4436",
+      "server/src/engine_v3/live_tests.rs": "aa7d05c042673a43ad8d3d11e0d65d264a5748828d576fad1ee077abc691f880"
+    },
+    "producer_reverse_test": "artifacts/backend-integration-bidirectional/reverse-producer-test-executed.log",
+    "roku_native_http_test": "artifacts/backend-integration-bidirectional/native-http-check-r2.log",
+    "status": "Shared current descriptor contract consumed; configured producer reverse test and unconfigured verified-HTTPS production Roku adapter passed; physical configured HTTP directory and full performance qualification remain separate"
+  },
+  "home_preview_adoption": {
+    "observed_at": "2026-10-24T08:14:24.938758+00:00",
+    "backend_commit": "0d8da118e2282c1d7cefa4bc590004bf6a97c211",
+    "files": {
+      "TV_REMOTE_API.md": "eec123674af1d05da5b308d74aeeee39e01e857fb90ca2a358c800a351776504",
+      "fixtures/remote-viewing-v3.json": "89959d41044e35c22af26f2e4997344580ad27d9270e87907f93035791d02a20",
+      "server/src/engine_v3/home.rs": "3ab2eec9134ac9bc941b39dc00de8eb24ecfeb18a545efb642c6698ab327371e",
+      "server/src/engine_v3/history_tests.rs": "c0b1ddb4a768fe38ab5734a4f096e123239ce80182aec5927a331cecf3dcd4a4",
+      "server/src/engine_v3/viewing_presentation.rs": "de1682c0716d2d0b88777a134b47f1cad794bfcf3b58b522d8493d1eb2792b7e",
+      "server/shared/engine/src/home.rs": "29fbd956d713b85b5e8d2b1666f28d87976eae48d9871b6cd2e9798e0acf3cb4"
+    },
+    "status": "Read-only producer source/fixture observation; no new producer integration claim"
   }
 }

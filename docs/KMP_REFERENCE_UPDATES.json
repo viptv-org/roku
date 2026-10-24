@@ -1,0 +1,141 @@
+{
+  "captured_at": "2026-10-23T18:46:08.042084+00:00",
+  "commit": "88bc463cce7df91695b5bd521b2cd91c084ac282",
+  "scope": "Library sheet, menu typography and keyboard focus; private captures and text-style/focus evidence",
+  "evidence": "artifacts/kmp-library-filter-reference-20261023",
+  "files": {
+    "composeApp/src/commonMain/kotlin/org/viptv/app/features/library/LibraryFilterSheet.kt": {
+      "sha256": "0824e2c3779d14c98c829ea3664dff99d79d7a62efa28b45affa5f69124cbef0",
+      "matches_initial_reference": true
+    },
+    "composeApp/src/commonMain/kotlin/org/viptv/app/features/library/LibraryFilterField.kt": {
+      "sha256": "ed1ef5b77b17d2889bfca49be395cff0adb2b28a9892c0fff286b6037bd50c35",
+      "matches_initial_reference": true
+    },
+    "composeApp/src/commonMain/kotlin/org/viptv/app/components/TvDrawerMotion.kt": {
+      "sha256": "4844ce5075e0f21eed340c69d260f20fd33cae5615b9706923c20921fbf72c08",
+      "matches_initial_reference": true
+    },
+    "composeApp/src/commonMain/kotlin/org/viptv/app/components/TvAction.kt": {
+      "sha256": "ecdb32efc6f0e8ab5f1457609bfca18ff96cd7fa62221421275181ac88cd42c2",
+      "matches_initial_reference": true
+    },
+    "composeApp/src/commonMain/kotlin/org/viptv/app/components/TvFocusTreatment.kt": {
+      "sha256": "8d7e296f483cede0d4edecf794b15e3e1048249747b28e4c226ce040dcc5db12",
+      "matches_initial_reference": true
+    },
+    "composeApp/src/commonMain/kotlin/org/viptv/app/components/TvFocusScroll.kt": {
+      "sha256": "0e0729f43bdc241f9d68006a592340554f7beefe0293192ae1b664bd96f69c04",
+      "matches_initial_reference": false
+    },
+    "composeApp/src/commonMain/kotlin/org/viptv/app/theme/Theme.kt": {
+      "sha256": "7d268b64208d36ad18005b70598f22ecc4e31192287391424799593df832cafb",
+      "matches_initial_reference": true
+    },
+    "composeApp/src/commonMain/kotlin/org/viptv/app/theme/ThemeTypography.kt": {
+      "sha256": "1e81bb96aa139912ea1e9e1e8a272ffd99376410fabc7ac8fa5459ac9a563436",
+      "matches_initial_reference": true
+    }
+  },
+  "source_row_observation": {
+    "observed_at": "2026-10-23T21:37:44.195416+00:00",
+    "commit": "88bc463cce7df91695b5bd521b2cd91c084ac282",
+    "files": {
+      "composeApp/src/commonMain/kotlin/org/viptv/app/features/sources/TvSourceRow.kt": {
+        "sha256": "947fd25ff8644e8914212e14578c449e8f57698c48f2039b8ce672e295b00dc0",
+        "matches_initial_reference": true
+      },
+      "composeApp/src/commonMain/kotlin/org/viptv/app/features/sources/SourceFactBadges.kt": {
+        "sha256": "0b937419a19cff3c800402ebad748adc726ff352da8517405d2443f57f7b22c5",
+        "matches_initial_reference": true
+      }
+    },
+    "evidence": "artifacts/source-badge-measurements.json; artifacts/tcl-current-20261023/source-badge-native-first.jpg and source-badge-native-second.jpg"
+  },
+  "source_style_observation": {
+    "source": {
+      "commit": "88bc463cce7df91695b5bd521b2cd91c084ac282",
+      "files": {
+        "composeApp/src/commonMain/kotlin/org/viptv/app/features/sources/TvSourceRow.kt": {
+          "sha256": "947fd25ff8644e8914212e14578c449e8f57698c48f2039b8ce672e295b00dc0",
+          "matches_initial": true
+        },
+        "composeApp/src/commonMain/kotlin/org/viptv/app/features/sources/SourceFactBadges.kt": {
+          "sha256": "0b937419a19cff3c800402ebad748adc726ff352da8517405d2443f57f7b22c5",
+          "matches_initial": true
+        },
+        "composeApp/src/commonMain/kotlin/org/viptv/app/theme/ThemeTypography.kt": {
+          "sha256": "1e81bb96aa139912ea1e9e1e8a272ffd99376410fabc7ac8fa5459ac9a563436",
+          "matches_initial": true
+        }
+      }
+    },
+    "evidence": "artifacts/kmp-source-style/output/source-styles.txt",
+    "summary": "artifacts/kmp-source-style/resolved-style-summary.json",
+    "build_note": "isolated Gradle build directory; desktop render test only; unused buildDesktopTorrent excluded after missing Go prerequisite"
+  },
+  "library_error_layout": {
+    "commit": "88bc463cce7df91695b5bd521b2cd91c084ac282",
+    "file": "composeApp/src/commonMain/kotlin/org/viptv/app/features/library/TvLibraryScreen.kt",
+    "sha256": "81c9fbdc099fed7f05034ed38f5433d8dbb7e98fb8dd177b7adaa923ad6e65d4",
+    "matches_initial": false,
+    "evidence": "artifacts/kmp-library-error/library-error-style.txt",
+    "measurement": "text origin96,236; one-line height31; baseline23.68; danger#FF7A6E"
+  },
+  "search_channels": {
+    "commit": "88bc463cce7df91695b5bd521b2cd91c084ac282",
+    "files": {
+      "composeApp/src/commonMain/kotlin/org/viptv/app/features/search/TvSearchScreen.kt": "04421289133a3fc930898b7412faa2225c920387e1a75938ef5b4d1adcddff5c",
+      "composeApp/src/commonMain/kotlin/org/viptv/app/features/search/TvSearchChannel.kt": "02e74d0e1959f14a13692582c4a52f70223def5326d57f7d2b09dd43dc87d94a"
+    },
+    "measurements": "Source: x700 results; title36px + gap20px; channel356x200, gap20; radius10 focus3; logo140x140; title22 subtitle20. Native r3 image box x700,y196,width356,height200. Matched KMP capture/ink/720p remain open."
+  },
+  "catalog_focus_viewport": {
+    "commit": "88bc463cce7df91695b5bd521b2cd91c084ac282",
+    "files": {
+      "composeApp/src/commonMain/kotlin/org/viptv/app/features/browse/TvBrowseScreen.kt": "085464b27476134a6f4307f48405556b39e57feb7f751a04bbf01509a66ea401",
+      "composeApp/src/commonMain/kotlin/org/viptv/app/features/home/TvCatalogCard.kt": "0caf6d6e0183b9529d896c1f510a28748d5406535efad0ca95994df97ae8d997"
+    },
+    "geometry": "232-wide portrait artwork348 high +76 caption slot; Browse horizontal gap16 vertical gap36; seven columns; lazy-grid bottom content padding96",
+    "scope": "Source geometry observation; native minimum visibility correction tested separately; matched animated KMP comparison still open"
+  },
+  "home_focus_20261024": {
+    "base_commit": "88bc463cce7df91695b5bd521b2cd91c084ac282",
+    "files": {
+      "composeApp/src/commonMain/kotlin/org/viptv/app/features/home/TvHomeScreen.kt": "3d451e09c5cc437819dd59462bdd0b4398e9f04914085f8c8dccf654a1b35c7a",
+      "composeApp/src/commonMain/kotlin/org/viptv/app/features/home/TvHomeBackdrop.kt": "05d2badcfa1c34102f1c0e074dce3cae9f23c7ebd66548f990a39cec0897c54f",
+      "composeApp/src/commonMain/kotlin/org/viptv/app/features/home/TvBrowseSummary.kt": "873d33969774ef6b482e8c154f7a8a25625b24674eb1ea0ee4ac8ac2c91783db",
+      "composeApp/src/commonMain/kotlin/org/viptv/app/features/home/TvHeroSummary.kt": "4de8ef732274397a882074d044f62a499f05cef2fb024ed637342aac4541f44f",
+      "composeApp/src/commonMain/kotlin/org/viptv/app/features/home/TvBillboardSelection.kt": "bf02fd4dbcc8771618a4830b5408b5641157eccdd17b4eaf05c2a1f03b1f7e70",
+      "composeApp/src/commonMain/kotlin/org/viptv/app/features/home/TvHomeShelf.kt": "9289ad877d324bae2fbc41b588b398721f5a41701e74955e61c13688b17a016f",
+      "composeApp/src/commonMain/kotlin/org/viptv/app/features/home/TvCatalogCard.kt": "0caf6d6e0183b9529d896c1f510a28748d5406535efad0ca95994df97ae8d997",
+      "composeApp/src/commonMain/kotlin/org/viptv/app/features/home/SoftArtwork.kt": "d9cc39762b3a59f5697c6c9060ded34b5f6a73a949edad7462da556d32f11b09",
+      "composeApp/src/commonMain/kotlin/org/viptv/app/components/TvMediaMetadata.kt": "327ec32fad6038fcc13582fcc9e175f721a0340f8de4a76a77975eb2a4d3e4a0",
+      "composeApp/src/commonMain/kotlin/org/viptv/app/components/MediaPresentation.kt": "bd4901f6c949e6c39e8ec94697b9c94c59996cf01f492a649311d08835855c9a",
+      "composeApp/src/commonMain/kotlin/org/viptv/app/theme/Theme.kt": "7d268b64208d36ad18005b70598f22ecc4e31192287391424799593df832cafb",
+      "composeApp/src/commonMain/kotlin/org/viptv/app/theme/ThemeTypography.kt": "1e81bb96aa139912ea1e9e1e8a272ffd99376410fabc7ac8fa5459ac9a563436"
+    },
+    "scope": "Actual reference renders inspected; Roku comparison and motion remain separate",
+    "evidence": "artifacts/kmp-home-focus-reference-20261024/reference-record.json",
+    "record_sha256": "0a508d7b198174e93863708aaf077babf75521a84151134e392bffdc7a44c9d2",
+    "states": [
+      "hero",
+      "landscape",
+      "poster"
+    ],
+    "resolutions": [
+      [
+        1920,
+        1080
+      ],
+      [
+        1280,
+        720
+      ]
+    ],
+    "source_drift": [],
+    "full_input_record": "artifacts/kmp-home-focus-reference-20261024/reference-record-r2.json",
+    "full_input_record_sha256": "883b01b4e5653956d137d8d07bda39a8db24ee6d707c7ba6bc785c13b110c224",
+    "full_input_files": 544
+  }
+}

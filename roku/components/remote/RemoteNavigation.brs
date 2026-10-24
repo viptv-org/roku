@@ -1,4 +1,5 @@
 sub init()
+    m.top.focusable = true
     m.items = m.top.findNode("items")
     m.top.observeField("focusedChild","paint")
 end sub
@@ -37,7 +38,15 @@ sub render()
         underline.height = 3
         underline.color = "#F4F2EE"
         if RText(item.icon) <> ""
-            icon = group.createChild("Poster")
+            iconParent = group
+            if item.id = "menu"
+                iconParent = group.createChild("MaskGroup")
+                iconParent.maskUri = "pkg:/images/design/circle.png"
+                iconParent.maskSize = [56,56]
+                ring.uri = "pkg:/images/design/circle.png"
+                ground.uri = "pkg:/images/design/circle.png"
+            end if
+            icon = iconParent.createChild("Poster")
             icon.uri = "pkg:/images/lucide/"+item.icon+"-primary.png"
             icon.width = 30
             icon.height = 30
@@ -75,7 +84,10 @@ sub paint()
         focused = m.top.isInFocusChain() and m.top.cursor = i
         group.getChild(0).visible = focused
         group.getChild(1).visible = focused
-        group.getChild(3).visible = m.top.destinations[i].id = m.top.active
+        selected = m.top.destinations[i].id = m.top.active
+        group.getChild(3).visible = selected
+        group.getChild(2).font.uri = "pkg:/fonts/remote_onest_500.ttf"
+        if selected then group.getChild(2).font.uri = "pkg:/fonts/remote_onest_700.ttf"
     end for
 end sub
 
