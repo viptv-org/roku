@@ -43,6 +43,17 @@ sub runChecks()
     rReset("home")
     rHome({scope:{account_id:"2",profile_id:"7",revision:1},revision:1,hero:card,featured:[],rows:[{id:"server-row",title:"From your server",state:"Ready",view:{card_shape:"landscape"},cards:[card,second],next_cursor:invalid}],complete:true})
     rCheck(m.shelves.content.getChild(0).getChild(0).wire.identity.id = "opaque-17","server row order")
+    rReset("detail")
+    episode = ParseJson(FormatJson(card))
+    episode.identity.episode = {order:"aired",season:1,episode:1}
+    episode.view.preview = {background:invalid,caption:invalid,progress:invalid,action:"play"}
+    m.detailData = {item:card,episodes:[episode],recommendations:[],next_cursor:invalid,seasons:[]}
+    m.shelves.visible = true
+    m.shelves.translation = [96,888]
+    rShelfFocused({getData:function() : return [0,0] : end function})
+    rCheck(m.top.findNode("homeSlide").keyValue[1][1] = 691,"episode focus scrolls the full episode card into view")
+    rDetailScroll(false)
+    rCheck(m.top.findNode("homeSlide").keyValue[1][1] = 888,"returning detail focus restores the hero position")
     rCheck(m.heroTitle.text = card.title,"hero title")
     rCheck(m.actions.content.getChildCount() = 3,"home actions")
     rCheck(m.navigation.destinations[1].id = "home","top navigation")

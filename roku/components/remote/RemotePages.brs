@@ -449,6 +449,19 @@ sub rCarousel(now as double)
     end for
 end sub
 
+sub rDetailScroll(episodeFocus as boolean)
+    if m.route <> "detail" or not m.shelves.visible then return
+    top = 888
+    if episodeFocus then top = 691
+    motion = m.top.findNode("homeMotion")
+    slide = m.top.findNode("homeSlide")
+    if not REqual(slide.keyValue[1],[96,top]) or (motion.state <> "running" and not REqual(m.shelves.translation,[96,top]))
+        motion.control = "stop"
+        slide.keyValue = [m.shelves.translation,[96,top]]
+        motion.control = "start"
+    end if
+end sub
+
 sub rHomeScroll(browse as boolean)
     m.navigation.focusable = not browse
     navOpacity = 1
@@ -598,6 +611,9 @@ sub rShelfFocused(event = invalid as dynamic)
     row = m.shelves.content.getChild(index[0])
     if row = invalid then return
     item = row.getChild(index[1])
+    if m.route = "detail"
+        rDetailScroll(index[0] = 0)
+    end if
     if m.route = "home" and item <> invalid
         m.homeFocus = rHomeSelection(index)
         if not m.homeBrowsing then return
@@ -1054,6 +1070,7 @@ sub rPageResponse(tag as string, data as dynamic, request as object)
         if RArray(data.episodes).count() > 0
             row = root.createChild("ContentNode")
             row.title = "Episodes"
+            row.addFields({homeTitleHeight:0})
             items = rContent(data.episodes,448,389,252)
             for each node in items.getChildren(-1,0)
                 node.uiRole = "episode"
@@ -1087,7 +1104,11 @@ sub rPageResponse(tag as string, data as dynamic, request as object)
         m.shelves.rowItemSpacing = rowSpacing
         m.shelves.itemSize = [1728,456]
         m.shelves.translation = [96,836]
-        if RArray(data.episodes).count() > 0 then m.shelves.translation = [96,888]
+        if RArray(data.episodes).count() > 0
+            m.shelves.translation = [96,888]
+            m.shelves.itemSize = [1728,389]
+            m.shelves.rowLabelOffset = [[0,0]]
+        end if
         m.shelves.content = root
         if RGet(request.context,"append",false) and position.count() = 2 then m.shelves.jumpToRowItem = position
         m.shelves.visible = root.getChildCount() > 0

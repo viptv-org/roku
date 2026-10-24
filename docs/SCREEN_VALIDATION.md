@@ -21,7 +21,7 @@ executed in a disposable simulator fixture. It does not establish device behavio
 | Home | Current preview action/background authority; canonical refresh/return focus and retained native rows; six KMP reference/simulator states; TCL hero/landscape/poster captures and Up/Down/Back path; native row-state fixture covering Pending skeletons, hidden Empty, Failed retry ownership and Ready focus | Producer caption/metadata/art roles; native typography/crop/motion differences; sustained scrolling, texture limits, physical720p and measured animation/input budget |
 | Movies/Series/Anime | Current discovery contracts and stale-query regression; grid/control corrections; instrumented native poster-grid FPS/RAM samples | Focused-caption clipping corrected in the tested1080p Browse states; Library/720p/rapid-transition parity remains open. Full-page choice filters now rendered against the same KMP fixture and on TCL; inline text editor and disabled-choice focus now implemented/tested; catalog facet, long/empty/error/pagination states remain |
 | Search | Scoped debouncing/stale-result handlers; current server paging; TCL short reverse/forward channel focus without idle oscillation | Same-content reference capture, boundary navigation and return focus on device |
-| Details/episodes | Server viewing-action identity/resume authority; corrected movie logo/metadata/recommendation geometry | Expanded episode/season focus layout, series comparison, progress/resume native render, right-edge shelf clipping |
+| Details/episodes | Server viewing-action identity/resume authority; corrected movie logo/metadata/recommendation geometry; native episode-focus scroll exposes full captions without overlapping actions | Producer-provided cast/detail chips, series matched capture after server projection, progress/resume native render, season focus/return paths |
 | Source drawer | Shared ordered presentation/ranking; current single-add-on discovery on TCL; native119x28 Best match badge and matching measured ink bounds;14px row corners | Dynamic text metrics/horizontal placement, multiline rows, filter/header states, multi-provider progressive discovery |
 | Live guide | Current-program/window authority; direct Live action/ranking and stale-intent regressions; cached-guide hydration; current descriptor paging and TCL short reverse/forward focus | Native time/grid navigation, paging boundaries, actual Live decoding and recovery |
 | Library | Server defaults verified over isolated HTTPS; native sheet choice/keyboard input; bounded reverse/forward paging and explicit retry on TCL fixture; error text above artwork; hydration/revision/return-state handlers | Real-network/native hydration and return-state combinations, empty states, dynamic typography, sustained scrolling/texture memory and latency |
@@ -2538,3 +2538,16 @@ passed. Native fixture evidence:
 `artifacts/calendar-state-build/`; SHA256 values are in that directory. This
 closes the tested failure/empty states, not producer day-label presentation,
 native return navigation, or full Calendar parity.
+
+## Details episode-focus follow-up
+
+Episode focus now drives the existing detail shelf translation: the hero state
+starts at y888 and episode focus moves the shelf to y691 so the full 448×389
+card and captions fit without covering the action row. The top state render is
+`artifacts/matched-series-scroll.png`; the native TCL fixture logged the start
+and target translations and passed with no runtime error after the marker
+(`artifacts/tcl-current-20261023/detail-scroll-check/result.json`). Normal public
+package was restored from `artifacts/calendar-state-build/`. Producer-supplied
+chips/cast and exact full-screen series parity remain unavailable until the
+current response projects those fields; this correction closes the native
+caption-clipping/overlap defect only.
