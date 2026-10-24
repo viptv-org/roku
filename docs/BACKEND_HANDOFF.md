@@ -322,3 +322,16 @@ Reference/renderer comparison is recorded separately in SCREEN_VALIDATION.md.
 History presentation/paging is still unresolved; the Home preview does not alter
 the HistoryEntry envelope. Existing form-eligibility, mutation-receipt and
 server-display/continuation dependencies remain open.
+
+## Current producer integration checkpoint (2026-10-24)
+
+Clean backend commit `0d8da118e2282c1d7cefa4bc590004bf6a97c211` compiled in an
+isolated Roku artifact snapshot and passed the production Roku HTTP adapter over
+peer/hostname-verified HTTPS. Verified surfaces include bootstrap navigation,
+Home preview projection, ordered metadata/badge arrays, Library default_query,
+add-on activation, viewing-action, source discovery/ranking/display fields,
+credential refresh and logout. Evidence: `artifacts/backend-integration-0d8-current/`.
+The current backend working tree also contains a gateway change that references
+untracked `server/src/gateway/media_lab_acceptance.rs` and does not compile when
+included. Roku excluded that dirty gateway module from the integration snapshot
+and did not edit backend sources. Shared QA/production runtime state is unchanged.

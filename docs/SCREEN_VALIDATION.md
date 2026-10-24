@@ -45,9 +45,16 @@ executed in a disposable simulator fixture. It does not establish device behavio
 - Latest password candidate: `artifacts/password-form-build-r4/packages/`.
   Normal ZIP SHA256 `51ac8f1810b53f1363289ec0785eaa9a48924ec892f868caa625e159d2ec8206`;
   public ZIP SHA256 `f670deafacb2c9375ff9f1f06b0726ab612fb6ba1cbfa89afdd908ff3e36f821`.
-- Backend integration snapshot under `artifacts/backend-current-20261023/`
-  predates the new metadata/source/resume projection fields. Refresh integration
-  against `BACKEND_CONTRACT_REF.json` before claiming those fields qualified.
+- Current clean producer commit `0d8da118e2282c1d7cefa4bc590004bf6a97c211` was
+  compiled in isolation and passed the production Roku HTTP adapter over verified
+  HTTPS: login/profile/bootstrap, navigation, Home preview fields, ordered
+  metadata/badge arrays, Library defaults, preferences/history, add-on activation,
+  viewing-action, source discovery/ranking/display fields, discovery cleanup,
+  credential refresh and logout. Evidence:
+  `artifacts/backend-integration-0d8-current/`. The dirty backend gateway module
+  was excluded because it references missing `media_lab_acceptance.rs`; that
+  backend worktree issue is recorded, not silently included. This is isolated
+  integration evidence, not shared-QA deployment or physical decoder proof.
 
 No app-wide60fps, p95<100ms focus, memory-ceiling, complete1080/720 parity, or real-media
 playback claim is supported yet. ECP acknowledgements are not visible-frame
