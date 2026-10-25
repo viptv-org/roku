@@ -144,13 +144,13 @@ sub render()
         m.detail.wrap = true
         m.detail.maxLines = 2
         m.detail.height = 62
-        ' Provider text carries emoji and non-Latin scripts the bundled fonts do
-        ' not cover; the system font renders them instead of tofu boxes.
-        if RWideText(c.title) then m.label.font.uri = "font:SmallestSystemFont"
-        if RWideText(c.description) then m.detail.font.uri = "font:SmallestSystemFont"
+        ' Provider names carry emoji and CJK the panel cannot draw; strip them
+        ' instead of painting tofu, then keep the row readable.
+        m.label.text = RRenderable(c.title)
+        m.detail.text = RRenderable(c.description)
         ' A source with no release text keeps its title vertically centred
         ' instead of leaving a hole under it.
-        if RText(c.description) = ""
+        if RText(m.detail.text) = ""
             m.label.translation = [164,int((h-34)/2)]
         end if
         m.detail.width = w-192
@@ -444,13 +444,6 @@ function ROwnerFocused() as boolean
         if node = invalid then return false
         if node.hasField("focusable") and node.focusable = true then return node.isInFocusChain()
         node = node.getParent()
-    end for
-    return false
-end function
-
-function RWideText(value as string) as boolean
-    for i = 1 to len(value)
-        if asc(mid(value,i,1)) > 127 then return true
     end for
     return false
 end function

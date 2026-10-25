@@ -212,6 +212,50 @@ end function
 ' Ambient artwork for the hero stage. The URI is the server's own image
 ' descriptor, so the blur is a documented transform of that URL rather than a
 ' client-built proxy or a provider-host decision.
+' This display family ships no font with emoji or CJK coverage: every one of
+' them draws tofu, and the Smallest/Largest system font URIs do not exist here at
+' all. Rather than paint boxes, drop code points the panel cannot draw and keep
+' the readable part of a provider's free-text name.
+function RRenderable(value as string) as string
+    out = ""
+    i = 1
+    n = len(value)
+    while i <= n
+        b = asc(mid(value,i,1))
+        if b < 128
+            out += chr(b)
+            i++
+        else
+            size = 0
+            if b >= 194 and b <= 223 then size = 2
+            if b >= 224 and b <= 239 then size = 3
+            if b >= 240 and b <= 244 then size = 4
+            if size = 0
+                i++
+            else
+                seq = mid(value,i,size)
+                ' U+2605 BLACK STAR is the one symbol the bundled font does carry.
+                if size = 3 and asc(mid(seq,1,1)) = 226 and asc(mid(seq,2,1)) = 152 and asc(mid(seq,3,1)) = 133
+                    out += chr(42)
+                end if
+                i += size
+            end if
+        end if
+    end while
+    ' Removed glyphs leave doubled spaces and dangling separators behind.
+    while instr(1,out,"  ") > 0
+        out = out.replace("  "," ")
+    end while
+    out = out.trim()
+    while left(out,2) = "· " or left(out,2) = "/ "
+        out = mid(out,3).trim()
+    end while
+    while right(out,2) = " ·" or right(out,2) = " /"
+        out = left(out,len(out)-2).trim()
+    end while
+    return out
+end function
+
 function RSoftArt(uri as string) as string
     if uri = "" then return ""
     if left(uri,23) <> "https://wsrv.nl/?" then return ""

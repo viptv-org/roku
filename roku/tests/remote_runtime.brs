@@ -2202,6 +2202,7 @@ sub runChecks()
     m.playback = invalid
     qaBidirectionalPaging(producer)
     qaHomePreviewChecks(producer,contracts)
+    qaRenderable()
     print "REMOTE_ROKU_RUNTIME_OK"
 end sub
 
@@ -2502,3 +2503,18 @@ end sub
 function qaHomeEventData() as dynamic
     return m.value
 end function
+
+' The panel has no emoji or CJK font coverage, so provider text must be reduced
+' to code points it can actually draw.
+sub qaRenderable()
+    rCheck(RRenderable("1080p 🔥 WEB-DL") = "1080p WEB-DL","emoji is dropped from provider text")
+    rCheck(RRenderable("한글 Mobland 1080p") = "Mobland 1080p","CJK is dropped from provider text")
+    t = RRenderable("Movie ★ 8.1 한글 🔥")
+    asciiOnly = true
+    for i = 1 to len(t)
+        if asc(mid(t,i,1)) > 127 then asciiOnly = false
+    end for
+    rCheck(asciiOnly and left(t,5) = "Movie","renderable text is pure ASCII")
+    rCheck(RRenderable("Plain WEB-DL x265") = "Plain WEB-DL x265","ASCII provider text is untouched")
+    rCheck(RRenderable("🔥") = "","text with nothing drawable becomes empty")
+end sub
