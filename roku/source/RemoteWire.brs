@@ -209,6 +209,16 @@ function RGateway(value as dynamic) as boolean
     return d.position >= 0
 end function
 
+' Ambient artwork for the hero stage. The URI is the server's own image
+' descriptor, so the blur is a documented transform of that URL rather than a
+' client-built proxy or a provider-host decision.
+function RSoftArt(uri as string) as string
+    if uri = "" then return ""
+    if left(uri,23) <> "https://wsrv.nl/?" then return ""
+    if instr(1,uri,"blur=") > 0 then return uri
+    return uri+"&blur=24"
+end function
+
 function ROrigin(value as dynamic) as string
     value = RText(value).trim()
     if right(value,1) = "/" then value = left(value,len(value)-1)

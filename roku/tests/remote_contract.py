@@ -43,7 +43,12 @@ assert all('roku/'+name in pinned for name in shipped if name.startswith('images
 print('REMOTE_RUNTIME_BOUNDARY_OK')
 
 for node in ET.parse(root/"components/remote/RemoteScene.xml").iter("MarkupList"):
-    assert node.attrib.get("vertFocusAnimationStyle") == "floatingFocus", "Native default wraps and reorders short lists"
+    if node.attrib.get("id") == "drawerRows":
+        # The drawer's source/episode list is a vertical carousel: the focused
+        # row stays in the first slot and the list scrolls under it.
+        assert node.attrib.get("vertFocusAnimationStyle") == "fixedFocus"
+    else:
+        assert node.attrib.get("vertFocusAnimationStyle") == "floatingFocus", "Native default wraps and reorders short lists"
 
 producer_ref=json.loads((root.parent/'docs/PRODUCER_FIXTURE_REF.json').read_text())
 assert hashlib.sha256((root/'tests/fixtures/producer-viewing-v3.json').read_bytes()).hexdigest()==producer_ref['sha256'], 'Producer fixture drift requires explicit adoption'

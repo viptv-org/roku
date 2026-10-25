@@ -4,6 +4,9 @@
   <field id="content" type="node" onChange="render" />
   <field id="itemFocused" type="integer" value="0" onChange="paint" />
   <field id="itemSelected" type="integer" alwaysNotify="true" />
+  <field id="align" type="string" value="left" onChange="render" />
+  <field id="containerWidth" type="float" value="0" onChange="render" />
+  <field id="scroll" type="boolean" value="false" onChange="render" />
  </interface>
  <script type="text/brightscript" uri="pkg:/source/RemoteWire.brs" />
  <script type="text/brightscript" uri="pkg:/components/remote/RemoteActionBar.brs" />

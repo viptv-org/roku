@@ -33,7 +33,7 @@
   <RemoteLibraryHeader id="libraryHeader" translation="[96,140]" visible="false" />
   <MarkupGrid id="filters" translation="[96,260]" itemComponentName="RemoteItem" itemSize="[260,64]" itemSpacing="[16,0]" numColumns="6" numRows="1" drawFocusFeedback="false" visible="false" />
   <Group id="shelfClip" clippingRect="[80,0,1760,1080]">
-   <RowList id="shelves" rowTitleComponentName="RemoteShelfTitle" translation="[96,770]" itemComponentName="RemoteItem" itemSize="[1728,304]" rowItemSize="[[320,252]]" rowItemSpacing="[[24,0]]" showRowLabel="[true]" rowLabelOffset="[[0,16]]" numRows="3" rowFocusAnimationStyle="floatingFocus" vertFocusAnimationStyle="fixedFocus" drawFocusFeedback="false" visible="false"><Font role="rowLabelFont" uri="pkg:/fonts/remote_onest_600.ttf" size="30" /></RowList>
+   <RowList id="shelves" rowTitleComponentName="RemoteShelfTitle" translation="[96,770]" itemComponentName="RemoteItem" itemSize="[1728,304]" rowItemSize="[[320,252]]" rowItemSpacing="[[24,0]]" showRowLabel="[true]" rowLabelOffset="[[0,16]]" numRows="3" rowFocusAnimationStyle="fixedFocus" vertFocusAnimationStyle="fixedFocus" drawFocusFeedback="false" visible="false"><Font role="rowLabelFont" uri="pkg:/fonts/remote_onest_600.ttf" size="30" /></RowList>
   </Group>
   <Group id="catalogClip" clippingRect="[80,0,1760,1080]">
   <MarkupGrid vertFocusAnimationStyle="floatingFocus" id="grid" translation="[96,360]" itemComponentName="RemoteItem" itemSize="[232,410]" itemSpacing="[16,36]" numColumns="7" numRows="2" drawFocusFeedback="false" visible="false" />
@@ -108,10 +108,12 @@
    <Group id="drawerPanel" translation="[960,0]">
     <Rectangle id="drawerGround" width="960" height="1080" color="#161618" />
     <Poster id="menuGround" width="117" height="160" uri="pkg:/images/design/remote-profile-menu.png" blendColor="#161618" visible="false" />
+    <Rectangle id="menuPanel" width="340" height="240" color="#1B1B1D" visible="false" />
     <Label id="drawerTitle" translation="[64,72]" width="800" height="64" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="40" /></Label>
     <Label id="drawerSubtitle" translation="[64,148]" width="800" height="72" wrap="true" maxLines="2" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="24" /></Label>
     <RemoteActionBar id="sourceFilters" translation="[64,202]" visible="false" />
-    <MarkupList vertFocusAnimationStyle="floatingFocus" id="drawerRows" translation="[64,250]" itemComponentName="RemoteItem" itemSize="[800,104]" itemSpacing="[0,10]" numRows="6" drawFocusFeedback="false" />
+    <RemoteActionBar id="providerFilters" translation="[64,266]" visible="false" />
+    <MarkupList vertFocusAnimationStyle="fixedFocus" id="drawerRows" translation="[64,250]" itemComponentName="RemoteItem" itemSize="[800,104]" itemSpacing="[0,10]" numRows="6" drawFocusFeedback="false" />
     <Label id="drawerMessage" translation="[64,940]" width="800" height="88" wrap="true" maxLines="2" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="22" /></Label>
    </Group>
   </Group>

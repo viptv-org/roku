@@ -58,7 +58,9 @@ sub rSettingsSection(section as string)
         m.skeleton.visible = false
         m.message.text = "VIPTV for Roku · Server-connected viewing"+chr(10)+m.config.base
     end if
-    rFocusContent()
+    ' The sidebar owns focus on entry. Content is reached with Right so a
+    ' section change never issues two competing setFocus calls.
+    m.settingsNav.setFocus(true)
 end sub
 
 sub rSettingsResponse(tag as string, data as dynamic, request as object)

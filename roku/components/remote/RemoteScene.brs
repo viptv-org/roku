@@ -63,8 +63,14 @@ sub init()
     m.formDialog.observeField("submitted","rFormSubmit")
     m.formDialog.observeField("cancelled","rTextCancel")
     m.formDialog.observeField("editRequested","rFormEdit")
+    m.sourceQuality = invalid
+    m.sourceProvider = ""
+    m.sourceStreams = []
+    m.sourceBest = ""
     m.sourceFilters = m.top.findNode("sourceFilters")
     m.sourceFilters.observeField("itemSelected","rSourceFilterSelected")
+    m.providerFilters = m.top.findNode("providerFilters")
+    m.providerFilters.observeField("itemSelected","rProviderFilterSelected")
     m.retryBar = m.top.findNode("retryBar")
     m.retryBar.observeField("itemSelected","rRetrySelected")
     m.catalogLayoutTick = m.top.findNode("catalogLayoutTick")
@@ -148,14 +154,19 @@ sub init()
     rSend("CONFIG_LOAD","",invalid,"auth:config")
 end sub
 
-function rContent(values as object, width as integer, height as integer, imageHeight = 0 as integer, role = "landscape" as string) as object
+function rContent(values as object, width as integer, height as integer, imageHeight = 0 as integer, role = "landscape" as string, describe = "metadata" as string) as object
     root = CreateObject("roSGNode","ContentNode")
     for each value in values
         node = root.createChild("ContentNode")
-        node.addFields({wire:value,uiWidth:width,uiHeight:height,imageHeight:imageHeight,progressFraction:0.0,showLabels:true,uiRole:role,focusedCaptions:role = "poster" and not RObject(RGet(value,"profile"))})
+        node.addFields({wire:value,uiWidth:width,uiHeight:height,imageHeight:imageHeight,progressFraction:0.0,showLabels:true,uiRole:role,uiButton:RGet(value,"button",false),focusedCaptions:role = "poster" and not RObject(RGet(value,"profile"))})
         node.title = RText(RGet(value,"title"),RText(RGet(value,"name")))
         node.description = RText(RGet(value,"subtitle"),RText(RGet(value,"detail")))
-        if RCard(value) and role <> "episode" then node.description = RArray(RGet(RGet(value,"view",{}),"compact_metadata_parts")).join(" · ")
+        if RCard(value) and role <> "episode"
+            node.description = RArray(RGet(RGet(value,"view",{}),"compact_metadata_parts")).join(" · ")
+            ' Continue Watching describes the episode in progress; its own compact
+            ' metadata only repeated the release year.
+            if describe = "subtitle" and RText(value.subtitle) <> "" then node.description = value.subtitle
+        end if
         uri = RText(RGet(value,role))
         if left(uri,5) = "/api/" then uri = m.config.base+uri
         node.HDPosterUrl = uri
@@ -175,6 +186,9 @@ sub rReset(route as string)
     m.heroTick.control = "stop"
     m.top.findNode("homeMotion").control = "stop"
     m.top.findNode("homeNavMotion").control = "stop"
+    ' Animations are stopped, not completed: drop the shelf back to its resting
+    ' offset so the next Home paints the same layout its state describes.
+    m.shelves.translation = [96,824]
     m.navigation.opacity = 1
     m.navigation.focusable = true
     m.top.findNode("homePoster").visible = false
@@ -407,8 +421,19 @@ sub rRetrySelected()
     rRun({action:"retry"})
 end sub
 
-sub rShowActions(values as object)
+sub rShowActions(values as object, centered = false as boolean, containerWidth = 0 as integer)
+    ' Anything rendered in an action bar is a button, so RemoteItem centres its
+    ' icon and label instead of padding them against one edge.
+    for each value in values
+        value.button = true
+    end for
     m.actions.content = rContent(values,250,72)
+    m.actions.align = "left"
+    m.actions.containerWidth = 0
+    if centered
+        m.actions.align = "center"
+        m.actions.containerWidth = containerWidth
+    end if
     m.actions.visible = values.count() > 0
 end sub
 
@@ -442,7 +467,8 @@ sub rOpenDrawer(title as string, values as object, kind as string)
     m.drawerPanel.opacity = 1
     m.top.findNode("drawerScrim").visible = kind <> "menu"
     m.top.findNode("drawerGround").visible = kind <> "menu"
-    m.top.findNode("menuGround").visible = kind = "menu"
+    m.top.findNode("menuGround").visible = false
+    m.top.findNode("menuPanel").visible = (kind = "menu")
     m.drawerTitle.visible = kind <> "menu"
     m.drawerSubtitle.visible = kind <> "menu"
     m.drawerMessage.visible = kind <> "menu"
@@ -455,6 +481,7 @@ sub rOpenDrawer(title as string, values as object, kind as string)
     m.drawerRows.numRows = 6
     m.drawerRows.content = rContent(values,800,104)
     m.sourceFilters.visible = false
+    m.providerFilters.visible = false
     m.drawerRows.translation = [64,250]
     m.drawer.visible = true
     m.drawerRows.setFocus(true)
@@ -462,13 +489,16 @@ sub rOpenDrawer(title as string, values as object, kind as string)
         for each value in values
             value.menu = true
         end for
-        m.drawerMotion.control = "stop"
-        m.drawerPanel.translation = [1768,94]
-        m.drawerRows.translation = [0,8]
-        m.drawerRows.itemSize = [117,48]
+        ' The profile menu is a real menu, not a two-line tooltip.
+        panel = m.top.findNode("menuPanel")
+        panel.width = 340
+        panel.height = values.count()*72+32
+        m.drawerPanel.translation = [1540,96]
+        m.drawerRows.translation = [16,16]
+        m.drawerRows.itemSize = [308,72]
         m.drawerRows.itemSpacing = [0,0]
         m.drawerRows.numRows = values.count()
-        m.drawerRows.content = rContent(values,117,48)
+        m.drawerRows.content = rContent(values,308,72)
         m.top.findNode("menuFade").keyValue = [0,1]
         m.menuMotion.control = "start"
         return
@@ -659,16 +689,42 @@ function onKeyEvent(key as string, press as boolean) as boolean
         return true
     end if
     if m.drawer.visible
-        if key = "up" and m.drawerRows.isInFocusChain() and m.sourceFilters.visible
-            m.sourceFilters.setFocus(true)
+        if key = "up" and m.drawerRows.isInFocusChain()
+            if m.sourceFilters.visible
+                m.sourceFilters.setFocus(true)
+            else if m.providerFilters.visible
+                m.providerFilters.setFocus(true)
+            else
+                return false
+            end if
             return true
         else if key = "down" and m.sourceFilters.isInFocusChain()
+            if m.providerFilters.visible then m.providerFilters.setFocus(true) else m.drawerRows.setFocus(true)
+            return true
+        else if key = "down" and m.providerFilters.isInFocusChain()
             m.drawerRows.setFocus(true)
+            return true
+        else if key = "up" and m.providerFilters.isInFocusChain()
+            if m.sourceFilters.visible then m.sourceFilters.setFocus(true)
             return true
         end if
     end if
     if m.playback <> invalid
         return rPlayerKey(key)
+    end if
+    if m.route = "settings" and not m.drawer.visible
+        ' Settings is one page with a sidebar and a content column. Focus moves
+        ' between them explicitly so the two setFocus calls can never race into
+        ' a dead remote.
+        if key = "right" and m.settingsNav.isInFocusChain()
+            if m.rows.visible and m.rows.content <> invalid and m.rows.content.getChildCount() > 0
+                m.rows.setFocus(true)
+                return true
+            end if
+        else if key = "left" and m.rows.isInFocusChain() and m.settingsSidebar.visible
+            m.settingsNav.setFocus(true)
+            return true
+        end if
     end if
     if m.route = "live" and rLiveKey(key) then return true
     if m.route = "search" and m.retryBar.visible

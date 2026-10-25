@@ -119,6 +119,7 @@ sub rProfiles(data as object)
     m.navigation.visible = false
     m.heading.text = "Who's watching?"
     m.heading.translation = [96,220]
+    m.heading.width = 1728
     m.heading.horizAlign = "center"
     m.heading.font.size = 56
     values = []
@@ -154,8 +155,8 @@ sub rProfiles(data as object)
     actions = []
     if RGet(RGet(data.capabilities,"create",{}),"availability") = "Available" then actions.push({title:"Add profile",action:"createProfile"})
     if RGet(RGet(data.capabilities,"rename",{}),"availability") = "Available" then actions.push({title:"Manage profiles",action:"manageProfiles"})
-    rShowActions(actions)
-    m.actions.translation = [630,780]
+    rShowActions(actions, true, 1728)
+    m.actions.translation = [96,780]
     if values.count() = 0 then m.actions.setFocus(true)
 end sub
 
@@ -233,7 +234,13 @@ sub rHome(data as object, restore = invalid as dynamic)
             else if state = "Failed"
                 cards = rContent([{title:"Couldn’t load this row",subtitle:RText(RGet(row,"message"),"This row is unavailable."),action:"retry",homeRowRetry:true,width:940}],940,221,0)
             else
-                if landscape then cards = rContent(RArray(row.cards),422,314,238) else cards = rContent(RArray(row.cards),255,459,383,"poster")
+                describe = "metadata"
+                if RText(RGet(row,"id")) = "continue" then describe = "subtitle"
+                if landscape
+                    cards = rContent(RArray(row.cards),422,314,238,"landscape",describe)
+                else
+                    cards = rContent(RArray(row.cards),255,459,383,"poster",describe)
+                end if
             end if
             shelf.removeChildrenIndex(shelf.getChildCount(),0)
             shelf.appendChildren(cards.getChildren(-1,0))
@@ -302,7 +309,7 @@ sub rHome(data as object, restore = invalid as dynamic)
     end if
     if m.homeBrowsing
         m.actions.visible = false
-        rHomeScroll(true)
+        rHomeApply(true)
         if wasFocused or RObject(restore) or not RCard(m.heroCard) then m.shelves.setFocus(true)
         rShelfFocused()
     else if not wasFocused and not reuse
@@ -366,9 +373,7 @@ function rHomeTarget(selection as dynamic) as object
 end function
 
 sub rHomeEnterShelves()
-    m.homeBrowsing = true
-    m.actions.visible = false
-    rHomeScroll(true)
+    rHomeApply(true)
     m.shelves.setFocus(true)
     rShelfFocused()
 end sub
@@ -377,14 +382,23 @@ sub rHomeLeaveShelves()
     m.homeBrowsing = false
     m.pendingHomeHero = invalid
     m.heroTick.control = "stop"
-    rHomeScroll(false)
+    rHomeApply(false)
     if RCard(m.heroCard)
-        rHero(m.heroCard)
-        m.actions.visible = true
         m.actions.setFocus(true)
     else
         m.navigation.setFocus(true)
     end if
+end sub
+
+' One owner for Home's layout. The hero composition, the shelf offset and the
+' action bar always describe the same focus state, so a restored route can
+' never leave the hero painted for browsing while the shelves sit at their
+' settled position.
+sub rHomeApply(browsing as boolean)
+    m.homeBrowsing = browsing
+    m.actions.visible = not browsing and RCard(m.heroCard)
+    rHomeScroll(browsing)
+    if RCard(m.heroCard) then rHero(m.heroCard)
 end sub
 
 sub rHeroActions()
@@ -577,15 +591,23 @@ sub rHero(card as object, shape = "landscape" as string)
     rLogoReady()
     uri = RText(card.landscape)
     if m.route = "home" and m.homeBrowsing
-        uri = RText(RGet(RGet(RGet(card,"view",{}),"preview",{}),"background"))
+        preview = RGet(RGet(card,"view",{}),"preview",{})
+        uri = RText(RGet(preview,"background"))
         if shape = "poster"
-            ' The soft artwork role is a producer dependency; no local proxy policy.
-            uri = ""
             poster = RText(card.poster)
             if left(poster,5) = "/api/" then poster = m.config.base+poster
             m.top.findNode("homePosterArt").uri = poster
             m.top.findNode("homePoster").visible = poster <> ""
+            ' A poster has no landscape art, so the stage needs the soft copy.
+            uri = RText(RGet(preview,"soft"))
+            if uri = "" then uri = RSoftArt(RText(RGet(preview,"background")))
+            if uri = "" then uri = RSoftArt(poster)
         end if
+    else if uri = ""
+        ' A title with only portrait art still needs a soft hero stage.
+        poster = RText(card.poster)
+        if left(poster,5) = "/api/" then poster = m.config.base+poster
+        uri = RSoftArt(poster)
     end if
     if left(uri,5) = "/api/" then uri = m.config.base+uri
     rBackdrop(uri)
@@ -1191,11 +1213,18 @@ sub rPageResponse(tag as string, data as dynamic, request as object)
         rShowSources(RArray(data.streams),RText(data.best_match_id))
         filters = [{title:"All "+RGet(data,"total",0).toStr(),height:invalid,width:140}]
         for each filter in RArray(data.quality_filters)
-            filters.push({title:filter.label+" "+filter.count.toStr(),height:filter.height,width:140})
+            filters.push({title:RText(filter.label)+" "+RGet(filter,"count",0).toStr(),height:filter.height,width:140})
         end for
         m.sourceFilters.content = rContent(filters,140,52)
         m.sourceFilters.visible = true
-        m.drawerRows.translation = [64,278]
+        m.sourceFilters.scroll = true
+        m.sourceFilters.containerWidth = 800
+        rSourceProviders(m.sourceStreams,m.sourceBest)
+        if m.providerFilters.visible
+            m.drawerRows.translation = [64,334]
+        else
+            m.drawerRows.translation = [64,278]
+        end if
         ' Server preference authorizes best-match, and the server ranking is
         ' authoritative. Wait for discovery completion; never rank locally.
         if m.discovery <> invalid and m.discovery.done and m.playIntent.explicit <> true and m.viewingAction.source_selection = "best"
@@ -1218,6 +1247,9 @@ sub rDiscoverSources(card as object)
     m.drawerSubtitle.text = card.title
     m.drawerMessage.text = "Finding sources…"
     m.sourceQuality = invalid
+    m.sourceProvider = ""
+    m.sourceStreams = []
+    m.sourceBest = ""
     body = RMetadataFields(card)
     body.type = card.identity.kind
     body.id = card.identity.id
@@ -1242,6 +1274,8 @@ end sub
 
 sub rShowSources(sources as object, bestId = "" as string)
     if not m.drawer.visible then rOpenDrawer("Choose a source",[],"sources")
+    m.sourceStreams = sources
+    m.sourceBest = bestId
     selectedId = ""
     if m.drawerRows.content <> invalid
         focused = m.drawerRows.content.getChild(m.drawerRows.itemFocused)
@@ -1249,19 +1283,64 @@ sub rShowSources(sources as object, bestId = "" as string)
     end if
     values = []
     for each source in sources
-        view = RGet(source,"view",{})
-        values.push({title:RText(view.title),subtitle:RText(view.body),action:"source",source:source,bestMatch:bestId <> "" and source.id = bestId,ring:false})
+        if m.sourceProvider = "" or RSourceProvider(source) = m.sourceProvider
+            view = RGet(source,"view",{})
+            values.push({title:RText(view.title),subtitle:RText(view.body),action:"source",source:source,bestMatch:bestId <> "" and source.id = bestId,ring:false})
+        end if
     end for
     focus = m.drawerRows.itemFocused
     for i = 0 to values.count()-1
         if values[i].source.id = selectedId then focus = i
     end for
-    m.drawerRows.itemSize = [800,108]
-    m.drawerRows.content = rContent(values,800,108)
+    ' Source titles are free text from the provider. Two lines keep a long
+    ' release name readable instead of truncating it to an ellipsis.
+    m.drawerRows.itemSize = [800,132]
+    m.drawerRows.content = rContent(values,800,132)
     if focus >= 0 and focus < values.count() then m.drawerRows.jumpToItem = focus
     m.drawerMessage.text = ""
     if m.discovery <> invalid and not m.discovery.done then m.drawerMessage.text = "Finding more sources…"
     if values.count() = 0 then m.drawerMessage.text = "No sources are available."
+end sub
+
+function RSourceProvider(source as object) as string
+    view = RGet(source,"view",{})
+    label = RText(RGet(view,"addon_label"))
+    if label = "" then label = RText(RGet(view,"provider_label"))
+    return label
+end function
+
+sub rSourceProviders(sources as object, bestId as string)
+    ' Provider facets come from the labels the server already attached to each
+    ' ranked source. Selecting one narrows the visible rows; ranking itself
+    ' stays server-owned.
+    labels = []
+    counts = {}
+    for each source in RArray(sources)
+        label = RSourceProvider(source)
+        if label <> ""
+            if not counts.doesExist(label)
+                labels.push(label)
+                counts[label] = 0
+            end if
+            counts[label] = counts[label]+1
+        end if
+    end for
+    m.providerFilters.visible = labels.count() > 1
+    if not m.providerFilters.visible then return
+    values = [{title:"All sources",value:"",width:200}]
+    for each label in labels
+        values.push({title:label+" "+counts[label].toStr(),value:label,width:200})
+    end for
+    m.providerFilters.content = rContent(values,200,52)
+    m.providerFilters.scroll = true
+    m.providerFilters.containerWidth = 800
+end sub
+
+sub rProviderFilterSelected()
+    node = m.providerFilters.content.getChild(m.providerFilters.itemSelected)
+    if node = invalid then return
+    m.sourceProvider = RText(node.wire.value)
+    rShowSources(m.sourceStreams,m.sourceBest)
 end sub
 
 sub rSourceFilterSelected()

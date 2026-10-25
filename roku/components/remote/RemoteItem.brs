@@ -16,6 +16,8 @@ sub render()
         m[id].visible = false
     end for
     m.label.height = 38
+    m.label.maxLines = 1
+    m.label.wrap = false
     m.detail.height = 32
     m.tileBadgeGround.uri = "pkg:/images/design/remote-tile-badge.9.png"
     m.tileBadgeGround.translation = [10,10]
@@ -109,6 +111,10 @@ sub render()
         m.ring.translation = [0,0]
         m.ring.width = w
         m.ring.height = imageHeight
+        if RObject(c.wire.profile)
+            m.label.horizAlign = "center"
+            m.detail.horizAlign = "center"
+        end if
     else
         m.label.translation = [24,12]
         m.detail.translation = [24,50]
@@ -121,6 +127,7 @@ sub render()
             m.label.translation = [64,int((h-38)/2)]
             m.label.width = w-80
         end if
+        if RGet(c,"uiButton",false) then centerButton(w,h,c)
     end if
     if RObject(c.wire.source)
         m.ground.uri = "pkg:/images/design/remote-source-row.9.png"
@@ -129,10 +136,18 @@ sub render()
         m.quality.text = RText(presentation.quality_label)
         m.format.visible = true
         m.format.text = RText(presentation.format_label)
-        m.label.translation = [164,20]
+        m.label.translation = [164,18]
         m.label.width = w-192
         m.label.font.size = 28
-        m.detail.translation = [164,60]
+        ' Release names are free text; wrap the detail instead of clipping it.
+        m.detail.translation = [164,56]
+        m.detail.wrap = true
+        m.detail.maxLines = 2
+        m.detail.height = 62
+        ' Provider text carries emoji and non-Latin scripts the bundled fonts do
+        ' not cover; the system font renders them instead of tofu boxes.
+        if RWideText(c.title) then m.label.font.uri = "font:SmallestSystemFont"
+        if RWideText(c.description) then m.detail.font.uri = "font:SmallestSystemFont"
         m.detail.width = w-192
         m.detail.font.size = 22
         m.quality.translation = [28,int((h-36)/2)]
@@ -150,8 +165,6 @@ sub render()
         if addon <> "" then columnRight -= addonWidth+20
         m.label.width = columnRight-164
         m.detail.width = columnRight-164
-        m.label.height = 34
-        m.detail.translation = [164,60]
         m.detail.height = 28
         if RGet(c.wire,"bestMatch",false)
             badgeWidth = m.sourceBest.width+20
@@ -309,10 +322,10 @@ sub render()
     if RGet(c.wire,"menu",false)
         m.ground.uri = "pkg:/images/design/remote-white.png"
         m.label.font.uri = "pkg:/fonts/remote_onest_500.ttf"
-        m.label.font.size = 14
-        m.label.translation = [12,14]
-        m.label.height = 20
-        m.label.width = w-24
+        m.label.font.size = 24
+        m.label.translation = [24,20]
+        m.label.height = 32
+        m.label.width = w-48
         m.detail.visible = false
     end if
     if RGet(c.wire,"homeRowRetry",false)
@@ -416,9 +429,62 @@ sub render()
     focusChanged()
 end sub
 
+' Buttons centre their icon+label as one unit. Fixed padding left the text
+' hard against one edge, which is what made action rows look unfinished.
+' True when the nearest focusable ancestor (the list, grid or action bar that
+' owns this item) is in the focus chain.
+function ROwnerFocused() as boolean
+    node = m.top.getParent()
+    for i = 0 to 6
+        if node = invalid then return false
+        if node.hasField("focusable") and node.focusable = true then return node.isInFocusChain()
+        node = node.getParent()
+    end for
+    return false
+end function
+
+function RWideText(value as string) as boolean
+    for i = 1 to len(value)
+        if asc(mid(value,i,1)) > 127 then return true
+    end for
+    return false
+end function
+
+sub centerButton(w as integer, h as integer, c as object)
+    m.label.horizAlign = "left"
+    textW = 0
+    if RText(c.title) <> ""
+        measure = CreateObject("roSGNode","Label")
+        measure.font = m.label.font
+        measure.text = c.title
+        measure.width = 0
+        textW = int(measure.boundingRect().width)
+    end if
+    gap = 10
+    iconW = 0
+    if m.icon.visible
+        iconW = 24
+        m.icon.width = 24
+        m.icon.height = 24
+    end if
+    total = iconW+textW
+    if iconW > 0 and textW > 0 then total += gap
+    start = int((w-total)/2)
+    if start < 12 then start = 12
+    if iconW > 0
+        m.icon.translation = [start,int((h-24)/2)]
+        start += iconW+gap
+    end if
+    m.label.translation = [start,int((h-38)/2)]
+    m.label.width = textW+4
+end sub
+
 sub focusChanged()
     if m.ring = invalid or m.top.itemContent = invalid then return
-    active = (m.top.listHasFocus or m.top.gridHasFocus or m.top.rowListHasFocus) and m.top.focusPercent > 0.5 and m.top.rowFocusPercent > 0.5
+    ' focusPercent is the field every Roku list node drives, but a list that has
+    ' never held focus still reports 1 for its current item. Requiring the owning
+    ' focusable node to be in the focus chain removes those phantom rings.
+    active = m.top.focusPercent > 0.5 and m.top.rowFocusPercent > 0.5 and ROwnerFocused()
     if m.top.itemContent.focusedCaptions
         m.label.visible = m.top.itemContent.showLabels and active
         m.detail.visible = m.top.itemContent.showLabels and active
