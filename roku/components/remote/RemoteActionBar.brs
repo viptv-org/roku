@@ -2,6 +2,7 @@ sub init()
     m.top.focusable = true
     m.barWidth = 0
     m.items = m.top.findNode("items")
+    m.viewport = m.top.findNode("viewport")
     m.top.observeField("focusedChild","paint")
 end sub
 sub render()
@@ -45,7 +46,13 @@ sub paint()
         ' focusPercent is the single source of truth for RemoteItem focus.
         if barFocused and i = m.top.itemFocused then tile.focusPercent = 1 else tile.focusPercent = 0
     end for
-    if m.top.scroll and m.top.containerWidth > 0 then rWindow()
+    if m.top.scroll and m.top.containerWidth > 0
+        ' A scrolled chip row must not paint over the page behind the drawer.
+        m.viewport.clippingRect = [-8,-8,m.top.containerWidth+16,68]
+        rWindow()
+    else
+        m.viewport.clippingRect = [0,0,1920,1080]
+    end if
 end sub
 
 ' Long filter rows keep the focused chip in the first slot and move the row.

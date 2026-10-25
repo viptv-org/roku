@@ -395,6 +395,8 @@ end sub
 ' never leave the hero painted for browsing while the shelves sit at their
 ' settled position.
 sub rHomeApply(browsing as boolean)
+    ' A late Home response must never repaint a different route's layout.
+    if m.route <> "home" then return
     m.homeBrowsing = browsing
     m.actions.visible = not browsing and RCard(m.heroCard)
     rHomeScroll(browsing)
@@ -477,6 +479,7 @@ sub rDetailScroll(episodeFocus as boolean)
 end sub
 
 sub rHomeScroll(browse as boolean)
+    if m.route <> "home" then return
     m.navigation.focusable = not browse
     navOpacity = 1
     if browse then navOpacity = 0

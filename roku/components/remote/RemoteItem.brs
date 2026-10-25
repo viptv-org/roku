@@ -148,6 +148,11 @@ sub render()
         ' not cover; the system font renders them instead of tofu boxes.
         if RWideText(c.title) then m.label.font.uri = "font:SmallestSystemFont"
         if RWideText(c.description) then m.detail.font.uri = "font:SmallestSystemFont"
+        ' A source with no release text keeps its title vertically centred
+        ' instead of leaving a hole under it.
+        if RText(c.description) = ""
+            m.label.translation = [164,int((h-34)/2)]
+        end if
         m.detail.width = w-192
         m.detail.font.size = 22
         m.quality.translation = [28,int((h-36)/2)]

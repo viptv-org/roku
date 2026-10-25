@@ -10,5 +10,5 @@
  </interface>
  <script type="text/brightscript" uri="pkg:/source/RemoteWire.brs" />
  <script type="text/brightscript" uri="pkg:/components/remote/RemoteActionBar.brs" />
- <children><Group id="items" /></children>
+ <children><Group id="viewport"><Group id="items" /></Group></children>
 </component>
