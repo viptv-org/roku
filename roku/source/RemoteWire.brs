@@ -209,13 +209,23 @@ function RGateway(value as dynamic) as boolean
     return d.position >= 0
 end function
 
-' Ambient artwork for the hero stage. The URI is the server's own image
-' descriptor, so the blur is a documented transform of that URL rather than a
-' client-built proxy or a provider-host decision.
-' This display family ships no font with emoji or CJK coverage: every one of
-' them draws tofu, and the Smallest/Largest system font URIs do not exist here at
-' all. Rather than paint boxes, drop code points the panel cannot draw and keep
-' the readable part of a provider's free-text name.
+' The bundled Onest/Bricolage fonts carry ASCII, Latin-1, combining accents and a
+' short list of punctuation. Provider text also arrives with emoji, CJK and
+' Cyrillic, which these fonts have no glyphs for; drawing them paints tofu boxes.
+' Keep every code point the fonts can draw and drop the ones they cannot.
+function RSupportedCodePoint(code as integer) as boolean
+    if code < 128 then return true
+    if code >= 160 and code <= 255 then return true
+    for each pair in [[258,258],[305,305],[338,339],[699,700],[710,710],[730,730],[732,732]]
+        if code >= pair[0] and code <= pair[1] then return true
+    end for
+    if code >= 768 and code <= 848 then return true
+    for each supported in [8194,8201,8203,8211,8212,8213,8216,8217,8218,8220,8221,8222,8226,8230,8242,8243,8249,8250,8260,8364,8482,8593,8595,8722]
+        if code = supported then return true
+    end for
+    return false
+end function
+
 function RRenderable(value as string) as string
     out = ""
     i = 1
@@ -230,19 +240,29 @@ function RRenderable(value as string) as string
             if b >= 194 and b <= 223 then size = 2
             if b >= 224 and b <= 239 then size = 3
             if b >= 240 and b <= 244 then size = 4
-            if size = 0
-                i++
-            else
-                seq = mid(value,i,size)
-                ' U+2605 BLACK STAR is the one symbol the bundled font does carry.
-                if size = 3 and asc(mid(seq,1,1)) = 226 and asc(mid(seq,2,1)) = 152 and asc(mid(seq,3,1)) = 133
-                    out += chr(42)
+            ' A device string is UTF-8 bytes; this engine has already decoded it
+            ' to code points, so a lead byte may really be the whole character.
+            valid = size > 0 and i+size-1 <= n
+            for k = 1 to size-1
+                if valid
+                    nextByte = asc(mid(value,i+k,1))
+                    if nextByte < 128 or nextByte > 191 then valid = false
                 end if
+            end for
+            if valid
+                code = b
+                if size = 2 then code = (b-192)*64+(asc(mid(value,i+1,1))-128)
+                if size = 3 then code = (b-224)*4096+(asc(mid(value,i+1,1))-128)*64+(asc(mid(value,i+2,1))-128)
+                if size = 4 then code = (b-240)*262144+(asc(mid(value,i+1,1))-128)*4096+(asc(mid(value,i+2,1))-128)*64+(asc(mid(value,i+3,1))-128)
+                if RSupportedCodePoint(code) then out += mid(value,i,size)
                 i += size
+            else
+                if RSupportedCodePoint(b) then out += mid(value,i,1)
+                i++
             end if
         end if
     end while
-    ' Removed glyphs leave doubled spaces and dangling separators behind.
+    ' Dropped glyphs leave doubled spaces and dangling separators behind.
     while instr(1,out,"  ") > 0
         out = out.replace("  "," ")
     end while
@@ -258,6 +278,8 @@ end function
 
 function RSoftArt(uri as string) as string
     if uri = "" then return ""
+    ' The hero backdrop is the server's own image descriptor; the blur is a
+    ' documented transform of that URL, not a locally built proxy.
     if left(uri,23) <> "https://wsrv.nl/?" then return ""
     if instr(1,uri,"blur=") > 0 then return uri
     return uri+"&blur=24"

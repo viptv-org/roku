@@ -1072,3 +1072,31 @@ clip. The native custom title component occupies40px followed by a12px gap.
 Collapse hidden message geometry because native Group bounds otherwise include
 its old rectangle and push artwork/captions down. These are renderer corrections
 to the existing KMP shell, not server ordering or catalog decisions.
+
+## Source sheet layout and player clock (2026-10-25 implementation note)
+
+The source drawer now uses the KMP sheet's own vertical plan instead of the
+per-page offsets that had drifted apart. One geometry helper owns it: title44px
+at y72, one-line summary at y132, quality chips at y184, provider chips at y248,
+list from y184/248/312 depending on which chip rows exist, and the status line at
+y996. Content width is the KMP panel minus its insets (960-64-96=800). This
+supersedes the earlier fixed104px source row: a provider release title is free
+text, so a source row is132px with a two-line26px title over its22px technical
+line, with the same 14px corner asset and `#222222`/`#F4F2EE` focus fill. The
+28px Best match tag keeps its pinned 23px/27px title-line offsets and now
+reserves its width from the title instead of being painted over it. The removed
+custom variable-height list (RemoteSourceList) is not restored: a MarkupList
+with one measured row height keeps native focus, paging and clipping, and the
+row component never changes the height the list assigned.
+
+The player clock follows `VIEWING_CLIENT_V3.md` unchanged (absolute media time =
+presented position + `timeline_offset_seconds`, compared against the producer's
+full `duration`) and now reads like the KMP player: `m:ss` below an hour,
+`h:mm:ss` above it. A title longer than an hour previously rendered as104:00 and
+a two-hour remainder as-91:26, which is the reported "wrong duration". An
+advertised duration of0 (a stream ffprobe could not measure) falls back to the
+decoder's own duration plus the same offset and shows `--:--` rather than
+`-0:00`; the seek bar and thumb are hidden until a length is known. No client
+offset or completion heuristic was added, so a genuine
+advertised-versus-produced length mismatch still shows as a mismatch
+(ROK-MEDIA-20261024-MKV-COPY was fixed in gateway `11cd610`).

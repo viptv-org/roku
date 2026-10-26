@@ -76,8 +76,9 @@
   <Group id="pairing" visible="false">
    <Label id="pairLeftTitle" translation="[96,250]" width="760" height="44" text="Scan with your phone" color="#F4F2EE" ><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="30" /></Label>
    <Label id="pairInstructions" translation="[96,316]" width="760" height="80" text="Point your camera at the code. You’ll finish on your phone and this TV signs in by itself." color="#B6B4AF" wrap="true" numLines="2" lineSpacing="6"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="26" /></Label>
-   <Poster translation="[96,424]" width="340" height="340" uri="pkg:/images/design/remote-pair-qr.png" blendColor="#FFFFFFFF" />
+   <Poster id="pairQrFrame" translation="[96,424]" width="340" height="340" uri="pkg:/images/design/remote-pair-qr.png" blendColor="#FFFFFFFF" visible="false" />
    <Poster id="qr" translation="[116,444]" width="300" height="300" loadWidth="300" loadHeight="300" loadDisplayMode="scaleToFit" />
+   <Label id="pairQrHint" translation="[96,780]" width="760" height="62" wrap="true" maxLines="2" color="#B6B4AF" visible="false"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="22" /></Label>
    <Rectangle translation="[959,250]" width="2" height="560" color="#FFFFFF1F" />
    <Poster translation="[930,500]" width="60" height="60" uri="pkg:/images/design/circle.png" blendColor="#0B0B0C" />
    <Poster translation="[930,500]" width="60" height="60" uri="pkg:/images/design/remote-pair-or.png" blendColor="#FFFFFF1F" />
@@ -100,32 +101,37 @@
    <MaskGroup translation="[1240,250]" maskSize="[584,329]" maskUri="pkg:/images/design/remote-calendar-preview.png">
     <Poster id="calendarPoster" width="584" height="329" loadWidth="584" loadHeight="329" loadDisplayMode="scaleToZoom" />
    </MaskGroup>
-   <Label id="calendarTitle" translation="[1240,598]" width="584" height="48" wrap="true" numLines="2" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="30" /></Label>
-   <Label id="calendarDescription" translation="[1240,656]" width="584" height="96" wrap="true" numLines="3" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="24" /></Label>
+   <Label id="calendarTitle" translation="[1240,590]" width="584" height="76" wrap="true" numLines="2" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="30" /></Label>
+   <Label id="calendarDescription" translation="[1240,676]" width="584" height="114" wrap="true" numLines="3" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="24" /></Label>
   </Group>
   <Group id="drawer" visible="false">
    <Rectangle id="drawerScrim" width="1920" height="1080" color="#00000099" />
    <Group id="drawerPanel" translation="[960,0]">
     <Rectangle id="drawerGround" width="960" height="1080" color="#161618" />
     <Poster id="menuGround" width="117" height="160" uri="pkg:/images/design/remote-profile-menu.png" blendColor="#161618" visible="false" />
-    <Rectangle id="menuPanel" width="340" height="240" color="#1B1B1D" visible="false" />
-    <Label id="drawerTitle" translation="[64,72]" width="800" height="64" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="40" /></Label>
-    <Label id="drawerSubtitle" translation="[64,148]" width="800" height="72" wrap="true" maxLines="2" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="24" /></Label>
-    <RemoteActionBar id="sourceFilters" translation="[64,202]" visible="false" />
-    <RemoteActionBar id="providerFilters" translation="[64,266]" visible="false" />
-    <MarkupList vertFocusAnimationStyle="fixedFocus" id="drawerRows" translation="[64,250]" itemComponentName="RemoteItem" itemSize="[800,104]" itemSpacing="[0,10]" numRows="6" drawFocusFeedback="false" />
-    <Label id="drawerMessage" translation="[64,940]" width="800" height="88" wrap="true" maxLines="2" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="22" /></Label>
+    <Label id="drawerTitle" translation="[64,72]" width="800" height="56" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="44" /></Label>
+    <Label id="drawerSubtitle" translation="[64,132]" width="800" height="30" wrap="false" maxLines="1" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="24" /></Label>
+    <RemoteActionBar id="sourceFilters" translation="[64,184]" visible="false" />
+    <RemoteActionBar id="providerFilters" translation="[64,248]" visible="false" />
+    <MarkupList vertFocusAnimationStyle="fixedFocus" id="drawerRows" translation="[64,312]" itemComponentName="RemoteItem" itemSize="[800,104]" itemSpacing="[0,10]" numRows="4" drawFocusFeedback="false" />
+    <Label id="drawerMessage" translation="[64,986]" width="800" height="80" wrap="true" maxLines="2" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="22" /></Label>
    </Group>
   </Group>
   <Video id="player" width="1920" height="1080" visible="false" enableUI="false" focusable="false" />
   <Group id="playerUi" visible="false">
    <Poster width="1920" height="1080" uri="pkg:/images/design/remote-player-y.png" />
-   <Label id="playerTitle" translation="[96,64]" width="1400" height="38" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="30" /></Label>
-   <Label id="playerSubtitle" translation="[96,108]" width="1400" height="30" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="24" /></Label>
+   <Label id="playerTitle" translation="[96,64]" width="1280" height="38" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_700.ttf" size="30" /></Label>
+   <Label id="playerSubtitle" translation="[96,108]" width="1280" height="30" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="24" /></Label>
+   <Label id="playerEnds" translation="[1424,72]" width="400" height="30" horizAlign="right" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_400.ttf" size="22" /></Label>
    <Label id="playerTime" translation="[96,962]" width="1000" height="30" color="#F4F2EE"><Font role="font" uri="pkg:/fonts/remote_onest_600.ttf" size="22" /></Label>
    <Label id="playerRemaining" translation="[1424,962]" width="400" height="30" horizAlign="right" color="#B6B4AF"><Font role="font" uri="pkg:/fonts/remote_onest_600.ttf" size="22" /></Label>
-   <Rectangle translation="[96,942]" width="1728" height="6" color="#FFFFFF38" />
+   <Rectangle id="playerTrack" translation="[96,942]" width="1728" height="6" color="#FFFFFF38" />
    <Rectangle id="playerProgress" translation="[96,942]" width="0" height="6" color="#F5C542" />
+   <Rectangle id="seekDelta" translation="[96,942]" width="0" height="6" color="#FFFFFF8C" visible="false" />
+   <Group id="seekBubble" visible="false">
+    <Poster id="seekBubbleGround" width="196" height="52" uri="pkg:/images/ui-round-fill.9.png" blendColor="#F4F2EE" />
+    <Label id="seekBubbleText" width="196" height="52" horizAlign="center" vertAlign="center" color="#0B0B0C"><Font role="font" uri="pkg:/fonts/remote_onest_600.ttf" size="22" /></Label>
+   </Group>
    <Poster id="playerThumb" translation="[74,923]" width="44" height="44" uri="pkg:/images/design/circle.png" blendColor="#FFFFFF" />
    <RemoteActionBar id="playerActions" translation="[96,846]" />
   </Group>

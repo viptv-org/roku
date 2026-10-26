@@ -23,6 +23,7 @@ sub rLive(data as object, preserve = false as boolean)
     m.rows.itemComponentName = "RemoteGuideRow"
     m.rows.itemSize = [1728,72]
     m.rows.itemSpacing = [0,8]
+    ' Five rows end at 922px, clear of the shared message label at y=940.
     m.rows.numRows = 5
     root = rContent(values,1728,72)
     for each node in root.getChildren(-1,0)
@@ -45,13 +46,13 @@ sub rLive(data as object, preserve = false as boolean)
     m.rows.jumpToItem = target
     m.rows.visible = values.count() > 0
     if values.count() = 0 then m.hero.visible = false
-    m.rows.translation = [96,636]
+    m.rows.translation = [96,530]
     groups = [{title:"All",action:"liveGroup",id:""}]
     for each group in RArray(data.groups)
         groups.push({title:group.label,action:"liveGroup",id:group.id})
     end for
     m.filters.content = rContent(groups,260,64)
-    m.filters.translation = [96,512]
+    m.filters.translation = [96,456]
     m.filters.visible = values.count() > 0 or groups.count() > 1
     m.message.text = RText(data.reason)
     m.heading.text = ""
@@ -209,7 +210,9 @@ sub rLivePreview()
     m.heroTitle.numLines = 2
     m.heroTitle.text = card.title
     m.heroMeta.translation = [96,130]
-    m.heroMeta.parts = ["LIVE",card.title]
+    ' The title slot shows the programme when the guide has one, so the channel
+    ' name belongs in the metadata line; without a programme it would repeat.
+    m.heroMeta.parts = ["LIVE"]
     m.heroMeta.badges = []
     m.heroDescription.translation = [96,330]
     m.heroDescription.text = ""
@@ -225,6 +228,7 @@ sub rLivePreview()
     if node.programIndex >= 0 and node.programIndex < programs.count()
         program = programs[node.programIndex]
         m.heroTitle.text = program.title
+        m.heroMeta.parts = ["LIVE",card.title]
         m.heroDescription.text = RText(program.description)
     end if
 end sub
@@ -241,7 +245,8 @@ function rLiveKey(key as string) as boolean
         node.programIndex = index
         node.manualProgram = programs[index].id
         node.viewport = {start_millis:RGuideWindowMillis(programs[index].start_millis)}
-        ' Re-publish the data only on a time-window change, never per frame.
+        ' Republishing the guide data is what makes RemoteGuideRow rebuild its
+        ' programme tiles for the newly selected window.
         node.guideData = node.guideData
         rLivePreview()
     end if

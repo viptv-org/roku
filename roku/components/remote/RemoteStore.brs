@@ -1,5 +1,5 @@
-' Preserve the existing origin-bound rotating device grant. No local library.
-
+' Registry persistence for the origin-bound device grant: load, migrate, save.
+' Nothing else is stored locally.
 
 function rStored(value as dynamic, packaged as dynamic) as object
     base = ROrigin(RGet(value,"base"))

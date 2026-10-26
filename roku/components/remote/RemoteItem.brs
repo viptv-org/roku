@@ -130,56 +130,7 @@ sub render()
         if RGet(c,"uiButton",false) then centerButton(w,h,c)
     end if
     if RObject(c.wire.source)
-        m.ground.uri = "pkg:/images/design/remote-source-row.9.png"
-        presentation = RGet(c.wire.source,"view",{})
-        m.quality.visible = true
-        m.quality.text = RText(presentation.quality_label)
-        m.format.visible = true
-        m.format.text = RText(presentation.format_label)
-        m.label.translation = [164,18]
-        m.label.width = w-192
-        m.label.font.size = 28
-        ' Release names are free text; wrap the detail instead of clipping it.
-        m.detail.translation = [164,56]
-        m.detail.wrap = true
-        m.detail.maxLines = 2
-        m.detail.height = 62
-        ' Provider names carry emoji and CJK the panel cannot draw; strip them
-        ' instead of painting tofu, then keep the row readable.
-        m.label.text = RRenderable(c.title)
-        m.detail.text = RRenderable(c.description)
-        ' A source with no release text keeps its title vertically centred
-        ' instead of leaving a hole under it.
-        if RText(m.detail.text) = ""
-            m.label.translation = [164,int((h-34)/2)]
-        end if
-        m.detail.width = w-192
-        m.detail.font.size = 22
-        m.quality.translation = [28,int((h-36)/2)]
-        if m.format.text <> "" then m.quality.translation = [28,int((h-58)/2)]
-        m.format.translation = [28,int((h-58)/2)+36]
-        addon = RText(presentation.addon_label)
-        m.sourceAddon.visible = addon <> ""
-        m.sourceAddon.text = addon
-        m.sourceAddon.width = 0
-        addonWidth = int(m.sourceAddon.boundingRect().width)+2
-        if addonWidth > 170 then addonWidth = 170
-        m.sourceAddon.width = addonWidth
-        m.sourceAddon.translation = [w-28-addonWidth,int((h-28)/2)]
-        columnRight = w-28
-        if addon <> "" then columnRight -= addonWidth+20
-        m.label.width = columnRight-164
-        m.detail.width = columnRight-164
-        m.detail.height = 28
-        if RGet(c.wire,"bestMatch",false)
-            badgeWidth = m.sourceBest.width+20
-            m.sourceBest.translation = [columnRight-badgeWidth+10,27]
-            m.sourceBestGround.translation = [columnRight-badgeWidth,23]
-            m.sourceBestGround.width = badgeWidth
-            m.sourceBest.visible = true
-            m.sourceBestGround.visible = true
-            m.label.width -= badgeWidth+12
-        end if
+        renderSource(c,w,h)
     end if
     if RGet(c.wire,"sidebar",false)
         m.icon.translation = [24,22]
@@ -325,12 +276,17 @@ sub render()
         m.detail.width = w-284
     end if
     if RGet(c.wire,"menu",false)
+        ' DropdownMenu row: 48px tall, 14px medium text, 12px inset. The flat
+        ' ground is the row highlight over the popup artwork, not a card chip.
         m.ground.uri = "pkg:/images/design/remote-white.png"
         m.label.font.uri = "pkg:/fonts/remote_onest_500.ttf"
-        m.label.font.size = 24
-        m.label.translation = [24,20]
-        m.label.height = 32
-        m.label.width = w-48
+        m.label.font.size = 14
+        m.label.wrap = false
+        m.label.maxLines = 1
+        m.label.translation = [12,10]
+        m.label.height = 28
+        m.label.vertAlign = "center"
+        m.label.width = w-24
         m.detail.visible = false
     end if
     if RGet(c.wire,"homeRowRetry",false)
@@ -434,10 +390,76 @@ sub render()
     focusChanged()
 end sub
 
-' Buttons centre their icon+label as one unit. Fixed padding left the text
-' hard against one edge, which is what made action rows look unfinished.
-' True when the nearest focusable ancestor (the list, grid or action bar that
-' owns this item) is in the focus chain.
+' Source rows are the one list row whose text is provider free text, so they
+' get a taller fixed row: two lines of release title above one line of technical
+' detail. The row height is owned by the list (RemoteScene's source item size);
+' this draws inside it and never changes it.
+sub renderSource(c as object, w as integer, h as integer)
+    presentation = RGet(c.wire.source,"view",{})
+    m.ground.uri = "pkg:/images/design/remote-source-row.9.png"
+    m.quality.visible = true
+    m.quality.text = RRenderable(RText(presentation.quality_label))
+    m.format.visible = RText(presentation.format_label) <> ""
+    m.format.text = RRenderable(RText(presentation.format_label))
+    ' Quality stacks over format in a fixed 116px column.
+    qualityTop = int((h-62)/2)
+    m.quality.translation = [28,qualityTop]
+    m.format.translation = [28,qualityTop+36]
+    ' Text is assigned after its box, so a wrapped title is laid out against the
+    ' height it is allowed to use instead of the previous row's one-line box.
+    m.label.font.size = 26
+    m.label.wrap = true
+    m.label.maxLines = 2
+    m.detail.font.size = 22
+    m.detail.wrap = false
+    m.detail.maxLines = 1
+    addon = RRenderable(RText(presentation.addon_label))
+    m.sourceAddon.visible = addon <> ""
+    m.sourceAddon.text = addon
+    m.sourceAddon.width = 0
+    addonWidth = int(m.sourceAddon.boundingRect().width)+2
+    if addonWidth > 170 then addonWidth = 170
+    m.sourceAddon.width = addonWidth
+    m.sourceAddon.translation = [w-28-addonWidth,int((h-28)/2)]
+    ' Release title and badge share the top line; the detail keeps the full
+    ' width under them. Nothing is reserved for a column the row does not show.
+    columnRight = w-28
+    if addon <> "" then columnRight -= addonWidth+20
+    badgeWidth = 0
+    if RGet(c.wire,"bestMatch",false)
+        badgeWidth = m.sourceBest.width+20
+        m.sourceBestGround.translation = [columnRight-badgeWidth,23]
+        m.sourceBestGround.width = badgeWidth
+        m.sourceBest.translation = [columnRight-badgeWidth+10,27]
+        m.sourceBest.visible = true
+        m.sourceBestGround.visible = true
+    end if
+    textWidth = columnRight-164
+    if badgeWidth > 0 then textWidth -= badgeWidth+16
+    if textWidth < 120 then textWidth = 120
+    ' A 26px line occupies 40px of the panel's line box, so two lines need 84.
+    ' The title box is bottom-aligned: a one-line release name still sits
+    ' directly above its technical line instead of floating away from it.
+    m.label.vertAlign = "bottom"
+    m.label.translation = [164,8]
+    m.label.width = textWidth
+    m.label.height = 84
+    m.detail.translation = [164,92]
+    m.detail.width = columnRight-164
+    m.detail.height = 30
+    m.label.text = RRenderable(c.title)
+    m.detail.text = RRenderable(c.description)
+    ' A source with no release text keeps its title in the middle of the row
+    ' instead of leaving a hole under it.
+    if RText(m.detail.text) = ""
+        m.label.vertAlign = "center"
+        m.label.translation = [164,0]
+        m.label.height = h
+    end if
+end sub
+
+' True when the nearest focusable ancestor (the list, grid or action bar that owns
+' this item) is in the focus chain.
 function ROwnerFocused() as boolean
     node = m.top.getParent()
     for i = 0 to 6
@@ -448,6 +470,8 @@ function ROwnerFocused() as boolean
     return false
 end function
 
+' Buttons centre their icon and label as one unit, so an action row reads as a
+' single control instead of text pinned to one edge.
 sub centerButton(w as integer, h as integer, c as object)
     m.label.horizAlign = "left"
     textW = 0
@@ -479,10 +503,12 @@ end sub
 
 sub focusChanged()
     if m.ring = invalid or m.top.itemContent = invalid then return
-    ' focusPercent is the field every Roku list node drives, but a list that has
-    ' never held focus still reports 1 for its current item. Requiring the owning
-    ' focusable node to be in the focus chain removes those phantom rings.
-    active = m.top.focusPercent > 0.5 and m.top.rowFocusPercent > 0.5 and ROwnerFocused()
+    ' focusPercent is the only field every Roku list node drives. rowFocusPercent
+    ' is not set by MarkupGrid/MarkupList item components and is not reported
+    ' reliably by RowList on device, so requiring it hid the focus ring on every
+    ' card. Owner-focus still removes the phantom ring from a list that has never
+    ' held focus.
+    active = m.top.focusPercent > 0.5 and ROwnerFocused()
     if m.top.itemContent.focusedCaptions
         m.label.visible = m.top.itemContent.showLabels and active
         m.detail.visible = m.top.itemContent.showLabels and active

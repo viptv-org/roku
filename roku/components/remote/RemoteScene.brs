@@ -1,6 +1,6 @@
 sub init()
     m.top.backgroundURI = ""
-    for each id in ["librarySheet","filterPage","passwordForm","libraryHeader","navigation","heading","hero","backdrop","heroLogo","heroTitle","heroMeta","heroDescription","actions","filters","shelves","grid","rows","message","skeleton","pairing","pairAddress","pairCode","qr","drawer","drawerPanel","drawerTitle","drawerSubtitle","drawerRows","drawerMessage","drawerMotion","drawerSlide","networkTick","pollTick","heroTick","player","playerInput","playerUi","playerTitle","playerTime","playerProgress","playerActions","hideControls","settingsSidebar","settingsNav"]
+    for each id in ["librarySheet","filterPage","passwordForm","libraryHeader","navigation","heading","hero","backdrop","heroLogo","heroTitle","heroMeta","heroDescription","actions","filters","shelves","grid","rows","message","skeleton","pairing","pairAddress","pairCode","qr","drawer","drawerPanel","drawerTitle","drawerSubtitle","drawerRows","drawerMessage","drawerMotion","drawerSlide","networkTick","pollTick","heroTick","player","playerInput","playerUi","playerTitle","playerTime","playerTrack","playerProgress","playerActions","hideControls","settingsSidebar","settingsNav"]
         m[id] = m.top.findNode(id)
     end for
     m.epoch = 1
@@ -67,6 +67,7 @@ sub init()
     m.sourceProvider = ""
     m.sourceStreams = []
     m.sourceBest = ""
+    m.sourceNote = ""
     m.sourceFilters = m.top.findNode("sourceFilters")
     m.sourceFilters.observeField("itemSelected","rSourceFilterSelected")
     m.providerFilters = m.top.findNode("providerFilters")
@@ -112,6 +113,8 @@ sub init()
     m.replacement = invalid
     m.nextCard = invalid
     m.lastProgress = 0
+    m.detailEpisodes = false
+    m.sourceError = ""
     m.drawerKind = ""
     m.drawerStack = []
     m.drawerClosing = false
@@ -147,6 +150,8 @@ sub init()
     m.pollTick.control = "start"
     m.navigation.visible = false
     m.heading.text = ""
+    m.qr = m.top.findNode("qr")
+    m.qr.observeField("loadStatus","rPairQrChanged")
     m.top.findNode("entry").mode = "startup"
     m.top.findNode("entry").visible = true
     m.skeleton.visible = false
@@ -228,6 +233,8 @@ sub rReset(route as string)
     end for
     m.queue = retained
     m.route = route
+    m.detailEpisodes = false
+    m.sourceError = ""
     m.failedRequest = invalid
     m.retryBar.visible = false
     m.message.text = ""
@@ -275,7 +282,7 @@ sub rReset(route as string)
     m.filters.numColumns = 6
     m.actions.translation = [96,648]
     m.shelves.translation = [96,824]
-    m.top.findNode("shelfClip").clippingRect = [80,0,1760,1080]
+    m.top.findNode("shelfClip").clippingRect = [80,0,1840,1080]
     m.shelves.rowHeights = []
     m.shelves.rowLabelOffset = [[0,16]]
     m.shelves.rowSpacings = []
@@ -394,14 +401,23 @@ end sub
 sub rError(message as string)
     m.skeleton.visible = false
     if m.drawer.visible
+        m.sourceError = message
         m.drawerMessage.text = message
+        m.drawerMessage.color = "#FF7A6E"
         if m.failedRequest <> invalid
             if m.drawerRows.content = invalid or m.drawerRows.content.getChildCount() = 0
-                m.drawerRows.content = rContent([{title:"Try again",action:"retry"}],800,104)
+                m.drawerRows.content = rContent([{title:"Try again",action:"retry"}],rDrawerContentWidth(),rDrawerRowHeight(m.drawerKind))
             end if
         end if
     else
         m.message.text = message
+        ' A failure has to be readable where the viewer is looking: the shared
+        ' status line is under the shelf on a detail page, so it moves above it.
+        m.message.color = "#FF7A6E"
+        if m.route = "detail"
+            m.message.translation = [96,756]
+            m.message.width = 1200
+        end if
         if m.route = "library" then rLibraryStatus(true)
         if m.failedRequest <> invalid
             m.message.width = 1400
@@ -458,51 +474,58 @@ sub rOpenDrawer(title as string, values as object, kind as string)
                 m.drawerStack.pop()
             end while
         else if m.drawerStack.count() < 6
-            m.drawerStack.push({title:m.drawerTitle.text,subtitle:m.drawerSubtitle.text,content:m.drawerRows.content,kind:m.drawerKind,focus:m.drawerRows.itemFocused})
+            m.drawerStack.push({title:m.drawerTitle.text,subtitle:m.drawerSubtitle.text,content:m.drawerRows.content,kind:m.drawerKind,focus:m.drawerRows.itemFocused,rowHeight:m.drawerRows.itemSize[1]})
         end if
     end if
     entering = not m.drawer.visible or m.drawerClosing
     m.drawerClosing = false
+    ' The sheet is the right half of the canvas for every content drawer. Only
+    ' the profile menu is a small popover, and it must not leave the next drawer
+    ' translated to its own corner.
+    if kind = "menu" then m.drawerPanel.translation = [1540,96] else m.drawerPanel.translation = [960,0]
     m.menuMotion.control = "stop"
     m.drawerPanel.opacity = 1
     m.top.findNode("drawerScrim").visible = kind <> "menu"
     m.top.findNode("drawerGround").visible = kind <> "menu"
+    m.top.findNode("drawerGround").width = 960
+    m.top.findNode("drawerGround").height = 1080
     m.top.findNode("menuGround").visible = false
-    m.top.findNode("menuPanel").visible = (kind = "menu")
     m.drawerTitle.visible = kind <> "menu"
     m.drawerSubtitle.visible = kind <> "menu"
     m.drawerMessage.visible = kind <> "menu"
-    m.drawerRows.itemSpacing = [0,10]
     m.drawerKind = kind
     m.drawerTitle.text = title
     m.drawerSubtitle.text = ""
     m.drawerMessage.text = ""
-    m.drawerRows.itemSize = [800,104]
-    m.drawerRows.numRows = 6
-    m.drawerRows.content = rContent(values,800,104)
     m.sourceFilters.visible = false
     m.providerFilters.visible = false
-    m.drawerRows.translation = [64,250]
-    m.drawer.visible = true
-    m.drawerRows.setFocus(true)
+    m.drawerRows.visible = true
     if kind = "menu"
         for each value in values
             value.menu = true
         end for
-        ' The profile menu is a real menu, not a two-line tooltip.
-        panel = m.top.findNode("menuPanel")
-        panel.width = 340
-        panel.height = values.count()*72+32
-        m.drawerPanel.translation = [1540,96]
-        m.drawerRows.translation = [16,16]
-        m.drawerRows.itemSize = [308,72]
+        ' The profile menu is the pinned 117px DropdownMenu popup anchored to the
+        ' avatar: 8px inset, 48px rows, no scrim, no full-height sheet.
+        m.drawerPanel.translation = [1768,94]
+        m.top.findNode("menuGround").visible = true
+        m.top.findNode("menuGround").width = 117
+        m.top.findNode("menuGround").height = values.count()*48+16
+        m.drawerRows.translation = [0,8]
+        m.drawerRows.itemSize = [117,48]
         m.drawerRows.itemSpacing = [0,0]
         m.drawerRows.numRows = values.count()
-        m.drawerRows.content = rContent(values,308,72)
+        m.drawerRows.content = rContent(values,117,48)
         m.top.findNode("menuFade").keyValue = [0,1]
         m.menuMotion.control = "start"
+        ' The drawer must be visible before a child can take focus.
+        m.drawer.visible = true
+        m.drawerRows.setFocus(true)
         return
     end if
+    rDrawerLayout(kind)
+    m.drawerRows.content = rContent(values,rDrawerContentWidth(),rDrawerRowHeight(kind))
+    m.drawer.visible = true
+    m.drawerRows.setFocus(true)
     if entering
         m.drawerMotion.control = "stop"
         m.drawerMotion.duration = 0.3
@@ -510,6 +533,45 @@ sub rOpenDrawer(title as string, values as object, kind as string)
         m.drawerSlide.keyValue = [[1920,0],[960,0]]
         m.drawerMotion.control = "start"
     end if
+end sub
+
+' Drawer geometry. The sheet occupies the right half of the 1920x1080 canvas;
+' its children are positioned in panel-local pixels with the same 64px inset and
+' 96px right margin the KMP TV sheet uses. These are the only drawer numbers in
+' the app, so nothing can drift out of alignment again.
+function rDrawerContentWidth() as integer
+    return 960-64-96
+end function
+
+function rDrawerRowHeight(kind as string) as integer
+    ' Source rows carry a provider release title over its technical line; the
+    ' player's episode rows fit a title and a wrapped subtitle.
+    if kind = "sources" then return 132
+    if kind = "episodes" then return 144
+    return 104
+end function
+
+function rDrawerListTop() as integer
+    top = 184
+    if m.sourceFilters.visible then top = 248
+    if m.providerFilters.visible then top = 312
+    return top
+end function
+
+sub rDrawerLayout(kind as string)
+    rowHeight = rDrawerRowHeight(kind)
+    m.drawerRows.itemSize = [rDrawerContentWidth(),rowHeight]
+    m.drawerRows.itemSpacing = [0,10]
+    m.drawerRows.translation = [64,rDrawerListTop()]
+    ' MarkupList paints exactly numRows rows, so the count is derived from the
+    ' space between the last filter row and the footer.
+    available = 980-rDrawerListTop()
+    rows = int((available+10)/(rowHeight+10))
+    if rows < 1 then rows = 1
+    m.drawerRows.numRows = rows
+    m.drawerMessage.translation = [64,986]
+    m.drawerMessage.width = rDrawerContentWidth()
+    m.drawerMessage.height = 80
 end sub
 
 sub rDrawerFocused()
@@ -527,9 +589,11 @@ sub rCloseDrawer()
         previous = m.drawerStack.pop()
         m.drawerTitle.text = previous.title
         m.drawerSubtitle.text = previous.subtitle
+        m.drawerKind = previous.kind
+        rDrawerLayout(previous.kind)
+        if RGet(previous,"rowHeight",0) <> 0 then m.drawerRows.itemSize = [rDrawerContentWidth(),previous.rowHeight]
         m.drawerRows.content = previous.content
         m.drawerRows.jumpToItem = previous.focus
-        m.drawerKind = previous.kind
         m.drawerRows.setFocus(true)
         return
     end if
@@ -713,14 +777,12 @@ function onKeyEvent(key as string, press as boolean) as boolean
         return rPlayerKey(key)
     end if
     if m.route = "settings" and not m.drawer.visible
-        ' Settings is one page with a sidebar and a content column. Focus moves
-        ' between them explicitly so the two setFocus calls can never race into
-        ' a dead remote.
+        ' Settings is one page with a sidebar and a content column. Focus crosses
+        ' between them explicitly, and a section with no rows keeps the remote in
+        ' the sidebar instead of dropping it.
         if key = "right" and m.settingsNav.isInFocusChain()
-            if m.rows.visible and m.rows.content <> invalid and m.rows.content.getChildCount() > 0
-                m.rows.setFocus(true)
-                return true
-            end if
+            if m.rows.visible and m.rows.content <> invalid and m.rows.content.getChildCount() > 0 then m.rows.setFocus(true)
+            return true
         else if key = "left" and m.rows.isInFocusChain() and m.settingsSidebar.visible
             m.settingsNav.setFocus(true)
             return true
@@ -790,14 +852,26 @@ function onKeyEvent(key as string, press as boolean) as boolean
             return true
         end if
     end if
+    if key = "up" and not m.drawer.visible and m.route = "detail"
+        ' Leaving the episode row restores the title's action row before focus
+        ' lands on it, so Play is never invisible when it takes the remote.
+        if m.shelves.isInFocusChain() and m.filters.visible
+            m.filters.setFocus(true)
+            return true
+        else if m.shelves.isInFocusChain() or m.filters.isInFocusChain()
+            rDetailLayout(false)
+            if m.actions.visible then m.actions.setFocus(true) else m.navigation.setFocus(true)
+            return true
+        end if
+    end if
     if key = "up" and not m.drawer.visible
         if m.shelves.isInFocusChain() and m.route = "home"
             rHomeLeaveShelves()
         else if m.grid.isInFocusChain() and m.libraryHeader.visible
             if rLibraryPrevious() then return true
             m.libraryHeader.setFocus(true)
-        else if (m.route = "detail" and m.shelves.isInFocusChain()) or (m.rows.isInFocusChain() and m.filters.visible)
-            if m.filters.visible then m.filters.setFocus(true) else m.actions.setFocus(true)
+        else if m.rows.isInFocusChain() and m.filters.visible
+            m.filters.setFocus(true)
         else if m.filters.isInFocusChain() and m.actions.visible
             m.actions.setFocus(true)
         else
@@ -826,13 +900,6 @@ function onKeyEvent(key as string, press as boolean) as boolean
         else
             rFocusContent()
         end if
-        return true
-    end if
-    if m.route = "settings" and key = "left" and m.settingsSidebar.visible
-        m.settingsNav.setFocus(true)
-        return true
-    else if m.route = "settings" and key = "right" and m.settingsNav.isInFocusChain()
-        rFocusContent()
         return true
     end if
     return false
@@ -871,4 +938,26 @@ end sub
 
 sub rPlayerInputPressed(event as object)
     onKeyEvent(event.getData(),true)
+end sub
+
+' Pairing QR load result: the white card is only drawn around a decoded QR, and
+' a failure states the fallback instead of leaving an empty panel.
+sub rPairQrChanged()
+    if m.qr = invalid then return
+    status = m.qr.loadStatus
+    frame = m.top.findNode("pairQrFrame")
+    hint = m.top.findNode("pairQrHint")
+    frame.visible = status = "ready"
+    if status = "ready" then hint.visible = false
+    if status = "failed"
+        ' The first image fetch right after a cold boot can fail; retry once before
+        ' telling the viewer the code is unavailable.
+        if not m.qrRetried and RText(m.qrPending) <> ""
+            m.qrRetried = true
+            m.qr.uri = m.qrPending+"&retry=1"
+            return
+        end if
+        hint.visible = true
+        hint.text = "The QR code could not be loaded. Open "+m.pairAddress.text+" on your phone and enter the code."
+    end if
 end sub

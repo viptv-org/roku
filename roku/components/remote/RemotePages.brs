@@ -47,12 +47,28 @@ sub rShowPair(data as object)
         m.top.findNode("pairWaiting").text = "Waiting for you to sign in…"
     end if
     rPairExpiry()
+    ' The QR is an accelerator, never the only way in: the address and code are
+    ' always readable, and a card that failed to load must not paint as a blank
+    ' white box.
+    m.top.findNode("pairQrFrame").visible = false
+    m.top.findNode("pairQrHint").visible = false
+    m.qr.uri = ""
     uri = RText(data.qr_uri)
-    if left(uri,5) = "/api/" then uri = m.config.base+uri
-    agent = CreateObject("roHttpAgent")
-    agent.setCertificatesFile("common:/certs/ca-bundle.crt")
-    m.qr.setHttpAgent(agent)
-    m.qr.uri = uri
+    if left(uri,1) = "/" then uri = m.config.base+uri
+    m.qrPending = uri
+    m.qrRetried = false
+    if left(uri,8) = "https://" or left(uri,7) = "http://"
+        agent = CreateObject("roHttpAgent")
+        agent.setCertificatesFile("common:/certs/ca-bundle.crt")
+        m.qr.setHttpAgent(agent)
+        m.qr.uri = uri
+    else
+        ' No scannable code from the server: say so instead of leaving a hole
+        ' where the card would be.
+        hint = m.top.findNode("pairQrHint")
+        hint.visible = true
+        hint.text = "Open "+m.pairAddress.text+" on your phone and enter the code shown here."
+    end if
     rShowActions([{title:"New code",action:"pair",icon:"restart",width:180}])
     m.actions.translation = [1380,676]
     m.actions.setFocus(true)
@@ -313,10 +329,14 @@ sub rHome(data as object, restore = invalid as dynamic)
         if wasFocused or RObject(restore) or not RCard(m.heroCard) then m.shelves.setFocus(true)
         rShelfFocused()
     else if not wasFocused and not reuse
-        if not RCard(m.heroCard)
-            rHomeEnterShelves()
+        ' Arriving on Home always starts on the billboard. Focusing the shelves
+        ' here skipped the hero-to-shelf transition and left the remote on a row
+        ' that was still half off-screen, so Down could not enter it.
+        if RCard(m.heroCard)
+            rHomeApply(false)
+            if m.actions.visible and m.actions.content <> invalid then m.actions.setFocus(true) else m.navigation.setFocus(true)
         else
-            rFocusContent()
+            rHomeEnterShelves()
         end if
     end if
 end sub
@@ -465,10 +485,22 @@ sub rCarousel(now as double)
     end for
 end sub
 
-sub rDetailScroll(episodeFocus as boolean)
-    if m.route <> "detail" or not m.shelves.visible then return
-    top = 888
-    if episodeFocus then top = 691
+' Detail page planes. The title summary and its action row occupy the top of the
+' page; the episode row only grows into that space when it has focus, and the
+' action row steps aside instead of being painted over by the cards.
+sub rDetailLayout(episodeFocus as boolean)
+    if m.route <> "detail" then return
+    resting = 888
+    browsing = 660
+    if not m.shelves.visible then return
+    m.detailEpisodes = episodeFocus
+    m.actions.visible = not episodeFocus and m.actions.content <> invalid
+    if m.filters.visible then
+        m.filters.translation = [96,816]
+        if episodeFocus then m.filters.translation = [96,588]
+    end if
+    top = resting
+    if episodeFocus then top = browsing
     motion = m.top.findNode("homeMotion")
     slide = m.top.findNode("homeSlide")
     if not REqual(slide.keyValue[1],[96,top]) or (motion.state <> "running" and not REqual(m.shelves.translation,[96,top]))
@@ -476,6 +508,10 @@ sub rDetailScroll(episodeFocus as boolean)
         slide.keyValue = [m.shelves.translation,[96,top]]
         motion.control = "start"
     end if
+end sub
+
+sub rDetailScroll(episodeFocus as boolean)
+    rDetailLayout(episodeFocus)
 end sub
 
 sub rHomeScroll(browse as boolean)
@@ -637,7 +673,8 @@ sub rShelfFocused(event = invalid as dynamic)
     if row = invalid then return
     item = row.getChild(index[1])
     if m.route = "detail"
-        rDetailScroll(index[0] = 0)
+        hasEpisodes = RObject(m.detailData) and RArray(m.detailData.episodes).count() > 0
+        rDetailScroll(hasEpisodes and index[0] = 0)
     end if
     if m.route = "home" and item <> invalid
         m.homeFocus = rHomeSelection(index)
@@ -811,6 +848,9 @@ sub rRun(value as object)
         m.playIntent = {explicit:action = "sources",restart:action = "restart"}
         rSend("POST",rProfilePath("/viewing-action"),{card:value.card,restart:action = "restart"},"viewing",{source_epoch:m.sourceEpoch})
     else if action = "source"
+        ' A fresh choice clears the previous attempt's reason.
+        m.sourceError = ""
+        rSourceStatus()
         rStartSource(value.source)
     else if action = "saveTitle"
         card = value.card
@@ -884,6 +924,13 @@ sub rRun(value as object)
     else if action = "calendarDay"
         rRetireCalendar()
         m.calendarDay = value.date
+        ' Repaint the chips with the new selection and keep the remote on it.
+        rCalendarDays()
+        if m.filters.content <> invalid
+            for i = 0 to m.filters.content.getChildCount()-1
+                if RText(m.filters.content.getChild(i).wire.date) = m.calendarDay then m.filters.jumpToItem = i
+            end for
+        end if
         rCalendarFetch("")
     else if action = "calendarWeek"
         rCloseDrawer()
@@ -1141,11 +1188,12 @@ sub rPageResponse(tag as string, data as dynamic, request as object)
         for each season in RArray(data.seasons)
             label = "Episodes"
             if season.season <> invalid then label = "Season "+season.season.toStr()
-            seasons.push({title:label,action:"season",offset:season.offset})
+            seasons.push({title:label,action:"season",offset:season.offset,button:true,width:176})
         end for
-        m.filters.content = rContent(seasons,144,52)
+        m.filters.content = rContent(seasons,176,52)
         m.filters.translation = [96,816]
-        m.filters.itemSize = [144,52]
+        if m.detailEpisodes then m.filters.translation = [96,588]
+        m.filters.itemSize = [176,52]
         m.filters.visible = seasons.count() > 0
     else if tag = "detail:action"
         rDetailActions(m.detailCard,data)
@@ -1221,13 +1269,14 @@ sub rPageResponse(tag as string, data as dynamic, request as object)
         m.sourceFilters.content = rContent(filters,140,52)
         m.sourceFilters.visible = true
         m.sourceFilters.scroll = true
-        m.sourceFilters.containerWidth = 800
+        m.sourceFilters.containerWidth = rDrawerContentWidth()
         rSourceProviders(m.sourceStreams,m.sourceBest)
-        if m.providerFilters.visible
-            m.drawerRows.translation = [64,334]
-        else
-            m.drawerRows.translation = [64,278]
-        end if
+        ' The server's ranking note explains how Play chose, so the footer is the
+        ' place for it instead of an empty line under the list.
+        m.sourceNote = RText(RGet(data,"selection_note"))
+        rDrawerLayout("sources")
+        if m.drawerRows.content <> invalid and m.drawerRows.content.getChildCount() = 0 then m.drawerRows.content = rContent([],rDrawerContentWidth(),rDrawerRowHeight("sources"))
+        rSourceStatus()
         ' Server preference authorizes best-match, and the server ranking is
         ' authoritative. Wait for discovery completion; never rank locally.
         if m.discovery <> invalid and m.discovery.done and m.playIntent.explicit <> true and m.viewingAction.source_selection = "best"
@@ -1247,6 +1296,8 @@ sub rDiscoverSources(card as object)
     end if
     rCancelDiscovery()
     rOpenDrawer("Choose a source",[],"sources")
+    m.playCard = card
+    m.sourceNote = ""
     m.drawerSubtitle.text = card.title
     m.drawerMessage.text = "Finding sources…"
     m.sourceQuality = invalid
@@ -1275,6 +1326,10 @@ sub rRankSources()
     rSend("POST",rProfilePath("/source-ranking"),body,"sources:rank",{source_epoch:m.sourceEpoch,after:m.discovery.after,quality:m.sourceQuality})
 end sub
 
+sub rClearSourceError()
+    m.sourceError = ""
+end sub
+
 sub rShowSources(sources as object, bestId = "" as string)
     if not m.drawer.visible then rOpenDrawer("Choose a source",[],"sources")
     m.sourceStreams = sources
@@ -1295,15 +1350,54 @@ sub rShowSources(sources as object, bestId = "" as string)
     for i = 0 to values.count()-1
         if values[i].source.id = selectedId then focus = i
     end for
-    ' Source titles are free text from the provider. Two lines keep a long
-    ' release name readable instead of truncating it to an ellipsis.
-    m.drawerRows.itemSize = [800,132]
-    m.drawerRows.content = rContent(values,800,132)
+    ' Source rows are taller than a plain drawer row so a long release name and
+    ' its technical line both fit. The list owns that height; the row only draws.
+    rDrawerLayout("sources")
+    m.drawerRows.content = rContent(values,rDrawerContentWidth(),rDrawerRowHeight("sources"))
     if focus >= 0 and focus < values.count() then m.drawerRows.jumpToItem = focus
-    m.drawerMessage.text = ""
-    if m.discovery <> invalid and not m.discovery.done then m.drawerMessage.text = "Finding more sources…"
-    if values.count() = 0 then m.drawerMessage.text = "No sources are available."
+    rSourceStatus()
 end sub
+
+' Sheet subtitle and footer: what is being chosen, how much was found, and how
+' Play decides. Kept in one place so a poll cannot leave a stale line behind.
+sub rSourceStatus()
+    title = m.drawerSubtitle.text
+    if m.playCard <> invalid then title = RText(m.playCard.title)
+    visibleSources = 0
+    providers = {}
+    for each source in RArray(m.sourceStreams)
+        if m.sourceProvider = "" or RSourceProvider(source) = m.sourceProvider then visibleSources++
+        label = RSourceProvider(source)
+        if label <> "" then providers[label] = true
+    end for
+    count = providers.count()
+    summary = visibleSources.toStr()+" "+rPlural(visibleSources,"source","sources")+" from "+count.toStr()+" "+rPlural(count,"add-on","add-ons")
+    m.drawerSubtitle.text = title
+    if title <> "" then m.drawerSubtitle.text = title+" · "+summary
+    m.drawerMessage.color = "#B6B4AF"
+    m.drawerMessage.text = RText(m.sourceNote)
+    if m.discovery <> invalid and not m.discovery.done then m.drawerMessage.text = "Finding sources…"
+    if visibleSources = 0 then m.drawerMessage.text = "No sources are available."
+    ' A failed start outranks every status line until the viewer picks again.
+    if RText(m.sourceError) <> ""
+        m.drawerMessage.text = m.sourceError
+        m.drawerMessage.color = "#FF7A6E"
+    end if
+end sub
+
+' Chip width for a provider filter. A fixed 200px chip left a one-word provider
+' with as much room as a long one, so the row wasted its scroll on padding.
+function rChipWidth(label as string) as integer
+    width = 44+int(len(RRenderable(label))*12.5)
+    if width < 132 then width = 132
+    if width > 300 then width = 300
+    return width
+end function
+
+function rPlural(count as integer, one as string, many as string) as string
+    if count = 1 then return one
+    return many
+end function
 
 function RSourceProvider(source as object) as string
     view = RGet(source,"view",{})
@@ -1330,13 +1424,17 @@ sub rSourceProviders(sources as object, bestId as string)
     end for
     m.providerFilters.visible = labels.count() > 1
     if not m.providerFilters.visible then return
-    values = [{title:"All sources",value:"",width:200}]
+    values = [{title:"All sources",value:"",width:rChipWidth("All sources")}]
     for each label in labels
-        values.push({title:label+" "+counts[label].toStr(),value:label,width:200})
+        text = label+" "+counts[label].toStr()
+        values.push({title:text,value:label,width:rChipWidth(text)})
     end for
-    m.providerFilters.content = rContent(values,200,52)
+    m.providerFilters.content = rContent(values,200,44)
     m.providerFilters.scroll = true
-    m.providerFilters.containerWidth = 800
+    m.providerFilters.containerWidth = rDrawerContentWidth()
+    ' A second filter row pushes the list down, so the plan is recomputed here
+    ' instead of in each caller.
+    if m.drawerKind = "sources" then rDrawerLayout("sources")
 end sub
 
 sub rProviderFilterSelected()

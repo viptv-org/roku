@@ -151,6 +151,13 @@ sub rInstallVideo(session as object)
     m.nextCard = invalid
     m.seekPosition = invalid
     m.lastProgress = rNow()
+    ' A new lease starts a new timeline: clear the previous title's fill, thumb
+    ' and countdown before the first poll describes this one.
+    m.playerProgress.width = 0
+    thumb = m.top.findNode("playerThumb")
+    thumb.translation = [m.playerTrack.translation[0]-22,thumb.translation[1]]
+    m.playerTime.text = rTime(0)
+    m.top.findNode("playerRemaining").text = "--:--"
     rShowControls()
 end sub
 
@@ -226,20 +233,76 @@ sub rPlayerPoll(now as double)
         m.lastProgress = now
         rSaveProgress(false)
     end if
+    rPaintPlayerClock()
+end sub
+
+' Timeline + readout. Split out of the poll so a key press can repaint the scrub
+' preview immediately without re-entering the lease bookkeeping.
+sub rPaintPlayerClock()
+    if m.playback = invalid then return
+    live = m.playback.session.delivery.live = true
     position = rPlayerPosition()
-    duration = RGet(m.playback.session.delivery,"duration",0)
-    if m.seekPosition <> invalid then position = m.seekPosition
+    duration = rPlayerDuration()
+    if position < 0 then position = 0
+    target = position
+    if m.seekPosition <> invalid then target = m.seekPosition
+    if target < 0 then target = 0
+    if duration > 0 and target > duration then target = duration
+    ' The readout keeps describing the playing position; the scrub target only
+    ' rides the thumb, exactly like the Android TV timeline.
     m.playerTime.text = rTime(position)
-    if m.playback.session.delivery.live = true then m.playerTime.text = "LIVE"
-    remaining = duration-position
-    if remaining < 0 then remaining = 0
-    m.top.findNode("playerRemaining").text = "−"+rTime(remaining)
-    m.top.findNode("playerThumb").visible = duration > 0 and RPlaybackAllowed(m.playback.session,"seek")
-    if duration > 0
-        fraction = position/duration
-        if fraction > 1 then fraction = 1
-        m.playerProgress.width = 1728*fraction
-        m.top.findNode("playerThumb").translation = [74+1728*fraction,923]
+    m.top.findNode("playerRemaining").text = "--:--"
+    m.top.findNode("playerEnds").text = ""
+    ' While a scrub is pending the pill row steps aside, exactly like the
+    ' Android TV player, so the preview has the whole band above the timeline.
+    if m.playerUi.visible then m.playerActions.visible = m.seekPosition = invalid
+    thumb = m.top.findNode("playerThumb")
+    thumb.visible = duration > 0 and not live and RPlaybackAllowed(m.playback.session,"seek")
+    m.playerProgress.width = 0
+    m.top.findNode("seekDelta").visible = false
+    m.top.findNode("seekBubble").visible = false
+    if live
+        m.playerTime.text = "LIVE"
+        m.top.findNode("playerRemaining").text = ""
+    else if duration > 0
+        remaining = duration-position
+        if remaining < 0 then remaining = 0
+        m.top.findNode("playerRemaining").text = "−"+rTime(remaining)
+        trackX = m.playerTrack.translation[0]
+        trackWidth = m.playerTrack.width
+        liveFraction = position/duration
+        if liveFraction > 1 then liveFraction = 1
+        targetFraction = target/duration
+        if targetFraction > 1 then targetFraction = 1
+        m.playerProgress.width = trackWidth*liveFraction
+        thumb.translation = [trackX+trackWidth*targetFraction-22,thumb.translation[1]]
+        if m.seekPosition <> invalid
+            ' Delta band between what is playing and where the remote is pointing,
+            ' plus a time pill above the thumb.
+            ' ("to" is a BrightScript keyword, so the band uses startF/endF.)
+            startF = liveFraction
+            endF = targetFraction
+            if startF > endF
+                swap = startF
+                startF = endF
+                endF = swap
+            end if
+            delta = m.top.findNode("seekDelta")
+            delta.translation = [trackX+trackWidth*startF,m.playerTrack.translation[1]]
+            delta.width = trackWidth*(endF-startF)
+            delta.visible = true
+            bubble = m.top.findNode("seekBubble")
+            bubbleX = trackX+trackWidth*targetFraction-98
+            if bubbleX < trackX then bubbleX = trackX
+            if bubbleX > trackX+trackWidth-196 then bubbleX = trackX+trackWidth-196
+            bubble.translation = [bubbleX,m.playerTrack.translation[1]-70]
+            jump = int(target-position)
+            arrow = "+"
+            if jump < 0 then arrow = "−"
+            m.top.findNode("seekBubbleText").text = rTime(target)+"  "+arrow+abs(jump).toStr()+"s"
+            bubble.visible = true
+        end if
+        m.top.findNode("playerEnds").text = "Ends at "+rClockTime(remaining)
     end if
 end sub
 
@@ -269,11 +332,9 @@ sub rPlayerFailure(tag as string, result as object, request as object)
         end for
         values.push({title:"Retry",action:"player:retryEpisodes",ring:false})
         focus = m.drawerRows.itemFocused
-        m.drawerRows.itemSize = [800,144]
-        m.drawerRows.numRows = 4
-        m.drawerRows.content = rContent(values,800,144)
+        rDrawerLayout("episodes")
+        m.drawerRows.content = rContent(values,rDrawerContentWidth(),rDrawerRowHeight("episodes"))
         if focus >= 0 and focus < values.count() then m.drawerRows.jumpToItem = focus
-        m.drawerMessage.translation = [64,940]
         m.drawerMessage.text = RText(result.error,"Could not load episodes. Try again.")
         if values.count() = 1 then m.drawerRows.setFocus(true)
         return
@@ -313,9 +374,40 @@ function rPlayerPosition() as double
     return m.player.position+RGet(m.playback.session.delivery,"timeline_offset_seconds",0)
 end function
 
+' Length of the title in original-title seconds. The producer advertises the full
+' source duration; when it reports 0 (a stream it could not probe) the decoder's
+' own duration is used, in the same cut-window coordinates as the player clock.
+function rPlayerDuration() as double
+    if m.playback = invalid then return 0
+    duration = RGet(m.playback.session.delivery,"duration",0)
+    if duration > 0 then return duration
+    observed = m.player.duration
+    if observed > 0 then return observed+RGet(m.playback.session.delivery,"timeline_offset_seconds",0)
+    return 0
+end function
+
+' Local wall-clock time for "Ends at", matching the Android TV player's h:mm AM/PM.
+function rClockTime(remaining as double) as string
+    date = CreateObject("roDateTime")
+    date.fromSeconds(date.asSeconds()+int(remaining))
+    date.toLocalTime()
+    hours = date.getHours()
+    suffix = " AM"
+    if hours >= 12 then suffix = " PM"
+    if hours > 12 then hours -= 12
+    if hours = 0 then hours = 12
+    return hours.toStr()+":"+right("0"+date.getMinutes().toStr(),2)+suffix
+end function
+
+' Readout format shared with the KMP player: minutes under an hour, h:mm:ss above
+' it, so a feature never reads as "104:00".
 function rTime(seconds as double) as string
-    minutes = int(seconds/60)
-    remainder = int(seconds) mod 60
+    total = int(seconds)
+    if total < 0 then total = 0
+    hours = int(total/3600)
+    minutes = int((total mod 3600)/60)
+    remainder = total mod 60
+    if hours > 0 then return hours.toStr()+":"+right("0"+minutes.toStr(),2)+":"+right("0"+remainder.toStr(),2)
     return minutes.toStr()+":"+right("0"+remainder.toStr(),2)
 end function
 
@@ -335,6 +427,8 @@ end sub
 
 sub rHideControls()
     if m.drawer.visible or m.seekPosition <> invalid then return
+    ' Paused playback keeps its controls, like the Android TV player.
+    if m.player.state = "paused" then return
     m.playerUi.visible = false
     m.playerInput.setFocus(true)
 end sub
@@ -419,11 +513,12 @@ sub rPlayerEpisodes(cursor as string, appendPage as boolean)
         rRetireEpisodeRequests()
         m.playerEpisodes = []
         m.episodeCursor = ""
-        m.drawerRows.content = rContent([],800,144)
+        rDrawerLayout("episodes")
+        m.drawerRows.content = rContent([],rDrawerContentWidth(),rDrawerRowHeight("episodes"))
     else
         if m.episodeFailed <> invalid or cursor <> m.episodeCursor then return
     end if
-    m.drawerMessage.translation = [64,940]
+    rDrawerLayout(m.drawerKind)
     m.drawerMessage.text = "Loading episodes…"
     query = {offset:cursor,limit:"24"}
     if card.metadata_origin <> invalid
@@ -454,10 +549,9 @@ sub rPlayerEpisodesResponse(data as object, request as object)
     for each card in m.playerEpisodes
         values.push({title:card.title,subtitle:RText(card.subtitle),episode:card,action:"player:episode",ring:false})
     end for
-    m.drawerRows.itemSize = [800,144]
-    m.drawerRows.numRows = 4
+    rDrawerLayout("episodes")
     focus = m.drawerRows.itemFocused
-    m.drawerRows.content = rContent(values,800,144)
+    m.drawerRows.content = rContent(values,rDrawerContentWidth(),rDrawerRowHeight("episodes"))
     if focus >= 0 and focus < values.count() then m.drawerRows.jumpToItem = focus
     seasons = []
     for each season in RArray(data.seasons)
@@ -467,7 +561,8 @@ sub rPlayerEpisodesResponse(data as object, request as object)
     end for
     m.sourceFilters.content = rContent(seasons,200,52)
     m.sourceFilters.visible = seasons.count() > 1
-    m.drawerRows.translation = [64,278]
+    m.sourceFilters.containerWidth = rDrawerContentWidth()
+    rDrawerLayout("episodes")
     m.episodeCursor = RText(data.next_cursor)
     if values.count() = 0
         m.drawerMessage.text = "No episodes are available."
@@ -477,35 +572,50 @@ sub rPlayerEpisodesResponse(data as object, request as object)
     end if
 end sub
 
+' Transport keys follow the Android TV player: Left/Right scrub at any time with
+' a live preview, OK commits the scrub (or toggles playback when nothing is
+' pending), Up/Down move between the timeline and the action pills.
 function rPlayerKey(key as string) as boolean
     if m.drawer.visible then return false
     if key = "play"
         rPlayerAction({action:"player:pause"})
     else if key = "left" or key = "right" or key = "rewind" or key = "fastforward"
-        if (key = "left" or key = "right") and m.playerUi.visible and m.playerActions.isInFocusChain() and m.seekPosition = invalid then return false
         if not RPlaybackAllowed(m.playback.session,"seek") then return true
         position = rPlayerPosition()
         if m.seekPosition <> invalid then position = m.seekPosition
         delta = 10
         if key = "left" or key = "rewind" then delta = -10
         position += delta
-        duration = RGet(m.playback.session.delivery,"duration",0)
+        duration = rPlayerDuration()
         if position < 0 then position = 0
         if duration > 0 and position > duration then position = duration
         m.seekPosition = position
         m.playerUi.visible = true
-        m.playerTime.text = rTime(position)+" · OK to seek · Back to cancel"
+        m.hideControls.control = "stop"
         m.playerInput.setFocus(true)
+        rPaintPlayerClock()
     else if key = "OK" and m.seekPosition <> invalid
         if not RPlaybackAllowed(m.playback.session,"seek") then return true
         position = m.seekPosition
         m.seekPosition = invalid
+        m.top.findNode("seekBubble").visible = false
+        m.top.findNode("seekDelta").visible = false
         m.playCard = m.playback.card
         rStartSource(m.playback.source,position)
+    else if key = "up" and m.playerInput.isInFocusChain()
+        rShowControls()
     else if key = "down" and m.playerActions.isInFocusChain()
         m.playerInput.setFocus(true)
         m.hideControls.control = "stop"
-    else if key = "OK" or key = "up" or key = "down" or key = "options"
+    else if key = "OK"
+        if m.seekPosition <> invalid
+            ' handled above
+        else if not m.playerUi.visible
+            rShowControls()
+        else if not m.playerActions.isInFocusChain()
+            rPlayerAction({action:"player:pause"})
+        end if
+    else if key = "options" or key = "info"
         rShowControls()
     else
         return false
@@ -519,7 +629,7 @@ sub rSaveProgress(ended as boolean)
     if not RPlaybackAllowed(m.playback.session,"report_progress") then return
     if m.playback.firstFrame <> true then return
     card = m.playback.card
-    record = {presentation:card,identity:card.identity,parent_identity:card.parent_identity,provider_id:card.provider_id,title:card.title,poster:card.poster,landscape:card.landscape,position_millis:int(rPlayerPosition()*1000),duration_millis:int(RGet(m.playback.session.delivery,"duration",0)*1000),updated_at_millis:0,metadata_origin:card.metadata_origin}
+    record = {presentation:card,identity:card.identity,parent_identity:card.parent_identity,provider_id:card.provider_id,title:card.title,poster:card.poster,landscape:card.landscape,position_millis:int(rPlayerPosition()*1000),duration_millis:int(rPlayerDuration()*1000),updated_at_millis:0,metadata_origin:card.metadata_origin}
     rSend("PUT",rProfilePath("/progress"),{record:record,parent_identity:card.parent_identity,ended:ended},"save:progress:"+m.playback.session.id+":"+m.sequence.toStr())
 end sub
 
@@ -530,7 +640,7 @@ sub rPlaybackEvent(kind as string, ended as boolean)
     if m.playback.firstFrame <> true then return
     m.playback.sequence++
     card = m.playback.card
-    body = {attempt_id:m.playback.session.id,sequence:m.playback.sequence,identity:card.identity,parent_identity:card.parent_identity,event:kind,position_millis:int(rPlayerPosition()*1000),duration_millis:int(RGet(m.playback.session.delivery,"duration",0)*1000),ended:ended}
+    body = {attempt_id:m.playback.session.id,sequence:m.playback.sequence,identity:card.identity,parent_identity:card.parent_identity,event:kind,position_millis:int(rPlayerPosition()*1000),duration_millis:int(rPlayerDuration()*1000),ended:ended}
     rSend("POST",rProfilePath("/playback-events"),body,"save:event:"+m.playback.session.id+":"+m.playback.sequence.toStr())
 end sub
 
@@ -632,9 +742,16 @@ sub rCancelAdmission()
     m.admission = invalid
 end sub
 sub rAdmissionFailure(message as string)
+    ' Visible in the dev console: the viewer sees the same text on screen, and a
+    ' failing source can be reported without a packet capture.
+    print "VIPTV_PLAYBACK_FAILURE "; message
     rCancelAdmission()
     if m.drawer.visible
-        m.drawerMessage.text = message
+        ' Keep the reason on screen: the source list keeps polling, and every
+        ' fresh ranking used to overwrite this line with the selection note
+        ' before anyone could read it.
+        m.sourceError = message
+        rSourceStatus()
         m.drawerRows.setFocus(true)
     else if m.playback <> invalid
         rShowControls()

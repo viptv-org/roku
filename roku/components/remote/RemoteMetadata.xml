@@ -3,6 +3,7 @@
  <interface>
   <field id="parts" type="array" onChange="render" />
   <field id="badges" type="array" onChange="render" />
+  <field id="maxWidth" type="float" value="1088" onChange="render" />
  </interface>
  <script type="text/brightscript" uri="pkg:/source/RemoteWire.brs" />
  <script type="text/brightscript" uri="pkg:/components/remote/RemoteMetadata.brs" />

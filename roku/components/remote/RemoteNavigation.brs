@@ -10,7 +10,9 @@ sub render()
     for each item in RArray(m.top.destinations)
         width = item.width
         group = CreateObject("roSGNode","Group")
-        if item.id = "menu" then x = 1768
+        ' The profile menu sits at the right end of the safe area. If the
+        ' server adds destinations, it moves right instead of overlapping them.
+        if item.id = "menu" and x < 1768 then x = 1768
         group.translation = [x,38]
         ring = group.createChild("Poster")
         ring.uri = "pkg:/images/ui-round-fill.9.png"
@@ -101,7 +103,11 @@ function onKeyEvent(key as string, press as boolean) as boolean
         if m.items.getChildCount() > 0 then m.top.selected = m.top.destinations[m.top.cursor].id
     else if key = "down"
         m.top.down = true
-    else if key <> "up"
+    else if key = "up"
+        ' The bar is the top of the page, so Up is absorbed here rather than
+        ' handed back to a Scene handler that would return focus to this bar.
+        return true
+    else
         return false
     end if
     return true

@@ -50,8 +50,12 @@ sub runChecks()
     m.detailData = {item:card,episodes:[episode],recommendations:[],next_cursor:invalid,seasons:[]}
     m.shelves.visible = true
     m.shelves.translation = [96,888]
+    m.actions.visible = true
     rShelfFocused({getData:function() : return [0,0] : end function})
-    rCheck(m.top.findNode("homeSlide").keyValue[1][1] = 691,"episode focus scrolls the full episode card into view")
+    rCheck(m.top.findNode("homeSlide").keyValue[1][1] = 660 and m.filters.visible = false,"episode focus expands the episode row")
+    rCheck(not m.actions.visible,"episode focus steps the action row aside instead of letting cards paint over Play")
+    rDetailLayout(false)
+    rCheck(m.actions.visible and m.top.findNode("homeSlide").keyValue[1][1] = 888,"leaving the episode row restores the resting page and its Play row")
     rDetailScroll(false)
     rCheck(m.top.findNode("homeSlide").keyValue[1][1] = 888,"returning detail focus restores the hero position")
     rCheck(m.heroTitle.text = card.title,"hero title")

@@ -1,4 +1,5 @@
-' Task-only platform effects. No legacy provider/presentation policies shipped.
+' Runs one HTTPS request off the render thread and hands the result back by
+' message port. All response validation happens on the SceneGraph thread.
 sub init()
     m.top.functionName = "runRemoteRequest"
 end sub

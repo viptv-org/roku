@@ -147,9 +147,9 @@ sub rSearchRender()
         if firstResult = invalid and channels.count() > 0 then firstResult = [rowIndex,0]
         row = root.createChild("ContentNode")
         row.title = "Channels"
-        titleHeight = 36
-        if channelMessage <> "" then titleHeight = 82
-        row.addFields({searchChannels:true,searchTitleHeight:titleHeight,searchHeadingHeight:36,searchMessage:channelMessage})
+        titleHeight = 40
+        if channelMessage <> "" then titleHeight = 86
+        row.addFields({searchChannels:true,searchTitleHeight:titleHeight,searchHeadingHeight:40,searchMessage:channelMessage})
         values = []
         for each channel in channels
             value = RCopy(channel.card)
@@ -172,7 +172,11 @@ sub rSearchRender()
     m.heading.text = ""
     m.shelves.translation = [700,140]
     m.shelves.itemSize = [1124,460]
-    m.shelves.rowLabelOffset = [[0,20]]
+    labelOffsets = []
+    for i = 0 to root.getChildCount()-1
+        labelOffsets.push([0,20])
+    end for
+    m.shelves.rowLabelOffset = labelOffsets
     m.shelves.rowItemSize = sizes
     m.shelves.rowItemSpacing = spacing
     m.shelves.rowHeights = heights

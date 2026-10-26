@@ -18,14 +18,14 @@ sub rHistory(data as object)
     end while
     values = []
     for each entry in m.historyEntries
-        ' Status text and artwork roles are projected by the current producer.
         values.push({title:entry.card.title,subtitle:RText(entry.card.subtitle),action:"detail",card:entry.card,history:true,landscape:RText(entry.card.landscape)})
     end for
-    m.rows.translation = [92,336]
-    m.rows.itemSize = [1736,156]
-    m.rows.itemSpacing = [0,4]
-    m.rows.numRows = 5
-    m.top.findNode("rowClip").clippingRect = [88,340,1744,740]
+    ' Same 96px safe area and 12px row rhythm as every other page list.
+    m.rows.translation = [96,340]
+    m.rows.itemSize = [1728,148]
+    m.rows.itemSpacing = [0,12]
+    m.rows.numRows = 4
+    m.top.findNode("rowClip").clippingRect = [96,340,1728,700]
     m.rows.content = rContent(values,1728,148)
     m.rows.visible = values.count() > 0
     m.top.findNode("historyExplanation").visible = true

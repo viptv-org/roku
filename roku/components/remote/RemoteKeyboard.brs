@@ -39,7 +39,8 @@ sub layout()
         for i = 0 to len(letters)-1
             addKey(mid(letters,i+1,1),mid(letters,i+1,1),(i mod 6)*88,int(i/6)*76+76,80,68)
         end for
-        m.cursor = 9
+        ' Start on the first letter key of the grid (Space and Delete come first).
+        m.cursor = 2
     else
         letters = "1234567890qwertyuiopasdfghjkl@zxcvbnm.-_"
         if m.symbols then letters = "1234567890!@#$%^&*()[]{}<>/\:;'"+chr(34)+".,?+=_-~"
@@ -147,7 +148,8 @@ sub paint()
         group.getChild(0).blendColor = "#2A2A2EFF"
         if m.top.entryMode
             group.getChild(0).blendColor = "#FFFFFF17"
-            if i >= 43 then group.getChild(0).blendColor = "#FFFFFF2E"
+            ' The last five keys are the action row, not letters (40 letter keys).
+            if i >= 40 then group.getChild(0).blendColor = "#FFFFFF2E"
             group.getChild(group.getChildCount()-1).visible = active
         end if
         group.getChild(1).color = "#F4F2EE"

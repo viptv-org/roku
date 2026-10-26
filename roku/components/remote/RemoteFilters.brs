@@ -152,6 +152,13 @@ end sub
 sub refresh()
     if m.facets = invalid then return
     controls = RArray(m.controls)
+    ' While the rail owns the remote, the highlighted facet is the one whose
+    ' choices belong in the panel; leaving the panel on the previously activated
+    ' facet made the ring and the content disagree.
+    if m.region = "facets" and m.active <> m.facet
+        m.active = m.facet
+        m.choice = 0
+    end if
     if m.active >= controls.count() then m.active = 0
     first = 0
     if m.facet > 6 then first = m.facet-6
@@ -167,11 +174,11 @@ sub refresh()
             tile.getChild(1).text = RText(control.label)
             tile.getChild(5).visible = RGet(control,"required",false)
             if tile.getChild(5).visible
-                tile.getChild(1).width = 0
-                labelWidth = tile.getChild(1).boundingRect().width
-                if labelWidth > 180 then labelWidth = 180
-                tile.getChild(1).width = labelWidth
-                tile.getChild(5).translation = [40+labelWidth,27]
+                ' The facet rail is 640 wide: the label gets the room left after
+                ' the "Required" tag instead of a fixed 180px clip.
+                tagWidth = 100
+                tile.getChild(1).width = 616-tagWidth-16
+                tile.getChild(5).translation = [26+tile.getChild(1).width+12,27]
             end if
             labels = []
             for each value in selected(control)
@@ -181,7 +188,10 @@ sub refresh()
             end for
             tile.getChild(2).text = labels.join(", ")
             if labels.count() = 0 then tile.getChild(2).text = "Any"
-            style(tile,m.region = "facets" and m.facet = index,m.active = index)
+            ' Never assign state inside an argument list: it silently rewrote
+            ' m.region with a boolean and broke every later key comparison.
+            focusedFacet = m.region = "facets" and m.facet = index
+            style(tile,focusedFacet,m.facet = index)
         end if
     end for
     for each tile in m.choices.getChildren(-1,0)
@@ -220,7 +230,8 @@ sub refresh()
             if m.textKeyboard.text <> value then m.textKeyboard.text = value
             m.syncText = false
             m.textClear.visible = value <> ""
-            style(m.textClear.getChild(0),m.region = "textClear",false)
+            clearFocused = m.region = "textClear"
+            style(m.textClear.getChild(0),clearFocused,false)
         else
             firstRow = 0
             if int(m.choice/3) > 6 then firstRow = int(m.choice/3)-6
@@ -247,14 +258,16 @@ sub refresh()
                     tile.getChild(3).visible = checked
                     tile.getChild(3).translation = [w-46,21]
                     enabled = choiceEnabled(index)
-                    style(tile,m.region = "choices" and m.choice = index,checked,enabled)
+                    focusedChoice = m.region = "choices" and m.choice = index
+                    style(tile,focusedChoice,checked,enabled)
                     x += w+14
                 end if
             end for
         end if
     end if
     for i = 0 to 2
-        style(m.buttons.getChild(i),m.region = "buttons" and m.button = i,false)
+        focusedButton = m.region = "buttons" and m.button = i
+        style(m.buttons.getChild(i),focusedButton,false)
     end for
 end sub
 sub toggle()

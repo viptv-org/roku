@@ -177,7 +177,8 @@ sub refresh()
         row.visible = index < m.controls.count()
         if row.visible
             control = m.controls[index]
-            row.translation = [0,slot*116]
+            ' 108px pitch keeps the eighth control's button inside the 976px clip.
+            row.translation = [0,slot*108]
             row.getChild(0).text = control.label
             button = row.getChild(1)
             button.getChild(1).text = valueText(control)
@@ -233,8 +234,8 @@ sub chooseField()
     if w > 600 then w = 600
     h = choices.count()*64+16
     if h > 480 then h = 480
-    y = 181+(m.field-m.firstField)*116
-    if y+h > 1056 then y = 117+(m.field-m.firstField)*116-h
+    y = 181+(m.field-m.firstField)*108
+    if y+h > 1056 then y = 117+(m.field-m.firstField)*108-h
     if y < 24 then y = 24
     m.menu.translation = [24,y]
     m.menuGround.width = w

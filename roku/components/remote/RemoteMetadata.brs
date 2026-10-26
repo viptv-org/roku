@@ -8,8 +8,10 @@ sub init()
     m.badgeFont.size = 18
 end sub
 sub render()
+    if m.items = invalid then return
     m.items.removeChildrenIndex(m.items.getChildCount(),0)
     parts = RArray(m.top.parts)
+    limit = m.top.maxWidth
     x = 0
     for i = 0 to parts.count()-1
         if i > 0
@@ -27,10 +29,20 @@ sub render()
         label.color = "#D6D4CF"
         label.height = 32
         label.translation = [x,0]
-        x += label.boundingRect().width
+        width = label.boundingRect().width
+        ' A long title must not run under the hero artwork or off the panel.
+        if limit > 0 and x+width > limit
+            width = limit-x
+            if width < 40 then width = 40
+            label.width = width
+            label.ellipsisText = "…"
+        end if
+        x += width
+        if limit > 0 and x >= limit then exit for
     end for
     if parts.count() > 0 then x += 28
     for each badge in RArray(m.top.badges)
+        if limit > 0 and x >= limit then exit for
         group = m.items.createChild("Group")
         group.translation = [x,0]
         outline = group.createChild("Poster")

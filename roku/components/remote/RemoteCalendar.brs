@@ -14,16 +14,27 @@ sub rCalendarWeek()
         iso = left(date.toISOString(),10)
         days.push({title:mid(iso,6),action:"calendarDay",date:iso})
     end for
+    m.calendarDays = days
     m.calendarDay = days[0].date
     m.filters.itemSize = [160,64]
     m.filters.numColumns = 7
     m.filters.translation = [96,140]
-    m.filters.content = rContent(days,160,64)
     m.filters.visible = true
+    rCalendarDays()
     rShowActions([{title:"Calendar options",action:"calendarOptions",width:420}])
     m.actions.translation = [1404,140]
     m.heading.text = ""
     rCalendarFetch("")
+end sub
+
+' Day chips carry their own selection, so the chosen day stays visible after the
+' remote leaves the row.
+sub rCalendarDays()
+    values = []
+    for each day in RArray(m.calendarDays)
+        values.push({title:day.title,action:"calendarDay",date:day.date,selected:day.date = m.calendarDay})
+    end for
+    m.filters.content = rContent(values,160,64)
 end sub
 
 sub rCalendarFetch(cursor as string)

@@ -6,7 +6,7 @@ import sys
 root = Path(__file__).resolve().parents[1]
 out = Path(sys.argv[1]).resolve()
 state = sys.argv[2] if len(sys.argv) > 2 else 'home'
-if state not in ('library-filters', 'library-filter-choices', 'filters-text', 'filters', 'password', 'welcome', 'choice', 'pairing', 'home', 'library', 'browse', 'sources', 'settings', 'profiles', 'detail', 'search', 'live', 'calendar', 'player', 'empty', 'error'):
+if state not in ('player-scrub','detail-episodes','menu','episodes','library-filters', 'library-filter-choices', 'filters-text', 'filters', 'password', 'welcome', 'choice', 'pairing', 'home', 'library', 'browse', 'sources', 'settings', 'profiles', 'detail', 'search', 'live', 'calendar', 'player', 'empty', 'error'):
     raise SystemExit('Unsupported preview state')
 out.mkdir(parents=True,exist_ok=False)
 for folder in ('components','source','fonts','images'):
@@ -62,7 +62,55 @@ rFiltersOpen()
  'choice':'m.profile = ""\nrSignInChoice()\n',
  'pairing':'m.profile = ""\nrShowPair({verification_uri:"https://example.test/device",user_code:"12345678",qr_uri:""})\n',
  'browse':'rReset("movie")\nm.heading.text = "Movies"\nrPageResponse("browse",{cards:cards,complete:true},{})\nm.grid.setFocus(true)\n',
- 'sources':'rOpenDrawer("Choose a source",[],"sources")\nrShowSources([{id:"a",view:{title:"Provider A",body:"H.264 · 2.1 GB",quality_label:"1080p",format_label:"HDR",addon_label:"Fixture add-on"}},{id:"b",view:{title:"Provider B",body:"H.264",quality_label:"720p",format_label:""}}])\n',
+ 'sources':'''rReset("movie")
+m.playCard = card
+rOpenDrawer("Choose a source",[],"sources")
+m.sourceNote = "Play always starts the best match. Change how it's chosen in Settings › Playback."
+m.sourceFilters.content = rContent([{title:"All 4",height:invalid,width:140},{title:"4K 1",height:2160,width:140},{title:"1080p 3",height:1080,width:140}],140,52)
+m.sourceFilters.visible = true
+rShowSources([{id:"a",view:{title:"Practical.Magic.1998.1080p.BluRay.x264-PROPER",body:"WEB-DL · HEVC · 5.1 · 18.4 GB",quality_label:"1080p",format_label:"HDR",addon_label:"Torrentio",provider_label:"Providers"}},{id:"b",view:{title:"Practical Magic 1998 2160p UHD BluRay REMUX DV HDR",body:"Remux · HEVC · TrueHD 7.1 · 61.2 GB",quality_label:"4K",format_label:"DV",addon_label:"Debrid",provider_label:"Torrents"}},{id:"c",view:{title:"Practical Magic",body:"HDTV · H.264",quality_label:"720p",format_label:"",addon_label:"",provider_label:"Streams"}}],"b")
+rSourceProviders(m.sourceStreams,m.sourceBest)
+rSourceStatus()
+m.drawerRows.setFocus(true)
+''',
+ 'player-scrub':'''rReset("player")
+frame=CreateObject("roSGNode","Poster")
+frame.uri="pkg:/images/player.jpg"
+frame.width=1920:frame.height=1080:frame.loadDisplayMode="scaleToZoom"
+m.top.insertChild(frame,1)
+m.navigation.visible=false
+m.playback={card:card,session:{id:"preview",actions:{pause:true,seek:true,change_source:true,tracks:true,report_progress:true},delivery:{duration:6240,live:false,timeline_offset_seconds:754,audio_tracks:[{input_index:0,language:"English",selectable:true,supported:true}],subtitle_tracks:[],subtitles_supported:true}},source:{id:"s"},body:{},firstFrame:true,sequence:0}
+m.playerTitle.text=card.title
+m.top.findNode("playerSubtitle").text=card.subtitle
+m.player.position = 60
+m.player.state = "playing"
+rShowControls()
+m.playerInput.setFocus(true)
+m.seekPosition = 754+60+120
+rPaintPlayerClock()
+m.hideControls.control="stop"
+''',
+ 'menu':'''rReset("home")
+rHome({scope:{profile_id:"7",account_id:"2",revision:1},hero:card,featured:[card],rows:[],complete:true})
+m.drawerOpener = m.navigation
+rOpenDrawer("Profile",[{title:"Switch profile",action:"profiles"},{title:"Settings",action:"settings"},{title:"History",action:"history"}],"menu")
+m.drawerRows.setFocus(true)
+''',
+ 'episodes':'''rReset("player")
+m.playback = {session:{id:"preview-session",actions:{episodes:true}},card:card}
+m.top.removeChild(m.drawer)
+m.top.appendChild(m.drawer)
+rOpenDrawer("Episodes",[],"episodes")
+episodes = []
+for i = 1 to 6
+ e = ParseJson(FormatJson(card))
+ e.title = "Episode "+i.toStr()
+ e.subtitle = "S1 E"+i.toStr()+" · 42m"
+ episodes.push(e)
+end for
+rPlayerEpisodesResponse({episodes:episodes,seasons:[{season:1,offset:"0"},{season:2,offset:"6"}],next_cursor:""},{context:{id:"preview-session",episode_version:m.episodeVersion,append:false,cursor:""}})
+m.sourceFilters.setFocus(true)
+''',
  'settings':"""m.navigation.profileName = "vynxc"
 rSettingsSection("Playback")
 rSettingsResponse("settings:preferences",{revision:1,preferences:{source_selection:"best",max_quality_height:invalid,hdr_preference:"any"},controls:[{id:"source_selection",group:"playback",label:"Default source",description:"How Play chooses between sources",choices:[{label:"Best match",value:"best"},{label:"Ask every time",value:"ask"}]},{id:"max_quality_height",group:"playback",label:"Preferred quality",description:"Best match aims for this, then falls back",choices:[{label:"Auto",value:invalid},{label:"4K",value:2160}]},{id:"hdr_preference",group:"playback",label:"HDR preference",choices:[{label:"Any",value:"any"},{label:"Prefer HDR",value:"prefer"}]}]},{})
@@ -70,17 +118,59 @@ m.rows.setFocus(true)
 """,
 
  'profiles':'rProfiles({profiles:[{id:"7",name:"Alex"},{id:"8",name:"Kids"}],capabilities:{create:{availability:"Available"},rename:{availability:"Available"}},avatar_ids:[]})\n',
- 'detail':'rDetail(card,false)\n',
+ 'detail':'''rReset("detail")
+m.detailCard = card
+m.navigation.visible = false
+rHero(card)
+rDetailActions(card)
+episodes = []
+for i = 1 to 8
+ e = ParseJson(FormatJson(card))
+ e.identity.episode = {order:"aired",season:1,episode:i}
+ e.title = "Episode "+i.toStr()
+ e.subtitle = "S1 E"+i.toStr()
+ episodes.push(e)
+end for
+rPageResponse("detail",{item:card,episodes:episodes,recommendations:[],next_cursor:"",seasons:[{season:1,offset:"0"},{season:2,offset:"8"}]},{context:{append:false,cursor:""}})
+rDetailLayout(false)
+m.actions.setFocus(true)
+''',
+ 'detail-episodes':'''rReset("detail")
+m.detailCard = card
+m.navigation.visible = false
+rHero(card)
+rDetailActions(card)
+episodes = []
+for i = 1 to 8
+ e = ParseJson(FormatJson(card))
+ e.identity.episode = {order:"aired",season:1,episode:i}
+ e.title = "Episode "+i.toStr()
+ e.subtitle = "S1 E"+i.toStr()
+ episodes.push(e)
+end for
+rPageResponse("detail",{item:card,episodes:episodes,recommendations:[],next_cursor:"",seasons:[{season:1,offset:"0"},{season:2,offset:"8"}]},{context:{append:false,cursor:""}})
+rDetailLayout(true)
+m.shelves.setFocus(true)
+''',
  'search':'rReset("search")\nrTextInput("Search","search",false,"Practical")\nrPageResponse("search",{rows:[{id:"films",title:"Movies",cards:cards},{id:"series",title:"Series",cards:cards}],complete:true},{})\n',
  'empty':'rReset("library")\nm.heading.text = "My List"\nrPageResponse("library",{cards:[],default_query:m.libraryDefaults,query:{source:"favorites",type:"all",sort:"last_watched",show:"all",offset:0,limit:100},controls:[],complete:true},{})\n',
  'error':'rReset("movie")\nm.heading.text = "Movies"\nm.failedRequest = {method:"GET",path:"/api/discover?type=movie",tag:"browse"}\nrError("Could not reach the server. Try again.")\n',
  'calendar':'''rReset("calendar")
 m.calendarVersion = 1
-m.calendarDay = "2026-10-23"
 m.calendarType = "series"
+m.calendarOffset = 0
+m.calendarDay = "2026-10-23"
+m.calendarDays = [{title:"10-22",date:"2026-10-22"},{title:"10-23",date:"2026-10-23"},{title:"10-24",date:"2026-10-24"},{title:"10-25",date:"2026-10-25"},{title:"10-26",date:"2026-10-26"},{title:"10-27",date:"2026-10-27"},{title:"10-28",date:"2026-10-28"}]
+m.filters.itemSize = [160,64]
+m.filters.numColumns = 7
+m.filters.translation = [96,140]
+m.filters.visible = true
+rCalendarDays()
+rShowActions([{title:"Calendar options",action:"calendarOptions",width:420}])
+m.actions.translation = [1404,140]
 m.calendarEntries = []
-rCalendar({entries:[{id:"release",date:"2026-10-23T12:30:00Z",card:card,episode_title:"A new beginning"}],complete:true},{context:{day:m.calendarDay,type:m.calendarType,cursor:""}})
-m.rows.setFocus(true)
+rCalendar({entries:[{id:"release",date:"2026-10-23T12:30:00Z",card:card,episode_title:"A new beginning"}],complete:true},{context:{day:m.calendarDay,type:m.calendarType,cursor:"",version:m.calendarVersion}})
+m.filters.setFocus(true)
 ''',
  'live':'''rReset("live")
 m.liveQuery = ""
@@ -107,7 +197,7 @@ m.playback={card:card,session:{id:"preview",actions:{pause:true,seek:true,change
 m.playerTitle.text=card.title
 m.top.findNode("playerSubtitle").text=card.subtitle
 m.playerTime.text="12:34"
-m.top.findNode("playerRemaining").text="−91:26"
+m.top.findNode("playerRemaining").text="−1:31:26"
 m.playerProgress.width=210
 m.top.findNode("playerThumb").translation=[284,923]
 rShowControls()
